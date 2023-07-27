@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'servitaeDelivery';
+  title = 'servitae';
+
+  constructor(private themeService: ThemeService) {}
+
+  changeTheme(theme:string): void {
+    this.themeService.switchTheme(theme);
+  }
 }
+
