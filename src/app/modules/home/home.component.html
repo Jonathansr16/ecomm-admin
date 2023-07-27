@@ -1,0 +1,407 @@
+<!-- ============= SECCIÓN INTEGRACION TIENDAS ============= -->
+<div class="section">
+  <div class="section__container">
+    <!-- <div class="home my-2">
+      <div class="home-container container mt-2">
+        <div
+          class="home__tiendas flex align-items-center justify-content-center gap-5"
+        >
+          <p-card class="home__tienda mb-5">
+            <div class="home__image mb-3">
+              <img
+                src="assets/img/tiendas/Mely/mely_logo.png"
+                alt="mercado libre"
+                class="home__img"
+              />
+            </div>
+
+            <div class="home__status">
+              <p-button
+                label="integrar"
+                styleClass="p-button-rounded mx-auto block"
+              ></p-button>
+            </div>
+
+            <div class="home__integracion"></div>
+          </p-card>
+
+          <p-card class="home__tienda mb-5">
+            <div class="home__image mb-3">
+              <img
+                src="assets/img/tiendas/Amazon/amazon_logo.png"
+                alt=""
+                class="home__img"
+              />
+            </div>
+
+            <div class="home__status mb-2">
+              <p-button
+                label="integrar"
+                class="home__btn"
+                styleClass="p-button-rounded mx-auto block"
+              ></p-button>
+            </div>
+          </p-card>
+
+          <p-card class="home__tienda mb-5">
+            <div class="home__image mb-3">
+              <img
+                src="assets/img/tiendas/Claro/claro_logo.png"
+                alt="claro shop"
+                class="home__img"
+              />
+            </div>
+
+            <div class="home__status mb-2">
+              <p-button
+                label="integrar"
+                styleClass="p-button-rounded mx-auto block"
+              ></p-button>
+            </div>
+          </p-card>
+
+          <p-card class="home__tienda mb-5">
+            <div class="home__image mb-3">
+              <img
+                src="assets/img/tiendas/Woocommerce/woocommerce_logo.png"
+                alt="woocommerce"
+                class="home__img"
+              />
+            </div>
+
+            <div class="home__status">
+              <p-button (click)="showDialog()" label="Integrar"></p-button>
+
+              <p-dialog
+                header="Integración de Woocommerce"
+                [(visible)]="visible"
+                [modal]="true"
+                [style]="{ width: '35vw', height: '600px' }"
+                [draggable]="false"
+                [resizable]="false"
+              >
+                <form
+                  action=""
+                  autocomplete="off"
+                  [formGroup]="form"
+                  (ngSubmit)="integrarWc()"
+                >
+
+                  <div class="form__input mt-5 mb-5">
+                    <label htmlFor="idUsuario">ID de su usuario</label>
+
+                      <input
+                        pInputText
+                        id="idUsuario"
+                        class="form__input"
+                        placeholder="User ID in your APP"
+                        formControlName="idUser"
+                        [class.is-invalid]="idWcUserValido"
+                        [ngClass]="{ 'ng-invalid ng-dirty': idWcUserValido}"
+                      />
+                      <small *ngIf="idWcUserValido" class="p-error"
+                        >el ID usuario es obligatorio</small
+                      >
+                 
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <label htmlFor="urlTienda">URL de la tienda</label>
+
+                      <input
+                        pInputText
+                        id="urlTienda"
+                        class="form__input"
+                        placeholder="http://example.com"
+                        formControlName="urlStore"
+                        [class.is-invalid]="urlStoreWCValido"
+                        [ngClass]="{ 'ng-invalid ng-dirty': urlStoreWCValido}"
+                      />
+                      <small *ngIf="urlStoreWCValido" class="p-error"
+                        >el URL es obligatorio</small
+                      >
+                
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <label htmlFor="UrlAuth">Endpoint</label>
+
+                      <input
+                        id="UrlAuth"
+                        class="form__input"
+                        type="text"
+                        pInputText
+                        [attr.disabled]="true"
+                        formControlName="endpoint"
+
+                      />                  
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <label htmlFor="nameTienda">Nombre de la App</label>
+
+                      <input
+                        pInputText
+                        id="nameTienda"
+                        class="form__input"
+                        placeholder="My App Name"
+                        formControlName="nameStore"
+                        [class.is-invalid]="nameAppValido"
+                        [ngClass]="{ 'ng-invalid ng-dirty': nameAppValido}"
+                      />
+                      <small *ngIf="nameAppValido" class="p-error"
+                        >el nombre de su app es obligatorio</small
+                      >
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <label class="form__label mb-1" htmlFor="nameStore"
+                      >Indique el tipo de permiso:</label
+                    >
+
+                    <div class="flex flex-wrap gap-3">
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="permiso"
+                          value="read"
+                          inputId="lectura"
+                          formControlName="permiso"
+                          [class.is-invalid]="permisoValido"
+                          [ngClass]="{ 'ng-invalid ng-dirty': permisoValido}"
+                        ></p-radioButton>
+                        <label for="lectura" class="ml-2">Lectura</label>
+                      </div>
+
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="permiso"
+                          value="write"
+                          inputId="escritura"
+                          formControlName="permiso"
+                          [class.is-invalid]="permisoValido"
+                          [ngClass]="{ 'ng-invalid ng-dirty': permisoValido}"
+                        ></p-radioButton>
+                        <label for="escritura" class="ml-2">Escritura</label>
+                      </div>
+
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="permiso"
+                          value="read_write"
+                          inputId="lecturaEscritura"
+                          formControlName="permiso"
+                          [class.is-invalid]="permisoValido"
+                          [ngClass]="{ 'ng-invalid ng-dirty': permisoValido}"
+                        ></p-radioButton>
+                        <label for="lecturaEscritura" class="ml-2"
+                          >Lectura/Escritura</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <label htmlFor="urlRedireccion"
+                    >Url de la pagina a redireccionar</label
+                  >
+                      <input
+                        pInputText
+                        id="urlRedireccion"
+                        class="form__input"
+                        placeholder="http://app.com/return-page"
+                        formControlName="urlRedirecto"
+                        [class.is-invalid]="urlRedirectValido"
+                        [ngClass]="{ 'ng-invalid ng-dirty': urlRedirectValido}"
+                      />
+                    
+                      <small *ngIf="urlRedirectValido" class="p-error"
+                        >El url es obligatorio</small
+                      >
+                  
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <label htmlFor="callback"
+                    >URL que recibirá la clave API generada</label
+                  >
+                      <input
+                        pInputText
+                        id="callback"
+                        class="form__input"
+                        placeholder="https://app.com/callback-endpoint"
+                        formControlName="urlCallback"
+                        [class.is-invalid]="callbackValido"
+                        [ngClass]="{ 'ng-invalid ng-dirty': callbackValido}"
+                      />
+                     
+                      <small *ngIf="urlRedirectValido" class="p-error"
+                        >URL de la clave es obligatoria</small
+                      >                   
+                  </div>
+
+                  <div class="form__input mt-5 mb-5">
+                    <p-button
+                      label="Integrar ahora"
+                      type="submit"
+                      styleClass="p-button-raised"
+                    ></p-button>
+
+                    <p class="text-base">
+                      ¿no sabes como integrarlo?,
+                      <p-button
+                        label="Checalo aqui"
+                        styleClass="p-button-secondary p-button-text"
+                      ></p-button>
+                    </p>
+                  </div>
+                </form>
+
+                
+<hr>
+<pre>
+  Estado del formulario: {{ form.valid }}
+  <br>
+  Status: {{ form.status }}
+</pre>
+
+<pre>
+
+  {{ form.value | json }}
+
+</pre>
+              </p-dialog>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- ============= SECCIÓN AYUDA============= -->
+    <div class="ayuda">
+      <div class="ayuda__container container">
+        <div class="ayuda__options">
+          <!-- <p-card class="ayuda__option" *ngFor="let ayuda of ayuda">
+
+                <div class="ayuda__image text-center my-2">
+                    <i [ngClass]="ayuda.icon" style="font-size:3.5rem"></i>
+                </div>
+
+                <div class="ayuda__title">
+                    <h3 class="ayuda__h3 text-center">{{ayuda.title}}</h3>
+                </div>
+            </p-card> -->
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <i class="pi pi-comments" style="font-size: 2.5rem"></i>
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Nuestros comunicados</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <i class="pi pi-question-circle" style="font-size: 2.5rem"></i>
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Preguntas Frecuentes</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <i class="pi pi-book" style="font-size: 2.5rem"></i>
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Manuales de usuario</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <i class="pi pi-video" style="font-size: 2.5rem"></i>
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Tutoriales</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <img
+                src="assets/img/tiendas/Mely/mely_logo.png"
+                loading="lazy"
+                alt="Mercado libre logo"
+                class="ayuda__img m-auto"
+              />
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Como integrar mercado libre</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <img
+                src="assets/img/tiendas/Amazon/amazon_logo.png"
+                loading="lazy"
+                alt="Mercado libre logo"
+                class="ayuda__img m-auto"
+              />
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Como integrar Amazon</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <img
+                src="assets/img/tiendas/Claro/claro_logo.png"
+                loading="lazy"
+                alt="Mercado libre logo"
+                class="ayuda__img m-auto"
+              />
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Como integrar Claro Shop</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <img
+                src="assets/img/tiendas/Woocommerce/woocommerce_logo.png"
+                loading="lazy"
+                alt="Mercado libre logo"
+                class="ayuda__img m-auto"
+              />
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Como integrar Woocommerce</h3>
+            </div>
+          </p-card>
+
+          <p-card class="ayuda__option">
+            <div class="ayuda__image text-center my-2">
+              <i class="pi pi-users" style="font-size: 2.5rem"></i>
+            </div>
+
+            <div class="ayuda__title">
+              <h3 class="ayuda__h3 text-center">Acerca de nosotros</h3>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

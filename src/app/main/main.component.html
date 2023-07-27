@@ -1,0 +1,23 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+
+<div class="theme" (click)="sidebarVisible = true">
+    <i class="pi pi-cog" style="font-size: 2.5rem"></i>
+</div>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+<div class="theme-content">
+
+    <h3 class="theme-content__h3">Tema</h3>
+
+    <div class="theme-content__colors">
+        <div class="theme-content__color"></div>
+        <div class="theme-content__color"></div>
+        <div class="theme-content__color"></div>
+        <div class="theme-content__color"></div>
+        <div class="theme-content__color"></div>
+        <div class="theme-content__color"></div>
+    </div>
+</div>
+</p-sidebar>
+ 

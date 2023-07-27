@@ -1,0 +1,18 @@
+@mixin flexible($display, $direction, $flex-wrap, $justify, $align) {
+    display: $display;
+    flex-flow: $direction $flex-wrap;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin grid($column, $espaciado) {
+    display: grid;
+    grid-template-columns: repeat($column, 1fr);
+    gap: $espaciado;
+}
+
+@mixin responsive($medida: 780px) {
+    @media screen and (max-width: $medida) {
+        @content;
+    }
+}
