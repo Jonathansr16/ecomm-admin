@@ -20,6 +20,7 @@
     "@angular/router": "^16.0.0",
     "@auth0/auth0-angular": "^2.2.1",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
+    "material-icons": "^1.13.9",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primeng": "^16.0.2",

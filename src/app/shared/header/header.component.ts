@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -8,7 +8,8 @@ import { MenuItem } from 'primeng/api';
 })
 export class HeaderComponent implements OnInit {
 
-  menu: MenuItem[] | undefined;
+@ViewChildren('menu') menu?: QueryList<ElementRef>;
+
   profile: MenuItem[] | undefined;
   activeBtn: boolean = false;
 
@@ -23,25 +24,7 @@ addToggle()
 
 
   ngOnInit(): void {
-      this.menu = [
-      
-        {
-          label: 'Perfil',
-          icon: 'pi pi-fw pi-user'
-        },
-
-        {
-          label: 'Configuraciones',
-          icon: 'pi pi-fw pi-cog'
-        },
-
-        {
-          label: 'Cerrar sesion',
-          icon: 'pi pi-fw pi-power-off'
-        },
-
-       
-      ];
+   
 
   }
 

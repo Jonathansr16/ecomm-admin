@@ -34,6 +34,8 @@
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
+              "node_modules/material-icons/css/material-icons.css",
+
               {
                 "input": "src/assets/scss/themes/theme-saga-blue.scss",
                 "bundleName": "saga-blue",
@@ -113,7 +115,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "servitaeDelivery:build:production"
+              "browserTarget": "servitaeDelivery:build:production",
+              "proxyConfig": "proxy.conf.json"
             },
             "development": {
               "browserTarget": "servitaeDelivery:build:development"

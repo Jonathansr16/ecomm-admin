@@ -10,11 +10,13 @@ import { DividerModule } from 'primeng/divider';
 import { CheckboxModule } from 'primeng/checkbox';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
   LoginComponent
   ],
   imports: [
+    CommonModule,
     AuthRoutingModule,
     SharedNgPrimeModule,
     FormsModule,
