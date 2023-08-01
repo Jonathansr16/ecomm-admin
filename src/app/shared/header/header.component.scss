@@ -7,7 +7,7 @@
 
 // .topbar-search.activeInput .search-input-wrapper{
 //     width: 230px;
-//     opacity: 1;
+//     opacity: 1;K
 //     visibility: visible;
 //     width: 220px;
 
@@ -33,7 +33,6 @@
 //     transition-delay: .1s;
 // }
 
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap");
 
 //* ============ SIDEBAR ============
 .sidebar {
@@ -59,7 +58,7 @@
     height: 56px;
     display: flex;
     align-items: center;
-    color: var(--blue);
+    color: var(--active-color);
     position: sticky;
     top: 0;
     left: 0;
@@ -79,6 +78,21 @@
     width: 100%;
     margin-top: 48px;
   }
+
+  &-submenu {
+    display: none;
+    height: 0;
+    overflow: hidden;
+    transition-timing-function: ease;
+    transition-duration: .25s;
+    transition-property: height, visibility;
+  }
+
+  &-submenu.show {
+    display: block;
+    height: 100%;
+  }
+
 
   &__li {
     height: 48px;
@@ -101,8 +115,12 @@
     overflow-x: hidden;
 
     &:hover {
-      color: var(--blue);
+      color: var(--active-color);
     }
+  }
+
+  &__btn {
+    cursor: pointer;
   }
 
   &__a--logout {
@@ -113,6 +131,12 @@
     min-width: calc(60px - ((4px + 6px) * 2));
     display: flex;
     justify-content: center;
+  }
+
+  &__i--more {
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0 1.5em;
   }
 }
 
@@ -156,7 +180,8 @@
 }
 
 .active a {
-  color: var(--blue);
+  color: var(--active-color);
+  font-weight: bold;
 }
 
 //* ============ CONTENT ============
@@ -328,7 +353,7 @@
         font-size: 36px;
         font-weight: 600;
         margin-bottom: 10px;
-        color: var(--dark);
+     
 
     }
 

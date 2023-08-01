@@ -12,7 +12,13 @@ const routes: Routes = [
 
    {
     path: 'tiendas/woocommerce', loadChildren: () => import('@tiendas/woocommerce/woocommerce.module').then(w => w.WoocommerceModule)
+   },
+
+   {
+    path: 'ayuda', loadChildren: () => import('@ayuda/ayuda.module').then(ayuda => ayuda.AyudaModule)
    }
+
+
 
 
 

@@ -10,6 +10,7 @@
       "@home/*": ["src/app/modules/home/*"],
       "@tiendas/*": ["src/app/modules/tiendas/*"],
       "@wcommerce/*": ["src/app/modules/tiendas/woocommerce/*"],
+      "@ayuda/*": ["src/app/modules/ayuda/*"],
       "@feature/*": ["src/app/feature/*"]
     },
     "outDir": "./dist/out-tsc",

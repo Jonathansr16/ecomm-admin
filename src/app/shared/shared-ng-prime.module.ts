@@ -8,6 +8,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { CardModule } from 'primeng/card';
+import { BadgeModule } from 'primeng/badge';
+import { DividerModule } from 'primeng/divider';
 
 const ngPrimeComponents = [
   InputTextModule,
@@ -15,7 +18,10 @@ const ngPrimeComponents = [
   ButtonModule,
   TabMenuModule,
   TableModule,
-  DialogModule
+  DialogModule,
+  CardModule,
+  BadgeModule,
+  DividerModule
 ]
 
 @NgModule({

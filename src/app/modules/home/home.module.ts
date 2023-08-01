@@ -6,7 +6,7 @@ import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { HomeComponent } from './home.component';
-import { CardModule } from 'primeng/card';
+
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,7 +21,7 @@ HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
   InputTextModule,
-  CardModule,
+ 
 RadioButtonModule,
 
   ],

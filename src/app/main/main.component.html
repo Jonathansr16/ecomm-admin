@@ -1,5 +1,10 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+
+<!-- <div class="section">
+
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+</div>
+
 
 <div class="theme" (click)="sidebarVisible = true">
     <i class="pi pi-cog" style="font-size: 2.5rem"></i>
@@ -20,4 +25,228 @@
     </div>
 </div>
 </p-sidebar>
- 
+  -->
+  <section class="sidebar" [ngClass]="status ? 'hide' : ''">
+    <a href="#" class="sidebar__brand">
+      <i class='sidebar__icon bx bxs-smile'></i>
+      <span class="text">Servitae</span>
+    </a>
+   <ul class="side-menu top sidebar__ul"> 
+      <li class="active sidebar__li"  routerLinkActive="active">
+        <a class="sidebar__a" routerLink="/dashboard/home/" pTooltip="Dashboard">
+          <i class='sidebar__i bx bxs-dashboard' ></i>
+          <span class="text">Home</span>
+        </a>
+      </li>
+      <li class="sidebar__li menu__li" routerLinkActive="active">
+        <button type="button" class="sidebar__a sidebar__btn" #menu pTooltip="Tiendas">
+          <i class='sidebar__i material-icons'>store</i>
+          <span class="text">Mis tiendas</span>
+          <i class="sidebar__i sidebar__i--more material-icons ">expand_more</i>
+        </button>
+
+        <ul #submenu class="sidebar__ul sidebar-submenu">
+          <li class="sidebar__li sidebar-submenu__li">
+            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Mercado libre">
+              <img src="assets/img/Mely_logo.svg" class="sidebar__img" loading="lazy" alt="Mercado libre">
+              Mercado libre
+            </a>
+
+          </li>
+
+          <li class="sidebar__li sidebar-submenu__li">
+            
+            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Claro Shop">
+              <img src="assets/img/Claro_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
+              Claro shop
+            </a>
+          </li>
+
+          <li class="sidebar__li sidebar-submenu__li">
+            
+            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Amazon">
+              <img src="assets/img/Amazon_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
+              Amazon
+            </a>
+          </li>
+         
+          <li class="sidebar__li sidebar-submenu__li">
+            
+            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Woocommerce">
+              <img src="assets/img/WooCommerce_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
+              Woocommerce
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#" pTooltip="Ventas">
+          <i class='sidebar__i material-icons'>conveyor_belt</i>
+          <span class="text">Ventas</span>
+        </a>
+      </li>
+
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#" pTooltip="Inventario">
+          <i class='sidebar__i material-icons'>barcode_reader</i>
+          <span class="text">Inventario</span>
+        </a>
+      </li>
+
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#" pTooltip="Mensajes">
+          <i class='sidebar__i material-icons'>chat</i>
+          <span class="text">Mensajes</span>
+        </a>
+      </li>
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#" pTooltip="Mis envios">
+          <i class='sidebar__i material-icons'>forklift</i>
+          <span class="text">Envios</span>
+        </a>
+      </li>
+
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#" pTooltip="Reportes">
+          <i class='sidebar__i material-icons'>trending_up</i>
+          <span class="text">Reportes</span>
+        </a>
+      </li>
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#" pTooltip="Facturación">
+          <i class='sidebar__i material-icons'>receipt_long</i>
+          <span class="text">Facturación</span>
+        </a>
+      </li>
+
+      <li class="sidebar__li" routerLinkActive="active">
+        <a class="sidebar__a" routerLink="/dashboard/ayuda/soporte" pTooltip="S">
+          <i class='sidebar__i material-icons'>contact_support</i>
+
+          <span class="text">Ayuda</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="side-menu sidebar__ul">
+      <li class="sidebar__li">
+        <a class="sidebar__a" href="#">
+          <i class='sidebar__i bx bxs-cog' ></i>
+          <span class="text">Configuración</span>
+        </a>
+      </li>
+      <li class="sidebar__li">
+        <a class="sidebar__a sidebar__a--logout" href="#">
+          <i class='sidebar__i bx bxs-log-out-circle' ></i>
+          <span class="text">Cerra Sesión</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR -->
+  <!-- CONTENT -->
+  <section id="content" class="content" >
+    <!-- NAVBAR -->
+    <nav class="nav">
+      <i (click)="addToggle()" class='nav__i--menu material-icons' >grid_view</i>
+      <a href="#" class="nav__a nav__a--logo nav-link">Servitae</a>
+      <form class="nav-form" action="#">
+        <div class="nav-form__box form-input">
+          <input class="nav-form__input" type="search" placeholder="Search...">
+          <button type="button" class="nav-form__btn search-btn"><i class='bx bx-search' ></i></button>
+        </div>
+      </form>
+      <div class="nav-right">
+
+        <div class="nav-right__message" (click)="op.toggle($event)" pTooltip="Mensajes" tooltipPosition="bottom">
+          <i class="pi pi-comment text-3xl nav-right__i" pBadge [value]="'+10'" severity="danger"></i>
+
+          <p-overlayPanel #op>
+         
+            <h4 class="message-tienda__title">Tienes 10 mensajes de tus compradores</h4>
+            <p-divider></p-divider>
+
+            <div *ngFor="let message of messageUser" class="message-tienda">
+
+                <a href="#" class="message-tienda__a">
+
+                  <div class="message-tienda__image">
+                    <img [src]="message.avatar" class="message-tienda__img" alt="">
+                  </div>
+
+                  <div class="message-tienda__information">
+                    <h5 class="message-tienda__h5">{{message.user}}</h5>
+                    <p class="message-tienda__p">{{message.description}}</p>
+                    <span class="message-tienda__time">
+                      {{date | date: 'mediumTime'}}
+                    </span>
+                  </div>
+                </a>
+    
+              </div>
+            <p-divider></p-divider>
+
+            <a class="message-tienda__more" href="#">Ver todos los mensajes ></a>
+        </p-overlayPanel>
+      
+        </div>
+
+        <div #btnNotf class="nav-right__notification" pTooltip="Notificaciones"  tooltipPosition="bottom">
+          <i class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
+
+          <div #notList class="notf">
+   
+            <div class="notf-header">
+              <i class="notf-header__i material-icons">notifications_active</i>
+              <h3 class="notf-header__h3">Notificaciones nuevas</h3>
+            </div>
+            <p-divider></p-divider>
+  
+            <ul class="notf__ul">
+  
+              <li class="notf__li">
+                <div class="notf__info">
+  
+                  <h6 class="notf__h6">
+                    <i class="notf__i pi pi-check-circle"></i>
+                    Se ha realizado una venta</h6>
+  
+                    <p class="notf__p">
+                      Se vendio (x2) <strong class="notf__strong">Juego</strong>,
+                      Zelda Majora mask, en Mercado Libre, atiendalo ahora.
+                    </p>
+  
+                  <span class="notf__p notf__span">
+                    9:00 AM
+                  </span>
+  
+                  <p-button class="notf__btn" icon="pi pi-thumbs-up" styleClass="p-button-rounded p-button-info"></p-button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="nav-right__avatar" pTooltip="Mi perfil"  tooltipPosition="bottom">
+          <p-avatar class="nav-right__i" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"  size="large" shape="circle"></p-avatar>
+        </div>
+        <!-- <input type="checkbox" class="nav__checkbox" id="switch-mode">
+        <label for="switch-mode" class="nav__label switch-mode"></label>
+        <a href="#" class="nav__a nav__a--notificacion notification">
+          <i class='bx bxs-bell' ></i>
+          <span class="nav__span nav__span--num num">8</span>
+        </a>
+        <a  href="#" class="nav__a nav__a--profile profile">
+          <img class="nav__img" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
+        </a> -->
+      </div>
+    </nav>
+    <!-- NAVBAR -->
+  
+    <!-- MAIN -->
+    <main class="main">
+        <router-outlet></router-outlet>
+    </main>
+    <!-- MAIN -->
+  </section>
+  <!-- CONTENT -->

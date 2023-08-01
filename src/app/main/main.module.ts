@@ -11,6 +11,8 @@ import { CardModule } from 'primeng/card';
 import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 import { SharedFeatureModule } from '@shared/shared-feature.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AvatarModule } from 'primeng/avatar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { HttpClientModule } from '@angular/common/http';
    SharedFeatureModule,
     CardModule,
     SidebarModule,
-    HttpClientModule
+    HttpClientModule,
+    AvatarModule,
+    OverlayPanelModule
   ]
 })
 export class MainModule { }

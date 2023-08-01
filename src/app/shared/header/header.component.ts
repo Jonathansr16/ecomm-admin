@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -6,9 +6,9 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
 
-@ViewChildren('menu') menu?: QueryList<ElementRef>;
+@ViewChildren('menu') submenu?: QueryList<ElementRef>;
 
   profile: MenuItem[] | undefined;
   activeBtn: boolean = false;
@@ -17,6 +17,11 @@ export class HeaderComponent implements OnInit {
   
   //Sidebar toggle show hide function
 status = false;
+
+constructor(private renderer2: Renderer2) {}
+
+
+
 addToggle()
 {
   this.status = !this.status;       
@@ -28,6 +33,9 @@ addToggle()
 
   }
 
+  ngAfterViewInit(): void {
+      this.showSubmenu()
+  }
 
   showSearch(): void {
     this.activeBtn= true;
@@ -39,5 +47,16 @@ addToggle()
 
   showSidebar(show:boolean) {
     show = !this.show;
+  }
+
+  showSubmenu():void {
+
+    this.submenu?.forEach(element => {
+      const item = element.nativeElement;
+
+      this.renderer2.listen(item, "click", () => {
+        console.log('holi')
+      })
+    })
   }
 }
