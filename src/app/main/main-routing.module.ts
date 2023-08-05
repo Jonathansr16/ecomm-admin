@@ -11,7 +11,7 @@ const routes: Routes = [
    },
 
    {
-    path: 'tiendas/woocommerce', loadChildren: () => import('@tiendas/woocommerce/woocommerce.module').then(w => w.WoocommerceModule)
+    path: 'woocommerce', loadChildren: () => import('@tiendas/woocommerce/woocommerce.module').then(w => w.WoocommerceModule)
    },
 
    {

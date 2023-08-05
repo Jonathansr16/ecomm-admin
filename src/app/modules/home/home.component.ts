@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { homeAyuda } from 'src/app/core/interface/ayuda.model';
 import { HomeAyudaService } from 'src/app/core/services/home-ayuda.service';
 import { WcommerceService } from '@tiendas/woocommerce/services/wcommerce.service';
+import { MenuItem } from 'primeng/api';
 
 
 
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   visible: boolean = false;
   // @ts-ignore
   form: FormGroup;
+
 
 
 dataAuth: any = {}

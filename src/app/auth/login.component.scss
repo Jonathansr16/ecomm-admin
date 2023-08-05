@@ -137,17 +137,28 @@
     font-weight: 600;
     line-height: 1;
     font-size: 1.5rem;
+    color: var(--light);
   }
 
   &__p {
     font-size: 0.95rem;
     padding: 0.7rem 0;
+    color: var(--light);
   }
+
+  &__btn {
+    cursor: pointer;
+    position: relative;
+   text-decoration: underline;
+
+   &:hover {
+    text-decoration: none;
+   }
+  }
+
+
 }
 
-::ng-deep .form-register__password .ng-tns-c1884972640-1.p-password.p-component.p-inputwrapper.p-input-icon-right {
-    width: 100%;
-}
 
 
   //* PANEL
@@ -392,8 +403,12 @@
     }
   }
 
-  ::ng-deep .ng-tns-c1884972640-0.p-password.p-component.p-inputwrapper {
+  ::ng-deep .p-password.p-component.p-inputwrapper {
     width: 100%;
   }
 
+
+::ng-deep .p-password.p-component.p-inputwrapper.p-input-icon-right{
+    width: 100% !important;
+}
 

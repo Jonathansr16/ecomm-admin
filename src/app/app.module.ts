@@ -5,9 +5,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { AuthModule } from '@auth0/auth0-angular';
-import { environment } from 'src/environments/environment.development';
+// import { AuthModule } from '@auth0/auth0-angular';
+// import { environment } from 'src/environments/environment.development';
 import { HttpClientModule } from '@angular/common/http';
+
+import { SidebarModule } from 'primeng/sidebar';
+
+import { AvatarModule } from 'primeng/avatar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 
 @NgModule({
   declarations: [
@@ -19,13 +26,18 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AuthModule.forRoot({
-      domain: environment.auth.domain,
-      clientId: environment.auth.clientId,
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    }),
+    SidebarModule,
+    AvatarModule,
+    OverlayPanelModule,
+   PanelMenuModule,
+   SharedNgPrimeModule
+    // AuthModule.forRoot({
+    //   domain: environment.auth.domain,
+    //   clientId: environment.auth.clientId,
+    //   authorizationParams: {
+    //     redirect_uri: window.location.origin
+    //   }
+    // }),
  
   ],
   providers: [],

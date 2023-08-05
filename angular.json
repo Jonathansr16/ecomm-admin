@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "servitaeDelivery": {
+    "servitaeapp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -113,13 +113,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+         "options": {
+          "proxyConfig": "proxy.conf.json"
+         },
           "configurations": {
             "production": {
-              "browserTarget": "servitaeDelivery:build:production",
+              "browserTarget": "servitaeapp:build:production",
               "proxyConfig": "proxy.conf.json"
             },
             "development": {
-              "browserTarget": "servitaeDelivery:build:development"
+              "browserTarget": "servitaeapp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -127,7 +130,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "servitaeDelivery:build"
+            "browserTarget": "servitaeapp:build"
           }
         },
         "test": {

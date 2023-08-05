@@ -67,6 +67,12 @@
 
         <!-- FORMULARIO REGISTRO -->
         <form action="#" class="form form__register" autocomplete="off" [formGroup]="formRegister" (ngSubmit)="register()">
+       
+          <div class="form__logo">
+            <img src="assets/img/logo_servitae.webp" class="form__img--logo" alt="servitae">
+          </div>
+         
+       
           <h2 class="title">Registro</h2>
        
           <div class="form__inputs">
@@ -138,23 +144,7 @@
           
           </div> 
           <p-button type="submit" label="Registrarme" styleClass="p-button-rounded"></p-button>
-          <!-- <input type="submit" class="btn" value="Registrarme" /> -->
-          <p class="social-text">Or Sign up with social platforms</p>
-          <div class="social-media">
-          
-            <a href="#" class="social__a">
-              <i class="pi pi-facebook" style="font-size: 2rem"></i>
-            </a>
-
-            <a href="#" class="social__a">
-              <i class="pi pi-instagram" style="font-size: 2rem"></i>
-            </a>
-
-            <a href="#" class="social__a">
-              <i class="pi pi-twitter"style="font-size: 2rem"></i>
-            </a>
-
-          </div>
+ 
         </form>
       </div>
     </div>
@@ -166,8 +156,10 @@
           <p class="panel__p text-lg">
             Registrate hoy mismo & empieza a administrar tus envios de la manera mas facil
           </p>
-          <button #btnRegister class="btn transparent m-auto" id="sign-up-btn">
+
+          <button #btnRegister class="panel__btn transparent m-auto" id="sign-up-btn">
             Registrarme
+            <i class="panel__i material-icons">outbound</i>
           </button>
         </div>
         <img src="/assets/img/svg/delivery-01.svg" class="panel__img" alt="" />
@@ -180,8 +172,9 @@
 
            <!-- <p-button #btnLogin label="Ingresar" styleClass="p-button-outlined p-button-secondary"></p-button> -->
 
-          <button #btnLogin class="btn transparent" id="sign-in-btn">
+          <button #btnLogin class="panel__btn transparent" id="sign-in-btn">
            ingresar
+           <i class="panel__i material-icons">outbound</i>
           </button>
         </div>
         <img src="/assets/img/svg/delivery-01.svg" class="panel__img" alt="" />

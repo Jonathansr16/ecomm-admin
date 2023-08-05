@@ -75,7 +75,7 @@
     display: none;
   }
 
-  &__brand {
+  &-brand {
     font-size: 24px;
     font-weight: 700;
     height: 56px;
@@ -89,6 +89,14 @@
     z-index: 15;
     padding-bottom: 20px;
     box-sizing: content-box;
+
+    &__img {
+      max-width: 150px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 2em;
+      margin-bottom: 1em;
+    }
   }
 
   &__icon {
@@ -134,24 +142,32 @@
 
 
   &-submenu {
-    opacity: 0;
-    visibility: hidden;
-    overflow: hidden;
-  pointer-events: none;
+  //   opacity: 0;
+  //   visibility: hidden;
+  //   overflow: hidden;
+  // pointer-events: none;
     position: relative;
     margin-top: 0;
     transition-timing-function: ease;
     transition-duration: 0.35s;
     transition-property: height, visibility;
     height: 0;
+
+    &__a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.5em;
+      margin-left: 1em;
+    }
   }
 
   &-submenu.show {
    
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    height: auto;
+    // visibility: visible;
+    // opacity: 1;
+    // pointer-events: auto;
+    // height: auto;
   }
 
   .sidebar-submenu__li {
@@ -191,7 +207,7 @@
   transition: width 0.3s ease;
 }
 
-.active {
+.activeLink {
   background: var(--grey);
   position: relative;
 
@@ -226,10 +242,10 @@
 }
 
 
-// .message-tiendas {
-//   display: grid;
-//   grid-template-columns: 1fr 1fr;
-// }
+.message-tiendas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 
 .message-tienda {
 
@@ -439,23 +455,23 @@
 }
 
 .notf {
-  position: fixed;
-  z-index: 1000;
-  right: 0;
-  top: 57px;
-  width: 418px;
-  height: 100vh;
+  // position: fixed;
+  // z-index: 1000;
+  // right: 0;
+  // top: 57px;
+  // width: 418px;
+  // height: 100vh;
  
-  visibility: hidden;
-  overflow: auto;
-  opacity: 0;
-  pointer-events: none;
-  background-color: var(--c-body);
-    padding: 22px 20px 40px;
-    transform: translate3d(418px, 0px, 0px);  
-    transition: transform .30s;
-    backface-visibility: hidden;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  // visibility: hidden;
+  // overflow: auto;
+  // opacity: 0;
+  // pointer-events: none;
+  // background-color: var(--c-body);
+  //   padding: 22px 20px 40px;
+  //   transform: translate3d(418px, 0px, 0px);  
+  //   transition: transform .30s;
+  //   backface-visibility: hidden;
+  //   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 
 &-header {
   display: flex;
@@ -536,7 +552,7 @@ margin-bottom: 8px;
 //* ============ MAIN ============
 .main {
   width: 100%;
-  padding: 36px 24px;
+  // padding: 36px 24px;
   font-family: var(--poppins);
   max-height: calc(100vh - 56px);
   overflow-y: auto;
@@ -611,4 +627,68 @@ margin-bottom: 8px;
     min-width: 420px;
   }
 }
+
+
+::ng-deep .p-component-overlay.p-sidebar-mask.p-component-overlay-enter.ng-tns-c118571161-1 {
+
+background: transparent !important;
+}
+
+::ng-deep .nav-right__notification .ng-trigger.ng-trigger-panelState {
+  width: 418px;
+  top: 56px;
+
+}
+
+::ng-deep .sidebar a#undefined_header {
+  background: transparent;
+  border: none;
+  font-weight: normal;
+  color: var(--dark);
+  font-size: 16px;
+}
+
+::ng-deep .sidebar .p-panelmenu .p-panelmenu-header > a {
+  color: var(--dark);
+  font-weight: normal;
+}
+
+::ng-deep .sidebar.hide span.p-menuitem-text {
+  visibility: 0;
+  opacity: 0;
+}
+
+::ng-deep .sidebar .p-menuitem-link-active {
+  background: transparent !important;
+  color: var(--active-color) !important;
+  border: none !important;
+  position: relative;
+  font-weight: 600;
+}
+
+::ng-deep .sidebar .p-menuitem-link-active::before {
+
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: 4px;
+  height: 50%;
+  background: var(--active-color);
+  transform: translateY(-50%);
+  }
+
+  ::ng-deep .sidebar .p-menuitem-link-active span {
+    color: var(--active-color) !important;
+  }
+
+
+  .sidebar  .p-panelmenu .p-panelmenu-header > a {
+    background-color: transparent !important;
+  }
+
+  ::ng-deep .sidebar a.p-panelmenu-header-link {
+    background-color: transparent !important; 
+    border: none !important;
+  }
 

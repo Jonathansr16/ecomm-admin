@@ -1,6 +1,55 @@
 
 <div class="home">
-      <div class="main-head head-title">
+
+  <div class="home__head">
+
+    <div class="home-breadcrumb">
+
+     <span  class="home-breadcrumb__a" routerLink="/dashboard/home/">
+       <i class="home-breadcrumb__i pi pi-home"></i>
+      <h1 class="home-breadcrumb__h1">Home</h1>
+     </span>
+
+      <ul class="home-breadcrumb__ul">
+
+        <li class="home-breadcrumb__li">></li>
+        <li class="home-breadcrumb__li">
+         Dashboard
+        </li>
+        <li class="home-breadcrumb__li">></li>
+        <li class="home-breadcrumb__li">
+          <a class="home-breadcrumb__a home-breadcrumb__a--active" href="">Home</a>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="box-info section">
+      <li class="box-info__li">
+        <i class='box-info__i material-icons'>pallet</i>
+        <span class="box-info__text">
+          <h3 class="box-info__h3">1020</h3>
+          <p class="box-info__p">Nuevas ordenes</p>
+        </span>
+      </li>
+      <li class="box-info__li">
+        <i class='box-info__i material-icons'>supervisor_account</i>
+        <span class="box-info__text">
+          <h3 class="box-info__h3">2834</h3>
+          <p class="box-info__p">Atendidas</p>
+        </span>
+      </li>
+      <li class="box-info__li">
+        <i class='box-info__i material-icons'>stacked_line_chart</i>
+        <span class="box-info__text">
+          <h3 class="box-info__h3">$2543</h3>
+          <p class="box-info__p">Ventas totales</p>
+        </span>
+      </li>
+    </ul>
+  </div>
+
+
+      <!-- <div class="main-head head-title">
         <div class="main-head__left left">
           <h1 class="main-head__h1">Dashboard</h1>
           <ul class="main-breadcrumb breadcrumb">
@@ -17,34 +66,12 @@
           <i class='main-head__i--btn bx bxs-cloud-download' ></i>
           <span class="main-head__span--btn text">Descargar PDF</span>
         </a>
-      </div>
+      </div> -->
   
-      <ul class="box-info">
-        <li class="box-info__li">
-          <i class='box-info__i material-icons'>pallet</i>
-          <span class="box-info__text">
-            <h3 class="box-info__h3">1020</h3>
-            <p class="box-info__p">Nuevas ordenes</p>
-          </span>
-        </li>
-        <li class="box-info__li">
-          <i class='box-info__i material-icons'>supervisor_account</i>
-          <span class="box-info__text">
-            <h3 class="box-info__h3">2834</h3>
-            <p class="box-info__p">Atendidas</p>
-          </span>
-        </li>
-        <li class="box-info__li">
-          <i class='box-info__i material-icons'>stacked_line_chart</i>
-          <span class="box-info__text">
-            <h3 class="box-info__h3">$2543</h3>
-            <p class="box-info__p">Ventas totales</p>
-          </span>
-        </li>
-      </ul>
+  
   
   <!-- TABLE DATA -->
-      <div class="table-data">
+      <div class="table-data section">
         <div class="table-data__order order">
           <div class="table-data__head head">
             <h3 class="table-data__h3">Ordenes Recientes</h3>

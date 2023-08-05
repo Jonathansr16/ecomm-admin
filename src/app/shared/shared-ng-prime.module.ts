@@ -11,6 +11,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CardModule } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
 import { DividerModule } from 'primeng/divider';
+import { SkeletonModule } from 'primeng/skeleton';
 
 const ngPrimeComponents = [
   InputTextModule,
@@ -21,7 +22,9 @@ const ngPrimeComponents = [
   DialogModule,
   CardModule,
   BadgeModule,
-  DividerModule
+  DividerModule,
+  SkeletonModule,
+  
 ]
 
 @NgModule({

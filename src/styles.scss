@@ -17,6 +17,10 @@ margin-left: auto;
 margin-right: auto;
 }
 
+.section {
+  padding: 36px 24px;
+}
+
 // .section {
 //     margin-left: 16em;
 //     padding-top: 5em;
@@ -34,10 +38,7 @@ margin-right: auto;
 //      z-index: 20;
 //  }
 
-body {
-    font-family: var(--font-family);
-  
-}
+
 
 
 :root {
@@ -74,8 +75,14 @@ body {
 
   h1, h2, h3, h4, h5, h6 {
     color: var(--c-title);
+    font-family: 'Poppins', sans-serif;
   }
 
   p {
     color: var(--c-text);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  a, button {
+    font-family: 'Poppins', sans-serif;
   }

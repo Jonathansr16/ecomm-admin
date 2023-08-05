@@ -1,25 +1,117 @@
+<div class="wc-table section">
 
-<div class="table">
-    <div class="table__container container">
-        <div class="card">
-            <p-table  [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product>
-                    <tr>
-                        <td>{{ product.code }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.quantity }}</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-    </div>
+    <p-table [value]="data" styleClass="p-datatable-gridlines"  [paginator]="true" [rows]="8" [tableStyle]="{ 'min-width': '50rem' }">
+   
+        <ng-template pTemplate="caption" >
+            <div class="wc-table__head">
+
+                <h1 class="wc-table__h1">Lista de Productos</h1>
+    
+               
+          <div class="wc-table__search p-inputgroup">
+              <input class="wc-table__input" type="text" pInputText placeholder="buscar producto..." />
+              <button class="wc-table__btn--search" type="button" pButton  icon="pi pi-search"></button>
+          </div>
+
+            </div>
+        </ng-template>
+        
+   
+        <ng-template pTemplate="header" let-columns>
+
+            <tr class="wc-table__tr">
+                <th  class="wc-table__th" style="width: 10%">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+
+                <th  style="width:40%" class="wc-table__th">
+                   <h4 class="wc-table__h4"> PRODUCTO</h4>
+                </th>
+
+                <th style="width:10%" class="wc-table__th">
+                   <h4 class="wc-table__h4">
+                    SKU
+                   </h4> 
+                </th>
+                <th style="width:10%" class="wc-table__th">
+                <h4 class="wc-table__h4">
+                    PRECIO
+                </h4>
+                    
+                </th>
+                <th style="width:10%" class="wc-table__th">
+                <h4 class="wc-table__h4">
+                    STOCK
+                </h4>
+                    
+                </th>
+
+                <th  style="width:10%" class="wc-table__th">
+                    <h4 class="wc-table__h4">
+                        STATUS
+                    </h4>
+                        
+                </th>
+
+                <th  style="width:10%" class="wc-table__th">
+                    <h4 class="wc-table__h4">
+                        OPCIONES
+                    </h4>
+                        
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-producto let-columns="columns">
+
+            <tr class="wc-table__tr">
+                <td class="wc-table__td">
+                  
+                    <p-tableCheckbox [value]="producto"></p-tableCheckbox>
+
+                </td>
+                <td class="wc-table__td wc-table__producto">
+                  
+                    <img class="wc-table__img shadow-4" loading="lazy" [src]="producto.images.src" [alt]="producto.images.alt">
+                    <h3> {{producto.nombre}}</h3>
+
+                </td>
+
+                <td class="wc-table__td">
+                
+                    <p class="wc-table__p">
+                        {{producto.sku}}
+                    </p>
+
+                </td>
+
+                <td class="wc-table__td">
+                    <p class="wc-table__p"> 
+                        ${{producto.precio}}
+                    </p>
+    
+                </td>
+
+                <td class="wc-table__td">
+                    <p class="wc-table__p">
+                        {{producto.stock}}
+                    </p>
+                </td>
+
+                <td class="wc-table__td">
+                    <p-tag class="wc-table__status" [rounded]="true" severity="danger" *ngIf="producto.stock ==0"> Sin stocks </p-tag>
+                    <p-tag class="wc-table__status" [rounded]="true" severity="warning" *ngIf="producto.stock >=1 && producto.stock <=9"> Stock bajo </p-tag>
+                    <p-tag class="wc-table__status" [rounded]="true" severity="success" *ngIf="producto.stock >=10"> Suficiente stock </p-tag>
+                </td>
+
+                <td class="wc-table__td">
+                    <button pButton pRipple type="button"  icon="pi pi-pencil" class="wc-table__btn p-button-rounded p-button-text"></button>
+ 
+                </td>
+
+            </tr>
+
+        </ng-template>
+    </p-table>
+
 </div>

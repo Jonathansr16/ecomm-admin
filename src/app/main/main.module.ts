@@ -13,6 +13,7 @@ import { SharedFeatureModule } from '@shared/shared-feature.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AvatarModule } from 'primeng/avatar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     SidebarModule,
     HttpClientModule,
     AvatarModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+   PanelMenuModule
   ]
 })
 export class MainModule { }

@@ -1,45 +1,22 @@
 
-<!-- <div class="section">
-
-    <app-header></app-header>
-    <router-outlet></router-outlet>
-</div>
-
-
-<div class="theme" (click)="sidebarVisible = true">
-    <i class="pi pi-cog" style="font-size: 2.5rem"></i>
-</div>
-
-<p-sidebar [(visible)]="sidebarVisible" position="right">
-<div class="theme-content">
-
-    <h3 class="theme-content__h3">Tema</h3>
-
-    <div class="theme-content__colors">
-        <div class="theme-content__color"></div>
-        <div class="theme-content__color"></div>
-        <div class="theme-content__color"></div>
-        <div class="theme-content__color"></div>
-        <div class="theme-content__color"></div>
-        <div class="theme-content__color"></div>
-    </div>
-</div>
-</p-sidebar>
-  -->
   <section class="sidebar" [ngClass]="status ? 'hide' : ''">
-    <a href="#" class="sidebar__brand">
-      <i class='sidebar__icon bx bxs-smile'></i>
-      <span class="text">Servitae</span>
+    <a href="#" class="sidebar-brand">
+      <!-- <i class='sidebar__icon bx bxs-smile'></i>
+      <span class="text">Servitae</span> -->
+      <img src="assets/img/logo_servitae.webp" alt="servitae" class="sidebar-brand__img">
     </a>
-   <ul class="side-menu top sidebar__ul"> 
-      <li class="active sidebar__li"  routerLinkActive="active">
+
+    <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
+
+    <!-- <ul class="side-menu top sidebar__ul"> 
+      <li class="active sidebar__li"  routerLinkActive="activeLink">
         <a class="sidebar__a" routerLink="/dashboard/home/" pTooltip="Dashboard">
           <i class='sidebar__i bx bxs-dashboard' ></i>
           <span class="text">Home</span>
         </a>
       </li>
-      <li class="sidebar__li menu__li" routerLinkActive="active">
-        <button type="button" class="sidebar__a sidebar__btn" #menu pTooltip="Tiendas">
+      <li class="sidebar__li menu__li">
+        <button type="button" class="sidebar__a sidebar__btn" routerLinkActive="activeLink" #menu pTooltip="Tiendas">
           <i class='sidebar__i material-icons'>store</i>
           <span class="text">Mis tiendas</span>
           <i class="sidebar__i sidebar__i--more material-icons ">expand_more</i>
@@ -70,9 +47,9 @@
             </a>
           </li>
          
-          <li class="sidebar__li sidebar-submenu__li">
+          <li class="sidebar__li sidebar-submenu__li" routerLinkActive="activeLink">
             
-            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Woocommerce">
+            <a routerLink="tiendas/woocommerce" class="sidebar__a sidebar-submenu__a" pTooltip="Woocommerce">
               <img src="assets/img/WooCommerce_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
               Woocommerce
             </a>
@@ -141,7 +118,7 @@
           <span class="text">Cerra Sesión</span>
         </a>
       </li>
-    </ul>
+    </ul>  -->
   </section>
   <!-- SIDEBAR -->
   <!-- CONTENT -->
@@ -149,7 +126,7 @@
     <!-- NAVBAR -->
     <nav class="nav">
       <i (click)="addToggle()" class='nav__i--menu material-icons' >grid_view</i>
-      <a href="#" class="nav__a nav__a--logo nav-link">Servitae</a>
+      
       <form class="nav-form" action="#">
         <div class="nav-form__box form-input">
           <input class="nav-form__input" type="search" placeholder="Search...">
@@ -191,40 +168,45 @@
       
         </div>
 
-        <div #btnNotf class="nav-right__notification" pTooltip="Notificaciones"  tooltipPosition="bottom">
-          <i class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
+        <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
+          <i #btnNotf (click)="sidebarVisible = true"  class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
 
-          <div #notList class="notf">
+          
+          <p-sidebar [(visible)]="sidebarVisible" position="right">
+                 
+     <div #notList class="notf">
    
-            <div class="notf-header">
-              <i class="notf-header__i material-icons">notifications_active</i>
-              <h3 class="notf-header__h3">Notificaciones nuevas</h3>
-            </div>
-            <p-divider></p-divider>
-  
-            <ul class="notf__ul">
-  
-              <li class="notf__li">
-                <div class="notf__info">
-  
-                  <h6 class="notf__h6">
-                    <i class="notf__i pi pi-check-circle"></i>
-                    Se ha realizado una venta</h6>
-  
-                    <p class="notf__p">
-                      Se vendio (x2) <strong class="notf__strong">Juego</strong>,
-                      Zelda Majora mask, en Mercado Libre, atiendalo ahora.
-                    </p>
-  
-                  <span class="notf__p notf__span">
-                    9:00 AM
-                  </span>
-  
-                  <p-button class="notf__btn" icon="pi pi-thumbs-up" styleClass="p-button-rounded p-button-info"></p-button>
-                </div>
-              </li>
-            </ul>
+      <div class="notf-header">
+        <i class="notf-header__i material-icons">notifications_active</i>
+        <h3 class="notf-header__h3">Notificaciones nuevas</h3>
+      </div>
+      <p-divider></p-divider>
+
+      <ul class="notf__ul">
+
+        <li class="notf__li">
+          <div class="notf__info">
+
+            <h6 class="notf__h6">
+              <i class="notf__i pi pi-check-circle"></i>
+              Se ha realizado una venta</h6>
+
+              <p class="notf__p">
+                Se vendio (x2) <strong class="notf__strong">Juego</strong>,
+                Zelda Majora mask, en Mercado Libre, atiendalo ahora.
+              </p>
+
+            <span class="notf__p notf__span">
+              9:00 AM
+            </span>
+
+            <p-button class="notf__btn" icon="pi pi-thumbs-up" styleClass="p-button-rounded p-button-info"></p-button>
           </div>
+        </li>
+      </ul>
+    </div> 
+        </p-sidebar>
+
         </div>
 
         <div class="nav-right__avatar" pTooltip="Mi perfil"  tooltipPosition="bottom">

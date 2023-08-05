@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WoocommerceComponent } from './woocommerce.component';
+import { WcProductosComponent } from './wc-productoscomponent';
 
 describe('WoocommerceComponent', () => {
-  let component: WoocommerceComponent;
-  let fixture: ComponentFixture<WoocommerceComponent>;
+  let component: WcProductosComponent;
+  let fixture: ComponentFixture<WcProductosComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WoocommerceComponent]
+      declarations: [WcProductosComponent]
     });
-    fixture = TestBed.createComponent(WoocommerceComponent);
+    fixture = TestBed.createComponent(WcProductosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

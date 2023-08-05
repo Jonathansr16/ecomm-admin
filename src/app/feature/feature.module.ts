@@ -6,6 +6,9 @@ import { RouterModule } from '@angular/router';
 import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 import { TableComponent } from '@feature/table/table.component';
 import { SearchProductComponent } from './search-product/search-product.component';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+
 
 //* MODULES
 
@@ -18,7 +21,9 @@ import { SearchProductComponent } from './search-product/search-product.componen
   imports: [
     CommonModule,
     RouterModule,
-    SharedNgPrimeModule
+    SharedNgPrimeModule,
+    TableModule,
+    TagModule
   ],
   exports: [
     TableComponent
