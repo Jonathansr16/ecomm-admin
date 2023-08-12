@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ProductosTable } from 'src/app/core/interface/productos-table.interface';
 
 @Component({
   selector: 'app-table',
@@ -8,10 +9,18 @@ import { Component, Input } from '@angular/core';
 export class TableComponent {
 
   @Input() data: any;
-
+  @Input() addProductLink: any;
+  @Output() product: EventEmitter<any> | undefined;
+  selectedProduct: ProductosTable[] | undefined;
+  checkboxValue: boolean= false
   constructor() {
 
+ 
   }
 
+
+  togglButtons(): void {
+    this.checkboxValue= !this.checkboxValue;
+  }
 
 }

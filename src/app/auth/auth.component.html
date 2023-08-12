@@ -1,8 +1,8 @@
 <div #container class="forms">
     <div class="forms__container">
-      <div class="forms__login-register">
+      <div class="signin-signup">
         <!-- FORMULARIO LOGIN -->
-        <form action="#" class="form form__login" autocomplete="off" [formGroup]="formLogin" (ngSubmit)="login()">
+        <form action="#" class="sign-in-form" autocomplete="off" [formGroup]="formSignIn" (ngSubmit)="login()">
          
           <div class="form__logo">
             <img src="assets/img/logo_servitae.webp" class="form__img--logo" alt="servitae">
@@ -14,9 +14,9 @@
               <span class="p-inputgroup-addon form-register__icon">
                   <i class="material-icons">mail</i>
               </span>
-              <input pInputText class="form__input" placeholder="Introduce tu correo electrónico" formControlName="mail" [class.is-invalid]="mailValido" [ngClass]="{ 'ng-invalid ng-dirty': mailValido}" />
+              <input pInputText class="form__input"  placeholder="Introduce tu correo electrónico"  formControlName="emailLogin" [class.is-invalid]="emaiLoginlInvalid" [ngClass]="{ 'ng-invalid ng-dirty': emaiLoginlInvalid }" />
             </div>
-            <small *ngIf="mailValido" class="p-error">El correo electrónico es obligatorios</small>
+            <small *ngIf="emaiLoginlInvalid" class="p-error">El correo electrónico es obligatorios</small>
           </div>
         
           <div class="form__section">
@@ -25,13 +25,13 @@
                 <i class="material-icons">key</i>
               </span>
 
-             <p-password id="pass" autocomplete="on" class="form-login__input" placeholder="Ingrese su contraseña" [feedback]="false" [toggleMask]="true" formControlName="password" [class.is-invalid]="passwordValido" [ngClass]="{'ng-invalid ng-dirty': passwordValido}"></p-password>
+             <p-password id="pass" autocomplete="on" class="form-login__input" placeholder="Ingrese su contraseña" [feedback]="false" [toggleMask]="true" formControlName="passLogin" [class.is-invalid]="passLoginInvalid" [ngClass]="{'ng-invalid ng-dirty': passLoginInvalid }"></p-password>
             </div>
-            <small *ngIf="passwordValido" class="p-error">La contraseña es obligatoria</small>
+            <small *ngIf="passLoginInvalid" class="p-error">La contraseña es obligatoria</small>
           </div>
 
           
-         <div class="form__section form__rememberLogin mt-3">
+         <div class="form__section form__remember mt-3">
           <p-checkbox value="recordar" inputId="rememberLogin"></p-checkbox>
           <label for="ny">Recodar contraseña</label>
           
@@ -39,78 +39,47 @@
         
           <!-- <input type="submit" routerLink="dashboard/home" value="Login" class="btn solid" /> -->
        <p-button class="form-login__btn mt-3" routerLink="/dashboard/home" label="INGRESAR" type="submit" styleClass="p-button-rounded"></p-button>
-
+<!-- 
        <hr>
 <pre>
-  Estado del formulario: {{ formLogin.valid }}
+  Estado del formulario: {{ formSignIn.valid }}
   <br>
-  Status: {{ formLogin.status }}
-</pre>
+  Status: {{ formSignUp.status }}
+</pre> -->
 
-          <p class="social-text">Siguenos en nuestras redes sociales:</p>
-          <div class="social-media">
-          
-            <a href="#" class="social__a">
-              <i class="pi pi-facebook" style="font-size: 2rem"></i>
-            </a>
-
-            <a href="#" class="social__a">
-              <i class="pi pi-instagram" style="font-size: 2rem"></i>
-            </a>
-
-            <a href="#" class="social__a">
-              <i class="pi pi-twitter"style="font-size: 2rem"></i>
-            </a>
-
-          </div>
+     
         </form>
 
         <!-- FORMULARIO REGISTRO -->
-        <form action="#" class="form form__register" autocomplete="off" [formGroup]="formRegister" (ngSubmit)="register()">
+        <form action="#" class="sign-up-form" autocomplete="off" [formGroup]="formSignUp" (ngSubmit)="register()">
        
           <div class="form__logo">
             <img src="assets/img/logo_servitae.webp" class="form__img--logo" alt="servitae">
           </div>
-         
-       
+      
           <h2 class="title">Registro</h2>
        
-          <div class="form__inputs">
+          <div class="form__section">
          
-            <div class="form__section">
-
               <div class="p-inputgroup form-register__group">
                 <span class="p-inputgroup-addon form-register__icon">
                     <i class="material-icons">person </i>
                 </span>
-                <input pInputText class="form__input" placeholder="Introduce tu nombre" formControlName="name" [class.is-invalid]="nameValido" [ngClass]="{ 'ng-invalid ng-dirty': nameValido}" />
+                <input pInputText class="form__input" [ngModel]="usuario.full_name" placeholder="Introduce tu nombre completo" formControlName="name" [class.is-invalid]="nameRegisterInvalid" [ngClass]="{ 'ng-invalid ng-dirty': nameRegisterInvalid}" />
                
               </div>
-              <small *ngIf="nameValido" class="p-error">el nombre es obligatorio</small>
-            </div>
-  
-            <div class="form__section">
+              <small *ngIf="nameRegisterInvalid" class="p-error">el nombre completo es obligatorio</small>
 
-              <div class="p-inputgroup form-register__group">
-                <span class="p-inputgroup-addon form-register__icon">
-                    <i class="pi pi-user-edit"></i>
-                </span>
-             
-                <input pInputText class="form__input" placeholder="Introduce tus apellidos" formControlName="lastName" [class.is-invalid]="lastNameValido" [ngClass]="{ 'ng-invalid ng-dirty': lastNameValido}"/>
-              </div>
-              <small *ngIf="lastNameValido" class="p-error">los apellidos son obligatorio</small>
-            
-            </div>
-          </div>
+       </div>
      
         <div class="form__section">
           <div class="p-inputgroup form-register__group">
             <span class="p-inputgroup-addon form-register__icon">
                 <i class="pi pi-envelope"></i>
             </span>
-            <input pInputText class="form__input" placeholder="Introduce tu correo electrónico" formControlName="email" [class.is-invalid]="emailValido" [ngClass]="{ 'ng-invalid ng-dirty': emailValido}" />
+            <input pInputText [(ngModel)]="usuario.email" class="form__input" placeholder="Introduce tu correo electrónico" formControlName="emailRegister" [class.is-invalid]="emailRegisterInvalid" [ngClass]="{ 'ng-invalid ng-dirty': emailRegisterInvalid }" />
           </div>
-          <small *ngIf="emailValido" class="p-error">El correo electrónico es obligatorios</small>
+          <small *ngIf="emailRegisterInvalid" class="p-error">El correo electrónico es obligatorios</small>
         </div>
 
         <div class="form__section">
@@ -118,7 +87,7 @@
             <span class="p-inputgroup-addon form-register__icon">
                 <i class="pi pi-key"></i>
             </span>
-            <p-password autocomplete="on"  class="form-register__input form-register__password" id="pass1" placeholder="Ingrese su contraseña" [toggleMask]="true"  formControlName="pass1" [class.is-invalid]="pass1Valido" [ngClass]="{ 'ng-invalid ng-dirty': pass1Valido}">
+            <p-password autocomplete="on" [(ngModel)]="usuario.password"  class="form-register__input form-register__password" id="pass1" placeholder="Ingrese su contraseña" [toggleMask]="true"  formControlName="pass1" [class.is-invalid]="pass1Invalid" [ngClass]="{ 'ng-invalid ng-dirty': pass1Invalid}">
               <ng-template class="sugerencia" pTemplate="header">
                   <h6>Pick a password</h6>
               </ng-template>
@@ -134,11 +103,11 @@
               </ng-template>
           </p-password>
         </div>
-        <small *ngIf="pass1Valido" class="p-error">la contraseña es obligatorio</small>
+        <small *ngIf="pass1Invalid" class="p-error">la contraseña es obligatorio</small>
 
         </div>
         
-         <div class="form-register__group form-register__remember">
+         <div class="form__section form__remember">
           <p-checkbox value="New York" inputId="ny"></p-checkbox>
           <label for="ny">Recodar contraseña</label>
           
@@ -152,8 +121,8 @@
     <div class="panels">
       <div class="panel panel__left">
         <div class="panel__content">
-          <h3 class="panel__h3 text-5xl">¿Nuevo aqui?</h3>
-          <p class="panel__p text-lg">
+          <h3 class="panel__h3 ">¿Nuevo aqui?</h3>
+          <p class="panel__p ">
             Registrate hoy mismo & empieza a administrar tus envios de la manera mas facil
           </p>
 
@@ -166,8 +135,8 @@
       </div>
       <div class="panel panel__right">
         <div class="panel__content ">
-          <h3 class="panel__h3 text-5xl">¿Ya tienes una cuenta?</h3>
-          <p class="panel__p text-lg">
+          <h3 class="panel__h3 ">¿Ya tienes una cuenta?</h3>
+          <p class="panel__p ">
            Ingresa a tu tienda en linea, Ingresa a tu cuenta y explora nuestra amplia selección de artículos, encuentra lo que necesitas y déjanos hacer de tus compras una experiencia inolvidable.
 
            <!-- <p-button #btnLogin label="Ingresar" styleClass="p-button-outlined p-button-secondary"></p-button> -->

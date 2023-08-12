@@ -5,8 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-// import { AuthModule } from '@auth0/auth0-angular';
-// import { environment } from 'src/environments/environment.development';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import { SidebarModule } from 'primeng/sidebar';
@@ -31,13 +30,7 @@ import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
     OverlayPanelModule,
    PanelMenuModule,
    SharedNgPrimeModule
-    // AuthModule.forRoot({
-    //   domain: environment.auth.domain,
-    //   clientId: environment.auth.clientId,
-    //   authorizationParams: {
-    //     redirect_uri: window.location.origin
-    //   }
-    // }),
+
  
   ],
   providers: [],

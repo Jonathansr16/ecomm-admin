@@ -59,6 +59,7 @@ margin-right: auto;
     --c-title: #1e2f65;
     --c-text: #495057;
     --c-body: #f4f6fd;
+    font-family: var(--poppins);
   }
   html {
     overflow-x: hidden;
@@ -83,6 +84,6 @@ margin-right: auto;
     font-family: 'Poppins', sans-serif;
   }
 
-  a, button {
+  a, button, label, span, small{
     font-family: 'Poppins', sans-serif;
   }

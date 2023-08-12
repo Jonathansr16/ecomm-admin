@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment.development';
 import { Observable, map } from 'rxjs';
 import { ProductosTable } from 'src/app/core/interface/productos-table.interface';
 import { ordenProducto } from 'src/app/core/interface/order-productos.interface';
+import { wcProductoModel } from '../interface/wc-producto.interface';
 
 
 
@@ -38,9 +39,6 @@ export class WcommerceService {
 
 //* OBTIENE TODOS LOS PRODUCTOS
   Productos(): Observable<ProductosTable> {
-
-
-
  return this.http.get(`${this.url}products?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`,)
  .pipe(
   map( (data: any) => data.map( (producto: any) => (
@@ -65,6 +63,17 @@ export class WcommerceService {
     })
   )
   
+ }
+
+
+ //* CREAR UN NUEVO PRODUCTO
+ createProduct(producto: wcProductoModel) {
+  
+  const productData = {
+    ...producto
+  }
+  
+  return this.http.post(`${this.url}products?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`, productData)
  }
 
 }

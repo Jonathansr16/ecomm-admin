@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
 //* COMPONENT
-import { LoginComponent } from '@auth/logincomponent';
-import { AuthRoutingModule } from '@auth/login-routing.module';
+import { AuthComponent } from '@auth/auth.component';
+import { AuthRoutingModule } from '@auth/auth-routing.module';
 import { SharedNgPrimeModule} from '@shared/shared-ng-prime.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -13,7 +13,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
-  LoginComponent
+  AuthComponent
   ],
   imports: [
     CommonModule,

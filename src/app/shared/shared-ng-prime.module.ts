@@ -12,6 +12,10 @@ import { CardModule } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
 import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CheckboxModule } from 'primeng/checkbox';
+import { StepsModule } from 'primeng/steps';
 
 const ngPrimeComponents = [
   InputTextModule,
@@ -24,7 +28,10 @@ const ngPrimeComponents = [
   BadgeModule,
   DividerModule,
   SkeletonModule,
-  
+  InputTextareaModule,
+  InputNumberModule,
+  CheckboxModule,
+  StepsModule
 ]
 
 @NgModule({

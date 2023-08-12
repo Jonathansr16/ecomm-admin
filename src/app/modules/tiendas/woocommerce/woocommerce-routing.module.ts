@@ -4,8 +4,7 @@ import { WcProductosComponent } from '@tiendas/woocommerce/pages/productos/wc-pr
 import { WcPedidosComponent } from './pages/pedidos/wc-pedidos.component';
 import { WcClientesComponent } from './pages/clientes/wc-clientes.component';
 import { WcMainComponent } from './pages/main/wc-main.component';
-import { ProductoInfoComponent } from './producto-info/producto-info.component';
-
+import { WcNewProductComponent } from './pages/wc-new-product/wc-new-product.component';
 const WoocommerceRoutes: Routes = [
   { path: 'woocommerce', redirectTo: 'dashboard/woocommerce/productos' },
   {
@@ -13,11 +12,12 @@ const WoocommerceRoutes: Routes = [
     component: WcMainComponent,
     children: [
       { path: 'productos', component: WcProductosComponent },
+    
       { path: 'pedidos', component: WcPedidosComponent },
       { path: 'clientes', component: WcClientesComponent },
-      { path: 'producto-info/:id', component: ProductoInfoComponent}
     ],
   },
+  { path: 'new-product', component: WcNewProductComponent },
 ];
 
 @NgModule({

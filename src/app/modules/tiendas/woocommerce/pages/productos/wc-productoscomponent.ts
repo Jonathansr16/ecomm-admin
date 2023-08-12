@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WcommerceService } from '@tiendas/woocommerce/services/wcommerce.service';
+import { ProductosTable } from 'src/app/core/interface/productos-table.interface';
 
 @Component({
   selector: 'app-wc-productos',
@@ -9,20 +10,23 @@ import { WcommerceService } from '@tiendas/woocommerce/services/wcommerce.servic
 export class WcProductosComponent implements OnInit {
 
   loading: boolean = true;
-  products: any[] =[];
-
-  constructor(private wcService: WcommerceService){}
+  products: ProductosTable[] =[];
+  link: string = '/dashboard/woocommerce/new-product';
+  
+  constructor(private wcService: WcommerceService){
+    this.wcService.Productos().subscribe( (data: any) => {
+      console.log(data);
+     this.products= data;
+     this.loading  = false;
+     // console.log(this.products)
+   }, (error) => {
+     console.log(error)
+   });
+  }
 
 
   ngOnInit(): void {
-      this.wcService.Productos().subscribe( (data: any) => {
-         console.log(data);
-        this.products= data;
-        this.loading  = false;
-        // console.log(this.products)
-      }, (error) => {
-        console.log(error)
-      });
+      
   }
 
 

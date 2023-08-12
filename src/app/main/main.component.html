@@ -1,131 +1,302 @@
 
-  <section class="sidebar" [ngClass]="status ? 'hide' : ''">
-    <a href="#" class="sidebar-brand">
-      <!-- <i class='sidebar__icon bx bxs-smile'></i>
-      <span class="text">Servitae</span> -->
-      <img src="assets/img/logo_servitae.webp" alt="servitae" class="sidebar-brand__img">
-    </a>
+  <section #sidebar class="sidebar" [ngClass]="status ? 'hide' : ''">
+  
 
-    <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
+    <div class="sidebar-head">
+      <div class="sidebar-head__user">
+        <img src="assets/img/profile-example.webp" class="sidebar-head__img" loading="lazy" alt="profile">
+      </div> 
 
-    <!-- <ul class="side-menu top sidebar__ul"> 
-      <li class="active sidebar__li"  routerLinkActive="activeLink">
-        <a class="sidebar__a" routerLink="/dashboard/home/" pTooltip="Dashboard">
-          <i class='sidebar__i bx bxs-dashboard' ></i>
-          <span class="text">Home</span>
-        </a>
-      </li>
-      <li class="sidebar__li menu__li">
-        <button type="button" class="sidebar__a sidebar__btn" routerLinkActive="activeLink" #menu pTooltip="Tiendas">
-          <i class='sidebar__i material-icons'>store</i>
-          <span class="text">Mis tiendas</span>
-          <i class="sidebar__i sidebar__i--more material-icons ">expand_more</i>
-        </button>
+      <div class="sidebar-head__details">
+        <p class="sidebar-head__title">Web developer</p>
+        <p class="sidebar-head__name">Jong SanR.</p>
+      </div>
+    </div>
 
-        <ul #submenu class="sidebar__ul sidebar-submenu">
-          <li class="sidebar__li sidebar-submenu__li">
-            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Mercado libre">
-              <img src="assets/img/Mely_logo.svg" class="sidebar__img" loading="lazy" alt="Mercado libre">
-              Mercado libre
-            </a>
+    <div class="contain">
 
+      <div class="sidebar-menu">
+
+        <div class="sidebar-toggle">
+          <i (click)="addToggle()" class="material-icons sidebar-toggle__i">chevron_left</i>
+        </div>
+
+        <div class="sidebar-menu__options">
+
+          <p class="sidebar-menu__p">Main</p>
+
+          <ul class="sidebar-menu__ul">
+            <li class="sidebar-menu__li">
+              <a routerLink="/dashboard/home" routerLinkActive="isActive" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">home</i>
+                <span class="sidebar-menu__span">Home</span>
+              </a>
+            </li>
+            <li class="sidebar-menu__li">
+              <button class="sidebar-menu__a" (click)="toggleSubmenu(1)">
+                <i class="material-icons sidebar-menu__i">store</i>
+                <span class="sidebar-menu__span">Mis Tiendas</span>
+                <i #icon class="material-icons sidebar-menu__arrow">navigate_next</i>
+              </button>
+
+              <ul class="sidebar-submenu"  [ngClass]="activeSubMenuIndex === 1 ? 'mm-show' : ''">
+                    <li class="sidebar-submenu__li">
+                      <a href="" class="sidebar-submenu__a">
+                        <i class="material-icons sidebar-submenu__i">storefront</i>
+                        <span class="sidebar-submenu__span">Amazon</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar-submenu__li">
+                      <a href="" class="sidebar-submenu__a">
+                        <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
+                        <span class="sidebar-submenu__span">Claro Shop</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar-submenu__li">
+                      <a href="" class="sidebar-submenu__a">
+                        <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
+                        <span class="sidebar-submenu__span">Mercado Libre</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar-submenu__li">
+                      <a href="" class="sidebar-submenu__a">
+                        <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
+                        <span class="sidebar-submenu__span">Woocommerce</span>
+                      </a>
+                    </li>
+                  
+              </ul>
+            </li>
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">point_of_sale</i>
+                <span class="sidebar-menu__span">Ventas</span>
+              </a>
+            </li>
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">inventory_2</i>
+                <span class="sidebar-menu__span">Inventario</span>
+              </a>
+            </li>
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">description</i>
+                <span class="sidebar-menu__span">Reportes</span>
+              </a>
+            </li>
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">forum</i>
+                <span class="sidebar-menu__span">Mensajes</span>
+              </a>
+            </li>
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">local_shipping</i>
+                <span class="sidebar-menu__span">Envios</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-menu__options">
+          <p class="sidebar-menu__p">Ayuda</p>
+
+          <ul class="sidebar-menu__ul">
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">contact_support</i>
+                <span class="sidebar-menu__span">Ayuda</span>
+              </a>
+            </li>
+
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">contacts</i>
+              <span class="sidebar-menu__span">Contacto</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-menu__options">
+          <p class="sidebar-menu__p">Otros</p>
+
+          <ul class="sidebar-menu__ul">
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">settings</i>
+                <span class="sidebar-menu__span">Configuraciones</span>
+              </a>
+            </li>
+
+            <li class="sidebar-menu__li">
+              <a href="" class="sidebar-menu__a">
+                <i class="material-icons sidebar-menu__i">logout</i>
+              <span class="sidebar-menu__span">Cerra sesion</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- <div class="head">
+
+        <div class="user-img">
+          <img src="assets/img/profile-example.webp" alt="">
+        </div>
+
+        <div class="user-details">
+          <p class="title">Web developer</p>
+          <p class="name">Jong SanR.</p>
+        </div>
+  </div>
+
+  <div class="contain">
+  <div class="sideba">
+
+      <div class="menu-btn">
+        <i (click)="addToggle()" class="material-icons">chevron_left</i>
+      </div>
+      <div class="menu">
+          <p class="title">Main</p>
+  
+          <ul>
+            <li class="active">
+              <a href="#">
+                <i class="material-icons" >home</i>
+                <span class="text">Home</span>
+              </a>
+            </li>
+  
+            <li class=""  >
+              <a #menu class="" (click)="toggleSubmenu(1)">
+                <i class="material-icons icon">store</i>
+                <span class="text">Tiendas</span>
+                <i #icon class="material-icons arrow">navigate_next</i>
+              </a>
+  
+              <ul class="sub-menu"  [ngClass]="activeSubMenuIndex === 1 ? 'mm-show' : ''">
+                <li>
+                  <a href="#">
+                    <span class="text">Mercado Libre</span>
+                  </a>
+                </li>
+  
+                <li>
+                  <a href="#">
+                    <span class="text">Amazon</span>
+                  </a>
+                </li>
+  
+                <li>
+                  <a href="#">
+                    <span class="text">Claro Shop</span>
+                  </a>
+                </li>
+  
+                <li>
+                  <a href="#">
+                    <span class="text">Woocommerce</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+  
+            <li class="">
+              <a href="#">
+                <i class="material-icons icon" >point_of_sale</i>
+                <span class="text">Ventas</span>
+              </a>
+            </li>
+  
+            <li class="">
+              <a href="#">
+                <i class="material-icons icon" >point_of_sale</i>
+                <span class="text">Ventas</span>
+                <i class="material-icons arrow">navigate_next</i>
+  
+              </a>
+            </li>
+  
+            <li class="">
+              <a href="#">
+                <i class="material-icons icon" >description</i>
+                <span class="text">Reportes</span>
+              </a>
+            </li>
+  
+            <li class="">
+              <a href="#">
+                <i class="material-icons icon" >forum</i>
+                <span class="text">Mensajes</span>
+              </a>
+            </li>
+  
+            <li class="">
+              <a href="#">
+                <i class="material-icons icon" >local_shipping</i>
+                <span class="text">Envios</span>
+              </a>
+            </li>
+          </ul>
+      </div>
+  
+      <div class="menu">
+        <p class="title">Otros</p>
+  
+        <ul>
+          <li>
+          <a href="">
+            <i class="material-icons icon">settings</i>
+            <span class="text">Configuraciones</span>
+          </a>
           </li>
-
-          <li class="sidebar__li sidebar-submenu__li">
-            
-            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Claro Shop">
-              <img src="assets/img/Claro_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
-              Claro shop
+  
+          <li>
+            <a href="">
+              <i class="material-icons icon">logout</i>
+              <span class="text">Cerra sesion</span>
             </a>
-          </li>
-
-          <li class="sidebar__li sidebar-submenu__li">
-            
-            <a href="#" class="sidebar__a sidebar-submenu__a" pTooltip="Amazon">
-              <img src="assets/img/Amazon_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
-              Amazon
-            </a>
-          </li>
-         
-          <li class="sidebar__li sidebar-submenu__li" routerLinkActive="activeLink">
-            
-            <a routerLink="tiendas/woocommerce" class="sidebar__a sidebar-submenu__a" pTooltip="Woocommerce">
-              <img src="assets/img/WooCommerce_logo.png" class="sidebar__img" loading="lazy" alt="Mercado libre">
-              Woocommerce
-            </a>
-          </li>
+            </li>
         </ul>
-      </li>
-
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#" pTooltip="Ventas">
-          <i class='sidebar__i material-icons'>conveyor_belt</i>
-          <span class="text">Ventas</span>
-        </a>
-      </li>
-
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#" pTooltip="Inventario">
-          <i class='sidebar__i material-icons'>barcode_reader</i>
-          <span class="text">Inventario</span>
-        </a>
-      </li>
-
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#" pTooltip="Mensajes">
-          <i class='sidebar__i material-icons'>chat</i>
-          <span class="text">Mensajes</span>
-        </a>
-      </li>
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#" pTooltip="Mis envios">
-          <i class='sidebar__i material-icons'>forklift</i>
-          <span class="text">Envios</span>
-        </a>
-      </li>
-
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#" pTooltip="Reportes">
-          <i class='sidebar__i material-icons'>trending_up</i>
-          <span class="text">Reportes</span>
-        </a>
-      </li>
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#" pTooltip="Facturación">
-          <i class='sidebar__i material-icons'>receipt_long</i>
-          <span class="text">Facturación</span>
-        </a>
-      </li>
-
-      <li class="sidebar__li" routerLinkActive="active">
-        <a class="sidebar__a" routerLink="/dashboard/ayuda/soporte" pTooltip="S">
-          <i class='sidebar__i material-icons'>contact_support</i>
-
-          <span class="text">Ayuda</span>
-        </a>
-      </li>
-    </ul>
-    <ul class="side-menu sidebar__ul">
-      <li class="sidebar__li">
-        <a class="sidebar__a" href="#">
-          <i class='sidebar__i bx bxs-cog' ></i>
-          <span class="text">Configuración</span>
-        </a>
-      </li>
-      <li class="sidebar__li">
-        <a class="sidebar__a sidebar__a--logout" href="#">
-          <i class='sidebar__i bx bxs-log-out-circle' ></i>
-          <span class="text">Cerra Sesión</span>
-        </a>
-      </li>
-    </ul>  -->
+      </div>
+      
+      <div class="menu">
+        <p class="title">Ayuda</p>
+  
+        <ul>
+          <li>
+          <a href="">
+            <i class="material-icons icon">contact_support</i>
+            <span class="text">Ayuda</span>
+          </a>
+          </li>
+  
+          <li>
+            <a href="">
+              <i class="material-icons icon">contacts</i>
+              <span class="text">Contacto</span>
+            </a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
   </section>
   <!-- SIDEBAR -->
   <!-- CONTENT -->
   <section id="content" class="content" >
     <!-- NAVBAR -->
     <nav class="nav">
-      <i (click)="addToggle()" class='nav__i--menu material-icons' >grid_view</i>
+      <!-- <i (click)="addToggle()" class='nav__i--menu material-icons' >grid_view</i> -->
       
       <form class="nav-form" action="#">
         <div class="nav-form__box form-input">
