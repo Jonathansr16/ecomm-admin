@@ -17,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { StepsModule } from 'primeng/steps';
 
+
 const ngPrimeComponents = [
   InputTextModule,
   TooltipModule,
@@ -31,7 +32,7 @@ const ngPrimeComponents = [
   InputTextareaModule,
   InputNumberModule,
   CheckboxModule,
-  StepsModule
+  StepsModule,
 ]
 
 @NgModule({

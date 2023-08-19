@@ -106,6 +106,12 @@ form {
   max-width: 200px;
 }
 
+.form__checkbox {
+  background-color: inherit;
+  appearance: auto;
+  width: 16px;
+  height: 16px;
+}
 
 .panels {
   position: absolute;
@@ -225,7 +231,7 @@ form {
 //*RESPONSIVE 
 @media screen and (max-width: 870px) {
   .forms {
-    min-height: 800px;
+    // min-height: 800px;
     height: 100vh;
 
     &::before {
@@ -432,3 +438,24 @@ form {
     width: 100% !important;
 }
 
+
+
+.swiper {
+ max-width: 700px;
+ height: 100%;
+}
+
+// .swiper-slide {
+//   text-align: center;
+//   font-size: 18px;
+//   background: #fff;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .swiper-slide img {
+//   display: block;
+//  max-width: 560px;
+//   object-fit: contain;
+// }

@@ -1,7 +1,5 @@
 @import "_mixin";
 
-
-
 .woocommerce {
     // padding: 36px 24px;
     &__head {
@@ -34,7 +32,6 @@
       
       }
   
-  
       &__h1 {
         font-size: 1.25rem;
         color: #fff;
@@ -63,7 +60,6 @@
     }
   }
   
-
   // .form-product {
   //   background-color: var(--light);
   
@@ -114,7 +110,7 @@
     }
 
 &__checks {
-  @include flexible(flex, row, wrap, flex-start, center );
+  @include flexible(flex, column, wrap, center, flex-start );
   gap: 1em;
 }
 
@@ -139,6 +135,11 @@
 
     &__input {
       width: 100%;
+    }
+
+
+    &__checkbox {
+      margin-right: 3px;
     }
 
   }

@@ -12,9 +12,12 @@ export class TableComponent {
   @Input() addProductLink: any;
   @Output() product: EventEmitter<any> | undefined;
   selectedProduct: ProductosTable[] | undefined;
-  checkboxValue: boolean= false
+  checkboxValue: boolean= false;
+
+
   constructor() {
 
+ 
  
   }
 

@@ -29,7 +29,7 @@ dataAuth: any = {}
   }
 
   ngOnInit(): void {
-    this.ayuda = this.ayudaService.getAyuda()
+    this.ayuda = this.ayudaService.getAyuda();
   }
 
   showDialog() {

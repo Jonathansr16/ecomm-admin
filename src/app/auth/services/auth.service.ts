@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private url: string= 'https://identitytoolkit.googleapis.com/v1/';
+  private url: string= 'https://identitytoolkit.googleapis.com/v1';
   private apiuri = environment.firebase.apiKey;
   private userToken: string | undefined;
 
@@ -21,7 +21,9 @@ export class AuthService {
   //LOGIN USUARIO
   // private signInUrl: string= 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.readToken();
+   }
 
   signIn(user: UsuarioModel) {
     const authData = {
@@ -29,7 +31,11 @@ export class AuthService {
       returnSecureToken	: true
     };
 
-    return this.http.post(`${this.url}accounts:signInWithPassword?key=${this.apiuri}`, authData)
+    return this.http.post(`
+    ${ this.url }/accounts:signInWithPassword?key=${ this.apiuri }`, authData).pipe(
+      map( (resp: any) => {
+        this.saveToken(resp['idToken'])
+    }));
   }
 
   signUp(user: UsuarioModel) {
@@ -39,17 +45,18 @@ export class AuthService {
       returnSecureToken	: true
     };
 
-    return this.http.post( `${this.url}accounts:signUp?key=${this.apiuri}`,authData).pipe(
-      map( resp => {
+    return this.http.post(
+      `${ this.url }/accounts:signUp?key=${ this.apiuri }`,authData).pipe(
+      map( (resp: any) => {
         this.saveToken(resp['idToken']);
         return resp;
       })
     )
-  
-
   }
 
-  logout(){}
+  logout(){
+    localStorage.removeItem('token')
+  }
 
  private saveToken(idToken : string) {
 

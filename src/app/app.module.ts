@@ -8,12 +8,7 @@ import { RouterModule } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { SidebarModule } from 'primeng/sidebar';
 
-import { AvatarModule } from 'primeng/avatar';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 
 @NgModule({
   declarations: [
@@ -25,13 +20,6 @@ import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SidebarModule,
-    AvatarModule,
-    OverlayPanelModule,
-   PanelMenuModule,
-   SharedNgPrimeModule
-
- 
   ],
   providers: [],
   bootstrap: [AppComponent]

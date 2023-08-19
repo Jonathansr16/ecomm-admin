@@ -63,21 +63,11 @@
 
               </div>
             </div>
-
-
           </div>
 
           <div class="form-product__inventario">
             <h2 class="form-product__h2">Inventario</h2>
             <p-divider></p-divider>
-
-            <div class="form-product__section">
-            
-              <label class="form-product__label" htmlFor="sku">*SKU del producto:</label>
-              <input class="form-product__input" pInputText id="sku"  formControlName="sku" [class.is-invalid]="skuInvalid" [ngClass]="{'ng-invalid ng-dirty': skuInvalid}" />
-              <small *ngIf="skuInvalid" class="p-error">El SKU oferta es obligatorio</small>
-
-            </div>
 
             <div class="form-product__section">
 
@@ -88,24 +78,31 @@
               <div class="form-product__checks">
 
                 <div class="flex align-items-center gap-1">
-                  <p-checkbox name="group1" value="New York"  inputId="ny"></p-checkbox>
-                  <label for="ny">Hay existencia</label>
+                  <p-checkbox class="form-product__checkbox" name="group1" value="instock" inputId="exitencia"></p-checkbox>
+                  <label for="exitencia">Hay existencia</label>
                </div>
           
           <div class="flex align-items-center gap-1">
-              <p-checkbox name="group1" value="San Francisco" inputId="sf"></p-checkbox>
-              <label for="sf">Agotado</label>
+              <p-checkbox class="form-product__checkbox" name="group2" value="outofstock" inputId="agotado"></p-checkbox>
+              <label for="agotado">Agotado</label>
           </div>
           
           <div class="flex align-items-center gap-1">
-              <p-checkbox name="group1" value="Los Angeles" inputId="la"></p-checkbox>
-              <label for="la">Se puede reservar</label>
+              <p-checkbox class="form-product__checkbox" name="group3" value="onbackorder" inputId="reserva"></p-checkbox>
+              <label for="reserva">Se puede reservar</label>
           </div>
           
               </div>
 
             </div>
 
+            <div class="form-product__section">      
+              <label class="form-product__label" htmlFor="sku">*SKU del producto:</label>
+              <input class="form-product__input" pInputText id="sku"  formControlName="sku" [class.is-invalid]="skuInvalid" [ngClass]="{'ng-invalid ng-dirty': skuInvalid}" />
+              <small *ngIf="skuInvalid" class="p-error">El SKU oferta es obligatorio</small>
+            </div>
+
+       
 
             <div class="form-product__section">
             
