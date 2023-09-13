@@ -1,0 +1,50 @@
+@import 'mixin';
+
+.login-footer {
+    // background-color: #080d23;
+    
+    
+    width: 100%;
+    border-top: 1px solid rgb(58, 70, 77);
+    &__container {
+        @include flexible(flex, row, wrap, space-between, center);
+        gap: 1em;
+        width: 100%;
+        padding: 0 24px;
+    }
+
+
+    &__section {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &__h6 {
+        color: var(--light);
+
+        @include responsive(550px) {
+            text-align: center
+        }
+    }
+
+    &__ul {
+        @include flexible(flex, row, wrap, space-between, center);
+        gap: 1em;
+    }
+
+    &__li {
+      padding: 10px 8px;  
+    }
+
+    &__a {
+        color: var(--light);
+        font-size: 0.9rem;
+    }
+
+    // @include responsive(550px) {
+    //     .login-footer__h6 {
+    //         text-align: center;
+    //     }
+    // }
+
+}

@@ -1,0 +1,199 @@
+@import 'mixin';
+
+.productos-data {
+  padding: 24px;
+  border-radius: 20px;
+  background-color: var(--light);
+}
+
+
+.productos {
+
+  &__caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 1em;
+flex-wrap: wrap;
+   
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 1.8em;
+    flex-wrap: wrap;
+  }
+
+  &__h1{
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &__search {
+    max-width: 350px;
+    position: relative;
+  }
+
+  &__input {
+    border-radius: 36px 0 0 36px !important;
+  }
+
+
+  &__i {
+    position: absolute;
+    top: 50%;
+    right: 55px;
+    font-size: 20px;
+    transform: translateY(-50%);
+    z-index: 3;
+    color: #a7a2a2;
+    cursor: pointer;
+
+  }
+  &__btn--search {
+    border-radius: 0 36px 36px 0 !important;
+    background-color: var(--active-color);
+  }
+
+  &__th {
+    background-color: var(--light) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--grey) !important;
+  }
+
+
+
+  &__td {
+    border: none !important;
+  }
+
+  
+  &__img {
+    max-width: 80px;
+    border-radius: 10px;
+  }
+
+  &__producto{
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+
+    @include responsive(1204px) {
+      flex-direction: column;
+    }
+
+  }
+
+  &__h4, &__p {
+    text-align: center;
+  }
+
+  &__btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__status > span {
+    margin: auto;
+    display: block;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  &__tr {
+    padding: 20px 15px;
+  }
+
+}
+
+
+::ng-deep .p-datatable-header {
+  background: var(--light) !important;
+  border-radius: 20px 20px 0px 0px;
+}
+
+::ng-deep .p-datatable-wrapper{
+  border-radius: 0px 0px 20px 20px !important;
+}
+
+
+.productos__option {
+  position: relative;
+}
+
+::ng-deep .productos .p-menu.p-component {
+  top: 70px !important;
+  left: 280px !important;
+}
+
+::ng-deep  .productos__options a.p-menuitem-link{
+
+  font-size: 0.85rem !important;
+
+}
+
+@media screen and (max-width: 1196px) {
+
+  .productos__td--status, .productos__th--status {
+    display: none;
+  }
+  
+}
+
+@media screen and (max-width: 950px) {
+
+  // .productos__td--status, .productos__th--status {
+  //   display: none;
+  // }
+ 
+
+  .productos {
+
+    &__head {
+      display: none !important;
+    }
+  
+    &__body, &__td, &__tr {
+      display: block;
+      width: 100%;
+    }
+
+    &__tr:nth-child(even) {
+      background-color: #ffebeb;
+    }
+  
+
+    &__td {
+      text-align: right !important;
+      padding-left: 50% !important;
+      position: relative;
+
+      &::before {
+        content: attr(data-label);
+        position: absolute;
+        width: 50%;
+        text-align: left;
+         left: 0;
+        padding: 5px;
+        font-weight: bold;
+      }
+    }
+
+
+    &__td--producto {
+      // display: flex;
+      // align-items: center;
+      @include flexible(flex, column, wrap, center, flex-end);
+      gap: 1em;
+    }
+    &__p, &__h3 {
+      text-align: right;
+    }
+
+  
+    
+  }
+}

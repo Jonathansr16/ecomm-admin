@@ -1,22 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WcProductosComponent } from '@tiendas/woocommerce/pages/productos/wc-productoscomponent';
+import { WcInventarioComponent } from '@tiendas/woocommerce/pages/wc-inventario/wc-inventario.component';
 import { WcPedidosComponent } from './pages/pedidos/wc-pedidos.component';
 import { WcClientesComponent } from './pages/clientes/wc-clientes.component';
-import { WcMainComponent } from './pages/main/wc-main.component';
+
 import { WcNewProductComponent } from './pages/wc-new-product/wc-new-product.component';
+import { WcProductComponent } from './pages/wc-product/wc-product.component';
 const WoocommerceRoutes: Routes = [
-  { path: 'woocommerce', redirectTo: 'dashboard/woocommerce/productos' },
+  { path: 'inventario', component: WcInventarioComponent },
+  { path: 'new-product', component: WcNewProductComponent },
+  { path: 'product/:id', component: WcProductComponent},
+  { path: 'pedidos', component: WcPedidosComponent },
   {
-    path: '',
-    component: WcMainComponent,
-    children: [
-      { path: 'productos', component: WcProductosComponent },
-    
-      { path: 'pedidos', component: WcPedidosComponent },
-      { path: 'clientes', component: WcClientesComponent },
-    ],
+    path: 'clientes', component: WcClientesComponent
   },
+
+  // {
+  //   path: '',
+  //   component: WcMainComponent,
+  //   children: [
+  //     { path: 'productos', component: WcProductosComponent },
+    
+  //     { path: 'pedidos', component: WcPedidosComponent },
+  //     { path: 'clientes', component: WcClientesComponent },
+  //   ],
+  // },
   { path: 'new-product', component: WcNewProductComponent },
 ];
 

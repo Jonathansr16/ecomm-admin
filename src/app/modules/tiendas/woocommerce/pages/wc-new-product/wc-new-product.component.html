@@ -1,123 +1,434 @@
 <div class="woocommerce__head">
-  <div class="woocommerce-breadcrumb">
-    <span class="woocommerce-breadcrumb__a" routerLink="/dashboard/woocommerce/">
-      <i class="woocommerce-breadcrumb__i pi pi-woocommerce"></i>
-      <h1 class="woocommerce-breadcrumb__h1">woocommerce</h1>
-    </span>
-
-    <ul class="woocommerce-breadcrumb__ul">
-      <li class="woocommerce-breadcrumb__li">></li>
-      <li class="woocommerce-breadcrumb__li">Tiendas</li>
-      <li class="woocommerce-breadcrumb__li">></li>
-
-      <li class="woocommerce-breadcrumb__li">Woocommerce</li>
-
-      <li class="woocommerce-breadcrumb__li">></li>
-
-      <li class="woocommerce-breadcrumb__li">
-        <a class="woocommerce-breadcrumb__a woocommerce-breadcrumb__a--active" href="">Nuevo Producto</a>
-      </li>
-    </ul>
-  </div>
 
 
-  <div class="producto">
-  
-    <div class="producto__right">
-      <form action="#" class="form-product" [formGroup]="formRegisterProducto" (ngSubmit)="registerProduct()">
-        <h1 class="form-product__h1">✍️ Registra tu producto</h1>
+  <ul class="woocommerce-breadcrumb__ul">
+    <li class="woocommerce-breadcrumb__li">
+      <span class="woocommerce-breadcrumb__span">
+        <i class="woocommerce-breadcrumb__i pi pi-woocommerce"></i>
+        <h1 class="woocommerce-breadcrumb__h1">Tiendas</h1>
+      </span>
+    </li>
 
-        <div class="form-product__data">
-          <h2 class="form-product__h2">Datos básicos del producto</h2>
+    <li class="woocommerce-breadcrumb__li">></li>
 
-          <p-divider></p-divider>
-          <div class="form-product__section">
-            <label class="form-product__label" htmlFor="title">*Titulo del producto:</label>
-            <input class="form-product__input" pInputText id="title" placeholder="Ingrese un titulo para el producto" formControlName="title" [class.is-invalid]="titleInvalid" [ngClass]="{'ng-invalid ng-dirty': titleInvalid}" />
-            <small *ngIf="titleInvalid" class="p-error">El titulo es obligatorio</small>
+    <li class="woocommerce-breadcrumb__li">Woocommerce</li>
+
+    <li class="woocommerce-breadcrumb__li">></li>
+
+    <li class="woocommerce-breadcrumb__li">
+      <a
+        routerLink="/dashboard/woocommerce/inventario"
+        class="woocommerce-breadcrumb"
+        >Inventario</a
+      >
+    </li>
+
+    <li class="woocommerce-breadcrumb__li">></li>
+
+    <li class="woocommerce-breadcrumb__li">
+      <a class="woocommerce-breadcrumb__a woocommerce-breadcrumb__a--active"
+        >Nuevo Producto</a
+      >
+    </li>
+  </ul>
+</div>
+
+<div class="producto">
+  <form
+    action="#"
+    class="form-product"
+    [formGroup]="formRegisterProducto"
+    (ngSubmit)="registerProduct()"
+  >
+    <div class="form-product__container">
+     
+      <div class="form-product__left">
+        <div class="form-product__section">
+          <h1 class="form-product__h1">✍️ Registra tu producto</h1>
+
+          <div class="form-product__box">
+            <h2 class="form-product__h2">Datos básicos del producto</h2>
+
+            <label class="form-product__label" htmlFor="title"
+              >*Titulo del producto:
+            </label>
+            <input
+              class="form-product__input"
+              pInputText
+              id="title"
+              placeholder="Ingrese un titulo para el producto"
+              formControlName="name"
+              [class.is-invalid]="nameInvalid"
+              [ngClass]="{ 'ng-invalid ng-dirty': nameInvalid }"
+            />
+            <small *ngIf="nameInvalid" class="p-error"
+              >El titulo es obligatorio</small
+            >
           </div>
 
-          <div class="form-product__section">
-            <label class="form-product__label" htmlFor="description">*Descripción del producto:</label>
-            <textarea class="form-product__input" placeholder="Descripción larga del producto" id="description" rows="12" cols="30" pInputTextarea [autoResize]="true" formControlName="description" [class.is-invalid]="descriptionInvalid" [ngClass]="{'ng-invalid ng-dirty': descriptionInvalid}"></textarea>
-            <small *ngIf="descriptionInvalid" class="p-error">La descripción es obligatorio</small>
+          <div class="form-product__box">
+            <label class="form-product__label" htmlFor="description"
+              >*Descripción del producto:
+              <i
+                class="form-product__icon material-icons"
+                pTooltip="Describe este producto, ¿Qué lo hace único?, ¿Cúales son sus características más importantes?"
+                tooltipStyleClass="form-product__toolTip"
+                tooltipPosition="bottom"
+                >help</i
+              >
+            </label>
+
+            <textarea
+              class="form-product__input"
+              id="description"
+              placeholder="Descripción larga del producto"
+              formControlName="description"
+              rows="14"
+              cols="30"
+              pInputTextarea
+              [autoResize]="true"
+              [class.is-invalid]="descriptionInvalid"
+              [ngClass]="{ 'ng-invalid ng-dirty': descriptionInvalid }"
+            >
+            </textarea>
+
+            <small *ngIf="descriptionInvalid" class="p-error"
+              >La descripción es obligatorio</small
+            >
           </div>
 
-          <div class="form-product__price">
-            <h2 class="form-product__h2">Precio del producto</h2>
-            <p-divider></p-divider>
+          <div class="form-product__box">
+            <label class="form-product__label" htmlFor="short_description"
+              >*Descripción corta del producto:
+              <i
+                class="form-product__icon material-icons"
+                pTooltip="Resume este producto en 1 o 2 frases cortas. Las mostraremos en la parte superior de la página."
+                tooltipStyleClass="form-product__toolTip"
+                tooltipPosition="bottom"
+                >help</i
+              >
+            </label>
 
+            <textarea
+              class="form-product__input"
+              placeholder="Descripción corta del producto"
+              id="shortDescription"
+              rows="8"
+              cols="30"
+              pInputTextarea
+              [autoResize]="true"
+              formControlName="short_description"
+              [class.is-invalid]="shortDescriptionInvalid"
+              [ngClass]="{ 'ng-invalid ng-dirty': shortDescriptionInvalid }"
+            >
+            </textarea>
 
-            <div class="form-product__section form-product__group">
-
-              <div class="form-product__section">
-                <label class="form-product__label" htmlFor="price">*Precio normal del producto:</label>
-                <p-inputNumber class="form-product__input" id="price" inputId="currency-us" mode="currency" currency="USD" locale="en-US" formControlName="price" [class.is-invalid]="priceInvalid" [ngClass]="{'ng-invalid ng-dirty': priceInvalid}"> </p-inputNumber>
-                <small *ngIf="priceInvalid" class="p-error">El precio es obligatorio</small>
-              </div>
-  
-              <div class="form-product__section">
-                <label class="form-product__label" htmlFor="priceOfert">*Precio con rebaja del producto:</label>
-                <p-inputNumber class="form-product__input" id="priceOfert" inputId="currency-us" mode="currency" currency="USD" locale="en-US"> </p-inputNumber>
-                <small *ngIf="priceInvalid" class="p-error">El precio oferta es obligatorio</small>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="form-product__inventario">
-            <h2 class="form-product__h2">Inventario</h2>
-            <p-divider></p-divider>
-
-            <div class="form-product__section">
-
-              <div class="form-product__gestion mb-2">
-                <span class="form-product__label">Estado del inventario:</span>
-              </div>
-
-              <div class="form-product__checks">
-
-                <div class="flex align-items-center gap-1">
-                  <p-checkbox class="form-product__checkbox" name="group1" value="instock" inputId="exitencia"></p-checkbox>
-                  <label for="exitencia">Hay existencia</label>
-               </div>
-          
-          <div class="flex align-items-center gap-1">
-              <p-checkbox class="form-product__checkbox" name="group2" value="outofstock" inputId="agotado"></p-checkbox>
-              <label for="agotado">Agotado</label>
-          </div>
-          
-          <div class="flex align-items-center gap-1">
-              <p-checkbox class="form-product__checkbox" name="group3" value="onbackorder" inputId="reserva"></p-checkbox>
-              <label for="reserva">Se puede reservar</label>
-          </div>
-          
-              </div>
-
-            </div>
-
-            <div class="form-product__section">      
-              <label class="form-product__label" htmlFor="sku">*SKU del producto:</label>
-              <input class="form-product__input" pInputText id="sku"  formControlName="sku" [class.is-invalid]="skuInvalid" [ngClass]="{'ng-invalid ng-dirty': skuInvalid}" />
-              <small *ngIf="skuInvalid" class="p-error">El SKU oferta es obligatorio</small>
-            </div>
-
-       
-
-            <div class="form-product__section">
-            
-              <label class="form-product__label" htmlFor="sku">*Gestión del inventario:</label>
-             <div class="form-product__seguimiento">
-              <p-checkbox name="group1" value="New York"  inputId="ny"></p-checkbox>
-              <label for="ny">Hacer seguimiento de la cantidad de inventario de este producto</label>
-             </div>
-              
-              <small *ngIf="skuInvalid" class="p-error">El SKU oferta es obligatorio</small>
-
-            </div>
+            <small *ngIf="shortDescriptionInvalid" class="p-error"
+              >La descripción corta es obligatorio</small
+            >
           </div>
         </div>
-      </form>
+
+        <p-divider></p-divider>
+
+        <div class="form-product__section">
+          <h2 class="form-product__h2">Precio del producto</h2>
+
+          <div class="form-product__box">
+            <label class="form-product__label" htmlFor="price"
+              >*Precio normal del producto:</label
+            >
+
+            <p-inputNumber
+              class="form-product__input"
+              inputId="price"
+            
+              mode="currency" 
+              currency="USD" 
+              locale="en-US"
+              placeholder="$0.00"
+            [showClear]="true"
+              formControlName="regular_price"
+              [class.is-invalid]="regularPriceInvalid"
+              [ngClass]="{ 'ng-invalid ng-dirty': regularPriceInvalid }"
+            >
+           
+            </p-inputNumber>
+
+            <small *ngIf="regularPriceInvalid" class="p-error"
+              >El precio es obligatorio</small
+            >
+          </div>
+
+          <div class="form-product__box">
+            <label class="form-product__label" htmlFor="rebaja"
+              >*Precio con rebaja del producto:</label
+            >
+
+            <p-inputNumber
+              class="form-product__input"
+              inputId="rebaja"
+              mode="currency" 
+              currency="USD" 
+              locale="en-US"
+              placeholder="$0.00"
+              [showClear]="true"
+              formControlName="sale_price"
+              [class.is-invalid]="[salePriceInvalid || priceSaleInvalid]"
+              [ngClass]="{ 'ng-invalid ng-dirty': [salePriceInvalid || priceSaleInvalid] }"
+            >
+          
+            </p-inputNumber>
+
+            <small *ngIf="salePriceInvalid" class="p-error"
+              >El precio oferta es obligatorio</small
+            >
+            <br>
+            <small *ngIf="priceSaleInvalid" class="p-error"
+            >El precio oferta debe ser menor al precio regular</small
+          >
+          </div>
+        </div>
+
+        <div class="form-product__section">
+          <h2 class="form-product__h2">Inventario</h2>
+          <p-divider></p-divider>
+
+          <div class="form-product__box">
+            <label class="form-product__label" htmlFor="sku"
+              >*SKU del producto:
+              <i
+                class="form-product__icon material-icons"
+                pTooltip="SKU se refiere a una unidad de almacenamiento de inventario, un identificador único para cada producto y servicio que se puede comprar."
+                tooltipStyleClass="form-product__toolTip"
+                tooltipPosition="bottom"
+                >help</i
+              >
+            </label>
+
+            <input
+              class="form-product__input"
+              pInputText
+              id="sku"
+              formControlName="sku"
+              [class.is-invalid]="skuInvalid"
+              [ngClass]="{ 'ng-invalid ng-dirty': skuInvalid }"
+            />
+            <small *ngIf="skuInvalid" class="p-error"
+              >El SKU oferta es obligatorio</small
+            >
+          </div>
+
+          <div class="form-product__box">
+            <div class="form-product__gestion mb-2">
+              <span class="form-product__label"
+                >Estado del producto:
+                <i
+                  class="form-product__icon material-icons"
+                  pTooltip="Controla si el producto se muestra (o no) como «hay existencias» o «agotado» en la tienda"
+                  tooltipStyleClass="form-product__toolTip"
+                  tooltipPosition="bottom"
+                  >help</i
+                >
+              </span>
+            </div>
+
+            <div *ngIf="showGestion === false" class="form-product__checks">
+              <div class="flex align-items-center gap-1">
+                <p-radioButton
+                  formControlName="stock_status"
+                  class="form-product__checkbox"
+                  value="instock"
+                  [class.is-invalid]="stockStatusInvalid"
+                  [ngClass]="{ 'ng-invalid ng-dirty': stockStatusInvalid }"
+                  inputId="exitencia"   
+                >
+                </p-radioButton>
+                <label for="exitencia">Hay existencia</label>
+              </div>
+
+              <div class="flex align-items-center gap-1">
+                <p-radioButton
+                  formControlName="stock_status"
+                  class="form-product__checkbox"
+                  value="outofstock"
+                  [class.is-invalid]="stockStatusInvalid"
+                  [ngClass]="{ 'ng-invalid ng-dirty': stockStatusInvalid }"
+                  inputId="agotado" 
+                >
+                </p-radioButton>
+                <label for="agotado">Agotado</label>
+              </div>
+
+              <div class="flex align-items-center gap-1">
+                <p-radioButton
+                  formControlName="stock_status"
+                  class="form-product__checkbox"
+                  value="onbackorder"
+                  [class.is-invalid]="stockStatusInvalid"
+                  [ngClass]="{ 'ng-invalid ng-dirty': stockStatusInvalid }"
+                  inputId="reserva" 
+                >
+                </p-radioButton>
+                <label for="reserva">Se puede reservar</label>
+              </div>
+              <small *ngIf="stockStatusInvalid" class="p-error">Indique el estado de su producto</small
+            >
+            </div>
+          </div>
+
+          <div class="form-product__box">
+            <label class="form-product__label" htmlFor="gestion"
+              >*Gestión del inventario:</label
+            >
+            <div class="form-product__seguimiento">
+              <p-checkbox
+                name="group1"
+                formControlName="check_inventario"
+                inputId="gestion"
+                [binary]="true"
+              >
+              </p-checkbox>
+              <label for="ny"
+                >Hacer seguimiento de la cantidad de inventario de este
+                producto</label
+              >
+            </div>
+          </div>
+
+          <div class="form-product__box" *ngIf="showGestion">
+            <label class="form-product__label" htmlFor="cantidad"
+              >*Cantidad:
+              <i
+                class="form-product__icon material-icons"
+                pTooltip="SKU se refiere a una unidad de almacenamiento de inventario, un identificador único para cada producto y servicio que se puede comprar."
+                tooltipStyleClass="form-product__toolTip"
+                tooltipPosition="bottom"
+                >help</i
+              >
+            </label>
+
+            <p-inputNumber
+              inputId="integeronly"
+              formControlName="stock_quantity"
+              [class.is-invalid]="stockQuantityInvalid"
+              [ngClass]="{ 'ng-invalid ng-dirty': stockQuantityInvalid }"
+            >
+            </p-inputNumber>
+
+            <small *ngIf="stockQuantityInvalid" class="p-error"
+              >Indique la cantidad minima</small
+            >
+          </div>
+        </div>
+
+        <div class="form-product__section">
+          <h2 class="form-product__h2 mb-1">Categoria del producto:</h2>
+
+          <p-divider></p-divider>
+     
+          <div class="card flex justify-content-center form-product__box">
+
+            <!-- <div formArrayName="categories">
+              <div *ngFor="let item of  categoriesArray.controls; let i = index" [formGroupName]="i">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" formControlName="id">
+          
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" formControlName="name">
+              </div>
+            </div> -->
+            <p-multiSelect (onChange)=" MultiSelectChangeEvent($event)" formArrayName="categories" [options]="arrayCategories" defaultLabel="Seleccione una categoria" optionLabel="name" >
+              <ng-template let-value let-categoria pTemplate="categoriesArray" >
+                
+                <div class="flex align-items-center gap-2" *ngFor="let option of categoriesArray.controls">
+                
+                 {{option}}
+
+                    </div>
+
+               <div *ngIf="!categoria || categoria.length === 0">Seleccione una categoria</div> 
+              </ng-template>
+              <ng-template let-country pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                     
+                      <div>{{ country.name }}</div>
+                  </div>
+              </ng-template>
+      </p-multiSelect>
+
+          </div>
+        </div>
+
+        <div class="form-product__section">
+          <p-button
+            type="submit"
+            label="Registrar"
+            styleClass="p-button-help"
+          ></p-button>
+        </div>
+
+        <div class="form-product__section">
+          <hr />
+          <pre>
+              Estado del formulario: {{ formRegisterProducto.valid }}
+              <br>
+              Status: {{ formRegisterProducto.status }}
+          </pre>
+
+          <pre>
+            {{ formRegisterProducto.value | json }}
+         </pre
+          >
+        </div>
+
+        <div class="form-product__section">
+          <hr />
+
+          <pre>
+            {{ producto | json }}
+         </pre
+          >
+        </div>
+      </div>
+
+      <!-- <div class="form-product__right"> 
+       
+
+      <div class="form-product__section form-product__gallery">
+          <h3 class="form-product__h3 mb-1">Imagenes del producto:</h3>
+
+          <div class="form-product__box form-product__indication">
+            <p-messages class="form-product__message" severity="info">
+              <ng-template pTemplate>
+                <div class="form-product__title">
+                  <i class="material-icons form-product__i">info</i>
+                  <h4 class="form-product__h4 form-product__info mb-1">
+                    Recuerda que:
+                  </h4>
+                </div>
+
+                <ul class="form-product__ul">
+                  <li class="form-product__li">Minimo 600 x 600 pixeles</li>
+                  <li class="form-product__li">Maximo 3840 x 2160 pixeles</li>
+                  <li class="form-product__li">Formato .jpg o .png y .webp</li>
+                  <li class="form-product__li">
+                    Fondo blanco, sin marca de agua y sin logos
+                  </li>
+                  <li class="form-product__li">Peso máximo de 2MB</li>
+                </ul>
+              </ng-template>
+            </p-messages>
+          </div>
+
+          <div class="form-product__box">
+            <app-drop-zone
+              [arrayImages]="images"
+              formArrayName="images"
+            ></app-drop-zone>
+          </div>
+        </div>
+      </div>  -->
     </div>
-  </div> 
+  </form>
 </div>

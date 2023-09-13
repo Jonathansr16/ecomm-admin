@@ -1,0 +1,35 @@
+       
+
+<div class="head">
+    <ul class="head__ul">
+
+        <li class="head__li">
+            <h6 class="head__h6">Dashboard ></h6>
+        </li>
+
+        <li class="head__li">
+            <i class="head__i material-icons">storefront</i>
+            <h6 class="head__h6">Woocommerce</h6>
+            <span class="head__span"> > </span>
+            
+        </li>
+
+        <li class="head__li head__link">
+            <i class="head__i material-icons">pallet</i>
+            <a routerLink="/dashboard/wocommerce/inventario" class="head__a">
+                Inventario</a>
+        </li>
+
+
+    </ul>
+
+    <div class="head__actions">
+        <button type="button" label="Primary" class="head__btn" >Importar</button>
+        <button type="button" label="Primary" class="head__btn">Exportar</button>
+
+    </div>
+</div>
+
+
+    <app-table-products [url]="urlProduct" [data]="products" [isLoading]="loading"></app-table-products>
+

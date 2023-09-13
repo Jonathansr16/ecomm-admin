@@ -1,0 +1,129 @@
+<div class="acceso">
+
+  <div class="acceso-info animate__animated animate__fadeIn">
+
+    <app-header acceso-header__title >
+      <h1 class="acceso-header__h1 title">Bievenido, Registrate a tu plataforma</h1>
+      <p class="acceso-header__p">Registrate e empieza a administrar tu inventario</p>
+    </app-header>
+  </div>
+
+<div class="forms container animate__animated animate__fadeInRight">
+<form class="form" autocomplete="off" [formGroup]="formSignUp" (ngSubmit)="register()">
+  
+  <div class="form__header form__section">
+
+    <div class="form__logo">
+      <img src="assets/img/logo_servitae.webp" class="form__img--logo" alt="servitae">
+    </div>
+
+    <h2 class="form__h2 title">Registrate a tu plataforma</h2>
+  </div>
+
+  <div class="form__section">
+    <label class="form__label" htmlFor="full_name">Nombre completo:</label>
+
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="material-icons form__i">account_box</i>
+          </span>
+     
+           <input pInputText class="form__input" name="full_name" placeholder="Introduce tu nombre completo" formControlName="fullName"
+        [class.is-invalid]="fullNameInvalid" [ngClass]="{ 'ng-invalid ng-dirty': fullNameInvalid}" />
+
+      </div>
+
+    <small *ngIf="fullNameInvalid" class="p-error">el nombre completo es obligatorio</small>
+
+  </div>
+
+  <div class="form__section">
+    <label class="form__label" htmlFor="correo_register">Correo:</label>
+
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+          <i class="material-icons form__i">mail</i>
+      </span>
+ 
+      <input pInputText class="form__input" name="correo_register" placeholder="Introduce tu correo electrónico"
+      formControlName="emailRegister" [class.is-invalid]="emailRegisterInvalid"
+      [ngClass]="{ 'ng-invalid ng-dirty': emailRegisterInvalid }" />
+
+  </div>
+
+    <small *ngIf="emailRegisterInvalid" class="p-error">El correo electrónico es obligatorios</small>
+  </div>
+
+  <div class="form__section">
+    <label class="form__label" htmlFor="password_register">Contraseña:</label>
+
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+          <i class="material-icons form__i">key</i>
+      </span>
+ 
+      <p-password autocomplete="on" class="form__input form-register__password" name="password_register"
+        placeholder="Ingrese su contraseña" [toggleMask]="true" formControlName="pass1"
+        [class.is-invalid]="pass1Invalid" [ngClass]="{ 'ng-invalid ng-dirty': pass1Invalid}">
+        <ng-template class="sugerencia" pTemplate="header">
+          <h6>Pick a password</h6>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <p-divider></p-divider>
+          <p class="mt-2">Sugerencia</p>
+          <ul class="pl-2 ml-2 mt-0" style="line-height: 2">
+            <li>Al menos una Mayuscula</li>
+            <li>Al menos una Minuscula</li>
+            <li>Al menos un numero</li>
+            <li>Minimo 8 caracteres</li>
+          </ul>
+        </ng-template>
+      </p-password>
+
+  </div>
+
+      <small *ngIf="pass1Invalid" class="p-error">la contraseña es obligatorio</small>
+    </div>
+
+
+
+  <div class="form__section">
+    <label class="form__label" htmlFor="correo_register">Confirme Contraseña:</label>
+
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+          <i class="material-icons form__i">password</i>
+      </span>
+
+      <p-password id="pass3" autocomplete="on" class="form-login__input" placeholder="Confirma la contraseña"
+      [feedback]="false" [toggleMask]="true" formControlName="pass2" [class.is-invalid]="passwordsInvalid"
+      [ngClass]="{'ng-invalid ng-dirty': passwordsInvalid }"></p-password>
+  
+    </div>
+
+    <small *ngIf="passwordsInvalid" class="p-error">Las contraseña deben ser iguales</small>
+  </div>
+
+  <div class="form__section form__remember">
+    <p-checkbox inputId="ny" value="recordar" formControlName="aceptTerm" [class.is-invalid]="termInvalid"
+      [ngClass]="{ 'ng-invalid ng-dirty': termInvalid }"></p-checkbox>
+    <label for="ny">Acepto terminos y condiciones</label>
+    <small *ngIf="termInvalid" class="p-error">Debe aceptar los terminos y condiciones</small>
+  </div>
+
+  <div class="form__section">
+
+    <p-button type="submit" label="Registrarme" styleClass="p-button-rounded"></p-button>
+  </div>
+
+</form>
+
+<div class="form__section form-actions">
+  <a class="form-actions__a" href="#">Olvidaste tu contraseña?</a>
+<a class="form-actions__a" routerLink="/auth/login">Ingresa ahora</a>
+</div>
+
+</div>
+
+<app-footer></app-footer> 
+</div>

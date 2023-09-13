@@ -1,0 +1,27 @@
+<div class="card flex justify-content-center">
+  <p-toast></p-toast>
+  <p-fileUpload
+    name="demo[]"
+    url="https://www.primefaces.org/cdn/api/upload.php"
+    chooseLabel="Eligir"
+    uploadLabel="Cargar"
+    cancelLabel="Cancelar"
+    invalidFileTypeMessageSummary="Tipo de archivo invalido"
+    invalidFileTypeMessageDetail="Solo se permiten las siguientes tipo de imagenes: [.jpg, .png, .webp]"
+    invalidFileLimitMessageSummary="Maximo de numeros de imagenes excedido"
+    invalidFileLimitMessageDetail="Solo se permite maximo 10 imagenes por producto"
+    (onUpload)="onUpload($event)"
+    [multiple]="true"
+    accept="image/.jpg, .png, .webp"
+    [fileLimit]="10"
+    [maxFileSize]="1000000"
+  >
+    <ng-template pTemplate="content">
+      <ul *ngIf="arrayImages.length">
+        <li *ngFor="let file of arrayImages">
+          {{ file.name }} - {{ file.size }} bytes
+        </li>
+      </ul>
+    </ng-template>
+  </p-fileUpload>
+</div>

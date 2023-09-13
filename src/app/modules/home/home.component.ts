@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { homeAyuda } from 'src/app/core/interface/ayuda.model';
-import { HomeAyudaService } from 'src/app/core/services/home-ayuda.service';
 import { WcommerceService } from '@tiendas/woocommerce/services/wcommerce.service';
 import { MenuItem } from 'primeng/api';
 
@@ -22,14 +21,14 @@ export class HomeComponent implements OnInit {
 
 
 dataAuth: any = {}
-  constructor(private ayudaService: HomeAyudaService, private formBuilder: FormBuilder, private wcService: WcommerceService) {
+  constructor( private formBuilder: FormBuilder, private wcService: WcommerceService) {
 
     this.createFormWcommerce();
     this.loadDataFormWC();
   }
 
   ngOnInit(): void {
-    this.ayuda = this.ayudaService.getAyuda();
+    // this.ayuda = this.ayudaService.getAyuda();
   }
 
   showDialog() {

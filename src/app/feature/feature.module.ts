@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 
 //*COMPONENTS
 import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
-import { TableComponent } from '@feature/table/table.component';
+import { TableProductsComponent } from '@feature/table-products/table-products.component';
 import { SearchProductComponent } from './search-product/search-product.component';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { DropZoneComponent } from './drop-zone/drop-zone.component';
 
 
 //* MODULES
@@ -15,8 +16,9 @@ import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
-    TableComponent,
-    SearchProductComponent
+    TableProductsComponent,
+    SearchProductComponent,
+    DropZoneComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { TagModule } from 'primeng/tag';
     TagModule
   ],
   exports: [
-    TableComponent
+    TableProductsComponent,
+    DropZoneComponent
   ]
 })
 export class FeatureModule { }

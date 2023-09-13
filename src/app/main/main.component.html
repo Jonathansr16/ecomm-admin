@@ -16,7 +16,7 @@
     <div class="sidebar-menu">
 
       <div class="sidebar-toggle">
-        <i (click)="addToggle()" class="material-icons sidebar-toggle__i">chevron_left</i>
+        <i #arrow (click)="addToggle()" class="material-icons sidebar-toggle__i">chevron_left</i>
       </div>
 
       <div class="sidebar-menu__options">
@@ -24,49 +24,129 @@
         <p class="sidebar-menu__p">Main</p>
 
         <ul class="sidebar-menu__ul">
+         
           <li class="sidebar-menu__li">
             <a routerLink="/dashboard/home" routerLinkActive="isActive" class="sidebar-menu__a">
               <i class="material-icons sidebar-menu__i">home</i>
               <span class="sidebar-menu__span">Home</span>
             </a>
           </li>
+         
           <li class="sidebar-menu__li">
-            <button class="sidebar-menu__a sidebar-menu__btn" routerLinkActive="isActive" (click)="toggleSubmenu(1)">
-            
+            <button type="button" 
+                    #menu class="sidebar-menu__a sidebar-menu__btn" 
+                    (click)="toggleSubmenu(1)"
+                     >
+
               <i class="material-icons sidebar-menu__i">store</i>
               <span class="sidebar-menu__span">Mis Tiendas</span>
-              <i #icon class="material-icons sidebar-menu__arrow">navigate_next</i>
+              <i class="material-icons sidebar-menu__arrow"
+                [ngClass]="activeSubMenuIndex === 1 ? 'moveArrow' : ''">navigate_next</i>
             </button>
 
             <ul class="sidebar-submenu" [ngClass]="activeSubMenuIndex === 1 ? 'mm-show' : ''">
-              <li class="sidebar-submenu__li">
-                <a href="" class="sidebar-submenu__a">
-                  <i class="material-icons sidebar-submenu__i">storefront</i>
-                  <span class="sidebar-submenu__span">Amazon</span>
-                </a>
-              </li>
 
-              <li class="sidebar-submenu__li">
-                <a href="" class="sidebar-submenu__a">
+              <!-- AMAZON -->
+              <li class="sidebar-submenu__li sidebar-submenu__menu">
+                <button type="button" class="sidebar-submenu__a sidebar-menu__btn" (click)="toggleSubcategory(10)"
+                  [ngClass]="activeSubIndex === 10 ? 'isActive' : ''">
+                  <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
+                  <span class="sidebar-submenu__span">Amazon</span>
+                  <i class="material-icons sidebar-menu__arrow">navigate_next</i>
+                </button>
+
+                <!-- SUBMENU AMAZON -->
+                <ul #submenu class="sidebar-submenu" [ngClass]="activeSubIndex === 10 ? 'mm-show' : ''">
+
+                  <li class="sidebar-submenu__li">
+                    <a routerLink="/dashboard/wocommerce/productos" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">inventory</i>
+                      <span class="sidebar-submenu__span">Inventario</span>
+                    </a>
+                  </li>
+
+                  <li class="sidebar-submenu__li">
+                    <a href="" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">local_mall</i>
+                      <span class="sidebar-submenu__span">Pedidos</span>
+                    </a>
+                  </li>
+
+                  <li class="sidebar-submenu__li">
+                    <a href="" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">group</i>
+                      <span class="sidebar-submenu__span">Clientes</span>
+                    </a>
+                  </li>
+
+                  <li class="sidebar-submenu__li">
+                    <a href="" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">stacked_bar_chart</i>
+                      <span class="sidebar-submenu__span">Reportes</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <!-- CLARO SHOP -->
+              <li class="sidebar-submenu__li sidebar-submenu__menu">
+                <button type="button" class="sidebar-submenu__a sidebar-menu__btn">
                   <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
                   <span class="sidebar-submenu__span">Claro Shop</span>
-                </a>
+                  <i class="material-icons sidebar-menu__arrow">navigate_next</i>
+                </button>
               </li>
-
-              <li class="sidebar-submenu__li">
-                <a href="" class="sidebar-submenu__a">
+              <!-- MERCADO LIBRE -->
+              <li class="sidebar-submenu__li sidebar-submenu__menu">
+                <button type="button" class="sidebar-submenu__a sidebar-menu__btn">
                   <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
                   <span class="sidebar-submenu__span">Mercado Libre</span>
-                </a>
-              </li>
+                  <i class="material-icons sidebar-menu__arrow">navigate_next</i>
 
-              <li class="sidebar-submenu__li">
-                <a routerLink="/dashboard/woocommerce/productos"  routerLinkActive="isActive" class="sidebar-submenu__a">
+                </button>
+              </li>
+              <!-- WOCOMMERCE -->
+              <li class="sidebar-submenu__li sidebar-submenu__menu">
+                <button type="button" class="sidebar-submenu__a" (click)="toggleSubcategory(13)"  
+                >
                   <i class="material-icons sidebar-menu__i sidebar-submenu__i">storefront</i>
                   <span class="sidebar-submenu__span">Woocommerce</span>
-                </a>
-              </li>
+                  <i class="material-icons sidebar-menu__arrow" [ngClass]="activeSubIndex === 13 ? 'moveArrow' : ''">navigate_next</i>
+                </button>
 
+                <ul #submenu class="sidebar-submenu sidebar-submenu__options"
+                  [ngClass]="activeSubIndex === 13 ? 'mm-show' : ''">
+
+                  <li class="sidebar-submenu__li">
+                    <a routerLink="/dashboard/woocommerce/inventario" routerLinkActive="isActive"
+                      class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">inventory</i>
+                      <span class="sidebar-submenu__span">Inventario</span>
+                    </a>
+                  </li>
+
+                  <li class="sidebar-submenu__li">
+                    <a href="" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">local_mall</i>
+                      <span class="sidebar-submenu__span">Pedidos</span>
+                    </a>
+                  </li>
+
+
+                  <li class="sidebar-submenu__li">
+                    <a href="" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">group</i>
+                      <span class="sidebar-submenu__span">Clientes</span>
+                    </a>
+                  </li>
+
+                  <li class="sidebar-submenu__li">
+                    <a href="" class="sidebar-submenu__a">
+                      <i class="material-icons sidebar-menu__i sidebar-submenu__i">stacked_bar_chart</i>
+                      <span class="sidebar-submenu__span">Reportes</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="sidebar-menu__li">
@@ -146,162 +226,36 @@
 
   </div>
 
-  <!-- <div class="head">
-
-        <div class="user-img">
-          <img src="assets/img/profile-example.webp" alt="">
-        </div>
-
-        <div class="user-details">
-          <p class="title">Web developer</p>
-          <p class="name">Jong SanR.</p>
-        </div>
-  </div>
-
-  <div class="contain">
-  <div class="sideba">
-
-      <div class="menu-btn">
-        <i (click)="addToggle()" class="material-icons">chevron_left</i>
-      </div>
-      <div class="menu">
-          <p class="title">Main</p>
-  
-          <ul>
-            <li class="active">
-              <a href="#">
-                <i class="material-icons" >home</i>
-                <span class="text">Home</span>
-              </a>
-            </li>
-  
-            <li class=""  >
-              <a #menu class="" (click)="toggleSubmenu(1)">
-                <i class="material-icons icon">store</i>
-                <span class="text">Tiendas</span>
-                <i #icon class="material-icons arrow">navigate_next</i>
-              </a>
-  
-              <ul class="sub-menu"  [ngClass]="activeSubMenuIndex === 1 ? 'mm-show' : ''">
-                <li>
-                  <a href="#">
-                    <span class="text">Mercado Libre</span>
-                  </a>
-                </li>
-  
-                <li>
-                  <a href="#">
-                    <span class="text">Amazon</span>
-                  </a>
-                </li>
-  
-                <li>
-                  <a href="#">
-                    <span class="text">Claro Shop</span>
-                  </a>
-                </li>
-  
-                <li>
-                  <a href="#">
-                    <span class="text">Woocommerce</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-  
-            <li class="">
-              <a href="#">
-                <i class="material-icons icon" >point_of_sale</i>
-                <span class="text">Ventas</span>
-              </a>
-            </li>
-  
-            <li class="">
-              <a href="#">
-                <i class="material-icons icon" >point_of_sale</i>
-                <span class="text">Ventas</span>
-                <i class="material-icons arrow">navigate_next</i>
-  
-              </a>
-            </li>
-  
-            <li class="">
-              <a href="#">
-                <i class="material-icons icon" >description</i>
-                <span class="text">Reportes</span>
-              </a>
-            </li>
-  
-            <li class="">
-              <a href="#">
-                <i class="material-icons icon" >forum</i>
-                <span class="text">Mensajes</span>
-              </a>
-            </li>
-  
-            <li class="">
-              <a href="#">
-                <i class="material-icons icon" >local_shipping</i>
-                <span class="text">Envios</span>
-              </a>
-            </li>
-          </ul>
-      </div>
-  
-      <div class="menu">
-        <p class="title">Otros</p>
-  
-        <ul>
-          <li>
-          <a href="">
-            <i class="material-icons icon">settings</i>
-            <span class="text">Configuraciones</span>
-          </a>
-          </li>
-  
-          <li>
-            <a href="">
-              <i class="material-icons icon">logout</i>
-              <span class="text">Cerra sesion</span>
-            </a>
-            </li>
-        </ul>
-      </div>
-      
-      <div class="menu">
-        <p class="title">Ayuda</p>
-  
-        <ul>
-          <li>
-          <a href="">
-            <i class="material-icons icon">contact_support</i>
-            <span class="text">Ayuda</span>
-          </a>
-          </li>
-  
-          <li>
-            <a href="">
-              <i class="material-icons icon">contacts</i>
-              <span class="text">Contacto</span>
-            </a>
-            </li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
 </section>
 <!-- SIDEBAR -->
+
 <!-- CONTENT -->
-<section id="content" class="content">
+<section id="content" class="content" #content>
   <!-- NAVBAR -->
   <nav class="nav">
     <!-- <i (click)="addToggle()" class='nav__i--menu material-icons' >grid_view</i> -->
 
-    <form class="nav-form" action="#">
+    <form class="nav-form">
+   
       <div class="nav-form__box form-input">
-        <input class="nav-form__input" type="search" placeholder="Search...">
-        <button type="button" class="nav-form__btn search-btn"><i class='bx bx-search'></i></button>
+        <input
+        class="nav-form__input"
+        type="text"
+        pInputText
+        placeholder="buscar producto..."
+        #searchProduct
+      />
+      <button
+        class="nav-form__btn search-btn"
+        type="button"
+        pButton
+        icon="pi pi-search"
+       
+      ></button>
+        <!-- <input class="nav-form__input" type="search" placeholder="Search...">
+        <button type="button" class="nav-form__btn search-btn"><i class='bx bx-search'></i></button> -->
       </div>
+
     </form>
     <div class="nav-right">
 
@@ -339,12 +293,11 @@
       </div>
 
       <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
-        <i #btnNotf (click)="sidebarVisible = true" class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
+        <i #btnNotf (click)="toggleNotf()" class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
 
+        <ng-container >
 
-        <p-sidebar [(visible)]="sidebarVisible" position="right">
-
-          <div #notList class="notf">
+          <div #notfContainer class="notf" [ngClass]="showNotf === true ? 'show' : '' ">
 
             <div class="notf-header">
               <i class="notf-header__i material-icons">notifications_active</i>
@@ -377,23 +330,37 @@
               </li>
             </ul>
           </div>
-        </p-sidebar>
+        </ng-container>
 
       </div>
 
-      <div class="nav-right__avatar" pTooltip="Mi perfil" tooltipPosition="bottom">
-        <p-avatar class="nav-right__i" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+      <div class="nav-right__profile" pTooltip="Mi perfil" tooltipPosition="bottom">
+        <p-avatar class="nav-right__i" (click)="profile.toggle($event)" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
           size="large" shape="circle"></p-avatar>
+
+
+          <p-overlayPanel #profile>
+           <h4>Perfil</h4>
+           <p-divider></p-divider>
+
+            <ul class="nav-right-profile__ul">
+              <li *ngFor="let item of menuProfile" class="nav-right-profile__li"> 
+          
+                <a class="nav-right-profile__a">
+                   <i class="nav-right-profile__i material-icons">{{item.icon}}</i>
+                  <span class="nav-right-profile__span">{{item.label}}</span>
+
+                </a>
+              </li>
+             
+            </ul>
+
+          
+
+        </p-overlayPanel>
+
       </div>
-      <!-- <input type="checkbox" class="nav__checkbox" id="switch-mode">
-        <label for="switch-mode" class="nav__label switch-mode"></label>
-        <a href="#" class="nav__a nav__a--notificacion notification">
-          <i class='bx bxs-bell' ></i>
-          <span class="nav__span nav__span--num num">8</span>
-        </a>
-        <a  href="#" class="nav__a nav__a--profile profile">
-          <img class="nav__img" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
-        </a> -->
+  
     </div>
   </nav>
   <!-- NAVBAR -->

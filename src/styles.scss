@@ -72,6 +72,7 @@ margin-right: auto;
   body {
     background: #f4f6fd;
     overflow-x: hidden;
+    font-family: 'Poppins';
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -87,3 +88,28 @@ margin-right: auto;
   a, button, label, span, small{
     font-family: 'Poppins', sans-serif;
   }
+
+  textarea, input {
+    font-family: 'Poppins', sans-serif !important;
+
+  } 
+
+  //* ============ SCROLL BAR =============
+
+::-webkit-scrollbar {
+  width: 0.85rem;
+  scrollbar-width: auto;
+  border-radius: 0.5rem;
+  background-color: hsl(228, 8%, 76%);
+  
+
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3f51b5;
+ 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(228, 8%, 54%);
+}

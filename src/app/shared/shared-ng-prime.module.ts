@@ -14,9 +14,20 @@ import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { CheckboxModule } from 'primeng/checkbox';
-import { StepsModule } from 'primeng/steps';
+ import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
+import { StepsModule } from 'primeng/steps';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MessagesModule } from 'primeng/messages';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { ProgressBarModule } from 'primeng/progressbar';
+// For dynamic progressbar demo
+import { ToastModule } from 'primeng/toast';
+import { FileUploadModule } from 'primeng/fileupload';
+
+import { AccordionModule } from 'primeng/accordion';
 
 const ngPrimeComponents = [
   InputTextModule,
@@ -31,8 +42,17 @@ const ngPrimeComponents = [
   SkeletonModule,
   InputTextareaModule,
   InputNumberModule,
-  CheckboxModule,
+   CheckboxModule,
+  RadioButtonModule,
   StepsModule,
+  MenuModule,
+  MultiSelectModule,
+  MessagesModule,
+  ProgressBarModule,
+  ToastModule,
+    FileUploadModule,
+  KeyFilterModule,
+ AccordionModule
 ]
 
 @NgModule({

@@ -1,0 +1,224 @@
+<div class="productos section">
+  <p-table
+    #productos
+    [value]="data"
+    styleClass="p-datatable-gridlines"
+    [(selection)]="selectedProduct"
+    [paginator]="true"
+   [loading]="isLoading"
+    [globalFilterFields]="['nombre', 'producto.nombre ', 'producto.sku ', 'status']"
+    [rows]="8"
+   class="productos__table"
+  >
+    <ng-template pTemplate="caption">
+      <div class="productos__caption">
+        <div class="productos__title">
+          <h1 class="productos__h1">Lista de Productos</h1>
+
+          <p-button
+            class="productos__option"
+            styleClass=" p-button-text"
+            iconPos="right"
+            (click)="menu.toggle($event)"
+            icon="pi pi-plus"
+            label="Agregar producto"
+          ></p-button>
+          <p-menu
+            class="productos__options"
+            #menu
+            [model]="items"
+            [popup]="true"
+          ></p-menu>
+          <!-- <p-button routerLink="{{addProductLink}}" class="productos__btn--add" label="Agregar producto" icon="pi pi-plus" iconPos="right" styleClass="p-button-raised p-button-text"></p-button> -->
+        </div>
+
+        <div class="productos__actions">
+          <p-button
+            *ngIf="checkboxValue"
+            label="Pausar publicación"
+            styleClass="p-button-warning p-button-text"
+          ></p-button>
+          <p-button
+            *ngIf="checkboxValue"
+            label="Borrar publicación"
+            styleClass="p-button-danger p-button-text"
+          ></p-button>
+        </div>
+
+        <div class="productos__search p-inputgroup">
+         
+            <input
+            class="productos__input"
+            type="text"
+            pInputText
+            placeholder="buscar producto..."
+            #searchProduct
+          />
+
+          <i (click)="clearTable(productos)" *ngIf="searchProduct.value.length >=1" class="productos__i material-icons">close</i>
+          
+
+          <button
+            class="productos__btn--search"
+            type="button"
+            pButton
+            icon="pi pi-search"
+            (click)="productos.filterGlobal(searchProduct.value, 'contains')"
+          ></button>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+      <tr class="productos__tr productos__head">
+        <th class="productos__th" style="width: 10%">
+          <p-tableHeaderCheckbox
+            (click)="togglButtons()"
+          ></p-tableHeaderCheckbox>
+        </th>
+
+        <th style="width: 40%" class="productos__th">
+          <h4 class="productos__h4">PRODUCTO</h4>
+        </th>
+
+        <th style="width: 10%" class="productos__th">
+          <h4 class="productos__h4">SKU</h4>
+        </th>
+        <th style="width: 10%" class="productos__th">
+          <h4 class="productos__h4">PRECIO</h4>
+        </th>
+        <th style="width: 10%" class="productos__th">
+          <h4 class="productos__h4">STOCK</h4>
+        </th>
+
+        <th style="width: 10%" class="productos__th productos__th--status">
+          <h4 class="productos__h4">STATUS</h4>
+        </th>
+
+        <th style="width: 10%" class="productos__th">
+          <h4 class="productos__h4">OPCIONES</h4>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template  *ngIf="isLoading" pTemplate="loadingbody" let-columns="columns"> 
+      <tr class="productos__tr productos__body">
+        <td data-label="" class="productos__td">
+          <p-skeleton></p-skeleton>
+        </td>
+        <td data-label="PRODUCTO" class="productos__td productos__td--producto">
+      
+          <p-skeleton></p-skeleton>
+        
+        </td>
+
+        <td data-label="SKU" class="productos__td">
+          <p-skeleton></p-skeleton>
+        </td>
+
+        <td data-label="PRECIO" class="productos__td">
+          <p-skeleton></p-skeleton>
+        </td>
+
+        <td data-label="STOCK" class="productos__td ">
+          <p-skeleton></p-skeleton>
+        </td>
+
+        <td data-label="STATUS" class="productos__td productos__td--status">
+          <p-skeleton></p-skeleton>
+        </td>
+
+        <td data-label="OPCIONES" class="productos__td">
+          <p-skeleton></p-skeleton>
+        </td>
+      </tr>
+    </ng-template>
+    
+
+    <ng-template #datala pTemplate="body" let-producto let-columns="columns">
+      <tr class="productos__tr productos__body">
+        <td data-label="" class="productos__td">
+          <p-tableCheckbox class="productos__check"
+            (click)="togglButtons()"
+            [value]="producto"
+          ></p-tableCheckbox>
+        </td>
+        <td data-label="PRODUCTO" class="productos__td productos__td--producto">
+          <img
+            class="productos__img shadow-4"
+            loading="lazy"
+            [src]="producto.images.src"
+            [alt]="producto.images.alt"
+          />
+          <h3 class="productos__h3">{{ producto.nombre }}</h3>
+        </td>
+
+        <td data-label="SKU" class="productos__td">
+          <p class="productos__p">
+            {{ producto.sku }}
+          </p>
+        </td>
+
+        <td data-label="PRECIO" class="productos__td">
+          <p class="productos__p">${{ producto.precio }}</p>
+        </td>
+
+        <td data-label="STOCK" class="productos__td ">
+          <p class="productos__p">
+            {{ producto.stock }}
+          </p>
+        </td>
+
+        <td data-label="STATUS" class="productos__td productos__td--status">
+          <p-tag
+            class="productos__status"
+            [rounded]="true"
+            severity="danger"
+            *ngIf="producto.stock == 0"
+          >
+            Sin stocks
+          </p-tag>
+          <p-tag
+            class="productos__status"
+            [rounded]="true"
+            severity="warning"
+            *ngIf="producto.stock >= 1 && producto.stock <= 9"
+          >
+            Stock bajo
+          </p-tag>
+          <p-tag
+            class="productos__status"
+            [rounded]="true"
+            severity="success"
+            *ngIf="producto.stock >= 10"
+          >
+            Suficiente stock
+          </p-tag>
+        </td>
+
+        <td data-label="OPCIONES" class="productos__td">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            class="productos__btn p-button-rounded p-button-text"
+            (click)="viewProduct(producto.id)"
+          ></button>
+
+          <p-button styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+            <i class="material-icons">add_a_photo</i>
+          </p-button>
+
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+          <td colspan="7">Producto no encontrado</td>
+      </tr>
+  </ng-template>
+  
+  </p-table>
+</div>

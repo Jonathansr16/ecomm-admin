@@ -1,34 +1,56 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren, OnDestroy } from '@angular/core';
 import { MessageUser } from '../core/interface/message-user.model';
 import { MessageUserService } from './services/message-user.service';
 import { AuthService } from '@auth/services/auth.service';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit,AfterViewInit{
+export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('sidebar') sidebar?: ElementRef;
+  @ViewChild('arrow') arrow?: ElementRef;
+  @ViewChild('btnNotf') btnNotf?: ElementRef;
+  @ViewChild('notfContainer') notfContainer?: ElementRef;
+  @ViewChildren('menu') menu?: QueryList<ElementRef>;
+ 
+
   isSubMenuOpen: boolean = false;
   sidebarVisible: boolean = false;
+  showNotf: boolean = false;
   show: boolean= false;
+
     //Sidebar toggle show hide function
   status = false;
   messageUser: MessageUser[] = [];
+  menuProfile: menu[] = [];
   date= new Date();
   notificationShow: boolean = false;
   activeSubMenuIndex: number = -1;
+  activeSubIndex: number= -1;
+activeMenu: number = -1;
 
-  constructor( private _messageUserService: MessageUserService, private authService: AuthService, private router: Router, private renderer2: Renderer2) { }
+  private unlistener!: () => void;
 
 
+  constructor( private _messageUserService: MessageUserService, private authService: AuthService, private router: Router, private renderer2: Renderer2) {
+
+   }
 
 addToggle()
 {
-  this.status = !this.status;       
+  this.status = !this.status;    
+  
+  if(this.status) {
+    this.renderer2.addClass(this.arrow?.nativeElement, 'animateArrow');
+
+
+  } else {
+    this.renderer2.removeClass(this.arrow?.nativeElement, 'animateArrow');
+  }
 }
 
 
@@ -36,25 +58,74 @@ toggleSubMenu(): void {
   this.isSubMenuOpen = !this.isSubMenuOpen;
 }
 
-@HostListener('document:click', ['$event'])
-closeSubMenu(event: any) {
- 
-  if(!this.sidebar?.nativeElement.contains(event.target)){
-    
-   this.activeSubMenuIndex = -1;
+
+closeSubMenu() {
+
+this.menu?.forEach(element => {
+
+const option = element.nativeElement;
+
+const parent = this.renderer2.parentNode(option);
+
+this.unlistener = this.renderer2.listen("document", "click", (event) => {
+
+  if(!parent.contains(event.target)) {
+    this.activeSubMenuIndex = -1;
+    this.activeSubIndex = -1
 
   } 
-  
+
+});
+
+
+})
+ 
 }
 
 toggleSubmenu(index: number) {
 
   if (this.activeSubMenuIndex === index) {
     this.activeSubMenuIndex = -1;
+    this.activeMenu = -1;
   } else {
     this.activeSubMenuIndex = index;
+    this.activeMenu = index;
+    
   }
 }
+
+toggleSubcategory(index: number) : void {
+
+  if (this.activeSubIndex === index) {
+    this.activeSubIndex = -1;
+  } else {
+    this.activeSubIndex = index;
+  
+  }
+
+}
+
+
+toggleNotf(): void {
+
+  this.showNotf = !this.showNotf;
+  console.log(this.showNotf)
+
+}
+
+// closeNotf(): void {
+
+//      const notfContent = this.notfContainer?.nativeElement;
+
+//   this.unlistener = this.renderer2.listen("document", "click", (event) => {
+
+//     if( this.showNotf && !notfContent.contains(event.target) ) {
+    
+//     }
+    
+//   })
+// }
+
 
 cerrarSesion(): void {
   this.authService.logout();
@@ -63,10 +134,39 @@ cerrarSesion(): void {
 
 ngOnInit(): void {
     this.messageUser = this._messageUserService.getMessageUser(); 
+
+    this.menuProfile = [
+
+      {
+        label: "Perfil",
+        link: "/perfil",
+        icon: "badge"
+      },
+
+      {
+        label: "Configuraciones",
+        link: "/perfil",
+        icon: "settings"
+      },
+
+      {
+        label: "Cerrar sesión",
+        link: "/auth/login",
+        icon: "logout"
+      }
+     ]
+   
 }
 
 ngAfterViewInit(): void {
+// this.closeSubMenu()
+this.closeSubMenu();
+ 
+// 
+}
 
+ngOnDestroy(): void {
+    this.unlistener();
 }
 
 
@@ -78,3 +178,4 @@ export interface menu {
   icon: string;
   img?: string;
 }
+

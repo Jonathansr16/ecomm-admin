@@ -1,0 +1,68 @@
+@import '_mixin';
+// .woo {
+//         border-top: 1px solid #dfe7ef;
+//         overflow: auto;
+//         height: calc(100vh - 5rem);
+//         padding: 2rem;
+//        background-color: #eff3f8;
+//         border-top-left-radius: 30px;
+//         box-shadow: inset 0 3px 4px #0000001a;
+//         z-index: 10;
+//         position: relative;
+//         margin-left: 17em;
+//         margin-top: -0.1em;
+// }
+
+
+.head{
+    position: relative;
+    // padding-left: 30px;
+    // padding-right: 30px;
+    // padding-bottom: 4.5em;
+    padding: 5em 30px;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--active-color);
+        z-index: -1;
+    }
+
+    &__ul {
+        @include flexible(flex, row, wrap, flex-start, center );
+        gap: 1em;
+    }
+
+    &__li {
+        color: #FFF;
+        @include flexible(flex, row, wrap, center, center );
+        gap: 0.5em;
+    }
+
+    &__a {
+        text-decoration: underline;
+    }
+
+    &__h6 {
+        color: var(--light);
+    }
+
+    &__actions {
+        @include flexible(flex, row, wrap, flex-end, center);
+        gap: 0.8em;
+    }
+    &__btn {
+        padding: 0.35rem 0.6rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        background-color: #FFF;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+}
+

@@ -6,8 +6,8 @@ export const environment = {
     },
 
     wcommerce: {
-        client_key: 'ck_31bada934ce911ce96408220fe1ca4c1f759f28f',
-        secret_key: 'cs_722bde84643e9ba1f9a73f82ff6380296961c407'
+        client_key: 'ck_b48fa512dc7e5965db814e9f2474fba266588737',
+        secret_key: 'cs_2e8ba7fbe16a28764c9690d3776765d1fa79e50f'
     },
 
     google: {
