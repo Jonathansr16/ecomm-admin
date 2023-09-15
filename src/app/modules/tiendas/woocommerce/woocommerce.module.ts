@@ -33,7 +33,8 @@ import { WcProductComponent } from './pages/wc-product/wc-product.component';
     FeatureModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule, 
+    FeatureModule
   ]
 })
 export class WoocommerceModule { }

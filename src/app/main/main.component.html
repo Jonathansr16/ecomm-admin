@@ -1,5 +1,5 @@
+<section class="contenedor">
 <section #sidebar class="sidebar" [ngClass]="status ? 'hide' : ''">
-
   <div class="sidebar-head">
     <div class="sidebar-head__user">
       <img src="assets/img/profile-example.webp" class="sidebar-head__img" loading="lazy" alt="profile">
@@ -295,9 +295,10 @@
       <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
         <i #btnNotf (click)="toggleNotf()" class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
 
-        <ng-container >
+      
 
-          <div #notfContainer class="notf" [ngClass]="showNotf === true ? 'show' : '' ">
+          <!-- [ngClass]="showNotf === true ? 'show' : '' " -->
+          <div #notfContainer class="notf" (click)="closeNotf()">
 
             <div class="notf-header">
               <i class="notf-header__i material-icons">notifications_active</i>
@@ -330,7 +331,7 @@
               </li>
             </ul>
           </div>
-        </ng-container>
+      
 
       </div>
 
@@ -372,3 +373,88 @@
   <!-- MAIN -->
 </section>
 <!-- CONTENT -->
+
+<div class="theme">
+  <i class="theme__i material-icons" (click)="sidebarVisible = true">settings</i>
+
+</div>
+</section>
+<p-sidebar [(visible)]="sidebarVisible" [baseZIndex]="50" position="right">
+  <h3>Elige un tema:</h3>
+  
+  <div class="theme__content">
+
+    <h4>Temas Claros</h4>
+    <div class="theme__card card">
+         
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('purple')" class="mr-3 cursor-pointer">
+                <img class="theme__img" src="assets/img/themes/saga-blue.png" width="50">
+            </button>
+  
+            <span class="white-sapce-nowrap theme__span">Purple</span>
+        </div>
+  
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('light-deeppurple')" class="mr-3 cursor-pointer">
+            <img class="theme__img" src="assets/img/themes/vela-blue.png" width="50">
+        </button>
+  
+        <span class="white-sapce-nowrap theme__span">Deep Purple</span>
+        </div>
+  
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('lara-light-indigo')" class="mr-3 cursor-pointer">
+            <img class="theme__img" src="assets/img/themes/arya-blue.png" width="50">
+        </button>
+        <span class="white-sapce-nowrap theme__span">Lara Indigo</span>
+  
+        </div>
+  
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('saga-blue')" class="mr-3 cursor-pointer">
+            <img class="theme__img" src="assets/img/themes/md-light-indigo.svg" width="50">
+        </button>
+        <span class="white-sapce-nowrap theme__span">Soho Light</span>
+  
+        </div>
+  
+      </div>
+  </div>
+
+  <div class="theme__content">
+
+    <h4>Temas Oscuros</h4>
+    <div class="theme__card card">
+         
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('boostrap-dark-blue')" class="mr-3 cursor-pointer">
+                <img class="theme__img" src="assets/img/themes/saga-blue.png" width="50">
+            </button>
+  
+            <span class="white-sapce-nowrap theme__span">Saga blue</span>
+        </div>
+  
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('lara-dark-indigo')" class="mr-3 cursor-pointer">
+            <img class="theme__img" src="assets/img/themes/vela-blue.png" width="50">
+        </button>
+  
+        <span class="white-sapce-nowrap theme__span">Vela blue</span>
+        </div>
+  
+        <div class="col-3 flex flex-column align-item-center gap-2">
+          <button (click)="changeTheme('vela-blue')" class="mr-3 cursor-pointer">
+            <img class="theme__img" src="assets/img/themes/arya-blue.png" width="50">
+        </button>
+        <span class="white-sapce-nowrap theme__span">Arya blue</span>
+  
+        </div>
+  
+
+      </div>
+  </div>
+
+ 
+  
+</p-sidebar>

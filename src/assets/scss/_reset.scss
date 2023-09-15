@@ -109,9 +109,12 @@
   body {
     min-height  : 100vh;
     font-size   : 100%;
-    color       : var(--negro);
+    color: var(--text-color);
+    background-color: var(--surface-ground);
     /* (Opcional) */ hyphens: auto;
     /* (Opcional) */ font-smooth: always;
     /* (Opcional) */ -webkit-font-smoothing: antialiased;
     /* (Opcional) */ -moz-osx-font-smoothing: grayscale;
+
+    
   }

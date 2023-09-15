@@ -29,6 +29,9 @@ import { FileUploadModule } from 'primeng/fileupload';
 
 import { AccordionModule } from 'primeng/accordion';
 
+import { SidebarModule } from 'primeng/sidebar';
+
+
 const ngPrimeComponents = [
   InputTextModule,
   TooltipModule,
@@ -52,7 +55,8 @@ const ngPrimeComponents = [
   ToastModule,
     FileUploadModule,
   KeyFilterModule,
- AccordionModule
+ AccordionModule,
+ SidebarModule
 ]
 
 @NgModule({

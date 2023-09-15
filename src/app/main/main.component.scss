@@ -4,7 +4,7 @@
   position: fixed;
   top: 250px;
   right: 0px;
-  z-index: 20;
+  z-index: 9;
   background-color: blueviolet;
   width: 60px;
   height: 50px;
@@ -13,6 +13,24 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+
+  &__i {
+    font-size: 2rem;
+  }
+
+  &__span {
+    font-size: 0.875rem;
+  }
+
+  &__card {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+    margin-top: -0.5rem;
+  }
 }
 
 .theme-content {
@@ -35,7 +53,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: var(--light);
+  // background: var(--light);
+  background-color: var(--surface-overlay);
   z-index: 10;
   font-family: var(--lato);
   transition: 0.3s ease;
@@ -106,8 +125,9 @@
       transition: all 0.3s;
 
       &:hover {
-        color: #fff;
-        background-color: var(--active-color);
+        // color: #fff;
+        // background-color: var(--active-color);
+        background-color: var(--surface-hover);
       }
     }
 
@@ -363,7 +383,7 @@
 
 .nav {
   height: 66px;
-  background: var(--light);
+  background-color: var(--surface-overlay);
   padding: 0 24px;
   display: flex;
   align-items: center;
@@ -534,14 +554,15 @@
   width: 418px;
   height: 100vh;
 
-    pointer-events: none;
+  pointer-events: none;
 
   background-color: var(--light);
-    padding: 22px 20px 40px;
-    transform: translate3d(418px, 0px, 0px);
-    transition: transform .30s;
-    backface-visibility: hidden;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  padding: 22px 20px 40px;
+  transform: translate3d(418px, 0px, 0px);
+  transition: transform 0.3s;
+  backface-visibility: hidden;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 
   &-header {
     display: flex;
@@ -597,7 +618,6 @@
 }
 
 .notf.show {
- 
   visibility: visible;
   opacity: 1;
   pointer-events: auto;

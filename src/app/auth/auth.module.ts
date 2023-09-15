@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 //* COMPONENT
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
-import { AuthRoutingModule } from '@auth/auth-routing.module';
 import { SharedNgPrimeModule} from '@shared/shared-ng-prime.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -24,7 +22,6 @@ import { FooterComponent } from './components/footer/footer.component';
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule,
     SharedNgPrimeModule,
     FormsModule,
     ReactiveFormsModule,
@@ -34,4 +31,4 @@ import { FooterComponent } from './components/footer/footer.component';
     CheckboxModule
   ]
 })
-export class LoginModule { }
+export class AuthModule { }

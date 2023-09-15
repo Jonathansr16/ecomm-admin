@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
-
+import { AuthModule} from '@auth/auth.module'
 
 
 @NgModule({
@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule,
     BrowserModule,
     AppRoutingModule,
+  AuthModule,
     BrowserAnimationsModule,
     HttpClientModule,
   ],

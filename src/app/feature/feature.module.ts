@@ -18,7 +18,8 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
   declarations: [
     TableProductsComponent,
     SearchProductComponent,
-    DropZoneComponent
+    DropZoneComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -29,7 +30,7 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
   ],
   exports: [
     TableProductsComponent,
-    DropZoneComponent
+    DropZoneComponent,
   ]
 })
 export class FeatureModule { }
