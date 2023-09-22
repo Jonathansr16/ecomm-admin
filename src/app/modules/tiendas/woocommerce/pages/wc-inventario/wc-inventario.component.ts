@@ -22,7 +22,7 @@ export class WcInventarioComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.wcService.getProductos().subscribe( data => {
+    this.wcService.getProducts().subscribe( data => {
      
       this.products = data;
       this.loading  = false;

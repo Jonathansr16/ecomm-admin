@@ -10,7 +10,7 @@ export class ValidatorsService {
 
   notWhitesSpaceValid(control: FormControl) {
 
-    return (control.value || '').trim().length? null : { 'whitespace': true };       
+    return (control.value || '').trim().length ? null : { 'whitespace': true };       
   }
 
   passwordsNotEquals(pass1 : string, pass2: string) {
@@ -29,12 +29,25 @@ export class ValidatorsService {
   }
 
 
+  fielEqual(field: string, value: string) {
+    return (formGroup: FormGroup) => {
+      
+      const fieldControl = formGroup.controls[field];
+    
+      if(fieldControl.value === value) {
+        fieldControl.setErrors(null);
+      } else {
+        fieldControl.setErrors({ equals: true });
+      }
+    }
+  }
+
   priceOfertInvalid(regularPrice: string, salePrice: string) {
 
     return (formGroup: FormGroup) => {
 
       const regularPriceControl = formGroup.controls[regularPrice];
-      const salePriceControl   = formGroup.controls[salePrice];
+      const salePriceControl = formGroup.controls[salePrice];
 
 
       if(salePriceControl.value < regularPriceControl.value) {

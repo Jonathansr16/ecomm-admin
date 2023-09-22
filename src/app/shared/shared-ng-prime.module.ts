@@ -30,6 +30,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { AccordionModule } from 'primeng/accordion';
 
 import { SidebarModule } from 'primeng/sidebar';
+import { PanelModule } from 'primeng/panel';
 
 
 const ngPrimeComponents = [
@@ -56,7 +57,8 @@ const ngPrimeComponents = [
     FileUploadModule,
   KeyFilterModule,
  AccordionModule,
- SidebarModule
+ SidebarModule,
+ PanelModule
 ]
 
 @NgModule({

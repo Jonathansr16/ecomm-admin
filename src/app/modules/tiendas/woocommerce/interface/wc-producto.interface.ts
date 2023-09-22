@@ -10,17 +10,20 @@
 export interface WcProductoResponse {
     id:                    number;
     name:                  string;
-    slug:                  string;
-    status:                string;
+    status?:                string;
     description:           string;
     short_description:     string;
     sku:                   string;
-    price:                 string;
+    price?:                 string;
     regular_price:         string;
     sale_price:            string;
+    total_sales:           number;
     categories:            CategoryResponse[];
-    tags:                  any[];
+    tags?:                  any[];
     images:                FormData;
+    stock_quantity:        null;
+    stock_status?:          string;
+
 }
 
 export interface Links {

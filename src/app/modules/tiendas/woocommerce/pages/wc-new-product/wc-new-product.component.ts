@@ -10,7 +10,6 @@ import { categorias } from 'src/app/core/interface/categorias.interface';
 import { MultiSelectChangeEvent, MultiSelectFocusEvent } from 'primeng/multiselect';
 import Swal from 'sweetalert2'
 import { ValidatorsService } from 'src/app/core/services/validators.service';
-import { map } from 'rxjs';
 import { CategoryResponse } from '@tiendas/woocommerce/interface/wc-producto.interface';
 
 @Component({
