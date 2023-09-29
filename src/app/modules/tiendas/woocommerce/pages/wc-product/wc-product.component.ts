@@ -6,23 +6,24 @@ import { ActivatedRoute } from '@angular/router';
 import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { wcProductoModel } from '@tiendas/woocommerce/models/wc-new-product.model';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-wc-product',
   templateUrl: './wc-product.component.html',
   styleUrls: ['./wc-product.component.scss'],
+  providers: [MessageService]
 })
 export class WcProductComponent {
   // @ts-ignore
   formProduct: FormGroup;
   activeAccordeon: number = 0;
-  idProduct: number = 0;
+  idProduct: any;
 
   wcProduct: wcProductoModel = new wcProductoModel();
 
   lastValue: string = '';
   currentValue: string = '';
-  equals?: boolean = true;
   loading: boolean = true;
 
   createFormUpdateProduct(): void {
@@ -50,12 +51,7 @@ export class WcProductComponent {
         stock_quantity: [''],
         categories: this.formBuilder.array([this.wcProduct.categories]),
       },
-      {
-        Validators: this.validatorService.fielEqual(
-          'name',
-          this.wcProduct.name
-        ),
-      }
+      
     );
   }
 
@@ -63,100 +59,60 @@ export class WcProductComponent {
     private wcService: WcommerceService,
     private activateRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private validatorService: ValidatorsService
+    private validatorService: ValidatorsService,
+    private messageService: MessageService,
+  
+
   ) {
     this.createFormUpdateProduct();
-    this.activateRoute.params.subscribe((params) => {
-      this.idProduct = params['id'];
-      this.wcService.getProduct(params['id']).subscribe(
-        (data) => {
-          this.wcProduct = {
-            ...data,
-          };
+   this.idProduct = this.activateRoute.snapshot.paramMap.get('id');
+     
+    this.wcService.getProduct(this.idProduct).subscribe(data => {
+      this.wcProduct = {
+        ...data
+      };
 
-          this.formProduct.patchValue({
-            ...data,
-          });
+      this.loading = false;
+      this.formProduct.patchValue({...data});
+     
+    })
 
-          console.log(this.formProduct);
-          this.loading = false;
-        },
-        (error) => {
-          console.log(error);
-          this.loading = true;
-        }
-      );
-    });
+   
   }
 
-  //*Evalua campos ESPECIFICOS
-  get invalidName() {
-    const lastValue = this.wcProduct.name;
-    const currentValue = this.formProduct.get('name');
+  //*Evalua un campos ESPECIFICOS
+  invalidField(field:string, lastValue: string ):boolean {
+   
+   const currentValue = this.formProduct.get(field);
 
-    return currentValue?.value === lastValue ||
-      (currentValue?.invalid && currentValue?.touched)
-      ? true
-      : false;
-  }
-
-  get invalidDescription() {
-    const lastValue = this.wcProduct.description;
-    const currentValue = this.formProduct.get('description');
-
-    return currentValue?.value === lastValue ||
-      (currentValue?.invalid && currentValue?.touched)
-      ? true
-      : false;
-  }
-
-  get invalidShortDescription() {
-    const lastValue = this.wcProduct.short_description;
-    const currentValue = this.formProduct.get('short_description');
-
-    return currentValue?.value === lastValue ||
-      (currentValue?.invalid && currentValue?.touched)
-      ? true
-      : false;
-  }
-
-  get invalidRegularPrice() {
-    const lastValue = this.wcProduct.regular_price;
-    const currentValue = this.formProduct.get('regular_price');
-
-    return currentValue?.value === lastValue || ( currentValue?.invalid && currentValue.touched) 
-    ? true
-    : false;
-  }
-
-  get invalidSalePrice() {
-    const lastValue = this.wcProduct.sale_price;
-    const currentValue = this.formProduct.get('sale_price');
-
-    return currentValue?.value === lastValue || (currentValue?.invalid && currentValue.touched)
+   return ( currentValue?.value.trim() === lastValue.trim() ) || ( currentValue?.invalid && currentValue.touched ) || (currentValue?.value.trim().length === 0)
     ? true
     : false;
   }
 
   //*RESETEA UN CAMPO ESPECIFICO
-  resetName() {
-    this.formProduct.get('name')?.reset(this.wcProduct.name);
+  cancelUpdate(field: string, lastValue: string) {
+      this.formProduct.get(field)?.patchValue(lastValue);
   }
 
-  resetDescription() {
-    this.formProduct.get('description')?.reset(this.wcProduct.description);
-  }
+  //*ACTUALIZA UN CAMPO ESPECIFICIO
+  updateField(field: string) {
+    const value = this.formProduct.get(field)?.value;
+    this.wcService.setFielUpdate(this.idProduct, value).subscribe( data => {
 
-  resetShortDescription() {
-    this.formProduct.get('short_description')?.reset(this.wcProduct.short_description);
-  }
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Actualización',
+        detail: 'Actualización echa con exito!'
+      });
 
-  resetRegularPrice() {
-    this.formProduct.get('regular_price')?.reset(this.wcProduct.regular_price);
-  }
+      console.log(data);
+      this.wcProduct.name = data.name;
+      this.formProduct.get(field)?.patchValue(data.name);
 
-  resetSalePrice() {
-    this.formProduct.get('sale_price')?.reset(this.wcProduct.sale_price);
+    }, (error) => {
+      console.log(error);
+    })
   }
 
   //* Abre & cierra cada acordeon

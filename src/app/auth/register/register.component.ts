@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup,  Validators } from '@angular/forms';
 import { AuthService } from '@auth/services/auth.service';
 import { UsuarioModel } from 'src/app/core/models/usuario.model';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
@@ -21,6 +21,21 @@ export class RegisterComponent  implements OnInit, OnDestroy{
 
   usuario: UsuarioModel = new UsuarioModel();
    
+   //*CREAR FORMULARIO REGISTRO
+   createformSignUp(): void {
+    this.formSignUp = this.formBuilder.group({
+      fullName:        ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
+      emailRegister:   ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
+      password:        ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
+      aceptTerm:       ['', [Validators.required                                                                     ]]
+    }, {
+      validator: this.validatorsService.matchValidator('password', 'confirmPassword')
+    });
+  
+  }
+
+  
   constructor (@Inject(DOCUMENT) private document: Document,  private renderer2: Renderer2, private formBuilder: FormBuilder,  private validatorsService: ValidatorsService,  private authService: AuthService) {
     this.createformSignUp();
 
@@ -37,33 +52,6 @@ export class RegisterComponent  implements OnInit, OnDestroy{
 
   }
 
-  //*CREAR FORMULARIO REGISTRO
-  createformSignUp(): void {
-    this.formSignUp = this.formBuilder.group({
-      fullName: ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      emailRegister: ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      pass1: ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      pass2: ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      aceptTerm: ['', [Validators.required]]
-    }, {
-      Validators: this.validatorsService.passwordsNotEquals('pass1', 'pass2')
-    });
-
-  
-  }
-
-  get passNotEquals() {
-    const pass1 = this.formSignUp.get('pass1')?.value;
-    const pass2 = this.formSignUp.get('pass2')?.value;
-
-    if( (pass1 !== pass2) && this.signUpSubmitted) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-
     //*GET DATA REGISTER FORM
     get fullNameInvalid() {
       return this.formSignUp.get('fullName')?.invalid && this.formSignUp.get('fullName')?.touched;
@@ -74,14 +62,14 @@ export class RegisterComponent  implements OnInit, OnDestroy{
     }
   
     get pass1Invalid() {
-      return this.formSignUp.get('pass1')?.invalid && this.formSignUp.get('pass1')?.touched;
+      return this.formSignUp.get('password')?.invalid && this.formSignUp.get('password')?.touched;
     }
   
-    get passwordsInvalid() {
-      const pass1 = this.formSignUp.get('pass1')?.value;
-      const pass2 = this.formSignUp.get('pass2')?.value
+    get matchInvalid() {
+      const pass1 = this.formSignUp.get('password')?.value;
+      const pass2 = this.formSignUp.get('confirmPassword')?.value;
   
-      return ( pass1 === pass2 ) ? false : true;
+      return  (pass1 === pass2) ? false : true;
     }
   
     get termInvalid() {
@@ -96,48 +84,44 @@ export class RegisterComponent  implements OnInit, OnDestroy{
       });
     }
 
+    console.log(this.formSignUp )
+  //   const formValues = this.formSignUp.value;
 
-    const formValues = this.formSignUp.value;
-    // this.formSignUp.valueChanges.subscribe( (formValues: any) => {
-
-      this.usuario.fullName= formValues.fullName;
-      this.usuario.email = formValues.emailRegister;
-      this.usuario.password = formValues.pass1;
-      this.checkTerminos = formValues.aceptTerm;
+  //     this.usuario.fullName= formValues.fullName;
+  //     this.usuario.email = formValues.emailRegister;
+  //     this.usuario.password = formValues.pass1;
+  //     this.checkTerminos = formValues.aceptTerm;
  
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      title: 'Validando datos',
-      text: 'Espere por favor...'
-    });
+  //   Swal.fire({
+  //     allowOutsideClick: false,
+  //     icon: 'info',
+  //     title: 'Validando datos',
+  //     text: 'Espere por favor...'
+  //   });
 
-   Swal.showLoading();
+  //  Swal.showLoading();
 
-    this.authService.signUp(this.usuario).subscribe(data => {
+  //   this.authService.signUp(this.usuario).subscribe(data => {
  
-      // console.log(this.usuario);
-     Swal.fire({
-        allowOutsideClick: true,
-        icon: 'success',
-        title: 'Registro echo con exito',
-      });
+  //    Swal.fire({
+  //       allowOutsideClick: true,
+  //       icon: 'success',
+  //       title: 'Registro echo con exito',
+  //     });
 
-      // if( this.recordarRegistro ) {
-      //   localStorage.setItem('email', this.usuario.email);
-      // }
+    
 
-      this.formSignUp.reset();
+  //     this.formSignUp.reset();
   
-    }, (error) => {
-       Swal.fire({
-        icon: 'error',
-        title: 'Se produjo un error',
-        text: error.error.error.message
-      });
+  //   }, (error) => {
+  //      Swal.fire({
+  //       icon: 'error',
+  //       title: 'Se produjo un error',
+  //       text: error.error.error.message
+  //     });
 
-    });
+  //   });
   }
 
 }

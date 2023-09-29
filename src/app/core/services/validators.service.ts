@@ -1,63 +1,66 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {  FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+
+
+interface ErrorValidate {
+  [s:string]: boolean
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ValidatorsService {
 
   constructor() { }
 
-  notWhitesSpaceValid(control: FormControl) {
+ 
+  notWhitesSpaceValid(control: FormControl) : ErrorValidate | null  {
 
-    return (control.value || '').trim().length ? null : { 'whitespace': true };       
+
+    if( (control.value || '').trim().length  ) {
+      return null
+    }
+
+    return { whitespace: true };
   }
 
-  passwordsNotEquals(pass1 : string, pass2: string) {
+  matchValidator(controlName1: string, controlName2: string) {
+    return (formGroup: FormGroup) => {
+      const control1 = formGroup.get(controlName1);
+      const control2 = formGroup.get(controlName2);
   
-    return (formGroup: FormGroup) => {
-
-      const pass1Control = formGroup.controls[pass1];
-      const pass2Control = formGroup.controls[pass2];
-
-      if(pass1Control.value === pass2Control.value ) {
-        pass2Control.setErrors(null);
+      if (control1?.value !== control2?.value) {
+        control2?.setErrors({ matchValidator: true });   
       } else {
-        pass2Control.setErrors({ notEquals: true });
+        control2?.setErrors(null);
       }
-    }
+    };
   }
 
 
-  fielEqual(field: string, value: string) {
-    return (formGroup: FormGroup) => {
-      
-      const fieldControl = formGroup.controls[field];
-    
-      if(fieldControl.value === value) {
-        fieldControl.setErrors(null);
-      } else {
-        fieldControl.setErrors({ equals: true });
-      }
+
+
+
+ priceInvalid(control1 : string, control2: string) {
+
+  return (formGroup: FormGroup) => {
+
+    const regular = formGroup.controls[control1];
+    const oferta = formGroup.controls[control2];
+
+    if( (regular.value > oferta.value) &&(regular.value > 0 && oferta.value > 0) ) {
+      oferta.setErrors(null);
+    } else {
+      oferta.setErrors({priceInvalid: true })
     }
+
+
   }
-
-  priceOfertInvalid(regularPrice: string, salePrice: string) {
-
-    return (formGroup: FormGroup) => {
-
-      const regularPriceControl = formGroup.controls[regularPrice];
-      const salePriceControl = formGroup.controls[salePrice];
+ }
 
 
-      if(salePriceControl.value < regularPriceControl.value) {
-          salePriceControl.setErrors(null);
-      } else {
-        salePriceControl.setErrors({ precioOFerta: true});
-      }
 
-    }
-  }
 
 
 }

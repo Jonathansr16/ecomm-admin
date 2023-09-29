@@ -63,7 +63,7 @@
       </span>
  
       <p-password autocomplete="on" class="form__input form-register__password" name="password_register"
-        placeholder="Ingrese su contraseña" [toggleMask]="true" formControlName="pass1"
+        placeholder="Ingrese su contraseña" [toggleMask]="true" formControlName="password"
         [class.is-invalid]="pass1Invalid" [ngClass]="{ 'ng-invalid ng-dirty': pass1Invalid}">
         <ng-template class="sugerencia" pTemplate="header">
           <h6>Pick a password</h6>
@@ -96,12 +96,12 @@
       </span>
 
       <p-password id="pass3" autocomplete="on" class="form-login__input" placeholder="Confirma la contraseña"
-      [feedback]="false" [toggleMask]="true" formControlName="pass2" [class.is-invalid]="passwordsInvalid"
-      [ngClass]="{'ng-invalid ng-dirty': passwordsInvalid }"></p-password>
+      [feedback]="false" [toggleMask]="true" formControlName="confirmPassword" [class.is-invalid]="matchInvalid"
+      [ngClass]="{'ng-invalid ng-dirty': matchInvalid }"></p-password>
   
     </div>
 
-    <small *ngIf="passwordsInvalid" class="p-error">Las contraseña deben ser iguales</small>
+    <small *ngIf="matchInvalid" class="p-error">Las contraseña deben ser iguales</small>
   </div>
 
   <div class="form__section form__remember">
@@ -116,6 +116,21 @@
     <p-button type="submit" label="Registrarme" styleClass="p-button-rounded"></p-button>
   </div>
 
+  <div class="form__section form__data-print">
+    <pre>
+      {{ formSignUp.value | json}}
+    </pre>
+  </div>
+
+  <div class="form__section form__data-valid">
+    <pre>
+      Estado del formulario: {{  formSignUp.valid }}
+      <br>
+      Status: {{  formSignUp.status }}
+    </pre>
+
+  </div>
+
 </form>
 
 <div class="form__section form-actions">
@@ -123,7 +138,10 @@
 <a class="form-actions__a" routerLink="/login">Ingresa ahora</a>
 </div>
 
+
+
 </div>
 
 <app-footer></app-footer> 
 </div>
+

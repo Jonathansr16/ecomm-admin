@@ -16,419 +16,488 @@
     <li class="woocommerce-breadcrumb__li">></li>
 
     <li class="woocommerce-breadcrumb__li">
-      <a
-        routerLink="/dashboard/woocommerce/inventario"
-        class="woocommerce-breadcrumb"
-        >Inventario</a
-      >
+      <a routerLink="/dashboard/woocommerce/inventario" class="woocommerce-breadcrumb">Inventario</a>
     </li>
 
     <li class="woocommerce-breadcrumb__li">></li>
 
     <li class="woocommerce-breadcrumb__li">
-      <a class="woocommerce-breadcrumb__a woocommerce-breadcrumb__a--active"
-        >Nuevo Producto</a
-      >
+      <a class="woocommerce-breadcrumb__a woocommerce-breadcrumb__a--active">Nuevo Producto</a>
     </li>
   </ul>
 </div>
 
-<div class="producto">
-  <form
-    action="#"
-    class="form-product"
-    [formGroup]="formRegisterProducto"
-    (ngSubmit)="registerProduct()"
-  >
-    <div class="form-product__container">
-     
-      <div class="form-product__left">
-        <div class="form-product__section">
-          <h1 class="form-product__h1">✍️ Registra tu producto</h1>
+<div class="wcnew">
 
-          <div class="form-product__box">
-            <h2 class="form-product__h2">Datos básicos del producto</h2>
+  <div class="wcnew__left">
 
-            <label class="form-product__label" htmlFor="title"
-              >*Titulo del producto:
-            </label>
-            <input
-              class="form-product__input"
-              pInputText
-              id="title"
-              placeholder="Ingrese un titulo para el producto"
-              formControlName="name"
-              [class.is-invalid]="nameInvalid"
-              [ngClass]="{ 'ng-invalid ng-dirty': nameInvalid }"
-            />
-            <small *ngIf="nameInvalid" class="p-error"
-              >El titulo es obligatorio</small
-            >
-          </div>
+    <form action="#" class="wcnew-form" [formGroup]="formRegisterProducto" (ngSubmit)="registerProduct()">
 
-          <div class="form-product__box">
-            <label class="form-product__label" htmlFor="description"
-              >*Descripción del producto:
-              <i
-                class="form-product__icon material-icons"
-                pTooltip="Describe este producto, ¿Qué lo hace único?, ¿Cúales son sus características más importantes?"
-                tooltipStyleClass="form-product__toolTip"
-                tooltipPosition="bottom"
-                >help</i
-              >
-            </label>
+      <div class="wcnew-accordeon">
 
-            <textarea
-              class="form-product__input"
-              id="description"
-              placeholder="Descripción larga del producto"
-              formControlName="description"
-              rows="14"
-              cols="30"
-              pInputTextarea
-              [autoResize]="true"
-              [class.is-invalid]="descriptionInvalid"
-              [ngClass]="{ 'ng-invalid ng-dirty': descriptionInvalid }"
-            >
-            </textarea>
-
-            <small *ngIf="descriptionInvalid" class="p-error"
-              >La descripción es obligatorio</small
-            >
-          </div>
-
-          <div class="form-product__box">
-            <label class="form-product__label" htmlFor="short_description"
-              >*Descripción corta del producto:
-              <i
-                class="form-product__icon material-icons"
-                pTooltip="Resume este producto en 1 o 2 frases cortas. Las mostraremos en la parte superior de la página."
-                tooltipStyleClass="form-product__toolTip"
-                tooltipPosition="bottom"
-                >help</i
-              >
-            </label>
-
-            <textarea
-              class="form-product__input"
-              placeholder="Descripción corta del producto"
-              id="shortDescription"
-              rows="8"
-              cols="30"
-              pInputTextarea
-              [autoResize]="true"
-              formControlName="short_description"
-              [class.is-invalid]="shortDescriptionInvalid"
-              [ngClass]="{ 'ng-invalid ng-dirty': shortDescriptionInvalid }"
-            >
-            </textarea>
-
-            <small *ngIf="shortDescriptionInvalid" class="p-error"
-              >La descripción corta es obligatorio</small
-            >
-          </div>
-        </div>
-
-        <p-divider></p-divider>
-
-        <div class="form-product__section">
-          <h2 class="form-product__h2">Precio del producto</h2>
-
-          <div class="form-product__box">
-            <label class="form-product__label" htmlFor="price"
-              >*Precio normal del producto:</label
-            >
-
-            <p-inputNumber
-              class="form-product__input"
-              inputId="price"
-            
-              mode="currency" 
-              currency="USD" 
-              locale="en-US"
-              placeholder="$0.00"
-            [showClear]="true"
-              formControlName="regular_price"
-              [class.is-invalid]="regularPriceInvalid"
-              [ngClass]="{ 'ng-invalid ng-dirty': regularPriceInvalid }"
-            >
-           
-            </p-inputNumber>
-
-            <small *ngIf="regularPriceInvalid" class="p-error"
-              >El precio es obligatorio</small
-            >
-          </div>
-
-          <div class="form-product__box">
-            <label class="form-product__label" htmlFor="rebaja"
-              >*Precio con rebaja del producto:</label
-            >
-
-            <p-inputNumber
-              class="form-product__input"
-              inputId="rebaja"
-              mode="currency" 
-              currency="USD" 
-              locale="en-US"
-              placeholder="$0.00"
-              [showClear]="true"
-              formControlName="sale_price"
-              [class.is-invalid]="[salePriceInvalid || priceSaleInvalid]"
-              [ngClass]="{ 'ng-invalid ng-dirty': [salePriceInvalid || priceSaleInvalid] }"
-            >
-          
-            </p-inputNumber>
-
-            <small *ngIf="salePriceInvalid" class="p-error"
-              >El precio oferta es obligatorio</small
-            >
-            <br>
-            <small *ngIf="priceSaleInvalid" class="p-error"
-            >El precio oferta debe ser menor al precio regular</small
-          >
-          </div>
-        </div>
-
-        <div class="form-product__section">
-          <h2 class="form-product__h2">Inventario</h2>
-          <p-divider></p-divider>
-
-          <div class="form-product__box">
-            <label class="form-product__label" htmlFor="sku"
-              >*SKU del producto:
-              <i
-                class="form-product__icon material-icons"
-                pTooltip="SKU se refiere a una unidad de almacenamiento de inventario, un identificador único para cada producto y servicio que se puede comprar."
-                tooltipStyleClass="form-product__toolTip"
-                tooltipPosition="bottom"
-                >help</i
-              >
-            </label>
-
-            <input
-              class="form-product__input"
-              pInputText
-              id="sku"
-              formControlName="sku"
-              [class.is-invalid]="skuInvalid"
-              [ngClass]="{ 'ng-invalid ng-dirty': skuInvalid }"
-            />
-            <small *ngIf="skuInvalid" class="p-error"
-              >El SKU oferta es obligatorio</small
-            >
-          </div>
-
-          <div class="form-product__box">
-            <div class="form-product__gestion mb-2">
-              <span class="form-product__label"
-                >Estado del producto:
-                <i
-                  class="form-product__icon material-icons"
-                  pTooltip="Controla si el producto se muestra (o no) como «hay existencias» o «agotado» en la tienda"
-                  tooltipStyleClass="form-product__toolTip"
-                  tooltipPosition="bottom"
-                  >help</i
-                >
-              </span>
+        <div class="wcnew-accordeon__item" [ngClass]="activeAccordeon === 1 ? 'isOpen' : ''">
+          <div class="wcnew-accordeon__titular" (click)="toggleAccordeon(1)">
+            <div class="wcnew-accordeon__title">
+              <h3 class="wcnew-accordeon__h3">Titulo</h3>
+              <span class="wcnew-accordeon__span">Incluye producto, marca, modelo y
+                destaca sus características principales</span>
             </div>
 
-            <div *ngIf="showGestion === false" class="form-product__checks">
-              <div class="flex align-items-center gap-1">
-                <p-radioButton
-                  formControlName="stock_status"
-                  class="form-product__checkbox"
-                  value="instock"
-                  [class.is-invalid]="stockStatusInvalid"
-                  [ngClass]="{ 'ng-invalid ng-dirty': stockStatusInvalid }"
-                  inputId="exitencia"   
-                >
-                </p-radioButton>
-                <label for="exitencia">Hay existencia</label>
-              </div>
-
-              <div class="flex align-items-center gap-1">
-                <p-radioButton
-                  formControlName="stock_status"
-                  class="form-product__checkbox"
-                  value="outofstock"
-                  [class.is-invalid]="stockStatusInvalid"
-                  [ngClass]="{ 'ng-invalid ng-dirty': stockStatusInvalid }"
-                  inputId="agotado" 
-                >
-                </p-radioButton>
-                <label for="agotado">Agotado</label>
-              </div>
-
-              <div class="flex align-items-center gap-1">
-                <p-radioButton
-                  formControlName="stock_status"
-                  class="form-product__checkbox"
-                  value="onbackorder"
-                  [class.is-invalid]="stockStatusInvalid"
-                  [ngClass]="{ 'ng-invalid ng-dirty': stockStatusInvalid }"
-                  inputId="reserva" 
-                >
-                </p-radioButton>
-                <label for="reserva">Se puede reservar</label>
-              </div>
-              <small *ngIf="stockStatusInvalid" class="p-error">Indique el estado de su producto</small
-            >
+            <div class="wcnew-accordeon__icon">
+              <i class="wcnew-accordeon__i material-icons">expand_more</i>
             </div>
-          </div>
 
-          <div class="form-product__box">
-            <label class="form-product__label" htmlFor="gestion"
-              >*Gestión del inventario:</label
-            >
-            <div class="form-product__seguimiento">
-              <p-checkbox
-                name="group1"
-                formControlName="check_inventario"
-                inputId="gestion"
-                [binary]="true"
-              >
-              </p-checkbox>
-              <label for="ny"
-                >Hacer seguimiento de la cantidad de inventario de este
-                producto</label
-              >
+          </div>
+          <div class="wcnew-accordeon__content">
+
+            <div class="wcnew-form__section">
+              <label class="wcnew-form__label" htmlFor="title">*Titulo del producto:
+              </label>
+              <input class="wcnew-form__input" pInputText id="title" (blur)="completedStatus()"
+                placeholder="Ingrese un titulo para el producto" formControlName="name" [class.is-invalid]="nameInvalid"
+                [maxlength]="60" [ngClass]="{ 'ng-invalid ng-dirty': nameInvalid }" />
+              <span class="wcnew-form__span wcnew-form__span--words">{{formRegisterProducto.get('name')?.value.length}}
+                /60</span>
+              <small *ngIf="nameInvalid" class="p-error">El titulo es obligatorio</small>
             </div>
-          </div>
 
-          <div class="form-product__box" *ngIf="showGestion">
-            <label class="form-product__label" htmlFor="cantidad"
-              >*Cantidad:
-              <i
-                class="form-product__icon material-icons"
-                pTooltip="SKU se refiere a una unidad de almacenamiento de inventario, un identificador único para cada producto y servicio que se puede comprar."
-                tooltipStyleClass="form-product__toolTip"
-                tooltipPosition="bottom"
-                >help</i
-              >
-            </label>
-
-            <p-inputNumber
-              inputId="integeronly"
-              formControlName="stock_quantity"
-              [class.is-invalid]="stockQuantityInvalid"
-              [ngClass]="{ 'ng-invalid ng-dirty': stockQuantityInvalid }"
-            >
-            </p-inputNumber>
-
-            <small *ngIf="stockQuantityInvalid" class="p-error"
-              >Indique la cantidad minima</small
-            >
-          </div>
-        </div>
-
-        <div class="form-product__section">
-          <h2 class="form-product__h2 mb-1">Categoria del producto:</h2>
-
-          <p-divider></p-divider>
-     
-          <div class="card flex justify-content-center form-product__box">
-
-            <!-- <div formArrayName="categories">
-              <div *ngFor="let item of  categoriesArray.controls; let i = index" [formGroupName]="i">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" formControlName="id">
-          
-                <label for="edad">Edad:</label>
-                <input type="number" id="edad" formControlName="name">
-              </div>
+            <!-- <div class="form__action">
+              <p-button icon="pi pi-angle-right" styleClass="p-button-rounded"></p-button>
+  
             </div> -->
-            <p-multiSelect (onChange)=" MultiSelectChangeEvent($event)" formArrayName="categories" [options]="arrayCategories" defaultLabel="Seleccione una categoria" optionLabel="name" >
-              <ng-template let-value let-categoria pTemplate="categoriesArray" >
-                
-                <div class="flex align-items-center gap-2" *ngFor="let option of categoriesArray.controls">
-                
-                 {{option}}
+          </div>
+        </div>
 
-                    </div>
+        <div class="wcnew-accordeon__item" [ngClass]="activeAccordeon === 2 ? 'isOpen' : ''">
+          <div class="wcnew-accordeon__titular" (click)="toggleAccordeon(2)">
+            <div class="wcnew-accordeon__title">
+              <h3 class="wcnew-accordeon__h3">Descripción del producto</h3>
+            </div>
 
-               <div *ngIf="!categoria || categoria.length === 0">Seleccione una categoria</div> 
-              </ng-template>
-              <ng-template let-country pTemplate="item">
-                  <div class="flex align-items-center gap-2">
-                     
-                      <div>{{ country.name }}</div>
-                  </div>
-              </ng-template>
-      </p-multiSelect>
+          </div>
+          <div class="wcnew-accordeon__content">
+
+            <div class="wcnew-form__section">
+              <label class="wcnew-form__label" htmlFor="description">*Descripción del producto:
+                <i class="wcnew-form__i material-icons"
+                  pTooltip="Describe este producto, ¿Qué lo hace único?, ¿Cúales son sus características más importantes?"
+                  tooltipStyleClass="form-product__toolTip" tooltipPosition="bottom">help</i>
+              </label>
+              <textarea class="wcnew-form__textarea" id="description" (blur)="completedStatus()"
+                placeholder="Descripción larga del producto" formControlName="description" rows="14" cols="30"
+                pInputTextarea [autoResize]="true" [maxlength]="5000" [class.is-invalid]="descriptionInvalid"
+                [ngClass]="{ 'ng-invalid ng-dirty': descriptionInvalid }">
+              </textarea>
+              <span
+                class="wcnew-form__span wcnew-form__span--words">{{formRegisterProducto.get('description')?.value.length}}
+                /5000</span>
+
+              <small *ngIf="descriptionInvalid" class="p-error">La descripción es obligatorio</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="wcnew-accordeon__item" [ngClass]="activeAccordeon === 3 ? 'isOpen' : ''">
+          <div class="wcnew-accordeon__titular" (click)="toggleAccordeon(3)">
+            <div class="wcnew-accordeon__title">
+              <h3 class="wcnew-accordeon__h3">Descripción corta del producto</h3>
+            </div>
+
+          </div>
+          <div class="wcnew-accordeon__content">
+            <div class="wcnew-form__section">
+              <textarea class="wcnew-form__textarea" placeholder="Descripción corta del producto" id="shortDescription"
+                (blur)="completedStatus()" rows="8" cols="30" pInputTextarea [autoResize]="true" [maxlength]="2000"
+                formControlName="short_description" [class.is-invalid]="shortDescriptionInvalid"
+                [ngClass]="{ 'ng-invalid ng-dirty': shortDescriptionInvalid }">
+                </textarea>
+              <span
+                class="wcnew-form__span wcnew-form__span--words">{{formRegisterProducto.get('short_description')?.value.length}}
+                /2000</span>
+
+              <small *ngIf="shortDescriptionInvalid" class="p-error">La descripción corta es obligatorio</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="wcnew-accordeon__item" [ngClass]="activeAccordeon === 4 ? 'isOpen' : ''">
+          <div class="wcnew-accordeon__titular" (click)="toggleAccordeon(4)">
+            <div class="wcnew-accordeon__title">
+              <h3 class="wcnew-accordeon__h3">Precio del producto</h3>
+            </div>
+
+          </div>
+          <div class="wcnew-accordeon__content">
+
+            <div class="wcnew-form__section">
+              <label class="wcnew-form__label" htmlFor="price">*Precio normal del producto:</label>
+
+              <p-inputNumber class="wcnew-form__input" inputId="price" (onBlur)="completedStatus()" mode="currency"
+                currency="USD" locale="en-US" placeholder="$0.00" formControlName="regular_price"
+                [class.is-invalid]="regularPriceInvalid" [ngClass]="{ 'ng-invalid ng-dirty': regularPriceInvalid }">
+
+              </p-inputNumber>
+
+              <small *ngIf="regularPriceInvalid" class="p-error">El precio es obligatorio</small>
+            </div>
+
+            <div class="wcnew-form__section">
+              <label class="wcnew-form__label" htmlFor="rebaja">*Precio con rebaja del producto:</label>
+
+              <p-inputNumber class="wcnew-form_input" inputId="rebaja" mode="currency" (onBlur)="completedStatus()"
+                currency="USD" locale="en-US" placeholder="$0.00" formControlName="sale_price"
+                [class.is-invalid]="salePriceInvalid "
+                [ngClass]="{ 'ng-invalid ng-dirty': [salePriceInvalid] }">
+
+              </p-inputNumber>
+              <small *ngIf="salePriceInvalid" class="p-error">El precio oferta es obligatorio</small>
+              <br>
+            </div>
+          </div>
+        </div>
+
+        <div class="wcnew-accordeon__item" [ngClass]="activeAccordeon === 5 ? 'isOpen' : ''">
+          <div class="wcnew-accordeon__titular" (click)="toggleAccordeon(5)">
+            <div class="wcnew-accordeon__title">
+              <h3 class="wcnew-accordeon__h3">Inventario</h3>
+            </div>
+
+          </div>
+          <div class="wcnew-accordeon__content">
+
+            <div class="wcnew-form__section">
+              <label class="wcnew-form__label" htmlFor="sku">*SKU del producto:
+                <i class="wcnew-form__i material-icons"
+                  pTooltip="SKU se refiere a una unidad de almacenamiento de inventario, un identificador único para cada producto y servicio que se puede comprar."
+                  tooltipStyleClass="form-product__toolTip" tooltipPosition="bottom">help</i>
+              </label>
+
+              <input class="wcnew-form__input" pInputText id="sku" (blur)="completedStatus()" formControlName="sku"
+                [class.is-invalid]="skuInvalid" [ngClass]="{ 'ng-invalid ng-dirty': skuInvalid }" />
+              <small *ngIf="skuInvalid" class="p-error">El SKU oferta es obligatorio</small>
+            </div>
+
+            <div class="wcnew-form__section">
+
+              <label class="wcnew-form__label" htmlFor="cantidad">*Cantidad:
+                <i class="wcnew-form__i material-icons"
+                  pTooltip="SKU se refiere a una unidad de almacenamiento de inventario, un identificador único para cada producto y servicio que se puede comprar."
+                  tooltipStyleClass="form-product__toolTip" tooltipPosition="bottom">help</i>
+              </label>
+
+              <p-inputNumber inputId="integeronly" class="wcnew-form__input" (onBlur)="completedStatus()"
+                formControlName="stock_quantity" [class.is-invalid]="stockQuantityInvalid"
+                [ngClass]="{ 'ng-invalid ng-dirty': stockQuantityInvalid }">
+              </p-inputNumber>
+
+              <small *ngIf="stockQuantityInvalid" class="p-error">Indique la cantidad minima</small>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="wcnew-accordeon__item" [ngClass]="activeAccordeon === 6 ? 'isOpen' : ''">
+          <div class="wcnew-accordeon__titular" (click)="toggleAccordeon(6)">
+            <div class="wcnew-accordeon__title">
+              <h3 class="wcnew-accordeon__h3">Categoria del produto</h3>
+            </div>
+
+          </div>
+
+          <div class="form__box card flex justify-content-center">
+            <p-multiSelect [options]="arrayCategories" formArrayName="categories"
+              (onChange)=" MultiSelectChangeEvent($event)" defaultLabel="Seleccione una categoria" optionLabel="name"
+              display="chip"></p-multiSelect>
 
           </div>
         </div>
 
-        <div class="form-product__section">
-          <p-button
-            type="submit"
-            label="Registrar"
-            styleClass="p-button-help"
-          ></p-button>
+        <div class="wcnew-accordeon__item">
+          <pre>
+          Estado del formulario: {{ formRegisterProducto.valid }}
+          <br>
+          Status: {{ formRegisterProducto.status }}
+        </pre>
+
         </div>
 
-        <div class="form-product__section">
-          <hr />
+        <div class="wcnew-accordeon__item">
           <pre>
-              Estado del formulario: {{ formRegisterProducto.valid }}
-              <br>
-              Status: {{ formRegisterProducto.status }}
-          </pre>
+          producto {{ formRegisterProducto.value | json}}
+      
+        
+        </pre>
 
-          <pre>
-            {{ formRegisterProducto.value | json }}
-         </pre
-          >
         </div>
 
-        <div class="form-product__section">
-          <hr />
+      </div>
+    </form>
+  </div>
 
-          <pre>
-            {{ producto | json }}
-         </pre
-          >
+  <div class="wcnew__right">
+
+    <aside class="wcnew__aside">
+      <div class="checklist">
+
+        <div class="checklist__complete">
+          <div class="checklist__bar">
+
+            <p-knob [(ngModel)]="completed" valueColor="green" [size]="130" valueTemplate="{value}%" [min]="0" [max]="100"
+              [readonly]="true"></p-knob>
+          </div>
+
+          <div class="checklist__avance">
+            <span>Completado:</span>
+            <span class="checklist__span--avance"> {{numFieldValid}} / 8</span>
+          </div>
+
+
         </div>
+
+        <div class="checklist__item">
+          <!-- 
+     <div class="checklist__icon" [ngClass]="nameInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="nameInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!nameInvalid">done</i>
+    </div>
+    <div class="checklist__details">
+      <span class="checklist__span">Titulo: </span>
+      <span class="checklist__span" *ngIf="nameInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!nameInvalid">Completo</span>
+    </div> 
+  
+      -->
+
+          <div class="p-messages" *ngIf="nameInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"><i class="material-icons">cancel</i></span>
+              <span class="p-message-summary">Titulo</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!nameInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Titulo</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__item">
+
+          <!-- <div class="checklist__icon" [ngClass]="descriptionInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="descriptionInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!descriptionInvalid">done</i>
+
+    </div>
+    <div class="checklist__details">
+      <span class="checklist__span">Descripción: </span>
+      <span class="checklist__span" *ngIf="descriptionInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!descriptionInvalid">Completo</span>
+    </div> -->
+
+          <div class="p-messages" *ngIf="descriptionInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">Descripción</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!descriptionInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Descripción</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="checklist__item">
+
+          <!-- <div class="checklist__icon" [ngClass]="shortDescriptionInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="shortDescriptionInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!shortDescriptionInvalid">done</i>
+    </div>
+    <div class="checklist__details">
+      <span class="checklist__span"> Descripción corta: </span>
+      <span class="checklist__span" *ngIf="shortDescriptionInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!shortDescriptionInvalid">Completo</span>
+    </div> -->
+
+          <div class="p-messages" *ngIf="shortDescriptionInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">Descripción corta</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!shortDescriptionInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Descripción corta</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__item">
+
+          <!-- <div class="checklist__icon" [ngClass]="regularPriceInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="regularPriceInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!regularPriceInvalid">done</i>
+
+    </div>
+
+    <div class="checklist__details">
+      <span class="checklist__span"> Precio regular: </span>
+      <span class="checklist__span" *ngIf="regularPriceInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!regularPriceInvalid">Completo</span>
+    </div> -->
+
+          <div class="p-messages" *ngIf="regularPriceInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">Precio Normal</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!regularPriceInvalid">
+            <div class="p-message p-message-success	">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Precio Normal</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__item">
+
+          <!-- <div class="checklist__icon" [ngClass]="salePriceInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="salePriceInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!salePriceInvalid">done</i>
+
+    </div>
+    <div class="checklist__details">
+      <span class="checklist__span"> Precio de oferta: </span>
+      <span class="checklist__span" *ngIf="salePriceInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!salePriceInvalid">Completo</span>
+    </div> -->
+
+          <div class="p-messages" *ngIf="salePriceInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">Precio de Oferta</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!salePriceInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Precio de Oferta</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__item">
+
+          <!-- <div class="checklist__icon" [ngClass]="skuInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="skuInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!skuInvalid">done</i>
+    </div>
+    <div class="checklist__details">
+      <span class="checklist__span"> SKU: </span>
+      <span class="checklist__span" *ngIf="skuInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!skuInvalid">Completo</span>
+    </div> -->
+
+          <div class="p-messages" *ngIf="skuInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">SKU</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!skuInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">SKU</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__item">
+
+          <!-- <div class="checklist__icon" [ngClass]="stockQuantityInvalid ? 'checklist__icon--invalid' : 'checklist__icon--valid'">
+      <i class="checklist__i material-icons" *ngIf="stockQuantityInvalid">close</i>
+      <i class="checklist__i material-icons" *ngIf="!stockQuantityInvalid">done</i>
+    </div>
+    <div class="checklist__details">
+      <span class="checklist__span"> Stock: </span>
+      <span class="checklist__span" *ngIf="stockQuantityInvalid">Incompleto</span>
+      <span class="checklist__span" *ngIf="!stockQuantityInvalid">Completo</span>
+    </div> -->
+
+          <div class="p-messages" *ngIf="stockQuantityInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">Stock</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!stockQuantityInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Stock</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__item">
+
+          <div class="p-messages" *ngIf="categoriesInvalid">
+            <div class="p-message p-message-error checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-times"></i></span>
+              <span class="p-message-summary">Categoria</span>
+              <span class="p-message-detail">Incompleto</span>
+            </div>
+          </div>
+
+          <div class="p-messages" *ngIf="!categoriesInvalid">
+            <div class="p-message p-message-success	checklist__type">
+              <span class="p-message-icon"> <i class="pi pi-check"></i></span>
+              <span class="p-message-summary">Categoria</span>
+              <span class="p-message-detail">Completo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="checklist__actions">
+          <button (click)="registerProduct()" pButton pRipple label="Registrar" class="p-button-success"
+           ></button>
+
+        </div>
+
       </div>
 
-      <!-- <div class="form-product__right"> 
-       
+    </aside>
+  </div>
 
-      <div class="form-product__section form-product__gallery">
-          <h3 class="form-product__h3 mb-1">Imagenes del producto:</h3>
-
-          <div class="form-product__box form-product__indication">
-            <p-messages class="form-product__message" severity="info">
-              <ng-template pTemplate>
-                <div class="form-product__title">
-                  <i class="material-icons form-product__i">info</i>
-                  <h4 class="form-product__h4 form-product__info mb-1">
-                    Recuerda que:
-                  </h4>
-                </div>
-
-                <ul class="form-product__ul">
-                  <li class="form-product__li">Minimo 600 x 600 pixeles</li>
-                  <li class="form-product__li">Maximo 3840 x 2160 pixeles</li>
-                  <li class="form-product__li">Formato .jpg o .png y .webp</li>
-                  <li class="form-product__li">
-                    Fondo blanco, sin marca de agua y sin logos
-                  </li>
-                  <li class="form-product__li">Peso máximo de 2MB</li>
-                </ul>
-              </ng-template>
-            </p-messages>
-          </div>
-
-          <div class="form-product__box">
-            <app-drop-zone
-              [arrayImages]="images"
-              formArrayName="images"
-            ></app-drop-zone>
-          </div>
-        </div>
-      </div>  -->
-    </div>
-  </form>
 </div>

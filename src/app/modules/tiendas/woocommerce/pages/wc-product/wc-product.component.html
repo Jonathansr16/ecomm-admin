@@ -73,7 +73,7 @@
                 </label>
 
                 <input class="wcform__input" pInputText id="title" placeholder="Ingrese un titulo para el producto"
-                  formControlName="name" #inputName [maxlength]="60" [class.is-invalid]="invalidName" />
+                  formControlName="name" #inputName [maxlength]="60"  />
 
                 <span class="wcform__span--words"> {{formProduct.get('name')?.value.length}} /60</span>
               </div>
@@ -83,10 +83,10 @@
 
 
               <div class="wcform__action">
-
-                <p-button styleClass="p-button-raised" [disabled]="invalidName">Aceptar</p-button>
-                <p-button styleClass="p-button-text" [disabled]="invalidName"
-                  (onClick)="resetName()">Cancelar</p-button>
+                <p-toast></p-toast>
+                <p-button styleClass="p-button-raised" [disabled]="invalidField('name', wcProduct.name)" (onClick)="updateField('name')">Aceptar</p-button>
+                <p-button styleClass="p-button-text" [disabled]="invalidField('name', wcProduct.name)"
+                  (onClick)="cancelUpdate('name', wcProduct.name)">Cancelar</p-button>
               </div>
 
             </div>
@@ -106,16 +106,16 @@
               <div class="accordeon__box">
                 <textarea class="wcform__textarea" id="description" placeholder="Descripción larga del producto"
                   formControlName="description" rows="14" cols="30" [maxlength]="50000" pInputTextarea
-                  [autoResize]="true" [class.is-invalid]="invalidDescription">
+                  [autoResize]="true" [class.is-invalid]="invalidField">
                 </textarea>
                 <span class="wcform__span--words"> {{formProduct.get('description')?.value.length}} /5000</span>
 
               </div>
 
               <div class="wcform__action">
-                <p-button styleClass="p-button-raised" [disabled]="invalidDescription">Aceptar</p-button>
-                <p-button styleClass="p-button-text" [disabled]="invalidDescription"
-                  (onClick)="resetDescription()">Cancelar</p-button>
+                <p-button styleClass="p-button-raised" [disabled]="invalidField('description',wcProduct.description)">Aceptar</p-button>
+                <p-button styleClass="p-button-text" [disabled]="invalidField('description', wcProduct.description)"
+                  (onClick)="cancelUpdate('description', wcProduct.description)">Cancelar</p-button>
               </div>
             </div>
 
@@ -143,9 +143,9 @@
               </div>
 
               <div class="wcform__action">
-                <p-button styleClass="p-button-raised" [disabled]="invalidDescription">Aceptar</p-button>
-                <p-button styleClass="p-button-text" [disabled]="invalidDescription"
-                  (onClick)="resetDescription()">Cancelar</p-button>
+                <p-button styleClass="p-button-raised" >Aceptar</p-button>
+                <p-button styleClass="p-button-text" 
+                  (onClick)="cancelUpdate('short_description', wcProduct.description)">Cancelar</p-button>
               </div>
 
             </div>

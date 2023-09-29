@@ -113,9 +113,9 @@ export class WcommerceService {
 
 
   //*ACTUALIZA UN CAMPO ESPECIFICO 
-  setFielUpdate(idProduct: number, field: string): Observable<WcProductoResponse> {
+  setFielUpdate(idProduct: any, field: string): Observable<WcProductoResponse> {
 
-    return this.http.post<WcProductoResponse>( `${this.url}products/${idProduct}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`, field)
+    return this.http.put<WcProductoResponse>(`${this.url}products/${idProduct}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`, field)
   }
 
   // getQuery(query: string) {

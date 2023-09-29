@@ -44,7 +44,7 @@
   
   &__textarea {
     max-height: 550px;
-   overflow-y: scroll !important;
+   overflow-y: auto !important;
   }
   &__action {
     @include flexible(flex, row, wrap, flex-end, center);

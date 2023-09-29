@@ -23,6 +23,22 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ts-ignore
   formSignIn: FormGroup;
 
+    //* CREAR FORMULARIO LOGIN
+    createformSignIn(): void {
+      this.formSignIn = this.formBuilder.group({
+        emailLogin: ['', [Validators.required, Validators.minLength(6), this.validatorsService.notWhitesSpaceValid]],
+        passLogin: ['', [Validators.required, Validators.minLength(5), this.validatorsService.notWhitesSpaceValid]],
+        rememberLogin: ['']
+      });
+  
+      this.formSignIn.valueChanges.subscribe( formValues => {
+        this.usuario.email= formValues.emailLogin;
+        this.usuario.password = formValues.passLogin;
+         this.checkRemember = formValues.rememberLogin;
+  
+      });
+    }
+
   constructor(@Inject(DOCUMENT) private document: Document,
     private formBuilder: FormBuilder, 
     private renderer2: Renderer2, 
@@ -60,22 +76,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   
   }
 
-
-  //* CREAR FORMULARIO LOGIN
-  createformSignIn(): void {
-    this.formSignIn = this.formBuilder.group({
-      emailLogin: ['', [Validators.required, Validators.minLength(6), this.validatorsService.notWhitesSpaceValid]],
-      passLogin: ['', [Validators.required, Validators.minLength(5), this.validatorsService.notWhitesSpaceValid]],
-      rememberLogin: ['']
-    });
-
-    this.formSignIn.valueChanges.subscribe( formValues => {
-      this.usuario.email= formValues.emailLogin;
-      this.usuario.password = formValues.passLogin;
-       this.checkRemember = formValues.rememberLogin;
-
-    });
-  }
 
   login() {
 

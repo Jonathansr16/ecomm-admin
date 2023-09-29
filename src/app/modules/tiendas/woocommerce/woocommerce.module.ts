@@ -14,6 +14,8 @@ import { WcMainComponent } from './pages/main/wc-main.component';
 import { WcNewProductComponent } from './pages/wc-new-product/wc-new-product.component';
 import { WcProductComponent } from './pages/wc-product/wc-product.component';
 
+import { KnobModule } from 'primeng/knob';
+
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import { WcProductComponent } from './pages/wc-product/wc-product.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule, 
-    FeatureModule
+    FeatureModule,
+    KnobModule
   ]
 })
 export class WoocommerceModule { }
