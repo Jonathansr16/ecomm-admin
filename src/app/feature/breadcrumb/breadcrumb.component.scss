@@ -1,0 +1,16 @@
+.breadcrumb {
+    position: relative;
+    padding: 5em 30px;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--primary-500);
+        z-index: -1;
+    }
+}

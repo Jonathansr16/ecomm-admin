@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 //* COMPONENTS
 import { HeaderComponent } from './header/header.component';
 import { PanelLeftComponent } from './panel-left/panel-left.component';
-import { ThemeComponent } from './theme/theme.component';
 import { FooterComponent } from './footer/footer.component';
 
 
@@ -20,7 +19,6 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     declarations: [
       HeaderComponent,
       PanelLeftComponent,
-      ThemeComponent,
       FooterComponent
     ],
     imports: [
@@ -34,7 +32,6 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     exports: [
       HeaderComponent,
       PanelLeftComponent,
-      ThemeComponent,
       FooterComponent
     ]
   })

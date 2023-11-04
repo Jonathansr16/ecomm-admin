@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { homeAyuda } from 'src/app/core/interface/ayuda.model';
-import { WcommerceService } from '@tiendas/woocommerce/services/wcommerce.service';
+import { WcommerceService } from '@wcommerce/services/wcommerce.service';
 import { MenuItem } from 'primeng/api';
 
 

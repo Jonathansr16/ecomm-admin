@@ -9,6 +9,11 @@ import { SearchProductComponent } from './search-product/search-product.componen
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { ExpansionPanelComponent } from './expansion-panel/expansion-panel.component';
+import { TablePedidosComponent } from './table-pedidos/table-pedidos.component';
+import { LoadingTableComponent } from './loading-table/loading-table.component';
+import { MessageComponent } from './message/message.component';
 
 
 //* MODULES
@@ -19,6 +24,12 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
     TableProductsComponent,
     SearchProductComponent,
     DropZoneComponent,
+    BreadcrumbComponent,
+    ExpansionPanelComponent,
+    TablePedidosComponent,
+    LoadingTableComponent,
+    MessageComponent,
+
     
   ],
   imports: [
@@ -31,6 +42,12 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
   exports: [
     TableProductsComponent,
     DropZoneComponent,
+    BreadcrumbComponent,
+    ExpansionPanelComponent,
+    TablePedidosComponent,
+    SearchProductComponent,
+    LoadingTableComponent,
+    MessageComponent
   ]
 })
 export class FeatureModule { }

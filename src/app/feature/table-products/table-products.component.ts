@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductosTable } from 'src/app/core/interface/productos-table.interface';
 
@@ -15,25 +15,24 @@ import { ProductosTable } from 'src/app/core/interface/productos-table.interface
   selector: 'app-table-products',
   templateUrl: './table-products.component.html',
   styleUrls: ['./table-products.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class TableProductsComponent {
   @Input() data: any;
+  selectedProducts!: any[] | null;
   @Input() addProductLink: string | undefined;
-  
   @Input() isLoading: boolean | undefined;
   @Input() url: string = "";
 
-  @Output() productSelected: EventEmitter<number>;
 
   @ViewChild('searchProduct') search!: ElementRef;
 
-  selectedProduct: ProductosTable[] | undefined;
   checkboxValue: boolean = false;
   items: MenuItem[] = [];
 
-  
-
-  constructor(private router: Router) {
+  hidenSearch: boolean = false;
+ 
+  constructor(private router: Router, private messageService: MessageService, private confirmService: ConfirmationService) {
     this.items = [
       {
         label: 'Subir de manera manual',
@@ -47,7 +46,8 @@ export class TableProductsComponent {
       },
     ];
 
-    this.productSelected = new EventEmitter();
+   
+
   }
 
   togglButtons(): void {
@@ -62,4 +62,27 @@ export class TableProductsComponent {
   viewProduct(id: number) {
     this.router.navigate( [this.url, id])
   }
+
+  showSearch() : boolean {
+  return  this.hidenSearch = true
+  }
+
+  hiddenSearch() : boolean {
+    return this.hidenSearch = false;
+  }
+
+  deletedSelectedProducts() {
+   this.confirmService.confirm({
+    message: '¿Esta seguro de eliminar este producto seleccionado?',
+    header: 'Confirmar',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      this.data = this.data.filter((val : any) => !this.selectedProducts?.includes(val));
+      this.selectedProducts = null;
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    }
+
+   })
+  }
+
 }

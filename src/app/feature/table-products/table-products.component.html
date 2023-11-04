@@ -1,107 +1,77 @@
 <div class="productos section">
+  <p-toast></p-toast>
+
+  <p-toolbar styleClass="mb-4 gap-2">
+
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" ></button>
+    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deletedSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> 
+  </ng-template>
+
+  <ng-template pTemplate="right">
+    <div class="topbar-search" [class.topbar-search-active]="hidenSearch">
+      <button (click)="showSearch()"  icon="pi pi-search" type="button" class="topbar-searchbutton p-button-text  text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only">
+        <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+      </button>
+
+      <div class="search-input-wrapper">
+        <span class="p-input-icon-right">
+          <input #searchProduct type="text" pinputtext="" (keydown.enter)="productos.filterGlobal(searchProduct.value, 'contains')" placeholder="Buscar producto" class="p-inputtext p-component p-element">
+          <i class="pi pi-search" (click)="hiddenSearch()"></i>
+        </span>
+        </div>
+     </div>
+  </ng-template>
+  
+
+  </p-toolbar>
+ 
   <p-table
     #productos
     [value]="data"
     styleClass="p-datatable-gridlines"
-    [(selection)]="selectedProduct"
+    [(selection)]="selectedProducts"
     [paginator]="true"
    [loading]="isLoading"
     [globalFilterFields]="['nombre', 'producto.nombre ', 'producto.sku ', 'status']"
     [rows]="8"
    class="productos__table"
   >
-    <ng-template pTemplate="caption">
-      <div class="productos__caption">
-        <div class="productos__title">
-          <h1 class="productos__h1">Lista de Productos</h1>
 
-          <p-button
-            class="productos__option"
-            styleClass=" p-button-text"
-            iconPos="right"
-            (click)="menu.toggle($event)"
-            icon="pi pi-plus"
-            label="Agregar producto"
-          ></p-button>
-          <p-menu
-            class="productos__options"
-            #menu
-            [model]="items"
-            [popup]="true"
-          ></p-menu>
-          <!-- <p-button routerLink="{{addProductLink}}" class="productos__btn--add" label="Agregar producto" icon="pi pi-plus" iconPos="right" styleClass="p-button-raised p-button-text"></p-button> -->
-        </div>
+    
 
-        <div class="productos__actions">
-          <p-button
-            *ngIf="checkboxValue"
-            label="Pausar publicación"
-            styleClass="p-button-warning p-button-text"
-          ></p-button>
-          <p-button
-            *ngIf="checkboxValue"
-            label="Borrar publicación"
-            styleClass="p-button-danger p-button-text"
-          ></p-button>
-        </div>
 
-        <div class="productos__search p-inputgroup">
-         
-            <input
-            class="productos__input"
-            type="text"
-            pInputText
-            placeholder="buscar producto..."
-            #searchProduct
-          />
-
-          <i (click)="clearTable(productos)" *ngIf="searchProduct.value.length >=1" class="productos__i material-icons">close</i>
-          
-
-          <button
-            class="productos__btn--search"
-            type="button"
-            pButton
-            icon="pi pi-search"
-            (click)="productos.filterGlobal(searchProduct.value, 'contains')"
-          ></button>
-        </div>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="header" let-columns>
+    <ng-template pTemplate="header" >
       <tr class="productos__tr productos__head">
         <th class="productos__th" style="width: 10%">
-          <p-tableHeaderCheckbox
-            (click)="togglButtons()"
-          ></p-tableHeaderCheckbox>
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
 
         <th style="width: 40%" class="productos__th">
-          <h4 class="productos__h4">PRODUCTO</h4>
+          <h4 class="productos__h4">Producto</h4>
         </th>
 
         <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">SKU</h4>
+          <h4 class="productos__h4">Sku</h4>
         </th>
         <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">PRECIO</h4>
+          <h4 class="productos__h4">Precio</h4>
         </th>
         <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">STOCK</h4>
+          <h4 class="productos__h4">Stock</h4>
         </th>
 
         <th style="width: 10%" class="productos__th productos__th--status">
-          <h4 class="productos__h4">STATUS</h4>
+          <h4 class="productos__h4">Status</h4>
         </th>
 
         <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">OPCIONES</h4>
+          <h4 class="productos__h4">Opciones</h4>
         </th>
       </tr>
     </ng-template>
 
-    <ng-template  *ngIf="isLoading" pTemplate="loadingbody" let-columns="columns"> 
+    <ng-template  *ngIf="isLoading" pTemplate="loadingbody" > 
       <tr class="productos__tr productos__body">
         <td data-label="" class="productos__td">
           <p-skeleton></p-skeleton>
@@ -135,22 +105,19 @@
     </ng-template>
     
 
-    <ng-template #datala pTemplate="body" let-producto let-columns="columns">
+    <ng-template #datala pTemplate="body" let-producto >
       <tr class="productos__tr productos__body">
         <td data-label="" class="productos__td">
-          <p-tableCheckbox class="productos__check"
-            (click)="togglButtons()"
-            [value]="producto"
-          ></p-tableCheckbox>
+          <p-tableCheckbox class="productos__check"></p-tableCheckbox>
         </td>
         <td data-label="PRODUCTO" class="productos__td productos__td--producto">
-          <img
+          <img *ngIf="producto.images"
             class="productos__img shadow-4"
             loading="lazy"
             [src]="producto.images.src"
             [alt]="producto.images.alt"
           />
-          <h5 class="productos__h3">{{ producto.nombre }}</h5>
+          <h5 class="productos__h5">{{ producto.nombre }}</h5>
         </td>
 
         <td data-label="SKU" class="productos__td">
@@ -196,8 +163,25 @@
           </p-tag>
         </td>
 
-        <td data-label="OPCIONES" class="productos__td">
-          <button
+        <td data-label="OPCIONES" class="productos__td productos__td--opciones">
+         
+          <!-- <p-toast></p-toast>
+          <p-menu #menu [model]="items" [popup]="true"></p-menu>
+    
+          <p-button icon="pi pi-ellipsis-v" type="button" (click)="menu.toggle($event)" styleClass="topbar-searchbutton p-button-text text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only">
+         
+          </p-button> -->
+          
+          <div class="card_menu card">
+            <p-button icon="pi pi-ellipsis-v" type="button"   styleClass="topbar-searchbutton p-button-text text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only">
+                
+            </p-button>
+          
+          </div>
+
+         
+   
+          <!-- <button
             pButton
             pRipple
             type="button"
@@ -208,7 +192,7 @@
 
           <p-button styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
             <i class="material-icons">add_a_photo</i>
-          </p-button>
+          </p-button> -->
 
         </td>
       </tr>
@@ -221,4 +205,8 @@
   </ng-template>
   
   </p-table>
+
+
 </div>
+
+

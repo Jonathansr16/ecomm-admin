@@ -39,7 +39,20 @@ export class ValidatorsService {
   }
 
 
+invalidUpdateField(controlName1: string, field: string) {
 
+  return (formGroup: FormGroup) => {
+    const control1 = formGroup.get(controlName1);
+
+    if(control1?.value !== field) {
+      control1?.setErrors({ dataUpdate: true});
+    } else {
+      control1.setErrors(null)
+    }
+
+
+  }
+}
 
 
  priceInvalid(control1 : string, control2: string) {

@@ -28,6 +28,7 @@ flex-wrap: wrap;
   &__h1{
     font-size: 24px;
     font-weight: 600;
+    color: var(--surface-700);
   }
 
   &__search {
@@ -66,6 +67,11 @@ flex-wrap: wrap;
 
   &__td {
     border: none !important;
+
+    &--opciones {
+      display: flex;
+      justify-content: center;
+    }
   }
 
   
@@ -85,8 +91,24 @@ flex-wrap: wrap;
 
   }
 
+  &__h4, &__h5 {
+    font-size: .975rem;
+    line-height: 1.25rem;
+    color: var(--surface-800);
+    font-weight: 600;
+  }
+
   &__h4, &__p {
     text-align: center;
+  }
+
+  &__h5 {
+    font-weight: normal;
+  }
+
+
+  &__h4, &__h5, &__p {
+    font-family: 'Inter', sans-serif;
   }
 
   &__btn {
@@ -196,4 +218,90 @@ flex-wrap: wrap;
   
     
   }
+}
+
+//STILE FOR INPUT SEARCH
+.topbar-search {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: .4s cubic-bezier(.86,0,.07,1);
+}
+
+.search-input-wrapper span {
+  width: 100%;
+}
+
+.search-input-wrapper span .p-inputtext {
+  width: 100%;
+  position: relative;
+  border-radius: 40px;
+  // padding: 9px;
+}
+
+.topbar-search .search-input-wrapper span i {
+  font-size: 18px;
+  margin-top: -9px;
+  cursor: pointer;
+}
+
+.topbar-search-active .topbar-searchbutton {
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+  cursor: default;
+  transition: opacity .1s;
+  transition-delay: .1s;
+}
+
+.topbar-search.topbar-search-active .search-input-wrapper {
+  width: 280px;
+  opacity: 1;
+  visibility: visible;
+  border-radius: 20px
+}
+
+.topbar-search.topbar-search-active .search-input-wrapper i {
+  display: block
+}
+
+.topbar-search.topbar-search-active .search-input-wrapper input {
+  border-radius: 20px;
+}
+
+
+.card {
+  position: relative;
+  &__ul 
+  {
+    position: relative;
+    max-width: 200px;
+    display: flex;
+    background-color: var(--surface-card);
+    border-radius: 5px;
+    border: 1px solid gray;
+  }
+
+  &__li {
+    padding: 0.75rem 1.25rem;
+  }
+
+  &__btn {
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--surface-hover);
+    }
+  }
+
+ 
 }

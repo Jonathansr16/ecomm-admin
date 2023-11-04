@@ -11,7 +11,11 @@ const routes: Routes = [
    },
 
    {
-    path: 'woocommerce', loadChildren: () => import('@tiendas/woocommerce/woocommerce.module').then(w => w.WoocommerceModule)
+    path: 'claroshop',loadChildren: () => import('@claro/claroshop.module').then( c => c.ClaroshopModule)
+   },
+
+   {
+    path: 'woocommerce', loadChildren: () => import('@wcommerce/woocommerce.module').then(w => w.WoocommerceModule)
    },
 
    {

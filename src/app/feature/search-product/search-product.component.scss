@@ -1,0 +1,93 @@
+@import 'mixin';
+
+//STILE FOR INPUT SEARCH
+.topbar {
+ 
+  background-color: var(--surface-card);
+  padding: 20px 10px;
+  border-radius: 20px;
+  &-content {
+
+    @include flexible(flex, row, wrap, space-between, center);
+    gap: 1em;
+  }
+
+&-busqueda{
+  max-width: 350px;
+
+
+}
+
+
+}
+
+#topbar-busqueda__input {
+  // border: none;
+  border-radius: 36px 0 0 36px;
+}
+
+#topbar-busqueda__btn {
+  border: none;
+  outline: none;
+  border-radius: 0 36px 36px 0;
+}
+
+
+
+// .topbar-search {
+//     display: flex;
+//     align-items: center;
+//     flex-shrink: 0;
+//   }
+
+
+//   .search-input-wrapper {
+//     position: relative;
+//     width: 0;
+//     opacity: 0;
+//     visibility: hidden;
+//     overflow: hidden;
+//     transition: .4s cubic-bezier(.86,0,.07,1);
+//   }
+  
+//   .search-input-wrapper span {
+//     width: 100%;
+//   }
+  
+//   .search-input-wrapper span .p-inputtext {
+//     width: 100%;
+//     position: relative;
+//     border-radius: 40px;
+    
+//   }
+
+  
+// .topbar-search .search-input-wrapper span i {
+//   font-size: 18px;
+//   margin-top: -9px;
+//   cursor: pointer;
+// }
+
+// .topbar-search-active .topbar-searchbutton {
+//   opacity: 0;
+//   display: none;
+//   pointer-events: none;
+//   cursor: default;
+//   transition: opacity .1s;
+//   transition-delay: .1s;
+// }
+
+// .topbar-search.topbar-search-active .search-input-wrapper {
+//   width: 280px;
+//   opacity: 1;
+//   visibility: visible;
+//   border-radius: 20px
+// }
+
+// .topbar-search.topbar-search-active .search-input-wrapper i {
+//   display: block
+// }
+
+// .topbar-search.topbar-search-active .search-input-wrapper input {
+//   border-radius: 20px;
+// }

@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class SearchProductComponent {
 
+  hidenSearch: boolean = false;
+
+  text: string = "indique el numero de pedido"
+  showSearch() : boolean {
+    return  this.hidenSearch = true
+    }
+  
+    hiddenSearch() : boolean {
+      return this.hidenSearch = false;
+    }
 }

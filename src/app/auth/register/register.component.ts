@@ -85,43 +85,43 @@ export class RegisterComponent  implements OnInit, OnDestroy{
     }
 
     console.log(this.formSignUp )
-  //   const formValues = this.formSignUp.value;
+    const formValues = this.formSignUp.value;
 
-  //     this.usuario.fullName= formValues.fullName;
-  //     this.usuario.email = formValues.emailRegister;
-  //     this.usuario.password = formValues.pass1;
-  //     this.checkTerminos = formValues.aceptTerm;
+      this.usuario.fullName= formValues.fullName;
+      this.usuario.email = formValues.emailRegister;
+      this.usuario.password = formValues.pass1;
+      this.checkTerminos = formValues.aceptTerm;
  
 
-  //   Swal.fire({
-  //     allowOutsideClick: false,
-  //     icon: 'info',
-  //     title: 'Validando datos',
-  //     text: 'Espere por favor...'
-  //   });
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      title: 'Validando datos',
+      text: 'Espere por favor...'
+    });
 
-  //  Swal.showLoading();
+   Swal.showLoading();
 
-  //   this.authService.signUp(this.usuario).subscribe(data => {
+    this.authService.signUp(this.usuario).subscribe(data => {
  
-  //    Swal.fire({
-  //       allowOutsideClick: true,
-  //       icon: 'success',
-  //       title: 'Registro echo con exito',
-  //     });
+     Swal.fire({
+        allowOutsideClick: true,
+        icon: 'success',
+        title: 'Registro echo con exito',
+      });
 
     
 
-  //     this.formSignUp.reset();
+      this.formSignUp.reset();
   
-  //   }, (error) => {
-  //      Swal.fire({
-  //       icon: 'error',
-  //       title: 'Se produjo un error',
-  //       text: error.error.error.message
-  //     });
+    }, (error) => {
+       Swal.fire({
+        icon: 'error',
+        title: 'Se produjo un error',
+        text: error.error.error.message
+      });
 
-  //   });
+    });
   }
 
 }

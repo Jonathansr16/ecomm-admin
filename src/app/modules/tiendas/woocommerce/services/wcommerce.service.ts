@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { wcProductoModel } from '../models/wc-new-product.model';
 import { CategoryResponse, WcProductoResponse } from '../interface/wc-producto.interface';
+import { PedidosResponse } from '@wcommerce/interface/wcommerce-pedidos.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -38,8 +39,7 @@ export class WcommerceService {
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
   getProduct(id: number): Observable<WcProductoResponse> {
     return this.http.get<WcProductoResponse>(
-      `${this.url}products/${id}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`
-    ).pipe(
+      `${this.url}products/${id}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`).pipe(
      map((product: WcProductoResponse) => ({
       id:                    product.id,
       name:                  product.name,
@@ -75,16 +75,54 @@ export class WcommerceService {
   }
 
   //* OBTIENE LAS ORDENES
-  getOrder(): Observable<any> {
+  getOrder(): Observable<PedidosResponse[]> {
     return this.http
-      .get(
+      .get<PedidosResponse>(
         `${this.url}orders?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`
-      )
-      .pipe(
-        map((resp) => {
-          return resp;
-        })
-      );
+        ).pipe(
+          map((data: any) =>
+            data.map((order: any) => ({
+              id_order: order.id,
+              date_created: order.date_created,
+              first_name: order.billing.first_name,
+              last_name: order.billing.last_name,
+              status: order.status,
+              date_modified: order.date_modified,
+              product: order.line_items[0].name,
+              img: order.line_items[0].image.src,
+              sku: order.line_items[0].sku,
+              price: order.line_items[0].price,
+              quantity: order.line_items[0].quantity
+            }))
+          )
+        );
+     
+  }
+
+
+  //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
+  getOrderByStatus(status: 'pending' | 'processing' | 'completed' | 'cancel'): Observable<PedidosResponse[]> {
+
+   return this.http.get<PedidosResponse>(`${this.url}orders?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}&status=${status}`)
+   .pipe(
+    map((data: any) =>
+      data.map((order: any) => ({
+        id_order: order.id,
+        date_created: order.date_created,
+        first_name: order.billing.first_name,
+        last_name: order.billing.last_name,
+        status: order.status,
+        date_modified: order.date_modified,
+        product: order.line_items[0].name,
+        img: order.line_items[0].image.src,
+        sku: order.line_items[0].sku,
+        price: order.line_items[0].price,
+        quantity: order.line_items[0].quantity
+      }), console.log(data))
+    )
+  );
+
+
   }
 
   //* CREAR UN NUEVO PRODUCTO
@@ -110,7 +148,6 @@ export class WcommerceService {
     )
 
   }
-
 
   //*ACTUALIZA UN CAMPO ESPECIFICO 
   setFielUpdate(idProduct: any, field: string): Observable<WcProductoResponse> {

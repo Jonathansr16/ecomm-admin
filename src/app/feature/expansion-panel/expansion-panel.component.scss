@@ -1,0 +1,71 @@
+@import "_mixin";
+
+
+.expansion-panel {
+    max-width: 852px;
+    margin-left: auto;
+    margin-right: auto;
+     padding: 10px;
+    margin-bottom: 1em;
+    background-color: var(--surface-card);
+    border-radius: 6px;
+
+    &:hover {
+        background-color: var(--surface-b);
+    }
+
+    &-header {
+        margin: 0 0 1em;
+        padding: 24px 32px;
+      
+        cursor: pointer;
+        @include flexible(flex, row, nowrap, space-between, center);
+        gap: 1em;
+        overflow: hidden;
+
+
+        &__title {
+            flex-grow: 1;
+        }
+        
+       
+
+        &__icon {
+            @include flexible(flex, column, nowrap, center, center);
+        }
+
+    
+
+    }
+
+    &__body {
+        height: 0;
+        padding: 0em;
+        overflow: hidden;
+        visibility: hidden;
+        pointer-events: none;
+        transition: height 0.25s ease;
+    }
+
+    &__section {
+         padding: 10px;
+    }
+}
+
+.expansion-panel-header.expanded {
+    border-bottom: 1px solid #e5e5e5;
+
+}
+
+.expansion-panel-header.expanded + .expansion-panel__body {
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.expansion-panel__body.expanded{
+    pointer-events: auto;
+    visibility: visible;
+    // height: auto;
+}
+
+

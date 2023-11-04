@@ -36,7 +36,7 @@ export interface Collection {
 }
 
 export interface CategoryResponse {
-    id:   number;
+    id:   string;
     name: string;
     slug: string;
 }

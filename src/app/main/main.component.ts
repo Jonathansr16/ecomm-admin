@@ -24,23 +24,22 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('arrow') arrow?: ElementRef;
   @ViewChild('btnNotf') btnNotf?: ElementRef;
   @ViewChild('notfContainer') notfContainer?: ElementRef;
-  @ViewChildren('menu') menu?: QueryList<ElementRef>;
+  @ViewChild('menu') menu?: ElementRef;
 
   isSubMenuOpen: boolean = false;
   sidebarVisible: boolean = false;
   sidebarVisible2: boolean = false;
   showNotf: boolean = false;
   show: boolean = false;
-
+  isOpenMenu: boolean = false;
   //Sidebar toggle show hide function
-  status = false;
+  toggleSidebar = false;
   messageUser: MessageUser[] = [];
   menuProfile: menu[] = [];
   date = new Date();
   notificationShow: boolean = false;
-  activeSubMenuIndex: number = -1;
-  activeSubIndex: number = -1;
-  activeMenu: number = -1;
+  activeSubmenu: number = -1;
+  
 
   private unlistener!: () => void;
 
@@ -53,51 +52,49 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   addToggle() {
-    this.status = !this.status;
+    this.toggleSidebar = !this.toggleSidebar;
 
-    if (this.status) {
+    if (this.toggleSidebar) {
       this.renderer2.addClass(this.arrow?.nativeElement, 'animateArrow');
     } else {
       this.renderer2.removeClass(this.arrow?.nativeElement, 'animateArrow');
     }
   }
 
-  toggleSubMenu(): void {
-    this.isSubMenuOpen = !this.isSubMenuOpen;
-  }
-
-  closeSubMenu() {
-    this.menu?.forEach((element) => {
-      const option = element.nativeElement;
-
+  closeOutMenu() {
+  
+  const option =  this.menu?.nativeElement;
+     
       const parent = this.renderer2.parentNode(option);
 
       this.unlistener = this.renderer2.listen('document', 'click', (event) => {
+        
         if (!parent.contains(event.target)) {
-          this.activeSubMenuIndex = -1;
-          this.activeSubIndex = -1;
+         this.isOpenMenu = false;
+          this.activeSubmenu = -1;
         }
+
+        
       });
-    });
+  
   }
 
-  toggleSubmenu(index: number) {
-    if (this.activeSubMenuIndex === index) {
-      this.activeSubMenuIndex = -1;
-      this.activeMenu = -1;
-    } else {
-      this.activeSubMenuIndex = index;
-      this.activeMenu = index;
-    }
+  toggleMenu() {
+    this.isOpenMenu= !this.isOpenMenu;
   }
 
-  toggleSubcategory(index: number): void {
-    if (this.activeSubIndex === index) {
-      this.activeSubIndex = -1;
-    } else {
-      this.activeSubIndex = index;
-    }
+  toggleSubMenu(index: number) {
+    if (this.activeSubmenu === index) {
+          this.activeSubmenu = -1;
+     
+         
+        } else {
+          this.activeSubmenu = index;
+         
+        }
   }
+
+  
 
   toggleNotf(): void {
     const notfBox = this.notfContainer?.nativeElement;
@@ -130,6 +127,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.themeService.switchTheme(theme);
 }
 
+
+
+
+
   ngOnInit(): void {
     this.messageUser = this._messageUserService.getMessageUser();
 
@@ -155,10 +156,8 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // this.closeSubMenu()
-    this.closeSubMenu();
-
-    //
+    
+    this.closeOutMenu();
   }
 
   ngOnDestroy(): void {

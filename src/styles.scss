@@ -62,12 +62,12 @@ margin-right: auto;
     font-family: var(--poppins);
   }
   html {
-    overflow-x: hidden;
+    // overflow-x: hidden;
   }
  
   body {
     // background: #f4f6fd;
-    overflow-x: hidden;
+    // overflow-x: hidden;
     font-family: 'Poppins';
 
     background-color: var(--surface-ground);
@@ -161,4 +161,14 @@ margin-right: auto;
   &__i, &__span, &__h6, &__a {
     color: var(--light);
   }
+}
+
+.expansion-panel-header__defaultValue, .expansion-panel-header__value {
+  font-size: .895rem;
+color: var(--surface-600);
+}
+
+
+.expansion-panel-header__value { 
+  font-size: .985rem;
 }
