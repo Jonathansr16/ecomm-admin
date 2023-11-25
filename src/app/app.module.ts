@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { AuthModule} from '@auth/auth.module';
 
 
@@ -18,7 +17,6 @@ import { AuthModule} from '@auth/auth.module';
     AppRoutingModule,
   AuthModule,
     BrowserAnimationsModule,
-    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -31,5 +31,14 @@
 </div>
 
 
-    <app-table-products [url]="urlProduct" [data]="products" [isLoading]="loading"></app-table-products>
+    <app-table-products 
+    [url]="'/dashboard/woocommerce/product/'"
+    [urlNewProduct]="'/dashboard/woocommerce/new-product'"
+    [data]="products" 
+    [statusData]="statusData" 
+  
+  
+    (onDelete)="deleteProduct($event)"
+    
+    ></app-table-products>
 

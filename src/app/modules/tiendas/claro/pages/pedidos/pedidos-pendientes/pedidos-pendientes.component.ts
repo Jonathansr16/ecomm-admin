@@ -27,6 +27,7 @@ export class PedidosPendientesComponent {
           
         this.orders = resp
           this.statusData = 'success';
+          console.log(resp)
         },
 
         error: (er) => {

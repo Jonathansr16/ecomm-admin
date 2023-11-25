@@ -33,6 +33,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PaginatorModule } from 'primeng/paginator';
 
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+
 
 const ngPrimeComponents = [
   ButtonModule,
@@ -58,7 +61,9 @@ const ngPrimeComponents = [
  TagModule,
  CalendarModule,
  ToolbarModule,
- PaginatorModule
+ PaginatorModule,
+ ConfirmDialogModule,
+ DialogModule
 ]
 
 @NgModule({

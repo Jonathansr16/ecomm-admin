@@ -1,185 +1,190 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { wcProductoModel } from '../models/wc-new-product.model';
-import { CategoryResponse, WcProductoResponse } from '../interface/wc-producto.interface';
-import { PedidosResponse } from '@wcommerce/interface/wcommerce-pedidos.interface';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import {
+  OrderResponse,
+  OrderResult,
+  ProductOrderResult,
+} from '@wcommerce/interface/woo-order.interface';
+import { Orden } from '@wcommerce/models/wc-order.model';
+import {
+  ProductCategoryResponse,
+  ProductResponse,
+  ProductResult,
+  TableProductResult,
+} from '@wcommerce/interface/woo-producto.interface';
+import { WooProducto } from '@wcommerce/models/wc-new-product.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class WcommerceService {
-  private url = 'https://servitae.mx/wp-json/wc/v3/';
-  private consumerKey = environment.wcommerce.client_key;
-  private consumerSecret = environment.wcommerce.secret_key;
+  
+  private url = 'https://servitae.mx/wp-json/wc/v3';
+  statusData: 'loading' | 'success' | 'error' | undefined;
 
   constructor(private http: HttpClient) { }
 
+
   //* OBTIENE TODOS LOS PRODUCTOS
-  getProducts(): Observable<WcProductoResponse[]> {
-    return this.http.get<WcProductoResponse>(
-      `${this.url}products?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`
-    ).pipe(
-        map((data: any) =>
-          data.map((producto: any) => ({
-            id: producto.id,
-            nombre: producto.name,
-            images: producto.images[0],
-            sku: producto.sku,
-            precio: producto.price,
-            stock: producto.stock_quantity,
-            categorias: producto.categories,
-          }))
-        )
-      );
+  getProducts(): Observable<TableProductResult[]> {
+    return this.http.get<ProductResponse[]>(`${this.url}/products` ).pipe(
+      map((resp) =>
+        resp.map((producto) => this.mapToWooTableProducto(producto))
+      ),
+      tap((_) => console.log('productos buscados')),
+      catchError(this.hanlerError<TableProductResult[]>('getProducts', []))
+    )
   }
 
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
-  getProduct(id: number): Observable<WcProductoResponse> {
-    return this.http.get<WcProductoResponse>(
-      `${this.url}products/${id}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`).pipe(
-     map((product: WcProductoResponse) => ({
-      id:                    product.id,
-      name:                  product.name,
-      description:           product.description,
-      short_description:     product.short_description,
-      sku:                   product.sku,
-      regular_price:         product.regular_price,
-      sale_price:            product.sale_price,
-      total_sales:           product.total_sales,
-      categories:            product.categories,
-      images:                product.images,
-      stock_quantity:        product.stock_quantity,
-      stock_status:          product.stock_status,
-      }))
+  getProduct(id: number): Observable<ProductResult> {
+    return this.http.get<ProductResponse>(`${this.url}/products/${id}`).pipe(
+      map((product) => ({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        short_description: product.short_description,
+        sku: product.sku,
+        regular_price: product.regular_price,
+        sale_price: product.sale_price,
+        categories: product.categories,
+        images: product.images,
+        stock_quantity: product.stock_quantity,
+      })),
+       catchError(this.hanlerError<any>('getProduct', {}))
     );
   }
 
   //* OBTIENE TODAS LAS CATEGORIAS CREADAS
-  getCategorias(): Observable<CategoryResponse[]> {
-    return this.http
-      .get<CategoryResponse>(
-        `${this.url}products/categories?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`
-      )
-      .pipe(
-        map((data: any) =>
-          data.map((categoria: any) => ({
-            id: categoria.id,
-            description: categoria.description,
-            name: categoria.name,
-          }))
-        )
-      );
+  getCategorias(): Observable<ProductCategoryResponse[]> {
+    return this.http.get<ProductCategoryResponse[]>(`${this.url}/categories` )
+    .pipe(
+      catchError(this.hanlerError<ProductCategoryResponse[]>('getCategorias', []))
+         );
   }
-
-  //* OBTIENE LAS ORDENES
-  getOrder(): Observable<PedidosResponse[]> {
-    return this.http
-      .get<PedidosResponse>(
-        `${this.url}orders?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`
-        ).pipe(
-          map((data: any) =>
-            data.map((order: any) => ({
-              id_order: order.id,
-              date_created: order.date_created,
-              first_name: order.billing.first_name,
-              last_name: order.billing.last_name,
-              status: order.status,
-              date_modified: order.date_modified,
-              product: order.line_items[0].name,
-              img: order.line_items[0].image.src,
-              sku: order.line_items[0].sku,
-              price: order.line_items[0].price,
-              quantity: order.line_items[0].quantity
-            }))
-          )
-        );
-     
-  }
-
 
   //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
-  getOrderByStatus(status: 'pending' | 'processing' | 'completed' | 'cancel'): Observable<PedidosResponse[]> {
+  getOrderByStatus(
+    status: 'pending' | 'processing' | 'completed' | 'cancelled'
+  ): Observable<OrderResult[]> {
+    return this.http
+      .get<OrderResponse[]>(
+        `${this.url}/orders?status=${status}`
+      )
+      .pipe(
+        map((resp) => {
+          return resp.map((order) => {
+            return new Orden(
+              order.id,
+              order.billing.first_name,
+              order.billing.last_name,
+              order.status,
+              order.date_created,
+              order.date_modified,
+              order.total,
+              order.line_items.map((product: ProductOrderResult) => ({
+                name: product.name,
+                quantity: product.quantity,
+                total: product.total,
+                sku: product.sku,
+                image: product.image,
+              }))
+            );
+          });
+        }),
+         catchError(this.hanlerError<OrderResult[]>('getOrderByStatus', []))
+      ) 
+  }
 
-   return this.http.get<PedidosResponse>(`${this.url}orders?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}&status=${status}`)
-   .pipe(
-    map((data: any) =>
-      data.map((order: any) => ({
-        id_order: order.id,
-        date_created: order.date_created,
-        first_name: order.billing.first_name,
-        last_name: order.billing.last_name,
-        status: order.status,
-        date_modified: order.date_modified,
-        product: order.line_items[0].name,
-        img: order.line_items[0].image.src,
-        sku: order.line_items[0].sku,
-        price: order.line_items[0].price,
-        quantity: order.line_items[0].quantity
-      }), console.log(data))
-    )
-  );
-
-
+  //* OBTIENE LA CANTIDAD DE ORDENES
+  getOrdersCount(
+    status: 'pending' | 'processing' | 'completed' | 'cancelled'
+  ): Observable<{ totalCount: number }> {
+    return this.http
+      .get<any>(
+        `${this.url}/orders?status=${status}`, 
+      )
+      .pipe(
+        map((resp) => {
+          return { totalCount: resp.length };
+        }),
+         catchError(this.hanlerError<any>('getOrderCount', [])) 
+      )
   }
 
   //* CREAR UN NUEVO PRODUCTO
-  createProduct(producto: wcProductoModel): Observable<WcProductoResponse> {
+  createProduct(producto: WooProducto): Observable<WooProducto> {
     const productData = {
       ...producto,
     };
 
-    return this.http.post<WcProductoResponse>(
-      `${this.url}products?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`,
-      productData
+    return this.http.post<WooProducto>(
+      // this.queryParam('products'),
+      // productData
+      `${this.url}/products`, productData
+    ).pipe(catchError(this.hanlerError<any>('createProduct', {}))
     );
   }
 
   //* ACTUALIZA UN PRODUCTO ESPECIFICO
-  setProduct(idProduct: number, producto: wcProductoModel): Observable<WcProductoResponse> {
+  setProduct(
+    idProduct: number,
+    producto: WooProducto
+  ): Observable<WooProducto> {
     const product = {
-      ...producto
+      ...producto,
     };
 
-    return this.http.post<WcProductoResponse>(
-      `${this.url}products/${idProduct}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`, product
-    )
+    return this.http.post<WooProducto>(`${this.url}/products/${idProduct}`, product).pipe(
+      catchError(this.hanlerError<any>('setProduct', {}))
 
+    );
   }
 
-  //*ACTUALIZA UN CAMPO ESPECIFICO 
-  setFielUpdate(idProduct: any, field: string): Observable<WcProductoResponse> {
-
-    return this.http.put<WcProductoResponse>(`${this.url}products/${idProduct}?consumer_key=${this.consumerKey}&consumer_secret=${this.consumerSecret}`, field)
+  //*ACTUALIZA UN CAMPO ESPECIFICO
+  setFielUpdate(idProduct: any, field: string): Observable<WooProducto> {
+    return this.http.put<WooProducto>(`${this.url}/products/${idProduct}`, field).pipe(
+      catchError(this.hanlerError<any>('setFieldUpdate', {}))
+    );
   }
 
-  // getQuery(query: string) {
-  //   const url: string = `https://servitae.mx/wp-json/wc/v3/${query}?`;
+  //*ELIMINA UN PRODUCTO DEL INVENTARIO
+  deleteProduct(idProduct: number): Observable<number> {
+    return this.http.delete<number>(
+      `${this.url}/products/${idProduct}`).pipe(catchError(this.hanlerError<any>('deleteProduct', {}))
+      );
+  }
 
-  //   const params = new HttpParams()
-  //   .set('consumer_key', this.consumerKey)
-  //   .set('consumer_secret', this.consumerSecret)
+  private hanlerError<T>(operation = 'operacion', result?: T) {
+    return (error: any): Observable<T> => {
+    
+      console.warn(`${operation} fallo`);
+      console.warn(`Mensaje de la falla: ${error.message}`)
+      return of(result as T);
+    };
+  }
 
-  //   return this.http.get(url, { params });
+ 
 
-  // }
 
-  // Productos(): Observable<WcProductoResponse[]> {
-  //   return this.getQuery('products')
-  //     .pipe(
-  //       map((data: any) =>
-  //         data.map((producto: any) => ({
-  //           nombre: producto.name,
-  //           images: producto.images[0],
-  //           sku: producto.sku,
-  //           precio: producto.price,
-  //           stock: producto.stock_quantity,
-  //           categorias: producto.categories,
-  //         }))
-  //       )
-  //     );
-  // }
+  private mapToWooTableProducto(producto: ProductResponse): TableProductResult {
+    return {
+      id: producto.id,
+      name: producto.name,
+      images: producto.images.map((img) => ({
+        src: img.src,
+        name: img.name,
+        alt: img.alt,
+      })),
+      sku: producto.sku,
+      precio: producto.price,
+      stock: producto.stock_quantity, // Convertir a string si es necesario
+      stock_status: producto.stock_status,
+      categorias: producto.categories,
+    };
+  }
+
 
 }
+

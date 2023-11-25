@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { InventarioComponent } from '@wcommerce/pages/inventario/inventario.component';
 import { FeatureModule } from '@feature/feature.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { PedidosComponent } from '@wcommerce/pages/pedidos/pedidos.component';
 import { ClientesComponent } from '@wcommerce/pages/clientes/clientes.component';
 import { WcNewProductComponent } from '@wcommerce/pages/new-product/wc-new-product.component';
@@ -25,9 +25,10 @@ import { ToastModule } from 'primeng/toast';
 import { PedidosCompletadosComponent } from './pages/pedidos/pedidos-completados/pedidos-completados.component';
 import { PedidosCanceladosComponent } from './pages/pedidos/pedidos-cancelados/pedidos-cancelados.component';
 import { PedidosPendientesComponent } from './pages/pedidos/pedidos-pendientes/pedidos-pendientes.component';
+import { KeyInterceptor } from './services/key.interceptor';
 
 
-
+import { WcommerceService } from './services/wcommerce.service';
 
 @NgModule({
   declarations: [
@@ -44,11 +45,11 @@ import { PedidosPendientesComponent } from './pages/pedidos/pedidos-pendientes/p
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     RouterModule,
     WoocommerceRoutingModule,
     SharedNgPrimeModule,
     FeatureModule,
-    HttpClientModule,
     ReactiveFormsModule,
     FormsModule, 
     KnobModule,
@@ -56,6 +57,15 @@ import { PedidosPendientesComponent } from './pages/pedidos/pedidos-pendientes/p
     ProgressBarModule,
     ToastModule
 
+  ],
+  providers: [
+    WcommerceService,
+    {
+      provide: 
+      HTTP_INTERCEPTORS, //Constante para definir que es un tipo de interceptopr
+      useClass: KeyInterceptor, //indica cual el interceptor
+      multi: true   //Para que este al pendiente de todas peticiones qeu se hagan
+    }
   ]
 })
 export class WoocommerceModule { }

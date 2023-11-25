@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
 
 
 dataAuth: any = {}
-  constructor( private formBuilder: FormBuilder, private wcService: WcommerceService) {
+  constructor( private formBuilder: FormBuilder) {
 
     this.createFormWcommerce();
     this.loadDataFormWC();

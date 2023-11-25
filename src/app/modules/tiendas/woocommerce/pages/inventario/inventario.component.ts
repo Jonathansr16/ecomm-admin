@@ -1,39 +1,69 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { WcProductoResponse } from '@wcommerce/interface/wc-producto.interface';
+import { TableProductResult } from '@wcommerce/interface/woo-producto.interface';
 import { WcommerceService } from '@wcommerce/services/wcommerce.service';
 import { ProductosTable } from 'src/app/core/interface/productos-table.interface';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-inventario',
   templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.scss']
+  styleUrls: ['./inventario.component.scss'],
+  providers: [MessageService]
 })
 export class InventarioComponent implements OnInit {
 
-  loading: boolean = true;
-  products: WcProductoResponse[] =[];
-  link: string = '/dashboard/woocommerce/new-product';
+  products: TableProductResult[] | undefined;
+  link  = '/dashboard/woocommerce/new-product';
   urlProduct: string = "";
 
-  constructor(private wcService: WcommerceService, private router: Router){
+  columns: any[] = [];
+  statusData: boolean;
 
+
+
+  constructor(private wcService: WcommerceService, private router: Router, private messageService: MessageService){
+
+    this.statusData = true;
+   
+    this.products = [];
+   
+  }
+  getProducts() {
+
+    this.wcService.getProducts().subscribe({
+
+      next: (resp) => {
+        this.products = resp;
+        this.statusData = false;
+        console.log(resp)
+      },
+      error: (errorMessage) => {
+        console.log(errorMessage);
+      
+      }
+    });
   }
 
+  deleteProduct(product: any) {
+
+
+  this.wcService.deleteProduct(product.id).subscribe({
+  
+    next: (resp) => {
+    
+      console.log(`Producto ${product.id} Eliminado con exito`);
+    }
+  })
+
+  
+  }
 
   ngOnInit(): void {
-    this.wcService.getProducts().subscribe( data => {
-     
-      this.products = data;
-      this.loading  = false;
-     console.log(data)
-    }, (error) => {
-      console.log(error);
-    });
- 
-    this.urlProduct = "/dashboard/woocommerce/product/"
- 
- 
+
+
+    this.getProducts();
+
  
   }
 

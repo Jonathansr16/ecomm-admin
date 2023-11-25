@@ -14,9 +14,12 @@ export class PedidosPendientesComponent {
   statusData: 'success' | 'error' | 'loading' | 'empty'  | undefined;
   searchTerm: string = "";
   constructor(private wcService: WcommerceService) {
-
     this.pendingOrders = [];
     this.statusData = 'loading';
+  }
+
+
+  getOrders() {
     this.wcService.getOrderByStatus('pending').subscribe({
 
       next: (resp : any) => {
@@ -34,6 +37,11 @@ export class PedidosPendientesComponent {
         
       }
     })
+  }
 
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.getOrders();
   }
 }

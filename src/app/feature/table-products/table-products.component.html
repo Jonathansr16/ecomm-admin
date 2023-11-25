@@ -1,149 +1,242 @@
-<div class="productos section">
-  <p-toast></p-toast>
 
-  <p-toolbar styleClass="mb-4 gap-2">
 
-    <ng-template pTemplate="left">
-      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" ></button>
-    <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deletedSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> 
-  </ng-template>
+<div class="productos-table section">
 
-  <ng-template pTemplate="right">
-    <div class="topbar-search" [class.topbar-search-active]="hidenSearch">
-      <button (click)="showSearch()"  icon="pi pi-search" type="button" class="topbar-searchbutton p-button-text  text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only">
-        <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
-      </button>
 
-      <div class="search-input-wrapper">
-        <span class="p-input-icon-right">
-          <input #searchProduct type="text" pinputtext="" (keydown.enter)="productos.filterGlobal(searchProduct.value, 'contains')" placeholder="Buscar producto" class="p-inputtext p-component p-element">
-          <i class="pi pi-search" (click)="hiddenSearch()"></i>
-        </span>
-        </div>
-     </div>
-  </ng-template>
+  <div class="caption">
+    <p-toast  position="top-center" key="tc"></p-toast>
+    <div class="caption_op">
+
+      <!-- <div class="caption__row caption__row--1">
   
+        <div class="caption__left">
+          <span class="caption-search">
+            <i class="caption-search__icon caption-search__icon--search pi pi-search"></i>
+            <input
+              name="searchText"
+              class="caption-search__input"
+              type="text"
+              pInputText
+              (keyup.enter)="searchFilter($event, 'contains')"
+              #searchProduct
+              placeholder="Buscar producto..."
+              [(ngModel)]="searchText"
+              
+            />
+            <i *ngIf="!searchText?.length"
+              class="caption-search__icon caption-search__icon--help pi pi-info-circle"
+              pTooltip="Busca por titulo, sku o id"
+            ></i>
+  
+            <i *ngIf="searchText?.length"
+            (click)="clearTable(productos)"
+            class="caption-search__icon caption-search__icon--help pi pi-times"
+            
+           
+          ></i>
+          </span>
+        </div>
+  
+        <div class="caption__right">
+          <p class="caption__p">{{data.length}} ventas</p> 
+        </div>
+      </div> -->
+  
+  
+      <div class="caption__row caption-operation">
+       <div class="caption-operation__left">
+        <div class="caption-operation__box">
+        
+          <p-checkbox [value]="selectedProducts" [disabled]="true"></p-checkbox>
+          <p class="caption-operation__p caption__p--two" [class.caption-select]="selectedProducts.length > 0">{{selectedProducts.length }} Seleccionados</p>
+      
+        </div>
+        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="caption__btn p-button-success mr-2" (click)="addNewProduct()"></button>
+      </div>
+      
+         <div class="caption-operation__right">
+           <div class="caption__box">
+           <button [disabled]="!selectedProducts.length" pripple severity="warn" class="caption__btn p-ripple p-element p-button p-component p-button-text" type="button" [ngClass]="{ 'p-button-warn' : selectedProducts.length > 0}" >Pausar</button>
+           <button [disabled]="!selectedProducts.length" pripple severity="info"  class="caption__btn p-ripple p-element p-button p-component p-button-info p-button-text" type="button" >Reactivar</button>
+           <button [disabled]="!selectedProducts.length" pripple severity="danger" class="caption__btn p-ripple p-element p-button p-component p-button-danger p-button-text" type="button" >Borrar</button>
+      
+            <button pripple class="caption__btn p-ripple p-element p-button p-component p-button-text" (click)="showDialog()" type="button" style="background-color: var(--highlight-bg); color: var(--highlight-text-color)">Modificar de manera masiva</button>
+            <button pripple class="caption__btn p-ripple p-element p-button p-component p-button-text" type="button" style="background-color: var(--highlight-bg); color: var(--highlight-text-color)">Modificar desde excel</button>
+          </div>
+        </div>
+    </div>
+  </div>
 
-  </p-toolbar>
- 
+
   <p-table
     #productos
     [value]="data"
-    styleClass="p-datatable-gridlines"
     [(selection)]="selectedProducts"
     [paginator]="true"
-   [loading]="isLoading"
-    [globalFilterFields]="['nombre', 'producto.nombre ', 'producto.sku ', 'status']"
+   [loading]="statusData"
+    [globalFilterFields]="[
+      'name',
+      'id',
+       'sku',
+      
+    ]"
     [rows]="8"
-   class="productos__table"
+    class="productos__table"
+    styleClass="p-datatable-striped"
+    responsiveLayout="stack"
+    [breakpoint]="'960px'"
+    [showLoader]="false"
+   
   >
 
-    
+<ng-template pTemplate="caption" >
 
 
-    <ng-template pTemplate="header" >
-      <tr class="productos__tr productos__head">
-        <th class="productos__th" style="width: 10%">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
+    <div class="caption__row caption-header">
+      <div class="caption-header__left">
 
-        <th style="width: 40%" class="productos__th">
-          <h4 class="productos__h4">Producto</h4>
-        </th>
+        <h1 class="topbar__h1">Productos</h1>
+      </div>
 
-        <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">Sku</h4>
-        </th>
-        <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">Precio</h4>
-        </th>
-        <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">Stock</h4>
-        </th>
 
-        <th style="width: 10%" class="productos__th productos__th--status">
-          <h4 class="productos__h4">Status</h4>
-        </th>
-
-        <th style="width: 10%" class="productos__th">
-          <h4 class="productos__h4">Opciones</h4>
-        </th>
-      </tr>
-    </ng-template>
-
-    <ng-template  *ngIf="isLoading" pTemplate="loadingbody" > 
-      <tr class="productos__tr productos__body">
-        <td data-label="" class="productos__td">
-          <p-skeleton></p-skeleton>
-        </td>
-        <td data-label="PRODUCTO" class="productos__td productos__td--producto">
-      
-          <p-skeleton></p-skeleton>
-        
-        </td>
-
-        <td data-label="SKU" class="productos__td">
-          <p-skeleton></p-skeleton>
-        </td>
-
-        <td data-label="PRECIO" class="productos__td">
-          <p-skeleton></p-skeleton>
-        </td>
-
-        <td data-label="STOCK" class="productos__td ">
-          <p-skeleton></p-skeleton>
-        </td>
-
-        <td data-label="STATUS" class="productos__td productos__td--status">
-          <p-skeleton></p-skeleton>
-        </td>
-
-        <td data-label="OPCIONES" class="productos__td">
-          <p-skeleton></p-skeleton>
-        </td>
-      </tr>
-    </ng-template>
-    
-
-    <ng-template #datala pTemplate="body" let-producto >
-      <tr class="productos__tr productos__body">
-        <td data-label="" class="productos__td">
-          <p-tableCheckbox class="productos__check"></p-tableCheckbox>
-        </td>
-        <td data-label="PRODUCTO" class="productos__td productos__td--producto">
-          <img *ngIf="producto.images"
-            class="productos__img shadow-4"
-            loading="lazy"
-            [src]="producto.images.src"
-            [alt]="producto.images.alt"
+      <div class="caption-header__right">
+        <span class="caption-search">
+          <i class="caption-search__icon caption-search__icon--search pi pi-search"></i>
+          <input
+            name="searchText"
+            class="caption-search__input"
+            type="text"
+            pInputText
+            (keyup.enter)="searchFilter($event, 'contains')"
+            #searchProduct
+            placeholder="Buscar producto..."
+            [(ngModel)]="searchText"
+            
           />
-          <h5 class="productos__h5">{{ producto.nombre }}</h5>
+          <i *ngIf="!searchText?.length"
+            class="caption-search__icon caption-search__icon--help pi pi-info-circle"
+            pTooltip="Busca por titulo, sku o id"
+           
+          ></i>
+  
+          <i *ngIf="searchText?.length"
+          (click)="clearTable(productos)"
+          class="caption-search__icon caption-search__icon--help pi pi-times"
+          
+         
+        ></i>
+        </span>
+      </div>
+    </div>
+
+
+
+
+</ng-template>
+
+
+
+  <ng-template pTemplate="header">
+    <tr class="productos__tr">
+      <th class="productos__th" style="width: 2rem; border: none;" >
+      
+        <p-tableHeaderCheckbox ></p-tableHeaderCheckbox>
+
+      </th>
+
+
+      <th class="productos__th" style="width: 2rem; border: none;" >
+         <h4 class="productos__h4">ID</h4> 
+      </th>
+
+
+      <th style="width:35%; border: none; text-align: center;" class="productos__th">
+        <h4 class="productos__h4">Producto</h4>
+      </th>
+
+      <th style=" border: none; text-align: center;" class="productos__th">
+        <h4 class="productos__h4">Sku</h4>
+      </th>
+      <th style="border: none; text-align: center;" class="productos__th">
+        <h4 class="productos__h4">Precio</h4>
+      </th>
+      <th style="border: none; text-align: center;" class="productos__th">
+        <h4 class="productos__h4">Stock</h4>
+      </th>
+
+      <th style=" border: none; text-align: center;" class="productos__th productos__th--status">
+        <h4 class="productos__h4">Status</h4>
+      </th>
+
+      <th style="width: 12rem; border: none; text-align: center;" class="productos__th">
+        <h4 class="productos__h4">Opciones</h4>
+      </th>
+    </tr>
+  </ng-template>
+
+    <ng-template  pTemplate="body" let-producto let-rowIndex="rowIndex" >
+      <tr class="productos__tr productos__body" >
+        <td data-label="" class="productos__td">
+         
+          <p-tableCheckbox [value]="producto"></p-tableCheckbox>
+
         </td>
 
-        <td data-label="SKU" class="productos__td">
+        <td data-label="" class="productos__td">
+          <span class="p-column-title">ID</span>
+            <P class="productos__p">#{{producto.id}}</P>
+        </td>
+        <td data-label="PRODUCTO" class="productos__td productos__td--producto" >
+          <span class="p-column-title">Producto:</span>
+          
+          <div class="productos__box">
+           
+            <img
+              *ngIf="producto.images"
+              class="productos__img shadow-4"
+              loading="lazy"
+              [src]="producto.images | filterNoImage"
+              [alt]="producto.images[0]?.alt || 'Sin imagen'"
+            />
+            <h5 class="productos__h5" style="margin: 0;">{{ producto.name }}</h5>
+          </div>
+    
+        </td>
+  
+        <td data-label="SKU" class="productos__td" style="text-align: center;">
+          <span class="p-column-title"></span>
           <p class="productos__p">
             {{ producto.sku }}
           </p>
         </td>
-
-        <td data-label="PRECIO" class="productos__td">
+  
+        <td data-label="PRECIO" class="productos__td" style="text-align: center;">
+          <span class="p-column-title">Precio:</span>
           <p class="productos__p">${{ producto.precio }}</p>
         </td>
+  
+        <td data-label="STOCK" class="productos__td" style="text-align: center;">
+          <span class="p-column-title">Stock:</span>
+          
 
-        <td data-label="STOCK" class="productos__td ">
           <p class="productos__p">
             {{ producto.stock }}
           </p>
-        </td>
 
-        <td data-label="STATUS" class="productos__td productos__td--status">
+          <p *ngIf="!producto.stock && producto.stock_status === 'instock'" class="productos__p">
+           1
+          </p>
+        </td>
+  
+        <td data-label="STATUS" class="productos__td productos__td--status" style="text-align: center;">
+          <span class="p-column-title">Status</span>
           <p-tag
             class="productos__status"
             [rounded]="true"
             severity="danger"
             *ngIf="producto.stock == 0"
           >
-            Sin stocks
+            Sin Stock
           </p-tag>
           <p-tag
             class="productos__status"
@@ -151,7 +244,7 @@
             severity="warning"
             *ngIf="producto.stock >= 1 && producto.stock <= 9"
           >
-            Stock bajo
+            Stock Bajo
           </p-tag>
           <p-tag
             class="productos__status"
@@ -159,54 +252,62 @@
             severity="success"
             *ngIf="producto.stock >= 10"
           >
-            Suficiente stock
+            Suficiente Stock
           </p-tag>
+
+          <p-tag
+          class="productos__status"
+          [rounded]="true"
+          severity="success"
+          *ngIf="producto.stock_status === 'instock' && !producto.stock "
+        >
+          En Existencia
+        </p-tag>
         </td>
+  
+        <td data-label="OPCIONES" class="productos__td" style="text-align: center;">
+          <span class="p-column-title">Opciones:</span>
+  
+     
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-3 mb-3"></button>
+          <button pButton pRipple icon="pi pi-camera" class="p-button-rounded p-button-info mr-3 mb-3" ></button>
 
-        <td data-label="OPCIONES" class="productos__td productos__td--opciones">
-         
-          <!-- <p-toast></p-toast>
-          <p-menu #menu [model]="items" [popup]="true"></p-menu>
-    
-          <p-button icon="pi pi-ellipsis-v" type="button" (click)="menu.toggle($event)" styleClass="topbar-searchbutton p-button-text text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only">
-         
-          </p-button> -->
-          
-          <div class="card_menu card">
-            <p-button icon="pi pi-ellipsis-v" type="button"   styleClass="topbar-searchbutton p-button-text text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only">
-                
-            </p-button>
-          
-          </div>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mb-3" (click)="deleteProduct(producto)"></button>
+      </td>
+       
+      </tr>
 
-         
-   
-          <!-- <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-pencil"
-            class="productos__btn p-button-rounded p-button-text"
-            (click)="viewProduct(producto.id)"
-          ></button>
-
-          <p-button styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-            <i class="material-icons">add_a_photo</i>
-          </p-button> -->
-
-        </td>
+    </ng-template>
+  
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7">Producto no encontrado</td>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-      <tr>
-          <td colspan="7">Producto no encontrado</td>
-      </tr>
-  </ng-template>
-  
+    <ng-template pTemplate="loadingbody" >
+      
+      <!-- columns -->
+      <ng-container *ngFor="let _ of [1, 2, 3, 4, 5]">
+        <tr class="productos__tr productos__body">
+          <!-- rows -->
+          <td *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]" class="productos__td">
+            <p-skeleton height="2.5rem"></p-skeleton>
+          </td>
+        </tr>
+      </ng-container>
+
+    </ng-template>
+ 
   </p-table>
-
-
 </div>
 
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 
+<p-dialog header="Productos" [resizable]="true" [modal]="true" [maximizable]="true" appendTo="body" [(visible)]="dialogVisible"  [style]="{width: '75vw'}" [contentStyle]="{height: '300px'}">
+
+  <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto ducimus ea voluptatem possimus assumenda repudiandae mollitia doloribus tempore nisi, magni quia recusandae porro odit officiis unde tenetur est odio dolorem!
+  Voluptates, iure magnam soluta reprehenderit debitis labore hic qui earum possimus provident asperiores cupiditate voluptatibus sed natus officiis voluptatum nostrum perferendis omnis iste dolor facilis nam. Repudiandae, perspiciatis porro! Temporibus.
+  Nisi quidem sint maiores placeat eaque, autem, tempore voluptates unde quos facilis cumque commodi ab veniam ipsum pariatur quibusdam obcaecati, sit at amet delectus iste. Laboriosam animi exercitationem dolores ratione.
+  </p>
+</p-dialog>

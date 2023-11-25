@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ClaroshopProductResponse} from '@claro/interfaces/claroshop.interface';
+import { ClaroshopProductResponse} from '@claro/interfaces/claroshop-productos.interface';
 import { ClaroService } from '@claro/services/claroservice.service';
 
 @Component({

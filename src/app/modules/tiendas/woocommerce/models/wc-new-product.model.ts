@@ -1,31 +1,31 @@
-import { CategoryResponse } from "../interface/wc-producto.interface";
+import { ProductImageResult, ProductCategoryResponse, ProductResult } from "../interface/woo-producto.interface";
 
-export class wcProductoModel {
+
+export class WooProducto {
+
+
+  static newProductFromJSON(obj : ProductResult) {
+    return new WooProducto
+  }
+
   
-  id?:                   number;
-  name:                  string = "";
-  description:           string = "";
-  short_description?:    string = "";
-  regular_price:        string = "";
-  sale_price?:            string = "";
-  sku:                   string = "";
-  status?:                string = "";
-  price?:                 string = "";
+  id?               = 0;
+  name              = "";
+  description       = "";
+  short_description = "";
+  regular_price     = "";
+  sale_price        = "";
+  sku               = "";
+  status?            = "";
   total_sales?:          number;
-  categories:            CategoryResponse[] = [];
-  tags?:                 any[];
-  stock_quantity?:       null;
-  stock_status?:         string;
-  images:                FormData;
+  categories:           ProductCategoryResponse[] = [];
+  stock_quantity:       number = 1;
+  stock_status? = "";
+  images?:                ProductImageResult[] = [];
 
   constructor() {
-     this.stock_status = 'instock';
-      this.images = new FormData();
-      this.total_sales = 0;
+    
   }
   
 }
 
-export interface wcImage {
-  image: File
-}

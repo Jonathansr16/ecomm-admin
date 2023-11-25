@@ -3,21 +3,24 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //*COMPONENTS
-import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 import { TableProductsComponent } from '@feature/table-products/table-products.component';
 import { SearchProductComponent } from './search-product/search-product.component';
-import { TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ExpansionPanelComponent } from './expansion-panel/expansion-panel.component';
 import { TablePedidosComponent } from './table-pedidos/table-pedidos.component';
 import { LoadingTableComponent } from './loading-table/loading-table.component';
 import { MessageComponent } from './message/message.component';
+import { PedidosOrderComponent } from './pedidos-order/pedidos-order.component';
 
 
 //* MODULES
+import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { MenubarModule } from 'primeng/menubar';
 
+import { FilterNoImagePipe } from '@wcommerce/pipes/no-image.pipe';
 
 @NgModule({
   declarations: [
@@ -29,15 +32,16 @@ import { MessageComponent } from './message/message.component';
     TablePedidosComponent,
     LoadingTableComponent,
     MessageComponent,
-
-    
+    PedidosOrderComponent,
+    FilterNoImagePipe
   ],
   imports: [
     CommonModule,
     RouterModule,
     SharedNgPrimeModule,
     TableModule,
-    TagModule
+    TagModule,
+    MenubarModule
   ],
   exports: [
     TableProductsComponent,
@@ -47,7 +51,8 @@ import { MessageComponent } from './message/message.component';
     TablePedidosComponent,
     SearchProductComponent,
     LoadingTableComponent,
-    MessageComponent
+    MessageComponent,
+    PedidosOrderComponent,
   ]
 })
 export class FeatureModule { }

@@ -29,29 +29,36 @@
         <div class="order-statistics__card">
             <a class="order-statistics__title" routerLink="/dashboard/woocommerce/pedidos/pendientes">
                 <span class="order-statistics__status">En preparación</span>
-                <span class="order-statistics__value">2 ventas</span>
+                <span *ngIf="!statusOrderPending" class="order-statistics__value">{{ pendingOrdersCount }} ventas</span>
+                <p-skeleton *ngIf="statusOrderPending"  width="8rem" styleClass="mt-2"></p-skeleton>
             </a>
         </div>
 
         <div class="order-statistics__card">
             <div class="order-statistics__title">
                 <span class="order-statistics__status">En transito</span>
-                <span class="order-statistics__value">30 ventas</span>
+                <span *ngIf="!statusOrderProcess" class="order-statistics__value">{{ processingOrdersCount }} ventas</span>
+                <p-skeleton *ngIf="statusOrderProcess" width="10rem" styleClass="mt-2"></p-skeleton>
+
             </div>
         </div>
 
         <a class="order-statistics__card" routerLink="/dashboard/woocommerce/pedidos/concretados">
             <div class="order-statistics__title">
                 <span class="order-statistics__status">Concretadas</span>
-                <span class="order-statistics__value">100 ventas</span>
+                <span *ngIf="!statusOrderCompleted" class="order-statistics__value">{{ completedOrdersCount }} ventas</span>
+                <p-skeleton *ngIf="statusOrderCompleted"  width="8rem" styleClass="mt-2"></p-skeleton>
+
             </div>
         </a>
 
-        <div class="order-statistics__card">
-            <div class="order-statistics__title">
+        <div class="order-statistics__card" routerLink="/dashboard/woocommerce/pedidos/cancelados">
+            <a class="order-statistics__title">
                 <span class="order-statistics__status">No concretadas</span>
-                <span class="order-statistics__value">15 ventas</span>
-            </div>
+                <span *ngIf="!statusOrderFailed" class="order-statistics__value">{{ cancelledOrdersCount }} ventas</span>
+                <p-skeleton *ngIf="statusOrderFailed"  width="8rem" styleClass="mt-2"></p-skeleton>
+
+            </a>
         </div>
     </div>
 

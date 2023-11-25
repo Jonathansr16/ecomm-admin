@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { WcProductoResponse } from '@wcommerce/interface/wc-producto.interface';
 import { WcommerceService } from '@wcommerce/services/wcommerce.service';
 
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { wcProductoModel } from '@wcommerce/models/wc-new-product.model';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 import { MessageService } from 'primeng/api';
 import Swal from 'sweetalert2';
+import { WooProducto } from '@wcommerce/models/wc-new-product.model';
 
 @Component({
   selector: 'app-product',
@@ -21,7 +20,7 @@ export class ProductComponent {
   activeAccordeon: number = 0;
   idProduct: any;
 
-  wcProduct: wcProductoModel = new wcProductoModel();
+  wcProduct: WooProducto = new WooProducto();
 
   lastValue: string = '';
   currentValue: string = '';
@@ -87,6 +86,23 @@ export class ProductComponent {
 
   }
 
+
+  getProductById(id: number){
+    this.wcService.getProduct(this.idProduct).subscribe({
+      next: (resp) => {
+        this.wcProduct = {
+          ...resp
+        };
+      },
+      error: (errorMessage) => {
+        this.loading = false;
+        this.formProduct.patchValue({  });
+
+      }
+    })
+  }
+
+  
   //* EVALUA SI UN CAMPO ESPECIFICOS FUE EDITADO PARA GUARDAR
   verifyField(formField: string, value: string): boolean {
 
