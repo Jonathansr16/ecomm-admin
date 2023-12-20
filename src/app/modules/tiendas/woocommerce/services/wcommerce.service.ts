@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -19,22 +23,20 @@ import { WooProducto } from '@wcommerce/models/wc-new-product.model';
 
 @Injectable()
 export class WcommerceService {
-  
   private url = 'https://servitae.mx/wp-json/wc/v3';
   statusData: 'loading' | 'success' | 'error' | undefined;
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {}
 
   //* OBTIENE TODOS LOS PRODUCTOS
   getProducts(): Observable<TableProductResult[]> {
-    return this.http.get<ProductResponse[]>(`${this.url}/products` ).pipe(
+    return this.http.get<ProductResponse[]>(`${this.url}/products`).pipe(
       map((resp) =>
         resp.map((producto) => this.mapToWooTableProducto(producto))
       ),
       tap((_) => console.log('productos buscados')),
       catchError(this.hanlerError<TableProductResult[]>('getProducts', []))
-    )
+    );
   }
 
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
@@ -52,26 +54,35 @@ export class WcommerceService {
         images: product.images,
         stock_quantity: product.stock_quantity,
       })),
-       catchError(this.hanlerError<any>('getProduct', {}))
+      catchError(this.hanlerError<any>('getProduct', {}))
     );
   }
 
   //* OBTIENE TODAS LAS CATEGORIAS CREADAS
   getCategorias(): Observable<ProductCategoryResponse[]> {
-    return this.http.get<ProductCategoryResponse[]>(`${this.url}/categories` )
-    .pipe(
-      catchError(this.hanlerError<ProductCategoryResponse[]>('getCategorias', []))
-         );
+    return this.http
+      .get<ProductCategoryResponse[]>(`${this.url}/categories`)
+      .pipe(
+        catchError(
+          this.hanlerError<ProductCategoryResponse[]>('getCategorias', [])
+        )
+      );
   }
 
   //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
   getOrderByStatus(
-    status: 'pending' | 'processing' | 'completed' | 'cancelled'
-  ): Observable<OrderResult[]> {
+    status: 'pending' | 'processing' | 'completed' | 'cancelled', 
+    totalItemsByPage?: number,
+    page?: number
+    
+    ): Observable<OrderResult[]> {
+
+    // const params = new HttpParams()
+    //       .set('per_page', totalItemsByPage)
+    //       .set('page', page)
+
     return this.http
-      .get<OrderResponse[]>(
-        `${this.url}/orders?status=${status}`
-      )
+      .get<OrderResponse[]>(`${this.url}/orders?status=${status}`)
       .pipe(
         map((resp) => {
           return resp.map((order) => {
@@ -93,24 +104,20 @@ export class WcommerceService {
             );
           });
         }),
-         catchError(this.hanlerError<OrderResult[]>('getOrderByStatus', []))
-      ) 
+        catchError(this.hanlerError<OrderResult[]>('getOrderByStatus', []))
+      );
   }
 
   //* OBTIENE LA CANTIDAD DE ORDENES
   getOrdersCount(
     status: 'pending' | 'processing' | 'completed' | 'cancelled'
   ): Observable<{ totalCount: number }> {
-    return this.http
-      .get<any>(
-        `${this.url}/orders?status=${status}`, 
-      )
-      .pipe(
-        map((resp) => {
-          return { totalCount: resp.length };
-        }),
-         catchError(this.hanlerError<any>('getOrderCount', [])) 
-      )
+    return this.http.get<any>(`${this.url}/orders?status=${status}`).pipe(
+      map((resp) => {
+        return { totalCount: resp.length };
+      }),
+      catchError(this.hanlerError<any>('getOrderCount', []))
+    );
   }
 
   //* CREAR UN NUEVO PRODUCTO
@@ -119,12 +126,14 @@ export class WcommerceService {
       ...producto,
     };
 
-    return this.http.post<WooProducto>(
-      // this.queryParam('products'),
-      // productData
-      `${this.url}/products`, productData
-    ).pipe(catchError(this.hanlerError<any>('createProduct', {}))
-    );
+    return this.http
+      .post<WooProducto>(
+        // this.queryParam('products'),
+        // productData
+        `${this.url}/products`,
+        productData
+      )
+      .pipe(catchError(this.hanlerError<any>('createProduct', {})));
   }
 
   //* ACTUALIZA UN PRODUCTO ESPECIFICO
@@ -136,37 +145,32 @@ export class WcommerceService {
       ...producto,
     };
 
-    return this.http.post<WooProducto>(`${this.url}/products/${idProduct}`, product).pipe(
-      catchError(this.hanlerError<any>('setProduct', {}))
-
-    );
+    return this.http
+      .post<WooProducto>(`${this.url}/products/${idProduct}`, product)
+      .pipe(catchError(this.hanlerError<any>('setProduct', {})));
   }
 
   //*ACTUALIZA UN CAMPO ESPECIFICO
   setFielUpdate(idProduct: any, field: string): Observable<WooProducto> {
-    return this.http.put<WooProducto>(`${this.url}/products/${idProduct}`, field).pipe(
-      catchError(this.hanlerError<any>('setFieldUpdate', {}))
-    );
+    return this.http
+      .put<WooProducto>(`${this.url}/products/${idProduct}`, field)
+      .pipe(catchError(this.hanlerError<any>('setFieldUpdate', {})));
   }
 
   //*ELIMINA UN PRODUCTO DEL INVENTARIO
   deleteProduct(idProduct: number): Observable<number> {
-    return this.http.delete<number>(
-      `${this.url}/products/${idProduct}`).pipe(catchError(this.hanlerError<any>('deleteProduct', {}))
-      );
+    return this.http
+      .delete<number>(`${this.url}/products/${idProduct}`)
+      .pipe(catchError(this.hanlerError<any>('deleteProduct', {})));
   }
 
   private hanlerError<T>(operation = 'operacion', result?: T) {
     return (error: any): Observable<T> => {
-    
       console.warn(`${operation} fallo`);
-      console.warn(`Mensaje de la falla: ${error.message}`)
+      console.warn(`Mensaje de la falla: ${error.message}`);
       return of(result as T);
     };
   }
-
- 
-
 
   private mapToWooTableProducto(producto: ProductResponse): TableProductResult {
     return {
@@ -184,7 +188,4 @@ export class WcommerceService {
       categorias: producto.categories,
     };
   }
-
-
 }
-

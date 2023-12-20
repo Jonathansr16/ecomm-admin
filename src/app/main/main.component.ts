@@ -27,19 +27,21 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('menu') menu?: ElementRef;
 
   isSubMenuOpen: boolean = false;
-  sidebarVisible: boolean = false;
-  sidebarVisible2: boolean = false;
+  handlerSidebarTheme: boolean = false;
   showNotf: boolean = false;
   show: boolean = false;
   isOpenMenu: boolean = false;
+
   //Sidebar toggle show hide function
   toggleSidebar = false;
+  
   messageUser: MessageUser[] = [];
   menuProfile: menu[] = [];
   date = new Date();
   notificationShow: boolean = false;
   activeSubmenu: number = -1;
   
+  handlerOverlay: boolean = false;
 
   private unlistener!: () => void;
 
@@ -51,7 +53,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     private renderer2: Renderer2,
   ) {}
 
-  addToggle() {
+  handlerSidebar() {
     this.toggleSidebar = !this.toggleSidebar;
 
     if (this.toggleSidebar) {
@@ -60,6 +62,18 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderer2.removeClass(this.arrow?.nativeElement, 'animateArrow');
     }
   }
+
+  
+showSidebar() {
+  this.toggleSidebar = true;
+  this.handlerOverlay = true;
+}
+
+hiddenSidebar() {
+  this.toggleSidebar = false;
+  this.handlerOverlay = false;
+
+}
 
   closeOutMenu() {
   
@@ -94,7 +108,6 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
         }
   }
 
-  
 
   toggleNotf(): void {
     const notfBox = this.notfContainer?.nativeElement;
@@ -126,9 +139,6 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   changeTheme(theme: string) {
     this.themeService.switchTheme(theme);
 }
-
-
-
 
 
   ngOnInit(): void {

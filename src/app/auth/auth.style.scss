@@ -17,7 +17,7 @@
 }
 
 ::ng-deep .forms .p-button{
-  background-color: var(--active-color) !important;
+  // background-color: var(--active-color) !important;
   width: 60%;
   display: block;
   margin-left: auto;
@@ -45,7 +45,7 @@
   margin-left: auto;
   margin-right: auto;
 
-  background-color: var(--light);
+  background-color: #fff;
   margin-bottom: 30px;
     box-shadow: 0 0 2rem 0 rgba(136,152,170,.15);
  border-radius: .375rem;
@@ -67,6 +67,7 @@
     font-size: 1.5rem;
     text-align: center;
     font-weight: 500;
+    color: var(--bluegray-500);
    }
 
  &__section {
@@ -105,7 +106,7 @@
   padding: 0 15px;
 
   &__a {
-    color: var(--light);
+    color: #fff;
     font-weight: 400;
     font-size: 0.9rem;
   }
@@ -114,13 +115,13 @@
 }
 
 .acceso-header__h1 {
-  color: var(--light);
+  color: #fff;
   font-size: 2rem;
   font-weight: 500;
 }
 
 .acceso-header__p {
-  color: var(--light);
+  color: #fff;
   font-size: 1.2rem;
 }
 

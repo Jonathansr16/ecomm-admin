@@ -13,13 +13,15 @@ import { SharedNgPrimeModule } from './shared-ng-prime.module';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 
 @NgModule({
     declarations: [
       HeaderComponent,
       PanelLeftComponent,
-      FooterComponent
+      FooterComponent,
+      BreadcrumbComponent
     ],
     imports: [
       CommonModule,
@@ -32,7 +34,8 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     exports: [
       HeaderComponent,
       PanelLeftComponent,
-      FooterComponent
+      FooterComponent,
+      BreadcrumbComponent
     ]
   })
   export class SharedFeatureModule { }

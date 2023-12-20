@@ -1,0 +1,181 @@
+<app-orders-template>
+  <div class="order-topbar__left">
+    <h3 class="order-topbar__h3">Ordenes completadas</h3>
+  </div>
+
+  <div *ngFor="let order of dataOrders; let i = index" class="order-card">
+    <div class="order-row order-card-header">
+      <div class="order-col order-card-header__left">
+        <p-checkbox
+          [binary]="true"
+          [value]="order"
+          [(ngModel)]="selectOne[i]"
+          inputId="binary"
+          (onChange)="handleCheckboxChange(order, i)"
+        ></p-checkbox>
+        <h3 class="order__h3">#{{ order.id }}</h3>
+        <!-- <small class="order__separator">|</small>
+        <span class="order__span">{{
+          order.date_created | date : "short"
+        }}</span> -->
+      </div>
+
+      <div class="order-col order-card-header__right">
+
+        <h3 class="order__customer order__h3">{{ order.first_name }} {{ order.last_name }} </h3>
+        <span class="order__separator">|</span>
+        <a class="order__btn order__btn--mobile" href="#">Ver orden</a>
+      </div>
+    </div>
+
+    <div class="order-card__details">
+     
+      <div class="order-status">
+      
+        <div class="order-col order-card__status">
+          <span
+            *ngIf="order.status === 'completed'"
+            class="order-status__span order-status__completed"
+          >
+            Entregado
+          </span>
+
+          <span
+            *ngIf="order.status === 'cancelled'"
+            class="order-status__span order-status__failed"
+          >
+            No Concretado
+          </span>
+        </div>
+
+        <div class="order-col order__date">
+          <span class="order__span">Fechada el día: {{order.date_modified | date: 'shortDate' }}</span>
+        </div>
+      </div>
+
+      <div class="order-col order-card__action">
+        <button type="button" class="order__btn order__btn--desktop">Ver orden</button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="order.product.length > 1; else cardOneProduct">
+      <div class="order-card__content order-card__container">
+        <p-button
+          icon="pi pi-angle-down"
+          type="button"
+          styleClass="toggle-button p-button-text text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only"
+          (onClick)="collapseContent(i)"
+        >
+        </p-button>
+
+        <ng-container *ngIf="!isCollapsing(i)">
+        
+          <!-- CONTENIDO A MOSTRAR CUANDO EL PANEL ESTA SIN COLAPSAR -->
+          <div class="order-card__product order-card__collapse">
+              <div class="order-card__picture order-card__picture-multiple-items">
+                
+                <div *ngFor="let img of order.product">
+                  <img [src]="img.image.src" [alt]="img.image.alt" class="order-card__img order-card__img-multiple-img">
+                </div>
+            
+              </div>
+
+              <div class="order-card__description">
+
+                <span class="order__span">Paquete de {{order.product.length}} productos </span>
+
+              </div>
+
+              <div class="order-card__text">
+
+              </div>
+          </div>
+       
+        </ng-container>
+
+        <!-- CONTENIDO A MOSTRAR CUANDO EL PANEL ESTA COLAPSADO -->
+        <!-- <ng-template #namename>
+   
+
+        </ng-template> -->
+      </div>
+    </ng-container>
+
+    <!-- CONTENIDO A MOSTRAR CUANDO SOLO HAY UN PRODUCTO EN LA ORDEN -->
+    <ng-template #cardOneProduct>
+      <!-- <div class="order-row order-card__content">
+              
+              <div class="order-col">
+
+                <img
+                  [src]="order.product[0].image.src"
+                  class="w-5 sm:w-12rem xl:w-5rem shadow-2 block xl:block mx-auto border-round"
+                  [alt]="order.product[0].image.alt"
+                />
+
+                <a  href="#" class="order-card__a"> {{ order.product.length > 0 ? order.product[0].name : "Sin datos del producto"  }} </a>
+
+              </div>
+
+              <div class="order-col order-card__data">
+                  <small class="order__small">SKU: {{ order.product[0].sku }}</small>   
+              </div>
+
+              
+              <div class="order-col order-card__price">
+                <small class="order__small"> ${{ order.total }}</small>
+                <span class="order__span"> | </span>
+                <span class="order__span">
+                  {{ order.product[0].quantity }}</span>
+                  <ng-container *ngIf="order.product[0].quantity > 1; else singularUnit"> 
+                    <span class="order__span"> unidades</span>
+                  </ng-container>
+                  <ng-template #singularUnit>
+                    <span class="order__span"> unidad</span>
+                  </ng-template>
+              </div>
+
+            </div> -->
+      <div class="order-card__content order-card__container">
+        <div class="order-card__product">
+          <div class="order-card__picture order-card__picture-simple-item">
+            <img
+              [src]="order.product[0].image.src"
+              class="order-card__img order-card__img-simple-img"
+              [alt]="order.product[0].image.alt"
+            />
+          </div>
+
+          <div class="order-card__description">
+            <a href="#" class="order-card__a">
+              <div class="orde-card__title">{{ order.product[0].name }}</div>
+              <!-- <div class="order-card__variante">Variante:</div> -->
+            </a>
+          </div>
+        </div>
+
+        <div class="order-card__text">
+          <div class="order-card__price">
+            <span class="order-card__price"> ${{ order.total }} </span>
+          </div>
+
+          <div class="order-card__unity">
+            <span class="order-card__unity">
+              {{ order.product[0].quantity }}
+              <ng-container
+                *ngIf="order.product[0].quantity > 1; else singularUnit"
+              >
+                <span class="order__span"> unidades</span>
+              </ng-container>
+              <ng-template #singularUnit>
+                <span class="order__span"> unidad</span>
+              </ng-template>
+            </span>
+          </div>
+
+          <div class="order-card__sku">SKU: {{ order.product[0].sku }}</div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</app-orders-template>

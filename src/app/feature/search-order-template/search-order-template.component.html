@@ -1,0 +1,44 @@
+
+    <div class="order-topbar__col"> 
+
+      <ng-content select="order-topbar__left"></ng-content>
+      
+    </div>
+    
+    <ng-content select=".order-topbar__col order-topbar__center"></ng-content>
+    <div class="order-topbar__col order-topbar__right">
+        <div class="topbar-search" [class.topbar-search-active]="hidenSearch">
+            <button
+              (click)="showSearch()"
+              severity="success"
+              type="button"
+              class="topbar-searchbutton p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+            >
+              <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+            </button>
+    
+            <div class="search-input-wrapper">
+              <span class="p-input-icon-right">
+                <input
+                  #searchProduct
+                  type="text"
+                  placeholder="Buscar..."
+                  pinputtext=""
+                  placeholder="Buscar producto"
+                  class="p-inputtext p-component p-element"
+                />
+                <i class="pi pi-search" (click)="hiddenSearch()"></i>
+              </span>
+            </div>
+        </div>
+
+        <button
+        severity="success"
+        class="p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+        type="button"
+      >
+        <i class="order__i pi pi-sliders-v"></i>
+      </button>  
+    
+    </div>
+

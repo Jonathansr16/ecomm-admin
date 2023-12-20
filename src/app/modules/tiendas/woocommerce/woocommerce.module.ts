@@ -7,7 +7,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { InventarioComponent } from '@wcommerce/pages/inventario/inventario.component';
 import { FeatureModule } from '@feature/feature.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { PedidosComponent } from '@wcommerce/pages/pedidos/pedidos.component';
 import { ClientesComponent } from '@wcommerce/pages/clientes/clientes.component';
 import { WcNewProductComponent } from '@wcommerce/pages/new-product/wc-new-product.component';
 import { ProductComponent } from '@wcommerce/pages/product/product.component';
@@ -22,26 +21,37 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ProgressBarModule } from 'primeng/progressbar';
 // For dynamic progressbar demo
 import { ToastModule } from 'primeng/toast';
-import { PedidosCompletadosComponent } from './pages/pedidos/pedidos-completados/pedidos-completados.component';
-import { PedidosCanceladosComponent } from './pages/pedidos/pedidos-cancelados/pedidos-cancelados.component';
-import { PedidosPendientesComponent } from './pages/pedidos/pedidos-pendientes/pedidos-pendientes.component';
+
+
+
+//ORDENES COMPONENTS
+import { WooOrdersComponent } from './pages/woo-orders/woo-orders.component';
+import { WooOrdersPendingComponent } from './pages/woo-orders/woo-orders-pending/woo-orders-pending.component';
+import { WooOrdersFailedComponent } from './pages/woo-orders/woo-orders-failed/woo-orders-failed.component';
+import { WooOrdersCompletedComponent } from './pages/woo-orders/woo-orders-completed/woo-orders-completed.component';
+
+
+
 import { KeyInterceptor } from './services/key.interceptor';
 
 
 import { WcommerceService } from './services/wcommerce.service';
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
   declarations: [
     InventarioComponent,
-    PedidosComponent,
     ClientesComponent,
     WcNewProductComponent,
     ProductComponent,
     AccordeonComponent,
     FilterPipe,
-    PedidosCompletadosComponent,
-    PedidosCanceladosComponent,
-    PedidosPendientesComponent,
+    WooOrdersComponent,
+    WooOrdersPendingComponent,
+    WooOrdersCompletedComponent,
+    WooOrdersFailedComponent,
+    OrdersComponent
+
   ],
   imports: [
     CommonModule,

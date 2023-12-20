@@ -20,7 +20,7 @@
     }
 
     &__h6 {
-        color: var(--light);
+        color: #fff;
 
         @include responsive(550px) {
             text-align: center
@@ -37,7 +37,7 @@
     }
 
     &__a {
-        color: var(--light);
+        color: #fff;
         font-size: 0.9rem;
     }
 

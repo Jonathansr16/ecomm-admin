@@ -1,5 +1,19 @@
 <section class="contenedor">
+  <div class="container-overlay" [class.handler-overlay]="handlerOverlay"></div>
+  <!-- SIDEBAR -->
   <section class="sidebar" [class.hide-sidebar]="toggleSidebar">
+   
+    <div class="sidebar-close">
+        
+      <button 
+      (click)="hiddenSidebar()"
+      severity="danger"
+      class="sidebar-close__btn p-ripple p-element p-button p-component p-button-icon-only p-button-danger p-button-rounded p-button-text"
+      type="button">
+      <i class="order__i pi pi-times"></i>
+    </button> 
+    </div>
+   
     <div class="sidebar-head">
       <div class="sidebar-head__user">
         <img src="assets/img/profile-example.webp" class="sidebar-head__img" loading="lazy" alt="profile" />
@@ -14,7 +28,7 @@
     <div class=" sidebar__contain">
       <div class="sidebar__content">
         <div class="sidebar-toggle">
-          <i #arrow (click)="addToggle()" class="material-icons sidebar-toggle__i">chevron_left</i>
+          <i #arrow (click)="handlerSidebar()" class="material-icons sidebar-toggle__i">chevron_left</i>
         </div>
 
         <div class="sidebar-section">
@@ -62,7 +76,7 @@
                     </li>
 
                     <li class="sidebar__li">
-                      <a routerLink="/dashboard/wocommerce/pedidos" class="sidebar__a">
+                      <a routerLink="/dashboard/wocommerce/ordenes" class="sidebar__a">
                         <i class="material-icons sidebar__icon">local_mall</i>
                         <span class="sidebar__span">Pedidos</span>
                       </a>
@@ -103,7 +117,7 @@
                       </li>
   
                       <li class="sidebar__li">
-                        <a routerLink="/dashboard/claroshop/pedidos" class="sidebar__a">
+                        <a routerLink="/dashboard/claroshop/ordenes" class="sidebar__a">
                           <i class="material-icons sidebar__icon">local_mall</i>
                           <span class="sidebar__span">Pedidos</span>
                         </a>
@@ -193,9 +207,9 @@
                     </li>
 
                     <li class="sidebar__li">
-                      <a routerLink="/dashboard/woocommerce/pedidos" class="sidebar__a">
+                      <a routerLink="/dashboard/woocommerce/ordenes" class="sidebar__a">
                         <i class="material-icons sidebar__icon">local_mall</i>
-                        <span class="sidebar__span">Pedidos</span>
+                        <span class="sidebar__span">Ordenes</span>
                       </a>
                     </li>
 
@@ -302,7 +316,7 @@
   <section id="content" class="content" #content>
     <!-- NAVBAR -->
     <nav class="nav">
-      <!-- <i (click)="addToggle()" class='nav__i--menu material-icons' >grid_view</i> -->
+      <i (click)="showSidebar()" class='nav__i--menu material-icons' >grid_view</i>
 
       <form class="nav-form">
         <div class="nav-form__box form-input">
@@ -411,10 +425,10 @@
   <!-- CONTENT -->
 
   <div class="theme">
-    <i class="theme__i material-icons" (click)="sidebarVisible = true">settings</i>
+    <i class="theme__i material-icons" (click)=" handlerSidebarTheme = true">settings</i>
   </div>
 </section>
-<p-sidebar [(visible)]="sidebarVisible" [baseZIndex]="50" position="right">
+<p-sidebar [(visible)]="handlerSidebarTheme" [baseZIndex]="50" position="right">
   <h3>Elige un tema:</h3>
 
   <div class="theme__content">

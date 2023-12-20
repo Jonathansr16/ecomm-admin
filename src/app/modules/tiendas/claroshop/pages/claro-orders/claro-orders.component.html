@@ -1,0 +1,59 @@
+<!-- <app-breadcrumb>
+
+    <ul title class="breadcrumb__ul">
+
+        <li class="breadcrumb__li">
+            <h6 class="breadcrumb__h6">Dashboard ></h6>
+        </li>
+
+        <li class="breadcrumb__li">
+            <i class="breadcrumb__i material-icons">storefront</i>
+            <h6 class="breadcrumb__h6">Woocommerce</h6>
+            <span class="breadcrumb__span"> > </span>
+
+        </li>
+
+        <li class="breadcrumb__li breadcrumb__link">
+            <i class="breadcrumb__i material-icons">pallet</i>
+            <a routerLink="/dashboard/wocommerce/pedidos" class="breadcrumb__a">
+                Pedidos</a>
+        </li>
+    </ul>
+</app-breadcrumb> -->
+
+<div class="order-statistics">
+
+    <div class="order-statistics__content section">
+
+        <div class="order-statistics__card">
+            <a routerLink="/dashboard/claroshop/pedidos/pendientes" class="order-statistics__title">
+                <span class="order-statistics__status">En preparación</span>
+                <span *ngIf="!statusOrderPending" class="order-statistics__value">{{ pendingOrdersCount || 0 }} ventas</span>
+                <p-skeleton *ngIf="statusOrderPending" width="8rem" styleClass="mt-2"></p-skeleton>
+            </a>
+        </div>
+
+        <div class="order-statistics__card">
+            <a class="order-statistics__title">
+                <span class="order-statistics__status">Embarcados</span>
+                <span  *ngIf="!statusOrdersShipped" class="order-statistics__value">{{ shippedOrdersCount || 0 }} ventas</span>
+                <p-skeleton *ngIf="statusOrdersShipped" width="8rem" styleClass="mt-2"></p-skeleton>
+            </a>
+        </div>
+
+        <div class="order-statistics__card">
+            <a routerLink="/dashboard/claroshop/pedidos/entregados" class="order-statistics__title">
+                <span class="order-statistics__status">Concretadas</span>
+                <span *ngIf="!statusOrderCompleted" class="order-statistics__value">{{ completedOrdersCount || 0 }} ventas</span>
+                <p-skeleton *ngIf="statusOrderCompleted"  width="8rem" styleClass="mt-2"></p-skeleton>
+            </a>
+        </div>
+
+       
+    </div>
+
+</div>
+
+
+
+<router-outlet></router-outlet>

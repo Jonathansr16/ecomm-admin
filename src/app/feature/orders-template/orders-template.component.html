@@ -1,0 +1,180 @@
+<div class="order-table section" >
+  <!-- <ng-template #data ngSwitchCase="success"> -->
+
+    <div class="order-row order-topbar"> 
+
+      <ng-content select=".order-topbar__left"></ng-content>
+      
+      <div class="order-col order-topbar__right">
+        <div class="topbar-search" [class.topbar-search-active]="hidenSearch">
+          <button
+            (click)="showSearch()"
+            severity="success"
+            type="button"
+            class="topbar-searchbutton p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+          >
+            <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+          </button>
+  
+          <div class="search-input-wrapper">
+            <span class="p-input-icon-right">
+              <input
+                #searchProduct
+                type="text"
+                placeholder="Buscar..."
+                pinputtext=""
+                placeholder="Buscar producto"
+                class="p-inputtext p-component p-element"
+              />
+              <i class="pi pi-search" (click)="hiddenSearch()"></i>
+            </span>
+          </div>
+      </div>
+
+      <button
+      severity="success"
+      class="p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+      type="button">
+      <i class="order__i pi pi-sliders-v"></i>
+    </button>  
+      </div>
+    </div>
+  <ng-content select=".order-card"></ng-content>
+
+
+
+    <!-- <ng-container *ngIf="order.product.length > 1; else moreOneProductView">
+
+
+        <div class="order-menu">
+          
+          <p-button
+            icon="pi pi-angle-down"
+            type="button"
+            styleClass="topbar-searchbutton p-button-text text-color-secondary p-button-rounded flex-shrink-0 p-button p-component p-button-icon-only"
+            (onClick)="toggleAccordion(i)"
+            >
+          </p-button>
+
+            <div class="order-menu__container" *ngIf="!isItemOpen(i)">
+                <div class="order-menu__product">
+
+                    <div class="order-menu__pictures">
+                        <div class="order-menu__image order-menu__image--1">
+                          <img
+                            [src]="order.product[0].image.src"
+                            class="order-menu__img"
+                            alt=""
+                          />
+                        </div>
+
+                        <div class="order-menu__image order-menu__image--2">
+                          <img
+                            [src]="order.product[1].image.src"
+                            class="order-menu__img"
+                            alt=""
+                          />
+                        </div>
+                    </div>
+                    <span class="order__span order__span--paquetes">Paquete de {{ order.product.length }} unidades</span>
+                </div>
+
+                <div class="order-menu__price">
+
+                    <small class="order__small">${{order.total}}</small>
+                </div>
+
+            </div>
+
+            <div class="order-menu__products" *ngIf="isItemOpen(i)">
+
+                <div class="order-content order-content__products" *ngFor="let product of order.product">
+                    <div class="order-content__left">
+                        <div class="order-content__product">
+                          <img
+                            [src]="product.image.src"
+                            class="order-content__img"
+                            alt=""
+                          />
+
+                          <div class="order-content__details">
+                            <a href="#" class="order__a"> {{ order.product[0].name }} </a>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="order-content__center">
+                        <small class="order__small">SKU: {{ product.sku }}</small>
+                      </div>
+
+                      <div class="order-content__right">
+                        <small class="order__small"> ${{ product.total }}</small>
+                        <span class="order__span"> | </span>
+                        <span class="order__span">
+                          {{ product.quantity }} unidades</span
+                        >
+                      </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        </ng-container>
+
+        <ng-template #moreOneProductView>
+            <div class="order-content">
+          <div class="order-content__left">
+            <div class="order-content__product">
+              <img
+                [src]="order.product[0].image.src"
+                class="order-content__img"
+                alt=""
+              />
+
+              <div class="order-content__details">
+                <a  href="#" class="order__a"> {{ order.product.length > 0 ? order.product[0].name : "Sin datos del producto"  }} </a>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="order-content__center">
+            <small class="order__small">SKU: {{ order.product[0].sku }}
+
+            </small>
+          </div>
+
+          <div class="order-content__right">
+            <small class="order__small"> ${{ order.total }}</small>
+            <span class="order__span"> | </span>
+            <span class="order__span">
+              {{ order.product[0].quantity }} unidades</span
+            >
+          </div>
+        </div>
+        </ng-template> -->
+ 
+
+  <!-- <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="totalOrders"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    [rows]="10"
+  ></p-paginator> -->
+  <!-- </ng-template> -->
+
+  <!-- <ng-template #dataLoading ngSwitchCase="loading">
+    <app-loading-table></app-loading-table>
+  </ng-template>
+
+  <ng-template #dataError ngSwitchCase="error">
+    <app-message
+      [titleError]="titleError"
+      [DetailError]="detailsError"
+    ></app-message>
+  </ng-template> -->
+</div>

@@ -11,7 +11,7 @@ const routes: Routes = [
    },
 
    {
-    path: 'claroshop',loadChildren: () => import('@claro/claroshop.module').then( c => c.ClaroshopModule)
+    path: 'claroshop',loadChildren: () => import('@claroshop/claroshop.module').then( c => c.ClaroshopModule)
    },
 
    {
