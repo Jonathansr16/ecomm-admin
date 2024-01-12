@@ -1,0 +1,1713 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.2.8",
+  "deps": {
+    "@angular/animations": "^16.0.0",
+    "@angular/common": "^16.0.0",
+    "@angular/compiler": "^16.0.0",
+    "@angular/core": "^16.0.0",
+    "@angular/forms": "^16.0.0",
+    "@angular/platform-browser": "^16.0.0",
+    "@angular/platform-browser-dynamic": "^16.0.0",
+    "@angular/router": "^16.0.0",
+    "@auth0/auth0-angular": "^2.2.1",
+    "animate.css": "^4.1.1",
+    "crypto-js": "^4.1.1",
+    "http-proxy-middleware": "^2.0.6",
+    "material-icons": "^1.13.9",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
+    "primeng": "^16.0.2",
+    "rxjs": "~7.8.0",
+    "sweetalert2": "^11.6.13",
+    "swiper": "^9.4.1",
+    "tslib": "^2.3.0",
+    "uninstall": "^0.0.0",
+    "zone.js": "~0.13.0",
+    "@angular-devkit/build-angular": "^16.0.2",
+    "@angular-devkit/core": "^16.1.6",
+    "@angular-devkit/schematics": "^16.1.6",
+    "@angular/cli": "^16.1.6",
+    "@angular/compiler-cli": "^16.0.0",
+    "@nx/angular": "17.2.8",
+    "@nx/workspace": "17.2.8",
+    "@schematics/angular": "^16.1.6",
+    "@types/crypto-js": "^4.1.2",
+    "@types/jasmine": "~4.3.0",
+    "jasmine-core": "~4.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "nx": "17.2.8",
+    "typescript": "~5.0.2"
+  },
+  "pathMappings": {
+    "@auth/*": [
+      "src/app/auth/*"
+    ],
+    "@ayuda/*": [
+      "src/app/modules/ayuda/*"
+    ],
+    "@claroshop/*": [
+      "src/app/modules/tiendas/claroshop/*"
+    ],
+    "@feature/*": [
+      "src/app/feature/*"
+    ],
+    "@home/*": [
+      "src/app/modules/home/*"
+    ],
+    "@main/*": [
+      "src/app/main/*"
+    ],
+    "@shared/*": [
+      "src/app/shared/*"
+    ],
+    "@wcommerce/*": [
+      "src/app/modules/tiendas/woocommerce/*"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.ts",
+        "hash": "8102294490310344294"
+      },
+      {
+        "file": "src/app/feature/product-card/product-card.component.html",
+        "hash": "4080104629653432779"
+      }
+    ],
+    "projectFileMap": {
+      "servitaeapp": [
+        {
+          "file": ".editorconfig",
+          "hash": "6686520031028425313"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "15048768063200080304"
+        },
+        {
+          "file": ".vscode/extensions.json",
+          "hash": "12343942279124280405"
+        },
+        {
+          "file": ".vscode/launch.json",
+          "hash": "17038929134016848735"
+        },
+        {
+          "file": ".vscode/tasks.json",
+          "hash": "5336636969995539451"
+        },
+        {
+          "file": "README.md",
+          "hash": "12476216912875010361"
+        },
+        {
+          "file": "nx.json",
+          "hash": "18037459227257873511"
+        },
+        {
+          "file": "package-lock.json",
+          "hash": "13783661364147890337"
+        },
+        {
+          "file": "package.json",
+          "hash": "4289374992342255048",
+          "deps": [
+            "npm:@angular/animations",
+            "npm:@angular/common",
+            "npm:@angular/compiler",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@angular/platform-browser",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/router",
+            "npm:@auth0/auth0-angular",
+            "npm:animate.css",
+            "npm:crypto-js",
+            "npm:http-proxy-middleware",
+            "npm:material-icons",
+            "npm:primeflex",
+            "npm:primeicons",
+            "npm:primeng",
+            "npm:rxjs",
+            "npm:sweetalert2",
+            "npm:swiper",
+            "npm:tslib",
+            "npm:uninstall",
+            "npm:zone.js",
+            "npm:@angular-devkit/build-angular",
+            "npm:@angular-devkit/core",
+            "npm:@angular-devkit/schematics",
+            "npm:@angular/cli",
+            "npm:@angular/compiler-cli",
+            "npm:@nx/angular",
+            "npm:@nx/workspace",
+            "npm:@schematics/angular",
+            "npm:@types/crypto-js",
+            "npm:@types/jasmine",
+            "npm:jasmine-core",
+            "npm:karma",
+            "npm:karma-chrome-launcher",
+            "npm:karma-coverage",
+            "npm:karma-jasmine",
+            "npm:karma-jasmine-html-reporter",
+            "npm:nx",
+            "npm:typescript"
+          ]
+        },
+        {
+          "file": "project.json",
+          "hash": "11060414528197334160"
+        },
+        {
+          "file": "proxy.conf.json",
+          "hash": "17511991990054653331"
+        },
+        {
+          "file": "src/app/app-routing.module.ts",
+          "hash": "2463715017759100114",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/app.component.html",
+          "hash": "3934919207888811626"
+        },
+        {
+          "file": "src/app/app.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/app.component.spec.ts",
+          "hash": "6452828574395970385",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/app.component.ts",
+          "hash": "2521295017225152678",
+          "deps": [
+            "npm:@angular/core",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/app.module.ts",
+          "hash": "9894127847044567937",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/auth/auth.module.ts",
+          "hash": "9546884595434923501",
+          "deps": [
+            "npm:@angular/core",
+            "npm:primeng",
+            "npm:@angular/forms",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/auth/auth.style.scss",
+          "hash": "16627965223209054217"
+        },
+        {
+          "file": "src/app/auth/components/footer/footer.component.html",
+          "hash": "3251105521517275625"
+        },
+        {
+          "file": "src/app/auth/components/footer/footer.component.scss",
+          "hash": "17375923524718611306"
+        },
+        {
+          "file": "src/app/auth/components/footer/footer.component.spec.ts",
+          "hash": "1944692066901072230",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/components/footer/footer.component.ts",
+          "hash": "14920457969305345040",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/components/header/header.component.html",
+          "hash": "864329127452618427"
+        },
+        {
+          "file": "src/app/auth/components/header/header.component.scss",
+          "hash": "13746601858076093319"
+        },
+        {
+          "file": "src/app/auth/components/header/header.component.spec.ts",
+          "hash": "372101361241028373",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/components/header/header.component.ts",
+          "hash": "3114890235828253524",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/guards/auth.guard.spec.ts",
+          "hash": "12942416802736267153",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/auth/guards/auth.guard.ts",
+          "hash": "5326152759394442827",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/auth/login/login.component.html",
+          "hash": "16920618929068419827"
+        },
+        {
+          "file": "src/app/auth/login/login.component.scss",
+          "hash": "15344897038172096123"
+        },
+        {
+          "file": "src/app/auth/login/login.component.spec.ts",
+          "hash": "7221538253452378982",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/login/login.component.ts",
+          "hash": "4652464065943357493",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@angular/forms",
+            "npm:sweetalert2",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/auth/register/register.component.html",
+          "hash": "698874207099063534"
+        },
+        {
+          "file": "src/app/auth/register/register.component.scss",
+          "hash": "6836768542603590673"
+        },
+        {
+          "file": "src/app/auth/register/register.component.spec.ts",
+          "hash": "6877038197976814006",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/register/register.component.ts",
+          "hash": "10299656738722926383",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:sweetalert2",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/auth/services/auth.service.spec.ts",
+          "hash": "10697900076114607965",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth/services/auth.service.ts",
+          "hash": "1976901009252283167",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/core/core.module.ts",
+          "hash": "7607926617303113613",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/core/directives/ng-drop-images.directive.spec.ts",
+          "hash": "7980082052714645128"
+        },
+        {
+          "file": "src/app/core/directives/ng-drop-images.directive.ts",
+          "hash": "4834031066290277732",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/interface/ayuda.model.ts",
+          "hash": "12432272123604605417"
+        },
+        {
+          "file": "src/app/core/interface/message-user.model.ts",
+          "hash": "1968919975904678773"
+        },
+        {
+          "file": "src/app/core/interface/order-productos.interface.ts",
+          "hash": "16863119512321935034"
+        },
+        {
+          "file": "src/app/core/interface/productos-table.interface.ts",
+          "hash": "12300135028146888141"
+        },
+        {
+          "file": "src/app/core/models/upload-gallery.ts",
+          "hash": "340066773276412972"
+        },
+        {
+          "file": "src/app/core/models/usuario.model.ts",
+          "hash": "10906243732217985230"
+        },
+        {
+          "file": "src/app/core/services/breadcrumb.service.spec.ts",
+          "hash": "15069701208239984253",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/breadcrumb.service.ts",
+          "hash": "3504094168398543269",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/handlerHeader/handler-header.service.spec.ts",
+          "hash": "4404425696105480764",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/handlerHeader/handler-header.service.ts",
+          "hash": "15832424282068382393",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/core/services/theme.service.spec.ts",
+          "hash": "12659729553284747897",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/theme.service.ts",
+          "hash": "8617316116377515354",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/upload-image.service.ts",
+          "hash": "11270531104959707010",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/validators.service.spec.ts",
+          "hash": "2535705412734333100",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/core/services/validators.service.ts",
+          "hash": "15312847666784147153",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "src/app/feature/breadcrumb/breadcrumb.component.html",
+          "hash": "9542382912120096814"
+        },
+        {
+          "file": "src/app/feature/breadcrumb/breadcrumb.component.scss",
+          "hash": "6281327655961481887"
+        },
+        {
+          "file": "src/app/feature/breadcrumb/breadcrumb.component.spec.ts",
+          "hash": "2674622860032724596",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/breadcrumb/breadcrumb.component.ts",
+          "hash": "5228431558482803836",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:primeng",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/feature/expansion-panel/expansion-panel.component.html",
+          "hash": "18118763995953098623"
+        },
+        {
+          "file": "src/app/feature/expansion-panel/expansion-panel.component.scss",
+          "hash": "3529553521929007599"
+        },
+        {
+          "file": "src/app/feature/expansion-panel/expansion-panel.component.spec.ts",
+          "hash": "16583627562681196169",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/expansion-panel/expansion-panel.component.ts",
+          "hash": "2961809616577798649",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/feature.module.ts",
+          "hash": "12076696300382126018",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/feature/loading-table/loading-table.component.html",
+          "hash": "14098329234952730548"
+        },
+        {
+          "file": "src/app/feature/loading-table/loading-table.component.scss",
+          "hash": "10172277533863785886"
+        },
+        {
+          "file": "src/app/feature/loading-table/loading-table.component.spec.ts",
+          "hash": "8558713197443366858",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/loading-table/loading-table.component.ts",
+          "hash": "7735666341900059980",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/message/message.component.html",
+          "hash": "17218852390187661407"
+        },
+        {
+          "file": "src/app/feature/message/message.component.scss",
+          "hash": "13452155465622373835"
+        },
+        {
+          "file": "src/app/feature/message/message.component.spec.ts",
+          "hash": "1955079306523549881",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/message/message.component.ts",
+          "hash": "16357095742603077312",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/orders-quantity-card/orders-quantity-card.component.scss",
+          "hash": "7849984959793894641"
+        },
+        {
+          "file": "src/app/feature/orders-quantity-card/orders-quantity-card.component.spec.ts",
+          "hash": "14861327285282547349",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/orders-quantity-card/orders-quantity-card.component.ts",
+          "hash": "9851785548070640234",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/feature/orders-template/orders-template.component.html",
+          "hash": "17694846005217116284"
+        },
+        {
+          "file": "src/app/feature/orders-template/orders-template.component.scss",
+          "hash": "7249265517987447785"
+        },
+        {
+          "file": "src/app/feature/orders-template/orders-template.component.spec.ts",
+          "hash": "2628916581502893647",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/orders-template/orders-template.component.ts",
+          "hash": "2131255293711346048",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/product-card/product-card.component.html",
+          "hash": "8300986829859071993"
+        },
+        {
+          "file": "src/app/feature/product-card/product-card.component.scss",
+          "hash": "10489633755584217619"
+        },
+        {
+          "file": "src/app/feature/product-card/product-card.component.spec.ts",
+          "hash": "5548853991630393990",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/product-card/product-card.component.ts",
+          "hash": "12912324605913182979",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/feature/search-order-template/search-order-template.component.html",
+          "hash": "10501760415920409962"
+        },
+        {
+          "file": "src/app/feature/search-order-template/search-order-template.component.scss",
+          "hash": "12221367936308387343"
+        },
+        {
+          "file": "src/app/feature/search-order-template/search-order-template.component.spec.ts",
+          "hash": "9923344976757880868",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/search-order-template/search-order-template.component.ts",
+          "hash": "12799762020477736770",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/search-product/search-product.component.html",
+          "hash": "13830167814039941864"
+        },
+        {
+          "file": "src/app/feature/search-product/search-product.component.scss",
+          "hash": "16940171548873432069"
+        },
+        {
+          "file": "src/app/feature/search-product/search-product.component.spec.ts",
+          "hash": "12201397274503887408",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/search-product/search-product.component.ts",
+          "hash": "9114640230608132484",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/table-products/table-products.component.html",
+          "hash": "2820264332567594412"
+        },
+        {
+          "file": "src/app/feature/table-products/table-products.component.scss",
+          "hash": "3433272046081757158"
+        },
+        {
+          "file": "src/app/feature/table-products/table-products.component.spec.ts",
+          "hash": "10551687827297563970",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/table-products/table-products.component.ts",
+          "hash": "8128045871963781861",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/main/main-routing.module.ts",
+          "hash": "18046052567572739921",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/main/main.component.html",
+          "hash": "13595420619075465220"
+        },
+        {
+          "file": "src/app/main/main.component.scss",
+          "hash": "2820906675631248372"
+        },
+        {
+          "file": "src/app/main/main.component.spec.ts",
+          "hash": "3212130489942340090",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/main/main.component.ts",
+          "hash": "15202567941463923810",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/main/main.module.ts",
+          "hash": "13159502628668640176",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/main/services/message-user.service.spec.ts",
+          "hash": "8274363597370702032",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/main/services/message-user.service.ts",
+          "hash": "15659354329056473515",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/ayuda/ayuda-routing.module.ts",
+          "hash": "17857394827342308175",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/modules/ayuda/ayuda.module.ts",
+          "hash": "6699908589797847396",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/modules/ayuda/component/help/help.component.html",
+          "hash": "14489277804461887052"
+        },
+        {
+          "file": "src/app/modules/ayuda/component/help/help.component.scss",
+          "hash": "10561774686116957883"
+        },
+        {
+          "file": "src/app/modules/ayuda/component/help/help.component.spec.ts",
+          "hash": "17972583972867623016",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/ayuda/component/help/help.component.ts",
+          "hash": "11682593343234144144",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/home/home-routing.module.ts",
+          "hash": "9538760813909170022",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/modules/home/home.component.html",
+          "hash": "2524012753817053639"
+        },
+        {
+          "file": "src/app/modules/home/home.component.scss",
+          "hash": "12705623853563807442"
+        },
+        {
+          "file": "src/app/modules/home/home.component.ts",
+          "hash": "751267657207865225",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/modules/home/home.module.ts",
+          "hash": "1273718742013210569",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/forms",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/claroshop-routing.module.ts",
+          "hash": "4090412703351114029",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/claroshop.module.ts",
+          "hash": "13140780171531285634",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/components/orders/orders.component.html",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/components/orders/orders.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/components/orders/orders.component.spec.ts",
+          "hash": "15496793800371716132",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/components/orders/orders.component.ts",
+          "hash": "10810257211245886601",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/interfaces/claroshop-orders.interface.ts",
+          "hash": "8661638641152294674"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/interfaces/claroshop-producto.interface.ts",
+          "hash": "7990504203793348696"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/interfaces/claroshop-productos.interface.ts",
+          "hash": "2101540347016164692"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/models/claroshop-product.models.ts",
+          "hash": "3272136456784935198"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-completed/claro-orders-completed.component.html",
+          "hash": "15699006021049934208"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-completed/claro-orders-completed.component.scss",
+          "hash": "8072098974431533243"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-completed/claro-orders-completed.component.spec.ts",
+          "hash": "18376726651948082010",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-completed/claro-orders-completed.component.ts",
+          "hash": "15804590870447318991",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-pending/claro-orders-pending.component.html",
+          "hash": "5120284178936466950"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-pending/claro-orders-pending.component.scss",
+          "hash": "12233735801734937033"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-pending/claro-orders-pending.component.spec.ts",
+          "hash": "13785730744906072017",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-pending/claro-orders-pending.component.ts",
+          "hash": "8960008462841693183",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-progress/claro-orders-progress.component.html",
+          "hash": "11414892717768771360"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-progress/claro-orders-progress.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-progress/claro-orders-progress.component.spec.ts",
+          "hash": "353621058320843167",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders-progress/claro-orders-progress.component.ts",
+          "hash": "13673511317680371775",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders.component.html",
+          "hash": "10746687904044652629"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders.component.scss",
+          "hash": "18299789449900606104"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders.component.spec.ts",
+          "hash": "2578176187860096999",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/claro-orders/claro-orders.component.ts",
+          "hash": "2119177232477699343",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/inventario/inventario.component.html",
+          "hash": "14014707785607442057"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/inventario/inventario.component.scss",
+          "hash": "7565759631113806233"
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/inventario/inventario.component.spec.ts",
+          "hash": "9061943184657197284",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/pages/inventario/inventario.component.ts",
+          "hash": "975489427766702498",
+          "deps": [
+            "npm:@angular/core",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/services/claroservice.service.spec.ts",
+          "hash": "4267057232991518839",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/services/claroservice.service.ts",
+          "hash": "799031292849015243",
+          "deps": [
+            "npm:rxjs",
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/claroshop/services/date-time.interceptopr.ts",
+          "hash": "4862231432078790608",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:crypto-js",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/mely/mely-routing.module.ts",
+          "hash": "5336149141202044912",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/mely/mely.module.ts",
+          "hash": "10049715176982916514",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/mely/pages/mely/mely.component.html",
+          "hash": "12130793037922790641"
+        },
+        {
+          "file": "src/app/modules/tiendas/mely/pages/mely/mely.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/mely/pages/mely/mely.component.spec.ts",
+          "hash": "198599701367714070",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/mely/pages/mely/mely.component.ts",
+          "hash": "6620943889737185526",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/accordeon/accordeon.component.html",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/accordeon/accordeon.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/accordeon/accordeon.component.spec.ts",
+          "hash": "8225384525070563600",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/accordeon/accordeon.component.ts",
+          "hash": "1321631690365605933",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/orders/orders.component.html",
+          "hash": "15893242310877745957"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/orders/orders.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/orders/orders.component.spec.ts",
+          "hash": "15496793800371716132",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/components/orders/orders.component.ts",
+          "hash": "12050364718404135320",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/interface/woo-order.interface.ts",
+          "hash": "5811109972053579494"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/interface/woo-producto.interface.ts",
+          "hash": "2322991489831524816"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/models/wc-new-product.model.ts",
+          "hash": "13104220466892657406"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/models/wc-order.model.ts",
+          "hash": "8317054976935356718"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/clientes/clientes.component.html",
+          "hash": "1247840096763406821"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/clientes/clientes.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/clientes/clientes.component.spec.ts",
+          "hash": "8491480900298333502",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/clientes/clientes.component.ts",
+          "hash": "16544236933832933450",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.html",
+          "hash": "2014201587112599445"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.scss",
+          "hash": "17717756101154112229"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.spec.ts",
+          "hash": "15746656735163077127",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.ts",
+          "hash": "8427587029749657638",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/new-product/wc-new-product.component.html",
+          "hash": "5248847079042550624"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/new-product/wc-new-product.component.scss",
+          "hash": "6634473272786420671"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/new-product/wc-new-product.component.spec.ts",
+          "hash": "8387934090779460152",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/new-product/wc-new-product.component.ts",
+          "hash": "16428221278336201217",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:primeng",
+            "npm:sweetalert2"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/product/product.component.html",
+          "hash": "18184842032108998324"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/product/product.component.scss",
+          "hash": "1864766541486894366"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/product/product.component.spec.ts",
+          "hash": "16249118296720878802",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/product/product.component.ts",
+          "hash": "9872364330636878190",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@angular/forms",
+            "npm:primeng",
+            "npm:sweetalert2"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-completed/woo-orders-completed.component.html",
+          "hash": "8053985782758976382"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-completed/woo-orders-completed.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-completed/woo-orders-completed.component.spec.ts",
+          "hash": "892221641490268385",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-completed/woo-orders-completed.component.ts",
+          "hash": "6706638336758062070",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-failed/woo-orders-failed.component.html",
+          "hash": "13686113226335438166"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-failed/woo-orders-failed.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-failed/woo-orders-failed.component.spec.ts",
+          "hash": "11568515955239035817",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-failed/woo-orders-failed.component.ts",
+          "hash": "11695715781592506068",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-pending/woo-orders-pending.component.html",
+          "hash": "5279950628045096116"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-pending/woo-orders-pending.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-pending/woo-orders-pending.component.spec.ts",
+          "hash": "13427419956062220337",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders-pending/woo-orders-pending.component.ts",
+          "hash": "9909241202294518570",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders.component.html",
+          "hash": "5230668500517266031"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders.component.scss",
+          "hash": "2546374330180329259"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders.component.spec.ts",
+          "hash": "12200910182633479999",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pages/woo-orders/woo-orders.component.ts",
+          "hash": "4798567688965281615",
+          "deps": [
+            "npm:@angular/core",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pipes/filter.pipe.spec.ts",
+          "hash": "18133982627485299223"
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pipes/filter.pipe.ts",
+          "hash": "17162331347327477658",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/pipes/no-image.pipe.ts",
+          "hash": "1926312472822361505",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/services/key.interceptor.spec.ts",
+          "hash": "17725518001574579469",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/services/key.interceptor.ts",
+          "hash": "12341750006682843326",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/services/wcommerce.service.spec.ts",
+          "hash": "18630571952550399",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/services/wcommerce.service.ts",
+          "hash": "885824649905657992",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/woocommerce-routing.module.ts",
+          "hash": "15927434207830089039",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/modules/tiendas/woocommerce/woocommerce.module.ts",
+          "hash": "10692501769792531379",
+          "deps": [
+            "npm:@angular/router",
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/forms",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/shared/footer/footer.component.html",
+          "hash": "4870840326542635113"
+        },
+        {
+          "file": "src/app/shared/footer/footer.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/shared/footer/footer.component.spec.ts",
+          "hash": "1944692066901072230",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/footer/footer.component.ts",
+          "hash": "14920457969305345040",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/header/header.component.html",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/shared/header/header.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/shared/header/header.component.spec.ts",
+          "hash": "372101361241028373",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/header/header.component.ts",
+          "hash": "3286363043335897264",
+          "deps": [
+            "npm:@angular/core",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/shared/navbar/navbar.component.html",
+          "hash": "1536279985740243911"
+        },
+        {
+          "file": "src/app/shared/navbar/navbar.component.scss",
+          "hash": "7595968316401026442"
+        },
+        {
+          "file": "src/app/shared/navbar/navbar.component.spec.ts",
+          "hash": "9171009014327282851",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/navbar/navbar.component.ts",
+          "hash": "15577154644065449049",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/shared/services/check-order.service.spec.ts",
+          "hash": "11675833324576603131",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/services/check-order.service.ts",
+          "hash": "1098912590144374244",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/shared-feature.module.ts",
+          "hash": "1181088810794980478",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/shared/shared-ng-prime.module.ts",
+          "hash": "3441943620068965419",
+          "deps": [
+            "npm:@angular/core",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/app/shared/sidebar/sidebar.component.html",
+          "hash": "5566754161926353563"
+        },
+        {
+          "file": "src/app/shared/sidebar/sidebar.component.scss",
+          "hash": "9034605608094873382"
+        },
+        {
+          "file": "src/app/shared/sidebar/sidebar.component.spec.ts",
+          "hash": "14656797981890536446",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/shared/sidebar/sidebar.component.ts",
+          "hash": "9668836854145840988",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:primeng"
+          ]
+        },
+        {
+          "file": "src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/assets/img/Amazon_logo.png",
+          "hash": "8136668119647655891"
+        },
+        {
+          "file": "src/assets/img/Claro_logo.png",
+          "hash": "8151689856752659389"
+        },
+        {
+          "file": "src/assets/img/Mely_logo.svg",
+          "hash": "14043949395280994672"
+        },
+        {
+          "file": "src/assets/img/WooCommerce_logo.png",
+          "hash": "16521754416312614818"
+        },
+        {
+          "file": "src/assets/img/emoji.png",
+          "hash": "9486909720938174972"
+        },
+        {
+          "file": "src/assets/img/icon_mensaje.png",
+          "hash": "2389130815052599091"
+        },
+        {
+          "file": "src/assets/img/icon_orden.png",
+          "hash": "17001696524733587279"
+        },
+        {
+          "file": "src/assets/img/icon_producto.png",
+          "hash": "2374803222797653022"
+        },
+        {
+          "file": "src/assets/img/icon_venta.png",
+          "hash": "12455337975404532752"
+        },
+        {
+          "file": "src/assets/img/logo.png",
+          "hash": "1727194373536373733"
+        },
+        {
+          "file": "src/assets/img/logo_servitae.webp",
+          "hash": "2767309580349964116"
+        },
+        {
+          "file": "src/assets/img/producto.png",
+          "hash": "14662101753473254981"
+        },
+        {
+          "file": "src/assets/img/profile-example.webp",
+          "hash": "736893018358937"
+        },
+        {
+          "file": "src/assets/img/svg/delivery-01.svg",
+          "hash": "9092564089941645242"
+        },
+        {
+          "file": "src/assets/img/svg/delivery-02.svg",
+          "hash": "4355349220771595253"
+        },
+        {
+          "file": "src/assets/img/svg/delivery-03.svg",
+          "hash": "9884643011515528971"
+        },
+        {
+          "file": "src/assets/img/svg/delivery-04.svg",
+          "hash": "4899043629650123012"
+        },
+        {
+          "file": "src/assets/img/svg/delivery-05.svg",
+          "hash": "4218970648751618092"
+        },
+        {
+          "file": "src/assets/img/svg/options-outline.svg",
+          "hash": "4133565897435644007"
+        },
+        {
+          "file": "src/assets/img/themes/arya-blue.png",
+          "hash": "3276682541131852067"
+        },
+        {
+          "file": "src/assets/img/themes/bootstrap4-dark-blue.svg",
+          "hash": "11988045593770071312"
+        },
+        {
+          "file": "src/assets/img/themes/bootstrap4-dark-purple.svg",
+          "hash": "15148797263212550016"
+        },
+        {
+          "file": "src/assets/img/themes/md-dark-indigo.svg",
+          "hash": "16801142871151102778"
+        },
+        {
+          "file": "src/assets/img/themes/md-light-indigo.svg",
+          "hash": "18122591256530755707"
+        },
+        {
+          "file": "src/assets/img/themes/saga-blue.png",
+          "hash": "9846919934632584452"
+        },
+        {
+          "file": "src/assets/img/themes/vela-blue.png",
+          "hash": "13364902033637595401"
+        },
+        {
+          "file": "src/assets/img/tiendas/Amazon/amazon_logo.png",
+          "hash": "3998177623830035279"
+        },
+        {
+          "file": "src/assets/img/tiendas/Claro/claro_logo.png",
+          "hash": "15462255271867227340"
+        },
+        {
+          "file": "src/assets/img/tiendas/Mely/mely_logo.png",
+          "hash": "5181385123065608269"
+        },
+        {
+          "file": "src/assets/img/tiendas/Woocommerce/woocommerce_logo.png",
+          "hash": "13443455656011337349"
+        },
+        {
+          "file": "src/assets/img/upload_image.webp",
+          "hash": "58201675437949819"
+        },
+        {
+          "file": "src/assets/img/user_1.png",
+          "hash": "3681732002700456639"
+        },
+        {
+          "file": "src/assets/img/user_2.png",
+          "hash": "14540090455727781205"
+        },
+        {
+          "file": "src/assets/img/user_3.png",
+          "hash": "14211793097058259677"
+        },
+        {
+          "file": "src/assets/img/woocommerce.png",
+          "hash": "16991907278711320438"
+        },
+        {
+          "file": "src/assets/scss/_mixin.scss",
+          "hash": "8939361689896740028"
+        },
+        {
+          "file": "src/assets/scss/_reset.scss",
+          "hash": "8120978296371773472"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-bootstrap4-dark-blue.scss",
+          "hash": "11596923972924551883"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-bootstrap4-light-purple.scss",
+          "hash": "12175333975631958879"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-lara-dark-indigo.scss",
+          "hash": "11495157323547160609"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-lara-light-indigo.scss",
+          "hash": "12815519036412683223"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-mdc-light-deeppurple.scss",
+          "hash": "14003023584889495966"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-saga-blue.scss",
+          "hash": "8471681272000061495"
+        },
+        {
+          "file": "src/assets/scss/themes/theme-vela-blue.scss",
+          "hash": "7331421039266804990"
+        },
+        {
+          "file": "src/favicon.ico",
+          "hash": "3464744996580215640"
+        },
+        {
+          "file": "src/index.html",
+          "hash": "15220098615017872069"
+        },
+        {
+          "file": "src/main.ts",
+          "hash": "12246588107753938993",
+          "deps": [
+            "npm:@angular/platform-browser-dynamic"
+          ]
+        },
+        {
+          "file": "src/styles.scss",
+          "hash": "14911378935676012727"
+        },
+        {
+          "file": "tsconfig.app.json",
+          "hash": "17337579397915052279"
+        },
+        {
+          "file": "tsconfig.json",
+          "hash": "8472300857480809506"
+        },
+        {
+          "file": "tsconfig.spec.json",
+          "hash": "15575553540147145788"
+        }
+      ]
+    }
+  }
+}

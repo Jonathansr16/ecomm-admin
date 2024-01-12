@@ -1,3 +1,5 @@
+@import 'mixin';
+
 .breadcrumb {
     position: relative;
     padding: 5em 30px;
@@ -13,4 +15,32 @@
         background-color: var(--primary-500);
         z-index: -1;
     }
+
+    &__body {
+        @include flexible(flex, row, wrap, flex-start, center);
+        gap: 1em;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #fff
+    }
+
+    &__ol {
+        @include flexible(flex, row, wrap, center, center);
+        gap: 0.5em; 
+    }
+
+    &__li {
+        @include flexible(flex, row, wrap, center, center);
+        gap: 0.5em;
+        font-size: 0.875rem;
+    }
+
+    &__a, &__i {
+        color: #fff;
+    }
+
+
 }

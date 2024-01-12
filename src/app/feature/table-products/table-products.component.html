@@ -1,6 +1,6 @@
 
 
-<div class="productos-table section">
+<div class="productos-table container" >
 
   <div class="caption">
     <p-toast  position="top-center" key="tc"></p-toast>
@@ -32,19 +32,83 @@
   </div>
 </div>
 
+
+<div class="list-products" [ngSwitch]="dataStatus">
+
+  <ng-template #bodyData ngSwitchCase="success">
+    <div class="list-header">
+  
+      <div class="list-header-col">
+        <p-checkbox  [binary]="true" inputId="binary"></p-checkbox>
+      </div>
+  
+      <div class="list-header__col" *ngFor="let col of header">
+        <span class="list-header__span">{{col.header}}</span>
+      </div>
+  
+      <div class="list-header-col">
+        <span class="list-header__span">Acciones</span>
+      </div>
+  
+    </div>
+
+    <div class="list-body">
+
+      <ng-content select=".list-card"></ng-content>
+    </div>
+  </ng-template>
+  
+  <ng-template #emptyData ngSwitchCase="empty">
+    <span>Sin datos que mostrar</span>
+  </ng-template>
+
+  <ng-template #loadData ngSwitchCase="loading">
+    <!-- <ng-container *ngFor="let _ of [1, 2, 3, 4, 5]">
+      <tr class="productos__tr productos__body">
+      
+        <td *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]" class="productos__td">
+          <p-skeleton height="2.5rem"></p-skeleton>
+        </td>
+      </tr>
+    </ng-container> -->
+  
+  </ng-template>
+
+  <ng-template  #dataError ngSwitchCase="error">
+   <h1>UPS! al parecer ocurrio un error inesperado</h1>
+ </ng-template>
+  
+  
+
+<!-- <ng-template #dats let-col="data">
+  <div class="list-body">
+
+   
+    
+  </div>
+</ng-template> -->
+
+
+
+</div>
+
+
+</div>
+<!-- 
   <p-table
     #productos
     [value]="data"
     [(selection)]="selectedProducts"
     [paginator]="true"
    [loading]="statusData"
+   [columns]="cols"
     [globalFilterFields]="[
       'name',
       'id',
        'sku',
       
     ]"
-    [rows]="8"
+    [rows]="10"
     class="productos__table"
     styleClass="p-datatable-striped"
     responsiveLayout="stack"
@@ -99,146 +163,44 @@
 </ng-template>
 
 
-
-  <ng-template pTemplate="header">
-    <tr class="productos__tr">
-      <th class="productos__th" style="width: 2rem; border: none;" >
+<ng-template pTemplate="header" let-columns>
+      <tr class="productos__tr">
+        <th class="productos__th" style="width: 2rem; border: none;" >
       
-        <p-tableHeaderCheckbox ></p-tableHeaderCheckbox>
-
-      </th>
-
-
-      <th class="productos__th" style="width: 2rem; border: none;" >
-         <h4 class="productos__h4">ID</h4> 
-      </th>
-
-
-      <th style="width:35%; border: none; text-align: center;" class="productos__th">
-        <h4 class="productos__h4">Producto</h4>
-      </th>
-
-      <th style=" border: none; text-align: center;" class="productos__th">
-        <h4 class="productos__h4">Sku</h4>
-      </th>
-      <th style="border: none; text-align: center;" class="productos__th">
-        <h4 class="productos__h4">Precio</h4>
-      </th>
-      <th style="border: none; text-align: center;" class="productos__th">
-        <h4 class="productos__h4">Stock</h4>
-      </th>
-
-      <th style=" border: none; text-align: center;" class="productos__th productos__th--status">
-        <h4 class="productos__h4">Status</h4>
-      </th>
-
-      <th style="width: 12rem; border: none; text-align: center;" class="productos__th">
-        <h4 class="productos__h4">Opciones</h4>
-      </th>
-    </tr>
-  </ng-template>
-
-    <ng-template  pTemplate="body" let-producto let-rowIndex="rowIndex" >
-      <tr class="productos__tr productos__body" >
-        <td data-label="" class="productos__td">
-         
-          <p-tableCheckbox [value]="producto"></p-tableCheckbox>
-
-        </td>
-
-        <td data-label="" class="productos__td">
-          <span class="p-column-title">ID</span>
-            <P class="productos__p">#{{producto.id}}</P>
-        </td>
-        <td data-label="PRODUCTO" class="productos__td productos__td--producto" >
-          <span class="p-column-title">Producto:</span>
-          
-          <div class="productos__box">
-           
-            <img
-              *ngIf="producto.images"
-              class="productos__img shadow-4"
-              loading="lazy"
-              [src]="producto.images | filterNoImage"
-              [alt]="producto.images[0]?.alt || 'Sin imagen'"
-            />
-            <h5 class="productos__h5" style="margin: 0;">{{ producto.name }}</h5>
-          </div>
-    
-        </td>
+          <p-tableHeaderCheckbox ></p-tableHeaderCheckbox>
   
-        <td data-label="SKU" class="productos__td" style="text-align: center;">
-          <span class="p-column-title"></span>
-          <p class="productos__p">
-            {{ producto.sku }}
-          </p>
-        </td>
-  
-        <td data-label="PRECIO" class="productos__td" style="text-align: center;">
-          <span class="p-column-title">Precio:</span>
-          <p class="productos__p">${{ producto.precio }}</p>
-        </td>
-  
-        <td data-label="STOCK" class="productos__td" style="text-align: center;">
-          <span class="p-column-title">Stock:</span>
-          
+        </th>
 
-          <p class="productos__p">
-            {{ producto.stock }}
-          </p>
+        <th class="productos__th"  style="border: none;" *ngFor="let col of columns">
+          {{col.header}}
+        </th>
 
-          <p *ngIf="!producto.stock && producto.stock_status === 'instock'" class="productos__p">
-           1
-          </p>
+        <th class="productos__th"  style="border: none;">
+         Opciones
+        </th>
+      </tr>
+ 
+</ng-template>
+
+    <ng-template pTemplate="body" let-product let-rowData let-columns="columns" let-rowIndex="rowIndex" >
+      <tr class="productos__tr productos__body">
+        <td class="productos__td">
+          <p-tableCheckbox [value]="product"></p-tableCheckbox>
         </td>
-  
-        <td data-label="STATUS" class="productos__td productos__td--status" style="text-align: center;">
-          <span class="p-column-title">Status</span>
-          <p-tag
-            class="productos__status"
-            [rounded]="true"
-            severity="danger"
-            *ngIf="producto.stock == 0"
-          >
-            Sin Stock
-          </p-tag>
-          <p-tag
-            class="productos__status"
-            [rounded]="true"
-            severity="warning"
-            *ngIf="producto.stock >= 1 && producto.stock <= 9"
-          >
-            Stock Bajo
-          </p-tag>
-          <p-tag
-            class="productos__status"
-            [rounded]="true"
-            severity="success"
-            *ngIf="producto.stock >= 10"
-          >
-            Suficiente Stock
-          </p-tag>
 
-          <p-tag
-          class="productos__status"
-          [rounded]="true"
-          severity="success"
-          *ngIf="producto.stock_status === 'instock' && !producto.stock "
-        >
-          En Existencia
-        </p-tag>
-        </td>
-  
-        <td data-label="OPCIONES" class="productos__td" style="text-align: center;">
-          <span class="p-column-title">Opciones:</span>
-  
-     
-          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-3 mb-3"></button>
-          <button pButton pRipple icon="pi pi-camera" class="p-button-rounded p-button-info mr-3 mb-3" ></button>
+   
+      <ng-content select=".productos__td"></ng-content>
+      
+      <td class="productos__td"  style="text-align: center;"> 
+        
+        <span class="p-column-title">Opciones:</span>
 
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mb-3" (click)="deleteProduct(producto)"></button>
-      </td>
-       
+
+        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-3 mb-3"></button>
+        <button pButton pRipple icon="pi pi-camera" class="p-button-rounded p-button-info mr-3 mb-3" ></button>
+        
+        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mb-3" (click)="deleteProduct(product)"></button>
+      
       </tr>
 
     </ng-template>
@@ -251,10 +213,10 @@
 
     <ng-template pTemplate="loadingbody">
       
-      <!-- columns -->
+    
       <ng-container *ngFor="let _ of [1, 2, 3, 4, 5]">
         <tr class="productos__tr productos__body">
-          <!-- rows -->
+        
           <td *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]" class="productos__td">
             <p-skeleton height="2.5rem"></p-skeleton>
           </td>
@@ -264,14 +226,4 @@
     </ng-template>
  
   </p-table>
-
-
-<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
-
-<p-dialog header="Productos" [resizable]="true" [modal]="true" [maximizable]="true" appendTo="body" [(visible)]="dialogVisible"  [style]="{width: '75vw'}" [contentStyle]="{height: '300px'}">
-
-  <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto ducimus ea voluptatem possimus assumenda repudiandae mollitia doloribus tempore nisi, magni quia recusandae porro odit officiis unde tenetur est odio dolorem!
-  Voluptates, iure magnam soluta reprehenderit debitis labore hic qui earum possimus provident asperiores cupiditate voluptatibus sed natus officiis voluptatum nostrum perferendis omnis iste dolor facilis nam. Repudiandae, perspiciatis porro! Temporibus.
-  Nisi quidem sint maiores placeat eaque, autem, tempore voluptates unde quos facilis cumque commodi ab veniam ipsum pariatur quibusdam obcaecati, sit at amet delectus iste. Laboriosam animi exercitationem dolores ratione.
-  </p>
-</p-dialog>
+ -->

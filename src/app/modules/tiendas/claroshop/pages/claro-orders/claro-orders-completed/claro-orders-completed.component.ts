@@ -30,7 +30,7 @@ export class ClaroOrdersCompletedComponent {
     this.orderCompletedService.getOrderByStatus('entregados').subscribe({
       next: (response: OrderResponse) => {
         this.statusData = 'success';
-        this.ordersCompleted = response.listaentregados
+        this.ordersCompleted = response.orden
         console.log(response);
       },
        error: (errorMessage) => {

@@ -2,7 +2,7 @@ export interface OrderResponse {
     totalpaginas:    number;
     totalentregados: number;
     totalregistros:  string;
-    listaentregados: OrderListResponse[];
+    orden: OrderListResponse[];
     versionConfig:   string;
     versionAPP:      string;
     tagManagerID:    string;

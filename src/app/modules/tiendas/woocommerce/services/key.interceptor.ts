@@ -4,12 +4,11 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
-import { catchError } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -30,15 +29,8 @@ export class KeyInterceptor implements HttpInterceptor {
       params: params
     });
 
-    return next.handle(reqClone).pipe(
-      // catchError(this.errorHandle)
-    )
+    return next.handle(reqClone)
   }
 
-  // errorHandle(error: HttpErrorResponse) {
-  //   console.log('Sucedio un error');
-  //   console.log('Registrado en el log file');
-  //   console.warn(error);
-  //   return throwError('Error Inesperado')
-  // }
+
 }

@@ -1,19 +1,23 @@
-<div class="breadcrumb">
-  <div class="breadcrumb-header container">
 
-      <div class="breadcrumb__body">
 
-        <ul class="breadcrumb__ul">
-          <li class="breadcrumb__li">Dashboard</li>
-          <li class="breadcrumb__li"> > </li>
-          <li class="breadcrumb__li">{{title}}</li>
-        </ul>
-      </div>
-
-  </div> 
-<!-- 
-
-    <!-- <p-breadcrumb  [model]="items" [home]="home"></p-breadcrumb> -->
-    
-
-</div>
+ <div class="breadcrumb">
+  <div class="breadcrumb__container container">
+    <div class="breadcrumb__body">
+      <h6 class="breadcrumb__title">{{breadcrumbs[0].titleMain}}</h6>
+      <nav class="breadcrumb__nav">
+       
+        <ol class="breadcrumb__ol">
+          <ng-container *ngFor="let item of breadcrumbs">
+          
+            <li class="breadcrumb__li" *ngFor="let breadcrumb of item.breadCrumbLink">
+                <i [class]="breadcrumb.iconClass" class="breadcrumb__i"></i>
+                 <a href="#" class="breadcrumb__a">{{breadcrumb.titleLink}}</a>
+                 <i *ngIf="breadcrumb.separatorClass" class="breadcrumb__separator"> > </i>
+            </li> 
+          </ng-container>
+        </ol>
+          
+      </nav>
+    </div>
+  </div>
+ </div>

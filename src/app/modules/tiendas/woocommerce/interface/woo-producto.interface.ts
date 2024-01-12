@@ -7,22 +7,11 @@ export interface ProductResult {
     regular_price:         string;
     sale_price:            string;
     categories:            ProductCategoryResponse[];
-    images:                ProductImageResult[];
+    images:               any;
     stock_quantity:        number;
-
-}
-
-
-export interface TableProductResult {
-    id: number,
-    name: string;
-    images: ProductImageResult[],
-    sku: string;
-    precio: string;
-    stock: any;
-    categorias: ProductCategoryResponse[];
     stock_status: string;
-
+    status: string;
+    total_sales: number;
 }
 
 
@@ -102,6 +91,24 @@ export interface ProductResponse {
     _links:                  ProductLinksResponse;
 }
 
+export interface ProductImageResponse {
+    id:                number;
+    date_created:      Date;
+    date_created_gmt:  Date;
+    date_modified:     Date;
+    date_modified_gmt: Date;
+    src:               string;
+    name:              string;
+    alt:               string;
+}
+
+
+export interface ProductImageResult {
+    id:                number;
+    src:               string;
+    name:              string;
+    alt:               string;
+}
 
 export interface ProductLinksResponse {
     self:       ProductCollectionResponse[];
@@ -124,22 +131,7 @@ export interface ProductDimensionsResponse {
     height: string;
 }
 
-export interface ProductImageResponse {
-    id:                number;
-    date_created:      Date;
-    date_created_gmt:  Date;
-    date_modified:     Date;
-    date_modified_gmt: Date;
-    src:               string;
-    name:              string;
-    alt:               string;
-}
 
-export interface ProductImageResult {
-    src:               string;
-    name:              string;
-    alt:               string;
-}
 
 export interface ProductMetaDatumResponse {
     id:    number;

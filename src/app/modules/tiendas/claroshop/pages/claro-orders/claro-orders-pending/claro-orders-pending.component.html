@@ -1,8 +1,6 @@
-<div class="order-table section" [ngSwitch]="statusData">
-
+<div class="order-table container" [ngSwitch]="statusData">
 
     <ng-template ngSwitchCase="loading">
-
         <app-loading-table></app-loading-table>
     </ng-template>
 
@@ -11,95 +9,88 @@
 
         <app-search-product></app-search-product>
 
-     
-        <!-- <app-table-pedidos *ngFor="let pending of ordersExample">
+        <app-orders-template>
+            <div class="order-topbar__left">
+                <h3 class="order-topbar__h3">Ordenes Pendientes</h3>
+            </div>
 
-            <div class="order-header__left">
-                <h3 class="order-header__h3">
-                  #{{pending.nopedido}}
-                </h3>
-    
-                <span class="order-header__separator">|</span>
-    
-                <span class="order-header__date">
-                  {{pending.fechaautorizacion}}
-                </span>
-            </div>
-    
-            <div class="order-header__right">
-                <span class="order-header__span">
-                    Status
-                </span>
-    
-                <span class="order-header__separator">|</span>
-    
-                <h3 class="order-header__status">
-    
-                    {{pending.estatus}}
-                </h3>
-            </div>
-    
-            <div class="order-content-left__info">
-                
-                <div class="order-date">
-    
-                    <span class="order__status order__status--pending">
-                        {{pending.estatus}}
-                    </span>
-    
+            <div class="order-card" *ngFor="let order of pendingOrders">
+                <div class="order-row order-card-header">
+                    <div class="order-card-header__left">
+                        <p-checkbox
+                        [binary]="true"
+                        [value]="order"
+                        inputId="binary"
+                      ></p-checkbox>
+
+                      <h3 class="order__h3">#{{ order.nopedido }}</h3>
+                    </div>
+
+                    <div class="order-card-header__right">
+                        <h3 class="order__h3">fecha de autorización: {{order.fechaautorizacion}}</h3>
+                    </div>
                 </div>
-    
-                <div class="order-product">
-    
-                    <div class="order-product__content">
-    
-                        <a class="order-product__a" href="#"> {{pending.articulo}}</a>
-                        <span class="order-product__span">sku: {{pending.sku}}</span>
+
+                <div class="order-card__details">
+                    <div class="order-status">
+                        <div class="order-card__status">
+                            <span class="order-status__span order-status__pending">
+                                Pendiente
+                            </span>
+                        </div>
+                       
+                        <div class="order__date">
+                            <span class="order__span">
+                                Fecha de colocación: {{order.fechacolocacion}}
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="order-col order-card__action">
+                        <button type="button" class="order__btn order__btn--desktop">
+                          Ver orden
+                        </button>
+                      </div>
+                </div>
+
+                <div class="order-card__content order-card__container">
+                    <div class="order-card__product">
+
+                        <div class="order-card__description">
+                            <a href="#" class="order-card__a">
+                              <div class="orde-card__title">{{ order.articulo}}</div>
+                              <!-- <div class="order-card__variante">Variante:</div> -->
+                            </a>
+                        </div>
+
+                        <div class="order-card__text">
+
+                            <div class="order-card__price">
+                                <span class="order-card__price"> ${{ order.totalpedido }} </span>
+                            </div>
+
+                    
+                            <div class="order-card__sku">
+                                SKU: {{ order.sku }}
+                            </div>
+
+                            <div class="order-card__unity">
+                                <span class="order__span">canal de venta: {{order.channel}}</span>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
-    
-            <div class="order-content-center__price">
-                <div class="order-quantity">
-                    <span class="order-quantity__span">{{pending.totalpedido}}</span>
-                    <span class="order-quantity__span">|</span>
-                    <span class="order-quantity__span"> unidad</span>
-    
-                </div>
-            </div>
-    
-            <div class="order-content-right__actions">
-                <button type="button" class="order-content-right__btn">Ver detalles</button>
-            </div>
-    
-        </app-table-pedidos> -->
-
+        </app-orders-template>
+     
     </ng-template>
 
 
     <ng-template ngSwitchCase="error">
         <app-message></app-message>
     </ng-template>
-
-<!-- 
-    <ng-container>
-        <div class="order-card order-result">
-
-            <div class="order-header order-header__result">
-
-                <i class="pi pi-info-circle order-result__icon"></i>
-                <p class="order-result__p">Sin resultados</p>
-            </div>
-
-            <div class="order-content__result">
-
-                <p class="order-result__p">
-                    No se ha encontrado algun pedido
-                </p>
-            </div>
-
-        </div>
-
-    </ng-container> -->
 
 </div>

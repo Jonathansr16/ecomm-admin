@@ -2,9 +2,9 @@ import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ProductsOptionsResonse, ProductsResul, TableProductResult } from '@claroshop/interfaces/claroshop-productos.interface';
+import { ProductsOptionsResonse, ProductsResul } from '@claroshop/interfaces/claroshop-productos.interface';
 import { ProductOptionsResponse, ProductResult } from '@claroshop/interfaces/claroshop-producto.interface';
-import { OrderListResponse, OrderResponse } from '@claroshop/interfaces/claroshop-orders.interface';
+import { OrderResponse } from '@claroshop/interfaces/claroshop-orders.interface';
 
 @Injectable({
   providedIn: 'root'

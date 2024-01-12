@@ -1,0 +1,18 @@
+<div class="product-card container" [class.outofstock]="outOfStock">
+    <div class="product-card__actions product-card__actions-responsive">
+        <ng-content select=".product-card__checkbox"> </ng-content>
+        <div class="product-card__menu">
+            <p-menu #menuOption [model]="menu" [popup]="true"></p-menu>
+
+        </div>
+    </div>
+    <div class="product-card__content">
+        <ng-content class=".product-card__product"> </ng-content>
+
+        <div class="product-card__details">
+
+             <ng-content select=".product-card__details-col"></ng-content>
+            
+        </div>
+    </div>
+</div>

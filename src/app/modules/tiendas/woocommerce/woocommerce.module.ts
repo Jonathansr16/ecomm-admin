@@ -31,12 +31,15 @@ import { WooOrdersFailedComponent } from './pages/woo-orders/woo-orders-failed/w
 import { WooOrdersCompletedComponent } from './pages/woo-orders/woo-orders-completed/woo-orders-completed.component';
 
 
-
 import { KeyInterceptor } from './services/key.interceptor';
 
 
 import { WcommerceService } from './services/wcommerce.service';
 import { OrdersComponent } from './components/orders/orders.component';
+import { OrdersQuantityCardComponent } from '@feature/orders-quantity-card/orders-quantity-card.component';
+import { ProductCardComponent } from '@feature/product-card/product-card.component';
+import { BreadcrumbComponent } from '@feature/breadcrumb/breadcrumb.component';
+
 
 @NgModule({
   declarations: [
@@ -50,8 +53,8 @@ import { OrdersComponent } from './components/orders/orders.component';
     WooOrdersPendingComponent,
     WooOrdersCompletedComponent,
     WooOrdersFailedComponent,
-    OrdersComponent
-
+    OrdersComponent,
+   
   ],
   imports: [
     CommonModule,
@@ -65,8 +68,10 @@ import { OrdersComponent } from './components/orders/orders.component';
     KnobModule,
     FieldsetModule,
     ProgressBarModule,
-    ToastModule
-
+    ToastModule,
+    OrdersQuantityCardComponent,
+    ProductCardComponent,
+    BreadcrumbComponent
   ],
   providers: [
     WcommerceService,

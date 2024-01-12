@@ -1,44 +1,87 @@
-       
 
-<div class="head">
-    <ul class="head__ul">
+<app-breadcrumb></app-breadcrumb>
 
-        <li class="head__li">
-            <h6 class="head__h6">Dashboard ></h6>
-        </li>
-
-        <li class="head__li">
-            <i class="head__i material-icons">storefront</i>
-            <h6 class="head__h6">Woocommerce</h6>
-            <span class="head__span"> > </span>
-            
-        </li>
-
-        <li class="head__li head__link">
-            <i class="head__i material-icons">pallet</i>
-            <a routerLink="/dashboard/wocommerce/inventario" class="head__a">
-                Inventario</a>
-        </li>
-
-
-    </ul>
-
-    <div class="head__actions">
-        <button type="button" label="Primary" class="head__btn" >Importar</button>
-        <button type="button" label="Primary" class="head__btn">Exportar</button>
-
+<app-product-card *ngFor="let product of products" [menu]="menuWC" [outOfStock]="product.stock_quantity === 0">
+    <div class="product-card__checkbox">
+        <p-checkbox [value]="product"></p-checkbox>
     </div>
-</div>
 
+    <div class="product-card__product">
+        <div class="product-card__checkbox product-card__checkbox-desktop">
+            <p-checkbox [value]="product"></p-checkbox>
+        </div>
 
-    <app-table-products 
-    [url]="'/dashboard/woocommerce/product/'"
-    [urlNewProduct]="'/dashboard/woocommerce/new-product'"
-    [data]="products" 
-    [statusData]="statusData" 
+        <div class="product-card__picture">
+            <img [src]="product.images.src" alt="" class="product-card__img product-card__img-simple-img" />
+        </div>
+
+        <div class="product-card__description">
+            <div class="product-card__sku product-card__span-small">
+                #{{ product.id }} | Sku: {{ product.sku }}
+            </div>
+            <a href="#" class="product-card__link-product">
+                <div class="product-card__span product-card__span-bold">
+                    {{ product.name | slice : 0 : 61 }}
+                </div>
+            </a>
+
+            <div class="product-card__store product-card__span-small">
+                Woocommerce
+            </div>
+
+            <div class="product-card__quantity product-card__span-small">
+                {{ product.stock_quantity }}
+
+                <ng-container [ngSwitch]="product.stock_quantity">
+                    <ng-container *ngSwitchCase="0"> unidades </ng-container>
+                    <ng-container *ngSwitchCase="1"> unidad </ng-container>
+                    <ng-container *ngSwitchDefault> unidades </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="product.regular_price && product.sale_price" class="product-card__details-col product-card__price">
+        <span class="product-card__span product-card__span-bold">${{ product.regular_price }}</span>
+        <span class="product-card__span-small">precio regular</span>
+        <a href="#" class="product-card__a product-card__span-small">Modificar precio</a>
+    </div>
+
+    <div *ngIf="product.regular_price && product.sale_price" class="product-card__details-col product-card__price">
+        <span class="product-card__span product-card__span-bold">${{ product.sale_price }}</span>
+        <span class="product-card__span-small">precio al publico</span>
+    </div>
+
+        <div *ngIf="!product.regular_price || !product.sale_price" class="product-card__details-col product-card__price">
+            <span class="product-card__span product-card__span-bold">Precio no fijado</span>
+            <span class="product-card__span-small">Precio sin configurar</span>
+
+            <a href="#" class="product-card__a product-card__span-small">Modificar precio</a>
+        </div>
   
-  
-    (onDelete)="deleteProduct($event)"
-    
-    ></app-table-products>
 
+    <div class="product-card__details-col product-card__status">
+        <ng-container [ngSwitch]="product.stock_status">
+            <ng-container *ngSwitchCase="'outofstock'">
+                <span class="product-card__span product-card__span-bold">Inactivo</span>
+
+                <span class="product-card__span-small">No tienes unidades a la venta</span>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'instock'">
+                <span class="product-card__span product-card__span-bold">{{
+                    product.total_sales
+                    }}</span>
+
+                <span class="product-card__span-small">Unidades vendidas</span>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="product-card__details-col product-card__actions product-card__actions-desktop">
+        <button type="button"
+            class="product-card__btn product-card__btn-desktop p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text">
+            <i class="pi pi-ellipsis-v"></i>
+        </button>
+    </div>
+</app-product-card>

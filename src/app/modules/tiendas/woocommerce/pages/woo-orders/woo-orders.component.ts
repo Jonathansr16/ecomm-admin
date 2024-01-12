@@ -21,17 +21,23 @@ export class WooOrdersComponent implements OnInit {
 
 
   //* Cantidad de pedidos 
-  pendingOrdersCount: number = 0;
-  processingOrdersCount: number = 0;
-  completedOrdersCount: number = 0;
-  cancelledOrdersCount: number = 0;
+  pendingOrdersCount: number | undefined;
+  processingOrdersCount: number | undefined;
+  completedOrdersCount: number | undefined;
+  cancelledOrdersCount: number | undefined;
 
   //* Status de la cada orden
-  statusOrderPending: boolean = true;
-  statusOrderProcess: boolean = true;
-  statusOrderCompleted: boolean = true;
-  statusOrderFailed: boolean = true;
-
+  status: {
+    pending: boolean;
+    shipped: boolean;
+    completed: boolean;
+    failed: boolean;
+  } = {
+    pending: true,
+    shipped: true,
+    completed: true,
+    failed: true
+  };
 
   constructor(private orderService: WcommerceService) {
 
@@ -39,14 +45,17 @@ export class WooOrdersComponent implements OnInit {
    
     getNumberPendingOrders() {
    
-      this.orderService.getOrdersCount('pending').subscribe( 
+      this.orderService.getOrdersCount('processing').subscribe( 
         {
           next: (resp) => {
             this.pendingOrdersCount = resp.totalCount;
-            this.statusOrderPending = false;
+            this.status.pending = false;
+            console.log(`Cantidad De Ordenes en pendientes de pago: ${ this.pendingOrdersCount }` )
+
           },
           error: (resp) => {
-            this.statusOrderPending = false;
+            this.status.pending = false;
+           
           }
         }, 
       )
@@ -58,11 +67,11 @@ export class WooOrdersComponent implements OnInit {
         {
           next: (resp) => {
             this.processingOrdersCount = resp.totalCount;
-            this.statusOrderProcess = false;
+            this.status.shipped = false;
             console.log(`Cantidad De Ordenes en proceso: ${ this.processingOrdersCount }` )
           },
           error: (errorMessage) => {
-            this.statusOrderProcess = false;
+            this.status.shipped = false;
           }
         }
       )
@@ -74,11 +83,11 @@ export class WooOrdersComponent implements OnInit {
       this.orderService.getOrdersCount('completed').subscribe({
         next: (resp) => {
           this.completedOrdersCount = resp.totalCount;
-          this.statusOrderCompleted = false;
+          this.status.completed= false;
           console.log(`Cantidad De Ordenes completadas: ${ this.completedOrdersCount }` )
 
         }, error: (errorMessage) => {
-          this.statusOrderCompleted = false;
+          this.status.completed = false;
         }
       })
 
@@ -89,10 +98,10 @@ export class WooOrdersComponent implements OnInit {
       this.orderService.getOrdersCount('cancelled').subscribe({
         next: (resp) => {
           this.cancelledOrdersCount = resp.totalCount;
-          this.statusOrderFailed = false;
+          this.status.failed = false;
         }, 
         error: (errorMessage) => {
-          this.statusOrderFailed = false;
+          this.status.failed = false;
         }
       })
     }

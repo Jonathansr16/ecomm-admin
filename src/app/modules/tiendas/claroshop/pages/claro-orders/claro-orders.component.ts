@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OrderListResponse } from '@claroshop/interfaces/claroshop-orders.interface';
 import { ClaroService } from '@claroshop/services/claroservice.service';
 
 @Component({
@@ -19,7 +20,21 @@ export class ClaroOrdersComponent {
   statusOrdersShipped: boolean = true;
   statusOrderCompleted: boolean = true;
   statusOrderFailed: boolean = true;
+  statusData: 'success' | 'loading' | 'error' = 'loading';
 
+  orders: OrderListResponse[] = [];
+
+  statusOfData: {
+    pending: boolean;
+    shipped: boolean;
+    completed: boolean;
+    failed: boolean;
+  } = {
+    pending: true,
+    shipped: true,
+    completed: true,
+    failed: true
+  }
 
   constructor(private orderService: ClaroService) { }
 
@@ -79,12 +94,31 @@ export class ClaroOrdersComponent {
     )
   }
 
+
+
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getNumberPendingOrders();
     this.getNumberShippedOrders();
     this.getNumberCompletedOrders();
+  }
+
+
+  getOrderByStatus(status: 'entregados' | 'embarcados' | 'pendientes' = 'pendientes') {
+    this.orderService.getOrderByStatus(status).subscribe(
+    {
+      next: (resp) => {
+        this.statusData = 'success';
+        this.orders = resp.orden;
+        console.log(resp)
+      },
+      error: (error) => {
+        this.statusData = 'error';
+        this.orders = [];
+      }
+    }
+    )
   }
 
  }

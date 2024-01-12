@@ -1,0 +1,315 @@
+@import 'mixin';
+
+//* ============ NAV ============
+.nav {
+    height: 66px;
+    background-color: var(--surface-overlay);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    font-family: var(--lato);
+    // position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  
+    &__a {
+      color: var(--dark);
+  
+      &--notificacion {
+        font-size: 20px;
+        position: relative;
+      }
+    }
+  
+    &__a--logo {
+      font-size: 16px;
+      transition: 0.3s ease;
+  
+      &:hover {
+        color: var(--blue);
+      }
+    }
+  
+    &__i--menu {
+      cursor: pointer;
+      color: var(--text-color-secondary);
+    }
+  
+    &-form {
+      max-width: 400px;
+      width: 100%;
+      margin-right: auto;
+  
+      &__box {
+        display: flex;
+        align-items: center;
+        height: 36px;
+      }
+  
+      &__input {
+        flex-grow: 1;
+        padding: 0 16px;
+        height: 100%;
+        border: none;
+        background: var(--grey);
+        border-radius: 36px 0 0 36px;
+        outline: none;
+        width: 100%;
+        color: var(--dark);
+      }
+  
+      &__btn {
+        width: 36px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--active-color);
+        color: var(--light);
+        font-size: 18px;
+        border: none;
+        outline: none;
+        border-radius: 0 36px 36px 0;
+        cursor: pointer;
+      }
+    }
+  
+    &__span--num {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--light);
+      background: var(--red);
+      color: var(--light);
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    &__img {
+      width: 36px;
+      height: 36px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  
+    &__label {
+      display: block;
+      min-width: 50px;
+      height: 25px;
+      border-radius: 25px;
+      background: var(--grey);
+      cursor: pointer;
+      position: relative;
+  
+      &::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        bottom: 2px;
+        width: calc(25px - 4px);
+        background: var(--blue);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+    }
+  
+    &__checkbox:checked + &__label::before {
+      left: calc(100% - (25px - 4px) - 2px);
+    }
+  
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 2em;
+      margin-right: 1em;
+      width: 100%;
+  
+      &__notification {
+        position: relative;
+      }
+  
+      &-profile {
+        &__li {
+          padding: 3px 0;
+        }
+  
+        &__a {
+          cursor: pointer;
+          @include flexible(flex, row, wrap, flex-start, center);
+          gap: 0.5em;
+          padding: 12px 8px;
+          border-radius: 10px;
+          &:hover {
+            background-color: var(--active-color);
+            color: var(--light);
+          }
+        }
+  
+        &__i {
+          font-size: 1.3rem;
+        }
+      }
+    }
+  
+    &-right__i {
+      cursor: pointer;
+    }
+  }
+  
+  .notf {
+    position: fixed;
+    z-index: 1000;
+    right: 0;
+    top: 57px;
+    width: 418px;
+    height: 100vh;
+    pointer-events: none;
+    background-color: var(--surface-section);
+    padding: 22px 20px 40px;
+    transform: translate3d(418px, 0px, 0px);
+    transition: transform 0.3s;
+    backface-visibility: hidden;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 16px;
+      padding: 16px;
+      gap: 0.5em;
+  
+      &__h3 {
+        font-size: 1.25rem;
+      }
+    }
+  
+    &__li {
+      padding: 16px;
+      -moz-border-radius: 8px;
+      -webkit-border-radius: 8px;
+      border-radius: 8px;
+      background-color: var(--surface-card);
+      margin-bottom: 12px;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+  
+    &__h6 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+  
+    &__p {
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+  
+    &__span {
+      display: block;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 140%;
+      font-weight: 600;
+      text-align: right;
+    }
+  }
+  
+  .notf.show {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0px, 0px, 0px);
+    transition: all 0.3s ease;
+  }
+  
+  
+.mm-collapse {
+  margin: 0;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: height 0.35s ease, opacity 0.35s ease, visibility 0.35s ease;
+}
+
+
+//*NEW STYLE
+.sidebar-toggle__i,
+.sidebar-menu__arrow {
+  transition: transform 0.35s ease;
+}
+.sidebar-toggle__i.animateArrow {
+  transform: rotate(180deg);
+}
+
+.moveArrow {
+  transform: rotate(90deg);
+}
+
+@media screen and (min-width: 910px) {
+ .nav {
+
+    &__i--menu {
+      display: none;
+    }
+  }
+ }
+
+@media screen and (max-width: 910px) { 
+  .nav {
+    &__i--menu {
+      display: block;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .nav-form {
+    &__input {
+      display: none;
+    }
+
+    &__btn {
+      width: auto;
+      height: auto;
+      background: transparent;
+      border-radius: none;
+      color: var(--dark);
+    }
+
+    .show &__input {
+      display: block;
+      width: 100%;
+    }
+
+    .show &__btn {
+      width: 36px;
+      height: 100%;
+      border-radius: 0 36px 36px 0;
+      color: var(--light);
+      background: var(--red);
+    }
+  }
+
+  .nav-form.show ~ .nav__a--notificacion,
+  .nav-form.show ~ .nav__a--profile {
+    display: none;
+  }
+}

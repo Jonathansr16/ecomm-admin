@@ -19,6 +19,8 @@ import { SharedNgPrimeModule } from '@shared/shared-ng-prime.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DataTimeInterceptor } from './services/date-time.interceptopr';
 import { ClaroService } from './services/claroservice.service';
+import { OrdersComponent } from './components/orders/orders.component';
+import { TableProductsComponent } from '@feature/table-products/table-products.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { ClaroService } from './services/claroservice.service';
     ClaroOrdersComponent,
     ClaroOrdersPendingComponent,
     ClaroOrdersProgressComponent,
-    ClaroOrdersCompletedComponent
+    ClaroOrdersCompletedComponent,
+    OrdersComponent
 
   
   ],
@@ -36,7 +39,8 @@ import { ClaroService } from './services/claroservice.service';
     ClaroshopRoutingModule,
     FeatureModule,
     FormsModule,
-    SharedNgPrimeModule
+    SharedNgPrimeModule,
+    TableProductsComponent
   ],
   providers: [
     ClaroService,

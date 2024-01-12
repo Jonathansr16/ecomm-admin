@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpParams,
-  HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -15,27 +11,43 @@ import {
 import { Orden } from '@wcommerce/models/wc-order.model';
 import {
   ProductCategoryResponse,
+  ProductImageResult,
   ProductResponse,
   ProductResult,
-  TableProductResult,
 } from '@wcommerce/interface/woo-producto.interface';
 import { WooProducto } from '@wcommerce/models/wc-new-product.model';
 
 @Injectable()
 export class WcommerceService {
+
   private url = 'https://servitae.mx/wp-json/wc/v3';
   statusData: 'loading' | 'success' | 'error' | undefined;
 
   constructor(private http: HttpClient) {}
 
   //* OBTIENE TODOS LOS PRODUCTOS
-  getProducts(): Observable<TableProductResult[]> {
-    return this.http.get<ProductResponse[]>(`${this.url}/products`).pipe(
-      map((resp) =>
-        resp.map((producto) => this.mapToWooTableProducto(producto))
+  getProducts(): Observable<ProductResult[]> {
+    return this.http.get<ProductResponse[]>(`${this.url}/products`)
+    .pipe(
+      map( (resp: ProductResponse[]) =>
+       resp.map( (producto: ProductResult) => ({
+        id: producto.id,
+        name: producto.name,
+        description: producto.description,
+        short_description: producto.short_description,
+        sku: producto.sku,
+        regular_price: producto.regular_price,
+        sale_price: producto.sale_price,
+        categories: producto.categories,
+        images: producto.images[0],
+        stock_quantity: producto.stock_quantity,
+        stock_status: producto.stock_status,
+        status: producto.status,
+        total_sales: producto.total_sales
+       }))
       ),
       tap((_) => console.log('productos buscados')),
-      catchError(this.hanlerError<TableProductResult[]>('getProducts', []))
+      catchError(this.hanlerError<ProductResult[]>('getProducts', []))
     );
   }
 
@@ -71,12 +83,10 @@ export class WcommerceService {
 
   //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
   getOrderByStatus(
-    status: 'pending' | 'processing' | 'completed' | 'cancelled', 
+    status: 'pending' | 'processing' | 'completed' | 'cancelled',
     totalItemsByPage?: number,
     page?: number
-    
-    ): Observable<OrderResult[]> {
-
+  ): Observable<OrderResult[]> {
     // const params = new HttpParams()
     //       .set('per_page', totalItemsByPage)
     //       .set('page', page)
@@ -169,23 +179,6 @@ export class WcommerceService {
       console.warn(`${operation} fallo`);
       console.warn(`Mensaje de la falla: ${error.message}`);
       return of(result as T);
-    };
-  }
-
-  private mapToWooTableProducto(producto: ProductResponse): TableProductResult {
-    return {
-      id: producto.id,
-      name: producto.name,
-      images: producto.images.map((img) => ({
-        src: img.src,
-        name: img.name,
-        alt: img.alt,
-      })),
-      sku: producto.sku,
-      precio: producto.price,
-      stock: producto.stock_quantity, // Convertir a string si es necesario
-      stock_status: producto.stock_status,
-      categorias: producto.categories,
     };
   }
 }

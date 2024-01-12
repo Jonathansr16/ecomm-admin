@@ -322,7 +322,7 @@
 
     &__pending {
       color: var(--orange-800);
-      background-color: var(--light-orange);
+      background-color: var(--orange-100);
     }
 
     &__failed {
@@ -425,7 +425,8 @@
 .search-input-wrapper span .p-inputtext {
   width: 100%;
   position: relative;
-  border-radius: 40px;
+   border-radius: 0px;
+  border: none;
 }
 
 .topbar-search .search-input-wrapper span i {
@@ -447,13 +448,14 @@
   width: 280px;
   opacity: 1;
   visibility: visible;
-  border-radius: 20px;
+  // border-radius: 20px;
+  border-bottom: 1px solid var(--surface-300);
 }
 
 .topbar-search.topbar-search-active .search-input-wrapper i {
   display: block;
 }
 
-.topbar-search.topbar-search-active .search-input-wrapper input {
-  border-radius: 20px;
-}
+// .topbar-search.topbar-search-active .search-input-wrapper input {
+//   border-radius: 20px;
+// }

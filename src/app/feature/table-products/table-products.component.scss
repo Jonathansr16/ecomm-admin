@@ -107,33 +107,43 @@
   }
 }
 
-.productos {
+// .productos {
+//   &__img {
+//     max-width: 64px;
+//     border-radius: 10px;
+//   }
+
+//   &__h4,
+//   &__h5 {
+//     font-size: 0.975rem;
+//     line-height: 1.25rem;
+//     color: var(--surface-600);
+//     font-family: "Inter", sans-serif;
+//   }
+
+//   &__h4 {
+//     margin: 0;
+//   }
+//   &__h5 {
+//     font-weight: normal;
+//   }
+
+//   &__box {
+//     @include flexible(flex, row, wrap, flex-start, center);
+//     gap: 1em;
+//   }
+// }
+
+.list {
+
+  &-card {
+    display: grid;
+  }
+
   &__img {
-    max-width: 64px;
-    border-radius: 10px;
-  }
-
-  &__h4,
-  &__h5 {
-    font-size: 0.975rem;
-    line-height: 1.25rem;
-    color: var(--surface-600);
-    font-family: "Inter", sans-serif;
-  }
-
-  &__h4 {
-    margin: 0;
-  }
-  &__h5 {
-    font-weight: normal;
-  }
-
-  &__box {
-    @include flexible(flex, row, wrap, flex-start, center);
-    gap: 1em;
+    max-width: 88px;
   }
 }
-
 
 //? ============ Styles for topbar ============
 // .topbar {
@@ -272,4 +282,18 @@
   border: none;
   margin: 0;
   padding: 0;
+}
+
+
+
+//*style
+.list-product {
+
+}
+
+.list-header {
+  @include flexible(flex, row, wrap, space-between,center);
+  background-color: var(--surface-d);
+  gap: 1em;
+  padding: 20px 40px;
 }

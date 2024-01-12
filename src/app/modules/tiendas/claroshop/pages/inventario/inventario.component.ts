@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ClaroService } from '@claroshop/services/claroservice.service';
+import { ColHeader, Column, } from '@feature/table-products/table-products.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -19,6 +20,30 @@ export class InventarioComponent {
   searchText: string = '';
 
   @ViewChild('productos') productos: Table | undefined;
+
+  // header: ColHeader[] = [
+
+  //   { header: 'PRODUCTO'},
+  //   { header: 'SKU' },
+  //   { header: 'PRECIO' },
+  //   { header: 'STOCK' },
+  //   { header: 'STATUS' },
+  //   { header: 'ACCIONES' },
+  // ]
+
+  columns: Column[] = [
+
+    { field: 'id', header: 'ID', },
+    { field: 'id', header: 'ID', },
+    { field: 'name', header: 'Producto'},
+    { field: 'sku', header: 'Sku'},
+    { field: 'sale_price', header: 'Precio'},
+    { field: 'stock_quantity', header: 'Stock'},
+
+   
+ 
+   
+   ];
 
   constructor(private claroService: ClaroService, private confirmationService: ConfirmationService) { }
 
@@ -49,5 +74,7 @@ export class InventarioComponent {
   searchFilter($event: any, value: string) {
     this.productos?.filterGlobal(($event.target as HTMLInputElement).value, value)
   } 
-  
+
+
+
 }

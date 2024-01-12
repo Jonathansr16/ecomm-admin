@@ -26,7 +26,21 @@ export class ClaroOrdersPendingComponent {
   getPendingOrders() {
     this.orderService.getOrderByStatus('pendientes').subscribe({
       next: (resp) => {
-        this.pendingOrders = resp.listaentregados;
+        this.pendingOrders = resp.orden;
+        this.statusData = 'success';
+        console.log(resp);
+      }, 
+      error: (errorMessage) => {
+        this.statusData = 'error';
+        console.log(errorMessage);
+      }
+    })
+  }
+
+  getCompletedOrders() {
+    this.orderService.getOrderByStatus('entregados').subscribe({
+      next: (resp) => {
+        this.pendingOrders = resp.orden;
         this.statusData = 'success';
         console.log(resp);
       }, 
@@ -40,6 +54,7 @@ export class ClaroOrdersPendingComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    this.getPendingOrders()
 
   }
 }

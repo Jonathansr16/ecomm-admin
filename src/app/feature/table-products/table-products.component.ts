@@ -1,33 +1,45 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   Input,
   Output,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { WcommerceService } from '@wcommerce/services/wcommerce.service';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonModule } from 'primeng/skeleton';
+import { Table, TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
+  standalone: true,
+  imports: [TableModule, CheckboxModule, ToastModule, TagModule, FormsModule, CommonModule, SkeletonModule, ButtonModule, InputTextModule],
   selector: 'app-table-products',
   templateUrl: './table-products.component.html',
   styleUrls: ['./table-products.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
 export class TableProductsComponent {
-  @Input() data: any;
-  
-  @Input() url = "";
-  @Input() urlNewProduct = "";
-  @Input() statusData: boolean | undefined;
+
   @Output() onEdit = new EventEmitter<any>();
   @Output() onDelete = new EventEmitter<number>();
   @ViewChild('searchProduct') search!: ElementRef;
   
-  statusOperation : 'loading'| 'success' | 'error' | undefined;
+//*new  logica
+@Input() header: ColHeader[] = [];
+@Input() dataStatus?: 'success' | 'loading' | 'error' | 'empty';
+@Input() data: any;
+@Input() url = "";
+@Input() urlNewProduct = "";
 
   product!: Object;
   selectedProducts: any[] = [];
@@ -39,6 +51,7 @@ export class TableProductsComponent {
 
   selectedIndex: number = -1; // Índice del elemento abierto, inicialmente ninguno
   searchText: string = '';
+
   constructor(private router: Router, private messageService: MessageService, private confirmationService: ConfirmationService) {
 
   }
@@ -135,7 +148,22 @@ getProduct() {
   searchFilter($event: any, value: string) {
     this.productos?.filterGlobal(($event.target as HTMLInputElement).value, value)
   } 
+
+
   
  
 }
 
+
+export interface Column {
+  field: string;
+  header: string;
+}
+
+export interface ColHeader {
+  header: string;
+}
+
+export interface statusData {
+  status: 'completed' | 'loading' | 'error' | 'empty';
+}

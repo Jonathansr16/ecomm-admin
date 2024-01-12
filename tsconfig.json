@@ -1,17 +1,32 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@shared/*": ["src/app/shared/*"],
-      "@auth/*": ["src/app/auth/*"],
-      "@main/*": ["src/app/main/*"],
-      "@home/*": ["src/app/modules/home/*"],
-      "@claroshop/*": ["src/app/modules/tiendas/claroshop/*"],
-      "@wcommerce/*": ["src/app/modules/tiendas/woocommerce/*"],
-      "@ayuda/*": ["src/app/modules/ayuda/*"],
-      "@feature/*": ["src/app/feature/*"]
+      "@auth/*": [
+        "src/app/auth/*"
+      ],
+      "@ayuda/*": [
+        "src/app/modules/ayuda/*"
+      ],
+      "@claroshop/*": [
+        "src/app/modules/tiendas/claroshop/*"
+      ],
+      "@feature/*": [
+        "src/app/feature/*"
+      ],
+      "@home/*": [
+        "src/app/modules/home/*"
+      ],
+      "@main/*": [
+        "src/app/main/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@wcommerce/*": [
+        "src/app/modules/tiendas/woocommerce/*"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

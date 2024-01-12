@@ -1,0 +1,312 @@
+<!--  -->
+
+<section class="sidebar" [class.hide-sidebar]="handlerSidebar$ | async">
+   
+    <div class="sidebar-close">
+        
+      <button 
+      (click)="toggleSidebar()"
+      severity="danger"
+      class="sidebar-close__btn p-ripple p-element p-button p-component p-button-icon-only p-button-danger p-button-rounded p-button-text"
+      type="button">
+      <i class="order__i pi pi-times"></i>
+    </button> 
+    </div>
+   
+    <div class="sidebar-head">
+      <div class="sidebar-head__user">
+        <img src="assets/img/profile-example.webp" class="sidebar-head__img" loading="lazy" alt="profile" />
+      </div>
+
+      <div class="sidebar-head__details">
+        <p class="sidebar-head__title">Web developer</p>
+        <p class="sidebar-head__name">Jong SanR.</p>
+      </div>
+    </div>
+
+    <div class=" sidebar__contain">
+      <div class="sidebar__content">
+        <div class="sidebar-toggle">
+          <i #arrow (click)="toggleSidebar()" class="material-icons sidebar-toggle__i">chevron_left</i>
+        </div>
+
+        <div class="sidebar-section">
+          <p class="sidebar-section__p">Main</p>
+
+          <ul class="sidebar__ul">
+          
+            <li class="sidebar__li">
+              <a routerLink="/dashboard/home" routerLinkActive="isActive" class="sidebar__a">
+                <i class="material-icons sidebar__icon">home</i>
+                <span class="sidebar__span sidebar__label">Home</span>
+              </a>
+            </li>
+
+            <!--OPEN MIS TIENDAS -->
+            <li class="sidebar__li">
+              <button type="button" #menu class="sidebar__btn sidebar__btn--menu" (click)="toggleMenu()">
+              
+                <div class="sidebar__option">
+                  <i class="material-icons sidebar__icon">store</i>
+                  <span class="sidebar__span sidebar__label">Mis Tiendas</span>
+                </div>
+                <i class="material-icons sidebar__arrow" [class.moveArrow]="isOpenMenu">navigate_next</i>
+              </button>
+
+              <ul class="sidebar-menu sidebar-dropdown" *ngIf="isOpenMenu" [class.show-submenu]="isOpenMenu">
+                <!-- AMAZON -->
+                <li class="sidebar__li">
+                  <button type="button" class="sidebar__btn sidebar__btn--menu" (click)="toggleSubMenu(10)">
+
+                    <div class="sidebar__option">
+                      <i class="material-icons sidebar__icon">storefront</i>
+                      <span class="sidebar__span">Amazon</span>
+                    </div>
+                    <i class="material-icons sidebar__arrow" [class.moveArrow]="activeSubmenu === 10">navigate_next</i>
+                  </button>
+
+                  <!-- SUBMENU AMAZON -->
+                  <ul class="sidebar-submenu sidebar-menu" [class.show-submenu]="activeSubmenu === 10">
+                    <li class="sidebar__li">
+                      <a routerLink="/dashboard/wocommerce/productos" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">inventory</i>
+                        <span class="sidebar__span">Inventario</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar__li">
+                      <a routerLink="/dashboard/wocommerce/ordenes" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">local_mall</i>
+                        <span class="sidebar__span">Pedidos</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar__li">
+                      <a href="" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">group</i>
+                        <span class="sidebar__span">Clientes</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar__li">
+                      <a href="" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">stacked_bar_chart</i>
+                        <span class="sidebar__span">Reportes</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!-- CLARO SHOP -->
+                <li class="sidebar__li">
+                  <button type="button" class="sidebar__btn sidebar__btn--menu" (click)="toggleSubMenu(11)">
+                    <div class="sidebar__option">
+                      <i class="material-icons sidebar__icon">storefront</i>
+                      <span class="sidebar__span">Claro Shop</span>
+                    </div>
+                    <i class="material-icons sidebar__arrow">navigate_next</i>
+                  </button>
+
+                    <!-- SUBMENU CLAROSHOP -->
+                    <ul class="sidebar-submenu sidebar-menu" [class.show-submenu]="activeSubmenu === 11">
+                      <li class="sidebar__li">
+                        <a routerLink="/dashboard/claroshop/inventario" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">inventory</i>
+                          <span class="sidebar__span">Inventario</span>
+                        </a>
+                      </li>
+  
+                      <li class="sidebar__li">
+                        <a routerLink="/dashboard/claroshop/ordenes" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">local_mall</i>
+                          <span class="sidebar__span">Pedidos</span>
+                        </a>
+                      </li>
+  
+                      <li class="sidebar__li">
+                        <a href="" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">group</i>
+                          <span class="sidebar__span">Clientes</span>
+                        </a>
+                      </li>
+  
+                      <li class="sidebar__li">
+                        <a href="" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">stacked_bar_chart</i>
+                          <span class="sidebar__span">Reportes</span>
+                        </a>
+                      </li>
+                    </ul>
+                </li>
+                <!-- MERCADO LIBRE -->
+                <li class="sidebar__li">
+                  <button type="button" class="sidebar__btn sidebar__btn--menu" (click)="toggleSubMenu(12)" routerLinkActive="isActive">
+                    <div class="sidebar__option">
+                      <i class="material-icons sidebar__icon">storefront</i>
+                      <span class="sidebar__span">Mercado Libre</span>
+                    </div>
+                    <i class="material-icons sidebar__arrow">navigate_next</i>
+                  </button>
+
+                     <!-- SUBMENU MERCADO LIBRE -->
+                     <ul class="sidebar-submenu sidebar-menu" [class.show-submenu]="activeSubmenu === 12">
+                      <li class="sidebar__li">
+                        <a routerLink="/dashboard/wocommerce/productos" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">inventory</i>
+                          <span class="sidebar__span">Inventario</span>
+                        </a>
+                      </li>
+  
+                      <li class="sidebar__li">
+                        <a href="" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">local_mall</i>
+                          <span class="sidebar__span">Pedidos</span>
+                        </a>
+                      </li>
+
+                      <li class="sidebar__li">
+                        <a href="" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">group</i>
+                          <span class="sidebar__span">Preguntas</span>
+                        </a>
+                      </li>
+  
+                      <li class="sidebar__li">
+                        <a href="" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">group</i>
+                          <span class="sidebar__span">Clientes</span>
+                        </a>
+                      </li>
+  
+                      <li class="sidebar__li">
+                        <a href="" class="sidebar__a">
+                          <i class="material-icons sidebar__icon">stacked_bar_chart</i>
+                          <span class="sidebar__span">Reportes</span>
+                        </a>
+                      </li>
+                    </ul>
+                </li>
+                <!-- WOCOMMERCE -->
+                <li class="sidebar__li">
+                  <button type="button" class="sidebar__btn sidebar__btn--menu" (click)="toggleSubMenu(13)">
+                   
+                    <div class="sidebar__option">
+                      <i class="material-icons sidebar__icon">storefront</i>
+                      <span class="sidebar__span">Woocommerce</span>
+                    </div>
+                    <i class="material-icons sidebar__arrow" [class.moveArrow]="activeSubmenu === 13">navigate_next</i>
+                  </button>
+
+                  <ul #submenu class="sidebar-submenu sidebar-menu" [class.show-submenu]="activeSubmenu === 13">
+                    <li class="sidebar__li">
+                      <a routerLink="/dashboard/woocommerce/inventario" routerLinkActive="isActive"
+                        class="sidebar__a">
+                        <i class="material-icons sidebar__icon">inventory</i>
+                        <span class="sidebar__span">Inventario</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar__li">
+                      <a routerLink="/dashboard/woocommerce/ordenes" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">local_mall</i>
+                        <span class="sidebar__span">Ordenes</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar__li">
+                      <a href="" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">group</i>
+                        <span class="sidebar__span">Clientes</span>
+                      </a>
+                    </li>
+
+                    <li class="sidebar__li">
+                      <a href="" class="sidebar__a">
+                        <i class="material-icons sidebar__icon">stacked_bar_chart</i>
+                        <span class="sidebar__span">Reportes</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+              <!-- CLOSE MIS TIENDAS -->
+
+            <li class="sidebar__li">
+              <button type="button" class="sidebar__btn">
+                <i class="material-icons sidebar__icon">point_of_sale</i>
+                <span class="sidebar__span sidebar__label">Ventas</span>
+              </button>
+            </li>
+
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">inventory_2</i>
+                <span class="sidebar__span sidebar__label">Inventario</span>
+              </a>
+            </li>
+
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">description</i>
+                <span class="sidebar__span sidebar__label">Reportes</span>
+              </a>
+            </li>
+
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">forum</i>
+                <span class="sidebar__span sidebar__label">Mensajes</span>
+              </a>
+            </li>
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">local_shipping</i>
+                <span class="sidebar__span sidebar__label">Envios</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <p class="sidebar-section__p">Ayuda</p>
+
+          <ul class="sidebar__ul">
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">contact_support</i>
+                <span class="sidebar__span sidebar__label">Ayuda</span>
+              </a>
+            </li>
+
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">contacts</i>
+                <span class="sidebar__span sidebar__label">Contacto</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <p class="sidebar-section__p">Otros</p>
+
+          <ul class="sidebar__ul">
+            <li class="sidebar__li">
+              <a href="" class="sidebar__a">
+                <i class="material-icons sidebar__icon">settings</i>
+                <span class="sidebar__span sidebar__label">Configuraciones</span>
+              </a>
+            </li>
+
+            <li class="sidebar__li">
+              <button type="button" (click)="cerrarSesion()" class="sidebar__btn">
+                <i class="material-icons sidebar__icon">logout</i>
+                <span class="sidebar__span sidebar__label">Cerra sesion</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+

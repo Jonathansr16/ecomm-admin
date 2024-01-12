@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx s",
+    "startTime": "2024-01-11T21:46:47.488Z",
+    "endTime": "2024-01-11T23:58:22.877Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "servitaeapp:serve:development",
+      "target": "serve",
+      "projectName": "servitaeapp",
+      "hash": "13056226402388765963",
+      "startTime": "2024-01-11T21:46:47.499Z",
+      "endTime": "2024-01-11T23:58:22.869Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 1
+    }
+  ]
+}
