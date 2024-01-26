@@ -1,45 +1,29 @@
+<div class="top-header">
+  <div class="home__breadcrumb">
+    <app-breadcrumb
+      [breadcrumbHomeItem]="breadcrumbHome"
+      [breadcrumbItems]="breadcrumbItems"
+    ></app-breadcrumb>
+  </div>
 
-<div class="home">
-
-  <div class="home__head section">
-
-    <div class="home-breadcrumb">
-
-     <span  class="home-breadcrumb__a" routerLink="/dashboard/home/">
-       <i class="home-breadcrumb__i pi pi-home"></i>
-      <h1 class="home-breadcrumb__h1">Home</h1>
-     </span>
-
-      <ul class="home-breadcrumb__ul">
-
-        <li class="home-breadcrumb__li">></li>
-        <li class="home-breadcrumb__li">
-         Dashboard
-        </li>
-        <li class="home-breadcrumb__li">></li>
-        <li class="home-breadcrumb__li">
-          <a class="home-breadcrumb__a home-breadcrumb__a--active" href="">Home</a>
-        </li>
-      </ul>
-    </div>
-
+  <div class="home__card-stats">
     <ul class="box-info">
       <li class="box-info__li">
-        <i class='box-info__i material-icons'>pallet</i>
+        <i class="box-info__i material-icons">pallet</i>
         <span class="box-info__text">
           <h3 class="box-info__h3">1020</h3>
           <p class="box-info__p">Nuevas ordenes</p>
         </span>
       </li>
       <li class="box-info__li">
-        <i class='box-info__i material-icons'>supervisor_account</i>
+        <i class="box-info__i material-icons">supervisor_account</i>
         <span class="box-info__text">
           <h3 class="box-info__h3">2834</h3>
           <p class="box-info__p">Atendidas</p>
         </span>
       </li>
       <li class="box-info__li">
-        <i class='box-info__i material-icons'>stacked_line_chart</i>
+        <i class="box-info__i material-icons">stacked_line_chart</i>
         <span class="box-info__text">
           <h3 class="box-info__h3">$2543</h3>
           <p class="box-info__p">Ventas totales</p>
@@ -47,100 +31,143 @@
       </li>
     </ul>
   </div>
+</div>
 
-
-  
-  
-  <!-- TABLE DATA -->
-      <div class="table-data section">
-        <div class="table-data__order order">
-          <div class="table-data__head head">
-            <h3 class="table-data__h3">Ordenes Recientes</h3>
-            <i class='table-data__i bx bx-search' ></i>
-            <i class='table-data__i bx bx-filter' ></i>
-          </div>
-          <table class="table-order">
-            <thead class="table-order__thead">
-              <tr class="table-order__tr">
-                <th class="table-order__th">Usuario</th>
-                <th class="table-order__th">Fecha de Orden</th>
-                <th class="table-order__th">Status</th>
-              </tr>
-            </thead>
-            <tbody class="table-order__tbody">
-              <tr class="table-order__tr">
-                <td class="table-order__td">
-                  <img class="table-order__img" loading="lazy" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
-                  <p class="table-order__p">John Doe</p>
-                </td>
-                <td class="table-order__d">01-10-2023</td>
-                <td class="table-order__td"><span class="table-order__span table-order__span--completed status completed">Completado</span></td>
-              </tr>
-              <tr class="table-order">
-                <td class="table-order__td">
-                  <img class="table-order__img" loading="lazy" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
-                  <p>John Doe</p>
-                </td>
-                <td class="table-order__td">01-10-2023</td>
-                <td class="table-order__td"><span class="table-order__span table-order__span--pending status pending">Pendiente</span></td>
-              </tr>
-              <tr class="table-order__tr">
-                <td class="table-order__td">
-                  <img class="table-order__img" loading="lazy" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
-                  <p>John Doe</p>
-                </td>
-                <td class="table-order__td">01-10-2023</td>
-                <td class="table-order__td"><span class="table-order__span table-order__span--process status process">Procesado</span></td>
-              </tr>
-              <tr class="table-order__tr">
-                <td class="table-order__td">
-                  <img class="table-order__img" loading="lazy" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
-                  <p>John Doe</p>
-                </td>
-                <td class="table-order__td">01-10-2023</td>
-                <td class="table-order__td"><span class="table-order__span table-order__span--pending status pending">Pendiente</span></td>
-              </tr>
-              <tr class="table-order__tr">
-                <td class="table-order__td">
-                  <img class="table-order__img" loading="lazy" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g">
-                  <p>John Doe</p>
-                </td>
-                <td class="table-order__td">01-10-2023</td>
-                <td class="table-order__td"><span class="table-order__span table-order__span--completed status completed">Cancelado</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="table-todo todo">
-          <div class="table-data__head head">
-            <h3 class="table-data__h3">Todos</h3>
-            <i class='table-data__i bx bx-plus' ></i>
-            <i class='table-data__i bx bx-filter' ></i>
-          </div>
-          <ul class="table-todo__ul todo-list">
-            <li class="table-todo__li table-todo__li--completed completed">
-              <p>Todo List</p>
-              <i class='table-todo__i bx bx-dots-vertical-rounded'></i>
-            </li>
-            <li class="table-todo__li table-todo__li--completed completed">
-              <p>Todo List</p>
-              <i class='table-todo__i bx bx-dots-vertical-rounded'></i>
-            </li>
-            <li class="table-todo__li table-todo__li--not-completed not-completed">
-              <p>Todo List</p>
-              <i class='table-todo__i bx bx-dots-vertical-rounded'></i>
-            </li>
-            <li class="table-todo__li table-todo__li--completed completed">
-              <p>Todo List</p>
-              <i class='table-todo__i bx bx-dots-vertical-rounded'></i>
-            </li>
-            <li class="table-todo__li table-todo__li--not-completed not-completed">
-              <p>Todo List</p>
-              <i class='table-todo__i bx bx-dots-vertical-rounded'></i>
-            </li>
-          </ul>
-        </div>
-      </div>
+<!-- TABLE DATA -->
+<div class="table-data container-bg">
+  <div class="table-data__order order">
+    <div class="table-data__head head">
+      <h3 class="table-data__h3">Ordenes Recientes</h3>
+      <i class="table-data__i bx bx-search"></i>
+      <i class="table-data__i bx bx-filter"></i>
     </div>
-    <!-- MAIN -->
+    <table class="table-order">
+      <thead class="table-order__thead">
+        <tr class="table-order__tr">
+          <th class="table-order__th">Usuario</th>
+          <th class="table-order__th">Fecha de Orden</th>
+          <th class="table-order__th">Status</th>
+        </tr>
+      </thead>
+      <tbody class="table-order__tbody">
+        <tr class="table-order__tr">
+          <td class="table-order__td">
+            <img
+              class="table-order__img"
+              loading="lazy"
+              src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g"
+            />
+            <p class="table-order__p">John Doe</p>
+          </td>
+          <td class="table-order__d">01-10-2023</td>
+          <td class="table-order__td">
+            <span
+              class="table-order__span table-order__span--completed status completed"
+              >Completado</span
+            >
+          </td>
+        </tr>
+        <tr class="table-order">
+          <td class="table-order__td">
+            <img
+              class="table-order__img"
+              loading="lazy"
+              src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g"
+            />
+            <p>John Doe</p>
+          </td>
+          <td class="table-order__td">01-10-2023</td>
+          <td class="table-order__td">
+            <span
+              class="table-order__span table-order__span--pending status pending"
+              >Pendiente</span
+            >
+          </td>
+        </tr>
+        <tr class="table-order__tr">
+          <td class="table-order__td">
+            <img
+              class="table-order__img"
+              loading="lazy"
+              src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g"
+            />
+            <p>John Doe</p>
+          </td>
+          <td class="table-order__td">01-10-2023</td>
+          <td class="table-order__td">
+            <span
+              class="table-order__span table-order__span--process status process"
+              >Procesado</span
+            >
+          </td>
+        </tr>
+        <tr class="table-order__tr">
+          <td class="table-order__td">
+            <img
+              class="table-order__img"
+              loading="lazy"
+              src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g"
+            />
+            <p>John Doe</p>
+          </td>
+          <td class="table-order__td">01-10-2023</td>
+          <td class="table-order__td">
+            <span
+              class="table-order__span table-order__span--pending status pending"
+              >Pendiente</span
+            >
+          </td>
+        </tr>
+        <tr class="table-order__tr">
+          <td class="table-order__td">
+            <img
+              class="table-order__img"
+              loading="lazy"
+              src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g"
+            />
+            <p>John Doe</p>
+          </td>
+          <td class="table-order__td">01-10-2023</td>
+          <td class="table-order__td">
+            <span
+              class="table-order__span table-order__span--completed status completed"
+              >Cancelado</span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-todo todo">
+    <div class="table-data__head head">
+      <h3 class="table-data__h3">Todos</h3>
+      <i class="table-data__i bx bx-plus"></i>
+      <i class="table-data__i bx bx-filter"></i>
+    </div>
+    <ul class="table-todo__ul todo-list">
+      <li class="table-todo__li table-todo__li--completed completed">
+        <p>Todo List</p>
+        <i class="table-todo__i bx bx-dots-vertical-rounded"></i>
+      </li>
+      <li class="table-todo__li table-todo__li--completed completed">
+        <p>Todo List</p>
+        <i class="table-todo__i bx bx-dots-vertical-rounded"></i>
+      </li>
+      <li class="table-todo__li table-todo__li--not-completed not-completed">
+        <p>Todo List</p>
+        <i class="table-todo__i bx bx-dots-vertical-rounded"></i>
+      </li>
+      <li class="table-todo__li table-todo__li--completed completed">
+        <p>Todo List</p>
+        <i class="table-todo__i bx bx-dots-vertical-rounded"></i>
+      </li>
+      <li class="table-todo__li table-todo__li--not-completed not-completed">
+        <p>Todo List</p>
+        <i class="table-todo__i bx bx-dots-vertical-rounded"></i>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- MAIN -->

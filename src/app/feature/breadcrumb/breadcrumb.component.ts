@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ActivationEnd, Router, RouterEvent, RouterModule } from '@angular/router';
-import { MenuItem } from 'primeng/api';
-import { filter, map } from 'rxjs';
-import { BreadcrumbItem, BreadcrumbService } from 'src/app/core/services/breadcrumb.service';
+import { Component, Input } from '@angular/core';
+import {Router, RouterModule } from '@angular/router';
+
+import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
+
 
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, ],
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']
 })
@@ -16,10 +16,11 @@ export class BreadcrumbComponent {
 
   public title: string = 'Dashboard';
 
-  breadcrumbs: BreadcrumbItem[] = [];
+  @Input() breadcrumbHomeItem: BreadcrumbItem = {};
+  @Input() breadcrumbItems: BreadcrumbItem[] = [];
   constructor( 
     private router: Router,
-    private breadcrumbService: BreadcrumbService
+   
     ) {
 
     // this.getData();
@@ -44,17 +45,7 @@ export class BreadcrumbComponent {
   // }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    // this.home = { icon: 'pi pi-home', routerLink: 'dashboard/home'};
-    // this.items = [
-    // { label: 'Computer', icon: 'pi pi-save' },
-    // { label: 'Notebook' },
-    // { label: 'Accessories' },
-    //  { label: 'Backpacks' },
-    //  { label: 'Item' }];
 
-    this.breadcrumbs = this.breadcrumbService.getBreadcrumbs();
-
+  
   }
 }

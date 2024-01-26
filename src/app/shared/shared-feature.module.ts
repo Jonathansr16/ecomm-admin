@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //* COMPONENTS
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 
@@ -16,7 +15,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 
 @NgModule({
     declarations: [
-      HeaderComponent,
+    
       FooterComponent,
     ],
     imports: [
@@ -28,7 +27,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
       PanelMenuModule
     ],
     exports: [
-      HeaderComponent,
+   
       FooterComponent,
     ]
   })

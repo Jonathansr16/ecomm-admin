@@ -7,8 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { HomeComponent } from './home.component';
 
-import { RadioButtonModule } from 'primeng/radiobutton';
 import { HttpClientModule } from '@angular/common/http';
+import { BreadcrumbComponent } from '@feature/breadcrumb/breadcrumb.component';
+import { CardStatsComponent } from '@feature/card-stats/card-stats.component';
+
 
 @NgModule({
   declarations: [HomeComponent],
@@ -21,9 +23,8 @@ HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
   InputTextModule,
- 
-RadioButtonModule,
-
+ BreadcrumbComponent,
+    CardStatsComponent
   ],
  
 })

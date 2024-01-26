@@ -20,7 +20,7 @@ export class WooOrdersPendingComponent {
 
 
   getOrders() {
-    this.wcService.getOrderByStatus('pending').subscribe({
+    this.wcService.getOrderByStatus('processing').subscribe({
 
       next: (resp : any) => {
       
@@ -29,7 +29,7 @@ export class WooOrdersPendingComponent {
         } else {
           this.statusData = 'success';
           this.pendingOrders = resp;
-
+          console.log(this.pendingOrders)
         }
       },
       error: (errorMessage : any) => {

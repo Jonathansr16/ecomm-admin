@@ -11,7 +11,9 @@
         </form>
         <div class="nav-right">
           <div class="nav-right__message" (click)="op.toggle($event)" pTooltip="Mensajes" tooltipPosition="bottom">
-            <i class="pi pi-comment text-3xl nav-right__i" pBadge [value]="'+10'" severity="danger"></i>
+            <i class="material-icons nav-right__i text-3xl" pBadge [value]="'+10'" severity="danger">
+              email
+              </i>
   
             <p-overlayPanel #op>
               <h4 class="message-tienda__title">
@@ -33,47 +35,52 @@
                     </span>
                   </div>
                 </a>
+                <p-divider></p-divider>
               </div>
-              <p-divider></p-divider>
+            
   
               <a class="message-tienda__more" href="#">Ver todos los mensajes ></a>
             </p-overlayPanel>
           </div>
   
           <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
-            <i #btnNotf (click)="toggleNotf()" class="pi pi-bell text-3xl nav-right__i" pBadge value="2"></i>
-  
-            <!-- [ngClass]="showNotf === true ? 'show' : '' " -->
-            <div #notfContainer class="notf" (click)="closeNotf()">
-              <div class="notf-header">
-                <i class="notf-header__i material-icons">notifications_active</i>
-                <h3 class="notf-header__h3">Notificaciones nuevas</h3>
-              </div>
-              <p-divider></p-divider>
-  
-              <ul class="notf__ul">
-                <li class="notf__li">
-                  <div class="notf__info">
-                    <h6 class="notf__h6">
-                      <i class="notf__i pi pi-check-circle"></i>
-                      Se ha realizado una venta
-                    </h6>
-  
-                    <p class="notf__p">
-                      Se vendio (x2) <strong class="notf__strong">Juego</strong>,
-                      Zelda Majora mask, en Mercado Libre, atiendalo ahora.
-                    </p>
-  
-                    <span class="notf__p notf__span"> 9:00 AM </span>
-  
-                    <p-button class="notf__btn" icon="pi pi-thumbs-up"
-                      styleClass="p-button-rounded p-button-info"></p-button>
-                  </div>
-                </li>
-              </ul>
-            </div>
+        
+            <i (click)="notificationShow = true" class="material-icons nav-right__i text-3xl" pBadge value="2">
+              notifications
+              </i>
+
+              <p-sidebar [(visible)]="notificationShow" position="right" [dismissible]="true" [modal]="true" [autoZIndex]="true" [style]="{ width: '24rem' }" >
+              
+                <div class="notf-header">
+                  <i class="notf-header__i material-icons">notifications_active</i>
+                  <h3 class="notf-header__h3">Notificaciones nuevas</h3>
+                </div>
+                <p-divider></p-divider>
+    
+                <ul class="notf__ul">
+                  <li class="notf__li">
+                    <div class="notf__info">
+                      <h6 class="notf__h6">
+                        <i class="notf__i pi pi-check-circle"></i>
+                        Se ha realizado una venta
+                      </h6>
+    
+                      <p class="notf__p">
+                        Se vendio (x2) <strong class="notf__strong">Juego</strong>,
+                        Zelda Majora mask, en Mercado Libre, atiendalo ahora.
+                      </p>
+    
+                      <span class="notf__p notf__span"> 9:00 AM </span>
+    
+                      <p-button class="notf__btn" icon="pi pi-thumbs-up"
+                        styleClass="p-button-rounded p-button-info"></p-button>
+                    </div>
+                  </li>
+                </ul>
+              </p-sidebar>
+      
           </div>
-  
+
           <div class="nav-right__profile" pTooltip="Mi perfil" tooltipPosition="bottom">
             <p-avatar class="nav-right__i" (click)="profile.toggle($event)"
               image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="large"
@@ -97,4 +104,5 @@
           </div>
         </div>
       </nav>
+      
       <!-- NAVBAR -->

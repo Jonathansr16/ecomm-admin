@@ -22,24 +22,24 @@ import { ProgressBarModule } from 'primeng/progressbar';
 // For dynamic progressbar demo
 import { ToastModule } from 'primeng/toast';
 
-
-
 //ORDENES COMPONENTS
 import { WooOrdersComponent } from './pages/woo-orders/woo-orders.component';
 import { WooOrdersPendingComponent } from './pages/woo-orders/woo-orders-pending/woo-orders-pending.component';
 import { WooOrdersFailedComponent } from './pages/woo-orders/woo-orders-failed/woo-orders-failed.component';
 import { WooOrdersCompletedComponent } from './pages/woo-orders/woo-orders-completed/woo-orders-completed.component';
 
-
 import { KeyInterceptor } from './services/key.interceptor';
-
 
 import { WcommerceService } from './services/wcommerce.service';
 import { OrdersComponent } from './components/orders/orders.component';
-import { OrdersQuantityCardComponent } from '@feature/orders-quantity-card/orders-quantity-card.component';
-import { ProductCardComponent } from '@feature/product-card/product-card.component';
-import { BreadcrumbComponent } from '@feature/breadcrumb/breadcrumb.component';
 
+import { CardProductComponent } from '@feature/card-product/product-card.component';
+import { CardStatsComponent } from '@feature/card-stats/card-stats.component';
+import { BreadcrumbComponent } from '@feature/breadcrumb/breadcrumb.component';
+import { SpinnerComponent } from '@shared/spinner/spinner.component';
+import { SpinnerInterceptor } from '@shared/spinner/spinner.interceptor';
+import { CardSearchProductComponent } from '@feature/card-search-product/search-product.component';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,6 @@ import { BreadcrumbComponent } from '@feature/breadcrumb/breadcrumb.component';
     WooOrdersCompletedComponent,
     WooOrdersFailedComponent,
     OrdersComponent,
-   
   ],
   imports: [
     CommonModule,
@@ -64,23 +63,33 @@ import { BreadcrumbComponent } from '@feature/breadcrumb/breadcrumb.component';
     SharedNgPrimeModule,
     FeatureModule,
     ReactiveFormsModule,
-    FormsModule, 
+    FormsModule,
     KnobModule,
     FieldsetModule,
     ProgressBarModule,
     ToastModule,
-    OrdersQuantityCardComponent,
-    ProductCardComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    CardStatsComponent,
+    CardSearchProductComponent,
+    CardProductComponent,
+   SpinnerComponent,
+   RippleModule
+   
   ],
   providers: [
     WcommerceService,
     {
-      provide: 
-      HTTP_INTERCEPTORS, //Constante para definir que es un tipo de interceptopr
+      provide: HTTP_INTERCEPTORS, //Constante para definir que es un tipo de interceptopr
       useClass: KeyInterceptor, //indica cual el interceptor
-      multi: true   //Para que este al pendiente de todas peticiones qeu se hagan
-    }
-  ]
+      multi: true, //Para que este al pendiente de todas peticiones qeu se hagan
+    },
+
+    {
+      provide: HTTP_INTERCEPTORS, //Constante para definir que es un tipo de interceptopr
+      useClass: SpinnerInterceptor, //indica cual el interceptor
+      multi: true, //Para que este al pendiente de todas peticiones qeu se hagan
+    },
+
+  ],
 })
-export class WoocommerceModule { }
+export class WoocommerceModule {}

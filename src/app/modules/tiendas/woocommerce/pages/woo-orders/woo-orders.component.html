@@ -23,10 +23,9 @@
 
 
 <div class="container order-quantity">
-    <app-orders-quantity-card [status]="'En proceso de pago'" [routerLink]="['/dashboard/woocommerce/ordenes', 'pendientes']" [count]="pendingOrdersCount" [isLoading]="status.pending"></app-orders-quantity-card>
-    <app-orders-quantity-card [status]="'En Preparación'" [routerLink]="['/dashboard/woocommerce/ordenes', 'pendientes']" [count]="pendingOrdersCount" [isLoading]="status.pending"></app-orders-quantity-card>
-    <app-orders-quantity-card [status]="'No Concretadas'" [routerLink]="['/dashboard/woocommerce/ordenes', 'pendientes']" [count]="processingOrdersCount" [isLoading]="status.shipped"></app-orders-quantity-card>
-    <app-orders-quantity-card [status]="'Concretadas'" [routerLink]="['/dashboard/woocommerce/ordenes', 'concretadas']" [count]="completedOrdersCount" [isLoading]="status.completed"></app-orders-quantity-card>
+    <app-card-stats [label]="'En proceso'" [routerLink]="['/dashboard/woocommerce/ordenes', 'pendientes']" [count]="pendingOrdersCount" [isLoading]="status.pending"></app-card-stats>
+    <app-card-stats [label]="'No Concretadas'" [routerLink]="['/dashboard/woocommerce/ordenes', 'falladas']" [count]="processingOrdersCount" [isLoading]="status.shipped"></app-card-stats>
+    <app-card-stats [label]="'Concretadas'" [routerLink]="['/dashboard/woocommerce/ordenes', 'concretadas']" [count]="completedOrdersCount" [isLoading]="status.completed"></app-card-stats>
 </div>
 
 <router-outlet></router-outlet>

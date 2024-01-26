@@ -1,46 +1,58 @@
-@import 'mixin';
+@import "mixin";
 
 .breadcrumb {
-    position: relative;
-    padding: 5em 30px;
-    z-index: 1;
+  position: relative;
+  padding: 1.5em 0;
 
-    &::before {
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: var(--primary-500);
-        z-index: -1;
+  &__body {
+    @include flexible(flex, row, wrap, flex-start, center);
+    gap: 0.5em;
+  }
+
+  &-main {
+    @include flexible(flex, row, wrap, flex-start, center);
+    gap: 0.5em;
+
+    &__i,
+    &__h6 {
+      color: #fff;
     }
 
-    &__body {
-        @include flexible(flex, row, wrap, flex-start, center);
-        gap: 1em;
+    &__h6 {
+      margin: 0;
+      font-size: 0.875rem;
     }
+  }
 
-    &__title {
-        margin: 0;
-        font-size: 1.25rem;
-        color: #fff
-    }
+  &__separator,
+  &__span {
+    color: #fff;
+  }
 
-    &__ol {
-        @include flexible(flex, row, wrap, center, center);
-        gap: 0.5em; 
-    }
+  &__items {
+    margin-left: 1.5em;
+  }
 
-    &__li {
-        @include flexible(flex, row, wrap, center, center);
-        gap: 0.5em;
-        font-size: 0.875rem;
-    }
+  &__title {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #fff;
+  }
 
-    &__a, &__i {
-        color: #fff;
-    }
+  &__ol {
+    @include flexible(flex, row, wrap, flex-start, center);
+    gap: 0.5em;
+    margin-left: 1.5em;
+  }
 
+  &__item {
+    @include flexible(flex, row, wrap, center, center);
+    gap: 0.5em;
+    font-size: 0.875rem;
+  }
 
+  &__a,
+  &__i {
+    color: #fff;
+  }
 }

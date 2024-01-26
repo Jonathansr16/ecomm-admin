@@ -11,11 +11,14 @@ import { MessageUser } from 'src/app/core/interface/message-user.model';
 import { menu } from '@main/main.component';
 import { MessageUserService } from '@main/services/message-user.service';
 import { HandlerHeaderService } from 'src/app/core/services/handlerHeader/handler-header.service';
+import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, OverlayPanelModule, BadgeModule, DividerModule, ButtonModule, AvatarModule],
+  imports: [CommonModule, OverlayPanelModule, SidebarModule, BadgeModule, DividerModule, ButtonModule, AvatarModule, TooltipModule, RippleModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
@@ -33,7 +36,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   date = new Date();
   notificationShow: boolean = false;
   showNotf: boolean = false;
+
+
+
   private unlistener!: () => void;
+
 
 
 
@@ -49,17 +56,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.handlerHeaderService.toggleSidebar()
   }
 
-// showSidebar() {
-//   this.toggleSidebar = true;
-//   this.handlerOverlay = true;
-// }
 
-// hiddenSidebar() {
-//   this.toggleSidebar = false;
-//   this.handlerOverlay = false;
-
-
-// }
 
 toggleNotf(): void {
   const notfBox = this.notfContainer?.nativeElement;

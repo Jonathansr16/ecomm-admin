@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-
+import { BreadcrumbItem } from '../interface/breadcrumb.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +12,10 @@ export class BreadcrumbService {
     return this.breadcrumbs;
   }
 
-  addBreadcrumbs(item: BreadcrumbItem): void {
-    this.breadcrumbs.push(item);
+  setBreadcrumbs(items: BreadcrumbItem[]): void {
+    this.breadcrumbs = items;
   }
+
 
   // addBreadcrumbs(items: BreadcrumbItem[]): void {
   //   this.breadcrumbs = items;
@@ -24,13 +24,6 @@ export class BreadcrumbService {
   constructor() { }
 }
 
-export interface BreadcrumbItem {
-  titleMain: string;
-  breadCrumbLink: BreadCrumbLink[];
-}
 
-export interface BreadCrumbLink {
-  iconClass: string;
-  titleLink: string;
-  separatorClass?: string;
-}
+
+

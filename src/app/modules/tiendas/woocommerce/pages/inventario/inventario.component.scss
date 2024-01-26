@@ -1,177 +1,8 @@
 @import "_mixin";
 
-// .head {
-//   position: relative;
-//   padding: 5em 30px;
-//   z-index: 1;
-
-//   &::before {
-//     position: absolute;
-//     content: "";
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 100%;
-//     background-color: var(--primary-500);
-//     z-index: -1;
-//   }
-
-//   &__ul {
-//     @include flexible(flex, row, wrap, flex-start, center);
-//     gap: 1em;
-//   }
-
-//   &__li {
-//     color: #fff;
-//     @include flexible(flex, row, wrap, center, center);
-//     gap: 0.5em;
-//   }
-
-//   &__a {
-//     text-decoration: underline;
-//   }
-
-//   &__h6 {
-//     color: var(--light);
-//   }
-
-//   &__actions {
-//     @include flexible(flex, row, wrap, flex-end, center);
-//     gap: 0.8em;
-//   }
-//   &__btn {
-//     padding: 0.35rem 0.6rem;
-//     line-height: 1.5;
-//     border-radius: 0.25rem;
-//     background-color: #fff;
-//     font-size: 0.9rem;
-//     cursor: pointer;
-//   }
-// }
 
 .list-card {
-  // background-color: var(--surface-card);
-  // margin: 1.5em auto;
-
-  // &__content {
-  //   display: grid;
-  //   grid-template-columns: 60% 40%;
-  //   grid-template-areas: "product details";
-  //   align-items: stretch;
-  //   justify-content: space-between;
-  //   padding: 40px 20px;
-  //   gap: 1.5em;
-  // }
-
-  // &__product {
-  //   grid-area: product;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: flex-start;
-  //   flex-direction: row;
-  //   flex-wrap: nowrap;
-  // }
-
-  // &__actions {
-  //   &-desktop {
-  //     display: block;
-  //   }
-  //   &-responsive {
-  //     display: none;
-  //     padding: 0px 20px;
-  //   }
-  // }
-
-  // .list-card__checkbox {
-  //   &-desktop {
-  //     padding-right: 20px;
-  //     display: block;
-  //   }
-  // }
-
-  // &__picture {
-  //   margin-right: 20px;
-  //   width: 88px;
-  //   height: 88px;
-  //   position: relative;
-
-  //   &-simple-item {
-  //     border-radius: 4px;
-  //     background-color: #efefef;
-  //   }
-  // }
-
-  // &__img {
-  //   border: 1px solid #ededed;
-  //   object-fit: contain;
-  //   width: 100%;
-  //   height: 100%;
-
-  //   &-simple-img {
-  //     mix-blend-mode: multiply;
-  //   }
-  // }
-
-  // &__span {
-  //   font-size: 0.875rem;
-  // }
-
-  // &__span-small {
-  //   font-size: 0.75rem;
-  // }
-
-  // &__description {
-  //   color: var(--surface-700);
-  //   align-items: flex-start;
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  //   gap: 6px 0;
-  // }
-
-  // &__store {
-  //   background-color: var(--purple-100);
-  //   color: var(--purple-700);
-  //   padding: 2px 4px;
-  //   border-radius: 5px;
-  //   font-weight: 600;
-  // }
-
-  // &__details {
-  //   grid-area: details;
-  //   display: flex;
-  //   align-items: flex-start;
-  //   justify-content: flex-end;
-  //   flex-direction: row;
-  //   gap: 1em;
-  // }
-
-  // &__span-bold {
-  //   font-weight: 600;
-  // }
-
-  // &__stock {
-  //   display: flex;
-  //   flex-direction: column;
-  // }
-
-  // &__prices,
-  // &__status {
-  //   display: flex;
-  //   gap: 6px 0;
-  //   flex-direction: row;
-  //   flex-wrap: nowrap;
-  // }
-  // &__prices {
-  //   gap: 1em;
-  // }
-
-  // &__price {
-  //   display: flex;
-  //   flex-direction: column;
-  //   flex-wrap: wrap;
-  //   gap: 6px 0;
-  // }
+  
 
   &__status {
     // background-color: lavenderblush;
@@ -184,69 +15,100 @@
   }
 }
 
-//*style for outstock
-// .list-card.outofstock {
-//   background-color: var(--surface-d);
+//? INVENTARIO
+.toolbar {
+  &-search {
+    background-color: var(--surface-card);
+    padding: 12px;
+    @include flexible(flex, row, wrap, space-between, stretch);
+    gap: 12px;
 
-//   .list-card__img {
-//     opacity: 0.7;
-//   }
-// }
+    &__left {
+      @include flexible(flex, row, nowrap, flex-start, center);
+      gap: 1em;
+    }
 
-// @media screen and (max-width: 990px) {
-//   .list-card {
-//     &__content {
-//       grid-template-columns: 1fr;
-//       grid-template-areas:
-//         "product"
-//         "details";
-//     }
+    &__separator {
+      margin-left: 8px;
+      align-self: stretch;
+      background-color: var(--surface-300);
+      display: block;
+      width: 1px;
+    }
 
-//     &__product {
-//       gap: 1em 0;
-//     }
+    &__selection {
+      &-label {
+        font-size: 0.875rem;
+      }
+    }
 
-//     &__actions {
-//       flex-direction: row;
-//       flex-wrap: nowrap;
-//       gap: 1.5em;
-//       align-items: center;
-//       justify-content: space-between;
+    &__btn {
+      border-radius: 5px;
+      font-size: 14px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 12px;
 
-//       &-desktop {
-//         display: none;
-//       }
-//       &-responsive {
-//         display: flex;
-//       }
-//     }
+    }
 
-//     .list-card__checkbox {
-//       &-desktop {
-//         display: none;
-//       }
-//     }
+    &__wrapper {
+      display: flex;
+  align-items: center;
+  flex-shrink: 0;
 
-//     &__details {
-//       width: 100%;
-//       max-width: 100%;
-//       justify-content: space-between;
-//     }
-//   }
-// }
+  &-active {
 
-// @media screen and (max-width: 570px) {
-//   .list-card {
-//     &__product,
-//     &__details {
-//       flex-direction: column;
-//       align-items: flex-start;
-//     }
+    .toolbar-search__btn-toggle {
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+      cursor: default;
+      transition: opacity 0.1s;
+      transition-delay: 0.1s;
+    }
 
-//     &__picture {
-//       width: 120px;
-//       height: 120px;
-//       margin-right: auto;
-//     }
-//   }
-// }
+    .toolbar-search__box {
+      width: 280px;
+      opacity: 1;
+      visibility: visible;
+      // border-radius: 20px;
+      border-bottom: 1px solid var(--surface-300);
+    }
+
+    .toolbar-search__box-span-i {
+      display: block;
+    }
+
+  }
+  
+    }
+
+  
+
+    &__box {
+      position: relative;
+      width: 0;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      transition: 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+
+      &-span {
+        width: 100%;
+      }
+
+      &-input { 
+        width: 100%;
+        position: relative;
+         border-radius: 0px;
+        border: none;
+      }
+
+      &-i {
+        font-size: 18px;
+  margin-top: -9px;
+  cursor: pointer;
+      }
+    }
+  }
+}

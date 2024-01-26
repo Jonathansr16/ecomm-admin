@@ -1,11 +1,11 @@
 {
   "nodes": {
-    "servitaeapp": {
-      "name": "servitaeapp",
+    "ecomm-admin": {
+      "name": "ecomm-admin",
       "type": "app",
       "data": {
         "root": ".",
-        "name": "servitaeapp",
+        "name": "ecomm-admin",
         "targets": {
           "ng": {
             "executor": "nx:run-script",
@@ -32,7 +32,7 @@
             ],
             "executor": "@angular-devkit/build-angular:browser",
             "options": {
-              "outputPath": "dist/servitae-delivery",
+              "outputPath": "dist/ecomm-admin",
               "index": "src/index.html",
               "main": "src/main.ts",
               "polyfills": [
@@ -171,16 +171,13 @@
           },
           "serve": {
             "executor": "@angular-devkit/build-angular:dev-server",
-            "options": {
-              "proxyConfig": "proxy.conf.json"
-            },
+            "options": {},
             "configurations": {
               "production": {
-                "browserTarget": "servitaeapp:build:production",
-                "proxyConfig": "proxy.conf.json"
+                "browserTarget": "ecomm-admin:build:production"
               },
               "development": {
-                "browserTarget": "servitaeapp:build:development"
+                "browserTarget": "ecomm-admin:build:development"
               }
             },
             "defaultConfiguration": "development"
@@ -188,7 +185,7 @@
           "extract-i18n": {
             "executor": "@angular-devkit/build-angular:extract-i18n",
             "options": {
-              "browserTarget": "servitaeapp:build"
+              "browserTarget": "ecomm-admin:build"
             },
             "configurations": {}
           }
@@ -10839,204 +10836,204 @@
     }
   },
   "dependencies": {
-    "servitaeapp": [
+    "ecomm-admin": [
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/animations",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/common",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/compiler",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/core",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/forms",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/platform-browser",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/platform-browser-dynamic",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/router",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@auth0/auth0-angular",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:animate.css",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:crypto-js",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:http-proxy-middleware",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:material-icons",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:primeflex",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:primeicons",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:primeng",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:rxjs",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:sweetalert2",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:swiper",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:tslib",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:uninstall",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:zone.js",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular-devkit/build-angular",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular-devkit/core",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular-devkit/schematics",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/cli",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@angular/compiler-cli",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@nx/angular",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@nx/workspace",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@schematics/angular",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@types/crypto-js",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:@types/jasmine",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:jasmine-core",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:karma",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:karma-chrome-launcher",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:karma-coverage",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:karma-jasmine",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:karma-jasmine-html-reporter",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:nx",
         "type": "static"
       },
       {
-        "source": "servitaeapp",
+        "source": "ecomm-admin",
         "target": "npm:typescript",
         "type": "static"
       }

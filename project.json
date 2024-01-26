@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/nx/schemas/project-schema.json",
-  "name": "servitaeapp",
+  "name": "ecomm-admin",
   "projectType": "application",
   "generators": {
     "@schematics/angular:component": {
@@ -13,7 +13,7 @@
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "options": {
-        "outputPath": "dist/servitae-delivery",
+        "outputPath": "dist/ecomm-admin",
         "index": "src/index.html",
         "main": "src/main.ts",
         "polyfills": [
@@ -113,15 +113,15 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "proxyConfig": "proxy.conf.json"
+      
       },
       "configurations": {
         "production": {
-          "browserTarget": "servitaeapp:build:production",
-          "proxyConfig": "proxy.conf.json"
+          "browserTarget": "ecomm-admin:build:production"
+         
         },
         "development": {
-          "browserTarget": "servitaeapp:build:development"
+          "browserTarget": "ecomm-admin:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -129,7 +129,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "servitaeapp:build"
+        "browserTarget": "ecomm-admin:build"
       }
     },
     "test": {

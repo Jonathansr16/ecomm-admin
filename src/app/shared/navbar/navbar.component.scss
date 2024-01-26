@@ -3,8 +3,8 @@
 //* ============ NAV ============
 .nav {
     height: 66px;
-    background-color: var(--surface-overlay);
-    padding: 0 24px;
+    background-color: var(--purple-500);
+    padding: 2.5em 32px;
     display: flex;
     align-items: center;
     grid-gap: 24px;
@@ -13,7 +13,37 @@
     top: 0;
     left: 0;
     z-index: 10;
+    border-bottom: 1px solid rgb(255 255 255 / 28%);
   
+
+    &-form {
+      &__box {
+        display: flex;
+        background-color: rgba(255,255,255,.9);
+        border-radius: 2rem;
+      }
+
+      &__input {
+        background-color: transparent;
+        padding: .625rem .75rem;
+        color: #4a4a50;
+        font-size: 0.875rem;
+
+        &:enabled:focus {
+          outline: 0 none;
+          outline-offset: 0;
+          // box-shadow: 0 0 0 0.2rem #BFDBFE;
+          border-color: transparent;
+        }
+      }
+
+      &__btn {
+        background-color: transparent;
+        border: none;
+        color: var(--surface-600);
+      }
+    }
+
     &__a {
       color: var(--dark);
   
@@ -37,61 +67,6 @@
       color: var(--text-color-secondary);
     }
   
-    &-form {
-      max-width: 400px;
-      width: 100%;
-      margin-right: auto;
-  
-      &__box {
-        display: flex;
-        align-items: center;
-        height: 36px;
-      }
-  
-      &__input {
-        flex-grow: 1;
-        padding: 0 16px;
-        height: 100%;
-        border: none;
-        background: var(--grey);
-        border-radius: 36px 0 0 36px;
-        outline: none;
-        width: 100%;
-        color: var(--dark);
-      }
-  
-      &__btn {
-        width: 36px;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: var(--active-color);
-        color: var(--light);
-        font-size: 18px;
-        border: none;
-        outline: none;
-        border-radius: 0 36px 36px 0;
-        cursor: pointer;
-      }
-    }
-  
-    &__span--num {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--light);
-      background: var(--red);
-      color: var(--light);
-      font-weight: 700;
-      font-size: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   
     &__img {
       width: 36px;
@@ -99,32 +74,7 @@
       object-fit: cover;
       border-radius: 50%;
     }
-  
-    &__label {
-      display: block;
-      min-width: 50px;
-      height: 25px;
-      border-radius: 25px;
-      background: var(--grey);
-      cursor: pointer;
-      position: relative;
-  
-      &::before {
-        content: "";
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        bottom: 2px;
-        width: calc(25px - 4px);
-        background: var(--blue);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-      }
-    }
-  
-    &__checkbox:checked + &__label::before {
-      left: calc(100% - (25px - 4px) - 2px);
-    }
+
   
     &-right {
       display: flex;
@@ -163,6 +113,46 @@
   
     &-right__i {
       cursor: pointer;
+      color: #fff;
+    }
+
+
+  }
+
+
+  .message-tienda {
+    &__title {
+      margin: 0;
+      font-size: 1em;
+    }
+
+    &__a {
+      @include flexible(flex, row, wrap, flex-start, center);
+      gap: 1em;
+      margin: 1.5em 0;
+    }
+
+    &__img {
+      max-width: 80px;
+    }
+
+    &__h5 {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+
+    &__p {
+      font-size: 0.875rem;
+    }
+
+    &__time {
+      font-size: 0.75rem;
+    }
+
+    &__more {
+      font-size: 0.75rem;
+      color: var(--primary-color);
+      font-weight: 600;
     }
   }
   
@@ -240,15 +230,10 @@
     transition: all 0.3s ease;
   }
   
+  .sidebar-notification {
+    width: 24rem !important;
+  }
   
-.mm-collapse {
-  margin: 0;
-  height: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: height 0.35s ease, opacity 0.35s ease, visibility 0.35s ease;
-}
-
 
 //*NEW STYLE
 .sidebar-toggle__i,
@@ -286,13 +271,13 @@
       display: none;
     }
 
-    &__btn {
-      width: auto;
-      height: auto;
-      background: transparent;
-      border-radius: none;
-      color: var(--dark);
-    }
+    // &__btn {
+    //   width: auto;
+    //   height: auto;
+    //   background: transparent;
+    //   border-radius: none;
+    //   color: var(--dark);
+    // }
 
     .show &__input {
       display: block;

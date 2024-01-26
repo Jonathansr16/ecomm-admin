@@ -1,18 +1,18 @@
 {
   "run": {
     "command": "nx s",
-    "startTime": "2024-01-11T21:46:47.488Z",
-    "endTime": "2024-01-11T23:58:22.877Z",
+    "startTime": "2024-01-25T15:30:54.194Z",
+    "endTime": "2024-01-25T23:58:48.321Z",
     "inner": false
   },
   "tasks": [
     {
-      "taskId": "servitaeapp:serve:development",
+      "taskId": "ecomm-admin:serve:development",
       "target": "serve",
-      "projectName": "servitaeapp",
-      "hash": "13056226402388765963",
-      "startTime": "2024-01-11T21:46:47.499Z",
-      "endTime": "2024-01-11T23:58:22.869Z",
+      "projectName": "ecomm-admin",
+      "hash": "14516603263101633844",
+      "startTime": "2024-01-25T15:30:54.206Z",
+      "endTime": "2024-01-25T23:58:48.309Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 1

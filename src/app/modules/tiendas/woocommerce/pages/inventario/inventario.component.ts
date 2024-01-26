@@ -7,7 +7,8 @@ import {
   ColHeader,
 
 } from '@feature/table-products/table-products.component';
-import { BreadcrumbItem, BreadcrumbService } from 'src/app/core/services/breadcrumb.service';
+import { BreadcrumbService } from 'src/app/core/services/breadcrumb.service';
+import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -16,6 +17,27 @@ import { BreadcrumbItem, BreadcrumbService } from 'src/app/core/services/breadcr
   providers: [MessageService],
 })
 export class InventarioComponent implements OnInit {
+
+breadcrumHome: BreadcrumbItem = {
+  icon: 'store',
+  label: 'Tiendas',
+  separator: true
+}
+
+breadcrumbItems: BreadcrumbItem[] = [
+
+  {
+    icon: 'storefront',
+    label: 'Woocommerce',
+    separator: true
+  },
+
+  {
+    icon: 'list_alt',
+    label: 'Inventario',
+    separator: false
+  }
+]
 
   products: ProductResult[] = [];
   menuWC: MenuItem[] = [
@@ -27,28 +49,14 @@ export class InventarioComponent implements OnInit {
     ] }
   ];
 
-
-  breadcrumbItems: BreadcrumbItem = {
-
-    titleMain: 'Tiendas',
-    breadCrumbLink: [
-      {
-        iconClass: 'pi pi-save',
-        titleLink: 'Woocommerce',
-        separatorClass: 'pi pi-save'
-      }
-    ]
-  };
-
   statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
 
-  columns: ColHeader[] = [
-    { header: 'Producto' },
-    //  { header: 'Sku'},
-    { header: 'Precio' },
-    //  { header: 'Stock' },
-    { header: 'Status' },
-  ];
+
+ //Selecciona y Deselecciona caa checkbox del arreglo
+ selectOne:  boolean[] = [];
+
+
+ hidenSearch: boolean = false;
 
 
 
@@ -61,29 +69,16 @@ export class InventarioComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
-
-    this.breadcrumb.addBreadcrumbs(
-
-        {
-          titleMain: 'Tiendas',
-          breadCrumbLink: [
-            {
-              titleLink: 'Woocommerce',
-              iconClass: 'pi pi-home',
-              separatorClass: 'pi pi-remove'
-            },
-
-            {
-              titleLink: 'Inventario',
-              iconClass: 'pi pi-book',
-
-            }
-          ]
-        }
-
-    )
-
   }
+
+
+  showSearch() : boolean {
+    return  this.hidenSearch = true
+    }
+  
+    hiddenSearch() : boolean {
+      return this.hidenSearch = false;
+    }
 
   getProducts() {
     this.statusData = 'loading';

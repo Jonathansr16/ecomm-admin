@@ -1,87 +1,147 @@
+<div class="top-header">
+    <app-breadcrumb [breadcrumbHomeItem]="breadcrumHome" [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
+</div>
 
-<app-breadcrumb></app-breadcrumb>
+<div class="loading-data">
+    <app-spinner></app-spinner>
+</div>
 
-<app-product-card *ngFor="let product of products" [menu]="menuWC" [outOfStock]="product.stock_quantity === 0">
-    <div class="product-card__checkbox">
-        <p-checkbox [value]="product"></p-checkbox>
-    </div>
+<div class="inventario">
 
-    <div class="product-card__product">
-        <div class="product-card__checkbox product-card__checkbox-desktop">
-            <p-checkbox [value]="product"></p-checkbox>
-        </div>
+    <div class="toolbar-search container">
 
-        <div class="product-card__picture">
-            <img [src]="product.images.src" alt="" class="product-card__img product-card__img-simple-img" />
-        </div>
+        <div class="toolbar-search__left">
+            <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
 
-        <div class="product-card__description">
-            <div class="product-card__sku product-card__span-small">
-                #{{ product.id }} | Sku: {{ product.sku }}
-            </div>
-            <a href="#" class="product-card__link-product">
-                <div class="product-card__span product-card__span-bold">
-                    {{ product.name | slice : 0 : 61 }}
-                </div>
-            </a>
+            <span class="toolbar-search__separator"> </span>
 
-            <div class="product-card__store product-card__span-small">
-                Woocommerce
-            </div>
-
-            <div class="product-card__quantity product-card__span-small">
-                {{ product.stock_quantity }}
-
-                <ng-container [ngSwitch]="product.stock_quantity">
-                    <ng-container *ngSwitchCase="0"> unidades </ng-container>
-                    <ng-container *ngSwitchCase="1"> unidad </ng-container>
-                    <ng-container *ngSwitchDefault> unidades </ng-container>
-                </ng-container>
+            <div class="toolbar-search__selection">
+                <p class="toolbar-search__selection-label">
+                    40 seleccionados
+                </p>
             </div>
         </div>
-    </div>
 
-    <div *ngIf="product.regular_price && product.sale_price" class="product-card__details-col product-card__price">
-        <span class="product-card__span product-card__span-bold">${{ product.regular_price }}</span>
-        <span class="product-card__span-small">precio regular</span>
-        <a href="#" class="product-card__a product-card__span-small">Modificar precio</a>
-    </div>
+        <div class="toolbar-search__center">
+            <button type="button" class="toolbar-search__btn p-ripple p-element p-button p-component p-button-text" > Modificar</button>
+            <button type="button" class="toolbar-search__btn p-ripple p-element p-button p-component p-button-warning p-button-text">Pausar</button>
+            <button type="button" class="toolbar-search__btn p-ripple p-element p-button p-component p-button-danger p-button-text">Eliminar</button>
 
-    <div *ngIf="product.regular_price && product.sale_price" class="product-card__details-col product-card__price">
-        <span class="product-card__span product-card__span-bold">${{ product.sale_price }}</span>
-        <span class="product-card__span-small">precio al publico</span>
-    </div>
-
-        <div *ngIf="!product.regular_price || !product.sale_price" class="product-card__details-col product-card__price">
-            <span class="product-card__span product-card__span-bold">Precio no fijado</span>
-            <span class="product-card__span-small">Precio sin configurar</span>
-
-            <a href="#" class="product-card__a product-card__span-small">Modificar precio</a>
         </div>
-  
 
-    <div class="product-card__details-col product-card__status">
-        <ng-container [ngSwitch]="product.stock_status">
-            <ng-container *ngSwitchCase="'outofstock'">
-                <span class="product-card__span product-card__span-bold">Inactivo</span>
+        <div class="toolbar-search-right">
 
-                <span class="product-card__span-small">No tienes unidades a la venta</span>
-            </ng-container>
+            <div class="toolbar-search__wrapper" [class.toolbar-search__wrapper-active]="hiddenSearch">
+                <button
+                (click)="showSearch()"
+                severity="success"
+                type="button"
+                class="toolbar-search__btn-toggle p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+               >
+                <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+              </button>
 
-            <ng-container *ngSwitchCase="'instock'">
-                <span class="product-card__span product-card__span-bold">{{
-                    product.total_sales
-                    }}</span>
+              <div class="toolbar-search__box">
+                <span class="toolbar-search__box-span p-input-icon-right">
+                    <input
+                      #searchProduct
+                      type="text"
+                      placeholder="Buscar..."
+                      pinputtext=""
+                      placeholder="Buscar producto"
+                      class="toolbar-search__box-input p-inputtext p-component p-element"
+                    />
+                     <i class="toolbar-search__box-span-i pi pi-search" (click)="hiddenSearch()"></i>
+                  </span>
+              </div>
+            </div>
+        </div>
 
-                <span class="product-card__span-small">Unidades vendidas</span>
-            </ng-container>
-        </ng-container>
     </div>
-
-    <div class="product-card__details-col product-card__actions product-card__actions-desktop">
-        <button type="button"
-            class="product-card__btn product-card__btn-desktop p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text">
-            <i class="pi pi-ellipsis-v"></i>
-        </button>
+    <div class="woo-inventario__content">
+        <app-card-product *ngFor="let product of products" [menu]="menuWC" [outOfStock]="product.stock_quantity === 0"> 
+           <div class="product-card__checkbox">
+               <p-checkbox [value]="product"></p-checkbox>
+           </div>
+        
+           <div class="product-card__product">
+               <div class="product-card__checkbox product-card__checkbox-desktop">
+                   <p-checkbox [value]="product"></p-checkbox>
+               </div>
+        
+               <div class="product-card__picture">
+                   <img [src]="product.images.src" alt="" class="product-card__img product-card__img-simple-img" />
+               </div>
+        
+               <div class="product-card__description">
+                   <div class="product-card__sku product-card__span-small">
+                       #{{ product.id }} | Sku: {{ product.sku }}
+                   </div>
+                   <a href="#" class="product-card__link-product">
+                       <div class="product-card__span product-card__span-bold">
+                           {{ product.name | slice : 0 : 61 }}
+                       </div>
+                   </a>
+        
+                   <div class="product-card__store product-card__span-small">
+                       Woocommerce
+                   </div>
+        
+                   <div class="product-card__quantity product-card__span-small">
+                       {{ product.stock_quantity }}
+        
+                       <ng-container [ngSwitch]="product.stock_quantity">
+                           <ng-container *ngSwitchCase="0"> unidades </ng-container>
+                           <ng-container *ngSwitchCase="1"> unidad </ng-container>
+                           <ng-container *ngSwitchDefault> unidades </ng-container>
+                       </ng-container>
+                   </div>
+               </div>
+           </div>
+        
+           <div *ngIf="product.regular_price && product.sale_price" class="product-card__details-col product-card__price">
+               <span class="product-card__span product-card__span-bold">${{ product.regular_price }}</span>
+               <span class="product-card__span-small">precio regular</span>
+               <a href="#" class="product-card__a product-card__span-small">Modificar precio</a>
+           </div>
+        
+           <div *ngIf="product.regular_price && product.sale_price" class="product-card__details-col product-card__price">
+               <span class="product-card__span product-card__span-bold">${{ product.sale_price }}</span>
+               <span class="product-card__span-small">precio al publico</span>
+           </div>
+        
+               <div *ngIf="!product.regular_price || !product.sale_price" class="product-card__details-col product-card__price">
+                   <span class="product-card__span product-card__span-bold">Precio no fijado</span>
+                   <span class="product-card__span-small">Precio sin configurar</span>
+        
+                   <a href="#" class="product-card__a product-card__span-small">Modificar precio</a>
+               </div>
+         
+        
+           <div class="product-card__details-col product-card__status">
+               <ng-container [ngSwitch]="product.stock_status">
+                   <ng-container *ngSwitchCase="'outofstock'">
+                       <span class="product-card__span product-card__span-bold">Inactivo</span>
+        
+                       <span class="product-card__span-small">No tienes unidades a la venta</span>
+                   </ng-container>
+        
+                   <ng-container *ngSwitchCase="'instock'">
+                       <span class="product-card__span product-card__span-bold">{{
+                           product.total_sales
+                           }}</span>
+        
+                       <span class="product-card__span-small">Unidades vendidas</span>
+                   </ng-container>
+               </ng-container>
+           </div>
+        
+           <div class="product-card__details-col product-card__actions product-card__actions-desktop">
+               <button type="button"
+                   class="product-card__btn product-card__btn-desktop p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text">
+                   <i class="pi pi-ellipsis-v"></i>
+               </button>
+           </div>
+        </app-card-product>
     </div>
-</app-product-card>
+</div>
