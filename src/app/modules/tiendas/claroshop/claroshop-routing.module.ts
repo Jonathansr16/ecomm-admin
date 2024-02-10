@@ -12,7 +12,7 @@ const claroRoutes: Routes = [
   { path: 'ordenes', component: ClaroOrdersComponent, children: [
   {path: 'pendientes', component: ClaroOrdersPendingComponent },
   {path: 'embarcados', component: ClaroOrdersProgressComponent },
-  {path: 'entregados', component: ClaroOrdersCompletedComponent },
+  {path: 'concretadas', component: ClaroOrdersCompletedComponent },
   ]}
 ];
 

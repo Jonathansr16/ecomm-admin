@@ -5,7 +5,7 @@
  
  &__content {
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 50% 50%;
     grid-template-areas: "product details";
     align-items: stretch;
     justify-content: space-between;
@@ -106,7 +106,7 @@
     gap: 1em;
   }
 
-  &__price {
+  &__price, &__toggle {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

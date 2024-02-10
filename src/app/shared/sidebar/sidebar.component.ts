@@ -1,12 +1,9 @@
-import { map } from 'rxjs';
 import {
   Component,
   ElementRef,
   OnDestroy,
-  QueryList,
   Renderer2,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,9 +12,7 @@ import { HandlerHeaderService } from 'src/app/core/services/handlerHeader/handle
 import { AuthService } from '@auth/services/auth.service';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
 import { MenuModule } from 'primeng/menu';
-import { PanelMenuModule } from 'primeng/panelmenu';
 import { StyleClassModule } from 'primeng/styleclass';
 import { SidebarMenuComponent } from '@feature/sidebar-menu/sidebar-menu.component';
 
@@ -28,9 +23,7 @@ import { SidebarMenuComponent } from '@feature/sidebar-menu/sidebar-menu.compone
     CommonModule,
     SidebarModule,
     ButtonModule,
-    DropdownModule,
     MenuModule,
-    PanelMenuModule,
     StyleClassModule,
     RouterModule,
     SidebarMenuComponent
@@ -124,12 +117,14 @@ export class SidebarComponent implements OnDestroy {
             {
               iconLeft: 'inventory_2',
               label: 'Inventario',
-              type: 'link'
+              type: 'link',
+              link: '/dashboard/claroshop/inventario'
             },
             {
               iconLeft: 'local_mall',
-              label: 'Pedidos',
-              type: 'link'
+              label: 'Ordenes',
+              type: 'link',
+              link: '/dashboard/claroshop/ordenes'
 
             }
           ]

@@ -1,8 +1,8 @@
 {
   "run": {
     "command": "nx s",
-    "startTime": "2024-01-25T15:30:54.194Z",
-    "endTime": "2024-01-25T23:58:48.321Z",
+    "startTime": "2024-02-09T15:39:55.396Z",
+    "endTime": "2024-02-09T23:58:42.806Z",
     "inner": false
   },
   "tasks": [
@@ -11,8 +11,8 @@
       "target": "serve",
       "projectName": "ecomm-admin",
       "hash": "14516603263101633844",
-      "startTime": "2024-01-25T15:30:54.206Z",
-      "endTime": "2024-01-25T23:58:48.309Z",
+      "startTime": "2024-02-09T15:39:55.408Z",
+      "endTime": "2024-02-09T23:58:42.796Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 1

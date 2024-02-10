@@ -40,6 +40,8 @@ import { SpinnerComponent } from '@shared/spinner/spinner.component';
 import { SpinnerInterceptor } from '@shared/spinner/spinner.interceptor';
 import { CardSearchProductComponent } from '@feature/card-search-product/search-product.component';
 import { RippleModule } from 'primeng/ripple';
+import { CardPaginationComponent } from '@feature/pagination/card-pagination.component';
+import {InputSwitchModule} from 'primeng/inputswitch'
 
 @NgModule({
   declarations: [
@@ -68,12 +70,16 @@ import { RippleModule } from 'primeng/ripple';
     FieldsetModule,
     ProgressBarModule,
     ToastModule,
+    InputSwitchModule,
+    //Feature
     BreadcrumbComponent,
     CardStatsComponent,
     CardSearchProductComponent,
     CardProductComponent,
+    CardPaginationComponent,
    SpinnerComponent,
-   RippleModule
+   RippleModule,
+   
    
   ],
   providers: [

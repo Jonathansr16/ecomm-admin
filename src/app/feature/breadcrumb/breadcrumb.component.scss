@@ -20,14 +20,17 @@
 
     &__h6 {
       margin: 0;
-      font-size: 0.875rem;
+      font-size: 0.975rem;
     }
   }
 
-  &__separator,
   &__span {
     color: #fff;
   }
+  &__separator {
+    color: darkgrey;
+  }
+  
 
   &__items {
     margin-left: 1.5em;

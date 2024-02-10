@@ -453,11 +453,11 @@
         },
         {
           "file": "src/app/feature/breadcrumb/breadcrumb.component.html",
-          "hash": "552528652645536760"
+          "hash": "15959351330252767128"
         },
         {
           "file": "src/app/feature/breadcrumb/breadcrumb.component.scss",
-          "hash": "16326787758510945437"
+          "hash": "14732176459115459642"
         },
         {
           "file": "src/app/feature/breadcrumb/breadcrumb.component.spec.ts",
@@ -481,7 +481,7 @@
         },
         {
           "file": "src/app/feature/card-product/product-card.component.scss",
-          "hash": "10489633755584217619"
+          "hash": "11354368238311854279"
         },
         {
           "file": "src/app/feature/card-product/product-card.component.spec.ts",
@@ -621,11 +621,11 @@
         },
         {
           "file": "src/app/feature/orders-template/orders-template.component.html",
-          "hash": "17694846005217116284"
+          "hash": "9368504837098530669"
         },
         {
           "file": "src/app/feature/orders-template/orders-template.component.scss",
-          "hash": "7249265517987447785"
+          "hash": "5167109668647691000"
         },
         {
           "file": "src/app/feature/orders-template/orders-template.component.spec.ts",
@@ -639,6 +639,30 @@
           "hash": "2131255293711346048",
           "deps": [
             "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/pagination/card-pagination.component.css",
+          "hash": "17909087458846760347"
+        },
+        {
+          "file": "src/app/feature/pagination/card-pagination.component.html",
+          "hash": "9413717790781284486"
+        },
+        {
+          "file": "src/app/feature/pagination/card-pagination.component.spec.ts",
+          "hash": "15323371610948359323",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/feature/pagination/card-pagination.component.ts",
+          "hash": "9527973130615357723",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:primeng"
           ]
         },
         {
@@ -819,7 +843,7 @@
         },
         {
           "file": "src/app/modules/tiendas/claroshop/claroshop-routing.module.ts",
-          "hash": "4090412703351114029",
+          "hash": "17272701949044376965",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router"
@@ -1097,7 +1121,7 @@
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/interface/woo-producto.interface.ts",
-          "hash": "2322991489831524816"
+          "hash": "16501319609182740962"
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/models/wc-new-product.model.ts",
@@ -1131,11 +1155,11 @@
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.html",
-          "hash": "14786330522733476357"
+          "hash": "8266081948741831115"
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.scss",
-          "hash": "18186788295939657237"
+          "hash": "13375926210705645402"
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.spec.ts",
@@ -1146,11 +1170,12 @@
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/pages/inventario/inventario.component.ts",
-          "hash": "4299817458581699281",
+          "hash": "9484305828350028099",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router",
-            "npm:primeng"
+            "npm:primeng",
+            "npm:rxjs"
           ]
         },
         {
@@ -1195,7 +1220,7 @@
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/pages/product/product.component.ts",
-          "hash": "9872364330636878190",
+          "hash": "10475618267782559911",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router",
@@ -1336,7 +1361,7 @@
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/services/wcommerce.service.ts",
-          "hash": "885824649905657992",
+          "hash": "2922449842612707125",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -1353,7 +1378,7 @@
         },
         {
           "file": "src/app/modules/tiendas/woocommerce/woocommerce.module.ts",
-          "hash": "5004110281265361749",
+          "hash": "9025129094169277108",
           "deps": [
             "npm:@angular/router",
             "npm:@angular/core",
@@ -1457,9 +1482,8 @@
         },
         {
           "file": "src/app/shared/sidebar/sidebar.component.ts",
-          "hash": "17353183086200634019",
+          "hash": "13579699943516014367",
           "deps": [
-            "npm:rxjs",
             "npm:@angular/core",
             "npm:@angular/common",
             "npm:@angular/router",
@@ -1717,7 +1741,7 @@
         },
         {
           "file": "src/styles.scss",
-          "hash": "5220634389598948156"
+          "hash": "10001640239845999550"
         },
         {
           "file": "tsconfig.app.json",

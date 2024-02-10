@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, tap } from 'rxjs/operators';
 import {
   OrderResponse,
   OrderResult,
@@ -11,11 +11,12 @@ import {
 import { Orden } from '@wcommerce/models/wc-order.model';
 import {
   ProductCategoryResponse,
+  ProductImageResponse,
   ProductImageResult,
   ProductResponse,
-  ProductResult,
 } from '@wcommerce/interface/woo-producto.interface';
 import { WooProducto } from '@wcommerce/models/wc-new-product.model';
+import { ProductResult } from '@wcommerce/interface/woo-producto.interface';
 
 @Injectable()
 export class WcommerceService {
@@ -23,33 +24,115 @@ export class WcommerceService {
   private url = 'https://servitae.mx/wp-json/wc/v3';
   statusData: 'loading' | 'success' | 'error' | undefined;
 
-  constructor(private http: HttpClient) {}
+
+  private cache: { [key: string]: ProductResult[] } = {};
+
+  constructor(private http: HttpClient) { }
 
   //* OBTIENE TODOS LOS PRODUCTOS
-  getProducts(): Observable<ProductResult[]> {
-    return this.http.get<ProductResponse[]>(`${this.url}/products`)
-    .pipe(
-      map( (resp: ProductResponse[]) =>
-       resp.map( (producto: ProductResult) => ({
-        id: producto.id,
-        name: producto.name,
-        description: producto.description,
-        short_description: producto.short_description,
-        sku: producto.sku,
-        regular_price: producto.regular_price,
-        sale_price: producto.sale_price,
-        categories: producto.categories,
-        images: producto.images[0],
-        stock_quantity: producto.stock_quantity,
-        stock_status: producto.stock_status,
-        status: producto.status,
-        total_sales: producto.total_sales
-       }))
-      ),
-      tap((_) => console.log('productos buscados')),
-      catchError(this.hanlerError<ProductResult[]>('getProducts', []))
+  getProducts(per_page: number, page: number, offset: number): Observable<ProductResult[]> {
+    const cacheKey = `${per_page}-${page}-${offset}`;
+    const cachedData = this.cache[cacheKey];
+    if (cachedData) {
+      return of(cachedData);
+    } else {
+      return this.http.get<ProductResponse[]>(`${this.url}/products?per_page=${per_page}&page=${page}&offset=${offset}`)
+        .pipe(
+          map(this.transformDataProduct),
+          tap({
+            next: ((data) => this.cache[cacheKey] = data),
+
+          }),
+
+          catchError(this.hanlerError<ProductResult[]>(`getProducts`, []))
+        );
+    }
+  }
+
+  transformDataProduct(resp: ProductResponse[]): ProductResult[] {
+    return resp.map((producto: ProductResult) => ({
+      id: producto.id,
+      name: producto.name,
+      description: producto.description,
+      short_description: producto.short_description,
+      sku: producto.sku,
+      regular_price: producto.regular_price,
+      sale_price: producto.sale_price,
+      categories: producto.categories,
+      images: producto.images.map((img: ProductImageResult) => ({
+        ...img
+      })),
+      stock_quantity: producto.stock_quantity,
+      stock_status: producto.stock_status,
+      status: producto.status,
+      total_sales: producto.total_sales
+    }))
+  }
+
+
+  getTotalProduct(): Observable<{ totalRecords: number }> {
+    return this.http.get<ProductResponse[]>(`${this.url}`).pipe(
+      map((resp) => { return { totalRecords: resp.length } }),
+      tap((resp) => console.log(resp))
+    )
+  }
+
+  // //* OBTIENE LA CANTIDAD DE ORDENES
+  // getOrdersCount(
+  //   status: 'pending' | 'processing' | 'completed' | 'cancelled'
+  // ): Observable<{ totalCount: number }> {
+  //   return this.http.get<any>(`${this.url}/orders?status=${status}`).pipe(
+  //     map((resp) => {
+  //       return { totalCount: resp.length };
+  //     }),
+  //     catchError(this.hanlerError<any>('getOrderCount', []))
+  //   );
+  // }
+
+  //* OBTIENE PRODUCTOS RELACIONADOS CON LA BUSQUEDA
+  getProductsBySearch(searchValue: string, page: number, itemsPerPage: number): Observable<ProductResult[]> {
+    const query = `?page=${page}&per_page=${itemsPerPage}`;
+    return this.http.get<ProductResponse[]>(`${this.url}/products${query}`).pipe(
+      map(products => this.filterProducts(products, searchValue)),
+
     );
   }
+
+  private filterProducts(products: ProductResponse[], searchValue: string): ProductResult[] {
+    return products.filter(product => {
+      // Filtrar por id, nombre o SKU
+      return (
+        product.id.toString().includes(searchValue.toLocaleLowerCase()) || // Búsqueda por id
+        product.name.toLowerCase().includes(searchValue.toLowerCase()) || // Búsqueda por nombre (case-insensitive)
+        product.sku.toLowerCase().includes(searchValue.toLowerCase()) // Búsqueda por SKU (case-insensitive)
+      );
+    }).map(this.transformDataProduc);
+  }
+
+  private transformDataProduc(producto: ProductResponse): ProductResult {
+    // Aquí puedes realizar cualquier transformación necesaria de los datos del producto
+    // Por ejemplo, mapear los datos a una interfaz diferente si es necesario
+    return {
+      id: producto.id,
+      name: producto.name,
+      description: producto.description,
+      short_description: producto.short_description,
+      sku: producto.sku,
+      regular_price: producto.regular_price,
+      sale_price: producto.sale_price,
+      categories: producto.categories,
+      images: producto.images.map((img: ProductImageResult) => ({
+        ...img
+      })),
+      stock_quantity: producto.stock_quantity,
+      stock_status: producto.stock_status,
+      status: producto.status,
+      total_sales: producto.total_sales
+
+      // Otras propiedades del producto que quieras incluir
+    };
+  }
+
 
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
   getProduct(id: number): Observable<ProductResult> {

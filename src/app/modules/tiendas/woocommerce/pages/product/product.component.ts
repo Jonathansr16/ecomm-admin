@@ -70,37 +70,37 @@ export class ProductComponent {
 
 
   ) {
-    this.createFormUpdateProduct();
-    this.idProduct = this.activateRoute.snapshot.paramMap.get('id');
+    // this.createFormUpdateProduct();
+    // this.idProduct = this.activateRoute.snapshot.paramMap.get('id');
 
-    this.wcService.getProduct(this.idProduct).subscribe(data => {
-      this.wcProduct = {
-        ...data
-      };
+    // this.wcService.getProduct(this.idProduct).subscribe(data => {
+    //   this.wcProduct = {
+    //     ...data
+    //   };
 
-      this.loading = false;
-      this.formProduct.patchValue({ ...data });
+    //   this.loading = false;
+    //   this.formProduct.patchValue({ ...data });
 
-    })
+    // })
 
 
   }
 
 
-  getProductById(id: number){
-    this.wcService.getProduct(this.idProduct).subscribe({
-      next: (resp) => {
-        this.wcProduct = {
-          ...resp
-        };
-      },
-      error: (errorMessage) => {
-        this.loading = false;
-        this.formProduct.patchValue({  });
+  // getProductById(id: number){
+  //   this.wcService.getProduct(this.idProduct).subscribe({
+  //     next: (resp) => {
+  //       this.wcProduct = {
+  //         ...resp
+  //       };
+  //     },
+  //     error: (errorMessage) => {
+  //       this.loading = false;
+  //       this.formProduct.patchValue({  });
 
-      }
-    })
-  }
+  //     }
+  //   })
+  // }
 
   
   //* EVALUA SI UN CAMPO ESPECIFICOS FUE EDITADO PARA GUARDAR

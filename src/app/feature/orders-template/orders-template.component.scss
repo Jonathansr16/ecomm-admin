@@ -27,33 +27,33 @@
     }
   }
 
-  &-search {
-    position: relative;
-    display: inline-block;
+  // &-search {
+  //   position: relative;
+  //   display: inline-block;
 
-    &__icon {
-      position: absolute;
-      color: var(--surface-600);
-    }
+  //   &__icon {
+  //     position: absolute;
+  //     color: var(--surface-600);
+  //   }
 
-    &__lupa {
-      top: 50%;
-      left: 0.75rem;
-      margin-top: -0.5rem;
-    }
+  //   &__lupa {
+  //     top: 50%;
+  //     left: 0.75rem;
+  //     margin-top: -0.5rem;
+  //   }
 
-    &__help {
-      top: 50%;
-      margin-top: -0.5rem;
-      right: 0.75rem;
-      cursor: pointer;
-    }
+  //   &__help {
+  //     top: 50%;
+  //     margin-top: -0.5rem;
+  //     right: 0.75rem;
+  //     cursor: pointer;
+  //   }
 
-    &__input {
-      padding-left: 2.5rem;
-      border-radius: 10px;
-    }
-  }
+  //   &__input {
+  //     padding-left: 2.5rem;
+  //     border-radius: 10px;
+  //   }
+  // }
 
   &-row {
     @include flexible(flex, row, wrap, space-between, center);
@@ -396,13 +396,13 @@
   // }
 }
 
-.toggle-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
+// .toggle-button {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin-right: 10px;
  
-}
+// }
 .topbar-search {
   display: flex;
   align-items: center;
@@ -448,14 +448,10 @@
   width: 280px;
   opacity: 1;
   visibility: visible;
-  // border-radius: 20px;
   border-bottom: 1px solid var(--surface-300);
 }
 
-.topbar-search.topbar-search-active .search-input-wrapper i {
-  display: block;
-}
-
-// .topbar-search.topbar-search-active .search-input-wrapper input {
-//   border-radius: 20px;
+// .topbar-search.topbar-search-active .search-input-wrapper i {
+//   display: block;
 // }
+
