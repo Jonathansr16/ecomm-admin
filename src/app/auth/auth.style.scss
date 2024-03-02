@@ -1,28 +1,26 @@
 @import '_mixin';
 
-  ::ng-deep .forms .p-password.p-component.p-inputwrapper {
-    width: 100%;
-  }
+//   ::ng-deep .forms .p-password.p-component.p-inputwrapper {
+//     width: 100%;
+//   }
 
 
-::ng-deep .forms .p-password.p-component.p-inputwrapper.p-input-icon-right{
-    width: 100% !important;
+// ::ng-deep .forms .p-password.p-component.p-inputwrapper.p-input-icon-right{
+//     width: 100% !important;
    
-}
+// }
 
 
-::ng-deep .forms .p-password-input {
-  width: 100% !important;
-  // border-radius: 30px !important;
-}
+// ::ng-deep .forms .p-password-input {
+//   width: 100% !important;
+// }
 
-::ng-deep .forms .p-button{
-  // background-color: var(--active-color) !important;
-  width: 60%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+// ::ng-deep .forms .p-button{
+//   width: 60%;
+//   display: block;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
 
 .acceso {
   position: relative;

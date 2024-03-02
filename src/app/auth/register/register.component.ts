@@ -1,18 +1,29 @@
 import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import {FormBuilder, FormGroup,  Validators } from '@angular/forms';
+import {FormBuilder, FormGroup,  FormsModule,  ReactiveFormsModule,  Validators } from '@angular/forms';
 import { AuthService } from '@auth/services/auth.service';
-import { UsuarioModel } from 'src/app/core/models/usuario.model';
+import { UsuarioModel } from '@auth/models/usuario.model'; 
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 
-import Swal from 'sweetalert2'
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { HeaderComponent } from '@auth/components/header/header.component';
+import { FooterComponent } from '@auth/components/footer/footer.component';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
+  imports: [ 
+    CommonModule, 
+    ReactiveFormsModule,
+    ButtonModule, 
+    PasswordModule, 
+    HeaderComponent, 
+    FooterComponent],
   templateUrl: './register.component.html',
   styleUrls: ['../auth.style.scss', './register.component.scss']
 })
-export class RegisterComponent  implements OnInit, OnDestroy{
+export default class RegisterComponent  implements OnInit, OnDestroy{
 
   signUpSubmitted: boolean = false;
   checkTerminos: boolean = false;
@@ -93,33 +104,33 @@ export class RegisterComponent  implements OnInit, OnDestroy{
       this.checkTerminos = formValues.aceptTerm;
  
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      title: 'Validando datos',
-      text: 'Espere por favor...'
-    });
+    // Swal.fire({
+    //   allowOutsideClick: false,
+    //   icon: 'info',
+    //   title: 'Validando datos',
+    //   text: 'Espere por favor...'
+    // });
 
-   Swal.showLoading();
+  //  Swal.showLoading();
 
     this.authService.signUp(this.usuario).subscribe(data => {
  
-     Swal.fire({
-        allowOutsideClick: true,
-        icon: 'success',
-        title: 'Registro echo con exito',
-      });
+    //  Swal.fire({
+    //     allowOutsideClick: true,
+    //     icon: 'success',
+    //     title: 'Registro echo con exito',
+    //   });
 
     
 
       this.formSignUp.reset();
   
     }, (error) => {
-       Swal.fire({
-        icon: 'error',
-        title: 'Se produjo un error',
-        text: error.error.error.message
-      });
+      //  Swal.fire({
+      //   icon: 'error',
+      //   title: 'Se produjo un error',
+      //   text: error.error.error.message
+      // });
 
     });
   }

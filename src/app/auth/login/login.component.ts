@@ -1,20 +1,26 @@
 import { AfterViewInit, Component,  OnInit,  Renderer2, Inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UsuarioModel } from '../../core/models/usuario.model';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UsuarioModel } from '@auth/models/usuario.model';
 import { AuthService } from '../services/auth.service';
 import { ValidatorsService } from '../../core/services/validators.service';
-import Swal from 'sweetalert2'
 //*Librerias externas importadas
 
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { HeaderComponent } from '@auth/components/header/header.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'login-auth',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule, CheckboxModule, ButtonModule, HeaderComponent],
   templateUrl: './login.component.html',
   styleUrls: ['../auth.style.scss', './login.component.scss']
 })
-export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+export default class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   usuario: UsuarioModel = new UsuarioModel();
   checkRemember: boolean = false;
@@ -84,27 +90,24 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
         control.markAsTouched();
       });
     }
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      title: 'Valindando',
-      text: 'Espere por favor...'
-    });
+    // Swal.fire({
+    //   allowOutsideClick: false,
+    //   icon: 'info',
+    //   title: 'Valindando',
+    //   text: 'Espere por favor...'
+    // });
 
-    Swal.showLoading();
+    // Swal.showLoading();
 
     this.authService.signIn(this.usuario).subscribe(data => {
-      Swal.close();
+      // Swal.close();
     
       if(this.checkRemember) {
         localStorage.setItem('email', this.usuario.email);
 
-        // console.log('se guardo email')
-        
-     
-        //  this.formSignIn.reset({ emailLogin: this.usuario.email})
+       
       } else {
-      //  this.formSignIn.reset()
+    
       console.log('no se guardo email')
 
       }
@@ -112,11 +115,11 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
       
     }, (error) => {
       console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al autenticar',
-        text: error.error.error.message
-      });
+      // Swal.fire({
+      //   icon: 'error',
+      //   title: 'Error al autenticar',
+      //   text: error.error.error.message
+      // });
   
     })
   }

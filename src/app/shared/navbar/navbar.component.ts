@@ -8,12 +8,14 @@ import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { MessageUser } from 'src/app/core/interface/message-user.model';
-import { menu } from '@main/main.component';
-import { MessageUserService } from '@main/services/message-user.service';
+// import { menu } from '@main/main.component';
+// import { MessageUserService } from '@main/services/message-user.service';
 import { HandlerHeaderService } from 'src/app/core/services/handlerHeader/handler-header.service';
 import { RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
 import { SidebarModule } from 'primeng/sidebar';
+import { MessageUserService } from 'src/app/dashboard/services/message-user.service';
+import { menu } from 'src/app/dashboard/interfaces/menu';
 
 @Component({
   selector: 'app-navbar',
@@ -44,8 +46,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
 
 
-  constructor( 
-    private _messageUserService: MessageUserService, 
+  constructor(
+    private _messageUserService: MessageUserService,
     private renderer2: Renderer2,
     private handlerHeaderService: HandlerHeaderService) {
 

@@ -1,9 +1,10 @@
-<div class="spinner" *ngIf="isLoading$ | async">
-  <div class="spiner__container container-bg">
-    <span class="loader"></span>
-
-    <span class="loader__text">Espere por favor</span>
+@if (isLoading$ | async) {
+  <div class="spinner">
+    <div class="spiner__container container-bg">
+      <span class="loader"></span>
+      <span class="loader__text">Espere por favor</span>
+    </div>
   </div>
-</div>
+}
 
 

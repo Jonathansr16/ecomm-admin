@@ -7,25 +7,23 @@
         "src/app/auth/*"
       ],
       "@ayuda/*": [
-        "src/app/modules/ayuda/*"
+        "src/app/dashboard/pages/ayuda/*"
       ],
       "@claroshop/*": [
-        "src/app/modules/tiendas/claroshop/*"
+        "src/app/dashboard/pages/tiendas/claroshop/*"
+        
       ],
-      "@feature/*": [
-        "src/app/feature/*"
+      "@components/*": [
+        "src/app/components/*"
       ],
       "@home/*": [
-        "src/app/modules/home/*"
-      ],
-      "@main/*": [
-        "src/app/main/*"
+        "src/app/dashboard/pages/home/*"
       ],
       "@shared/*": [
         "src/app/shared/*"
       ],
-      "@wcommerce/*": [
-        "src/app/modules/tiendas/woocommerce/*"
+      "@woocommerce/*": [
+        "src/app/dashboard/pages/tiendas/woocommerce/*"
       ]
     },
     "outDir": "./dist/out-tsc",

@@ -1,22 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
-@import '_reset';
-@import '_mixin';
-@import "primeicons/primeicons.css";
-@import 'material-icons/iconfont/material-icons.css';
+@import 'tailwindcss/base' layer(tailwindcss);
+@import 'tailwindcss/components' layer(tailwindcss);
+@import 'tailwindcss/utilities' layer(tailwindcss);
+
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
 
 
+body {
+  background-color: var(--surface-ground);
+}
 
 //* ============ ..::SECCION TIPOGRAFIAS::.. ============
-//*? INTER
 
-
-//? DM SANS
-
-
-:root {
-    --shadow: 0 10px 10px hsla(0deg, 0%, 0%, 0.05);
-    --card-shadow: 0px 10px 40px rgba(41, 50, 65, .06);
-}
 
 //* MODO RESPONSIVE PARA DESKTOP, TABLE & MOBILE
 .container {
@@ -43,62 +38,6 @@ margin-right: auto;
   background-color: var(--purple-500);
 }
 
-
-
-:root {
-    --poppins: 'Poppins', sans-serif;
-    --lato: 'Lato', sans-serif;
-
-  }
-
- 
-  body {
-    // background: #f4f6fd;
-    // overflow-x: hidden;
-    font-family: 'Poppins';
-
-    background-color: var(--surface-ground);
-    font-family: var(--font-family);
-    font-weight: 400;
-    color: var(--text-color);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    // color: var(--c-title);
-    color: var(--surface-900);
-    font-family: 'Poppins', sans-serif;
-    margin: 1.5rem 0 1rem;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-
-  h1 {
-    font-size: 2.25rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  h3 {
-    font-size: 1.25rem;
-  }
-  p {
-    // color: var(--c-text);
-    color: var(--surface-800);
-    font-family: 'Poppins', sans-serif;
-  }
-
-  a, button, label, span, small{
-    font-family: 'Poppins', sans-serif;
-  }
-
- 
-  textarea, input {
-    font-family: 'Poppins', sans-serif !important;
-
-  } 
-
   //* ============ SCROLL BAR =============
 
 ::-webkit-scrollbar {
@@ -119,36 +58,7 @@ margin-right: auto;
   background-color: hsl(228, 8%, 54%);
 }
 
-// .breadcrumb {
-//   position: relative;
-   
- 
-//   &::before {
-//       position: absolute;
-//       content: "";
-//       top: 0;
-//       left: 0;
-//       width: 100%;
-//       height: 410px;
-//       background-color: var(--active-color);
-//       z-index: -1;
 
-//   }
-
-//   &__ul {
-//     @include flexible(flex, row, wrap, flex-start, center);
-//       gap: 0.5em;
-//   }
-
-//   &__li {
-//     @include flexible(flex, row, wrap, center, center);
-//     gap: 0.5em;
-//   }
-
-//   &__i, &__span, &__h6, &__a {
-//     color: var(--light);
-//   }
-// }
 
 .expansion-panel-header__defaultValue, .expansion-panel-header__value {
   font-size: .895rem;
@@ -159,3 +69,4 @@ color: var(--surface-600);
 .expansion-panel-header__value { 
   font-size: .985rem;
 }
+

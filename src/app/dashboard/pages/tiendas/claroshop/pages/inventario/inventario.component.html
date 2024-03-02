@@ -1,0 +1,44 @@
+<div class="top-header">
+  <div class="top-header__content container">
+    <div class="top-header__row top-header__row-breadcrumb">
+      <app-breadcrumb [breadcrumbHomeItem]="BreadcrumbHome" [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
+    </div>
+
+    <div class="top-header__row top-header__row-text">
+      <div class="top-header__col">
+        <h1 class="top-header__h1 text-3xl font-bold">Inventario</h1>
+        <span class="top-header__span">26 productos</span>
+      </div>
+
+      <div class="top-header__col">
+        <p-button icon="pi-plus" [style]="{ 'font-size': '14px', padding: '0.5em 0.6em' }" label="Agregar producto"
+          severity="success">
+        </p-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@switch (statusData) { @case('success') {
+<p-toast></p-toast>
+
+<div class="claro-inventario">
+  @for (product of products; let i = $index; track product.claroid) {
+  <app-card-product [outOfStock]="product.estatus === 'inactivo'">
+    <p-checkbox [binary]="true" handlerCheckProduct [value]="product" inputId="binary"
+      [(ngModel)]="isSelectedEveryProduct[i]" (onChange)="toggleEveryProduct(product)"></p-checkbox>
+    <span class="product-card__actions-span" idProduct>#{{ product.claroid }}</span>
+
+    <div class="product-card__product">
+
+      <div class="product-card__description">
+        <div class="product-card__sku text-xs">
+          # {{product.claroid}}
+        </div>
+      </div>
+    </div>
+  </app-card-product>
+  }
+</div>
+
+} }

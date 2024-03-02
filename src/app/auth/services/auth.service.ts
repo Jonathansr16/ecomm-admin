@@ -1,8 +1,8 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 // Import the AuthService type from the SDK
-import { UsuarioModel } from 'src/app/core/models/usuario.model';
+import { UsuarioModel } from '@auth/models/usuario.model';
 import { environment } from '../../../environments/environment.development';
 import { map } from 'rxjs/operators';
 
@@ -21,9 +21,11 @@ export class AuthService {
   //LOGIN USUARIO
   // private signInUrl: string= 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]';
 
-  constructor(private http: HttpClient) {
-    this.readToken();
-   }
+  // constructor(private http: HttpClient) {
+  //   this.readToken();
+  //  }
+
+  private readonly http = inject(HttpClient);
 
   signIn(user: UsuarioModel) {
     const authData = {

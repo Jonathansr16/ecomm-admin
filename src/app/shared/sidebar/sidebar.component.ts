@@ -14,7 +14,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { StyleClassModule } from 'primeng/styleclass';
-import { SidebarMenuComponent } from '@feature/sidebar-menu/sidebar-menu.component';
+import { SidebarMenuComponent } from '@components/sidebar-menu/sidebar-menu.component';
+import { SidebarMenu } from 'src/app/dashboard/interfaces/menuBar';
 
 @Component({
   selector: 'app-sidebar',
@@ -49,7 +50,7 @@ export class SidebarComponent implements OnDestroy {
       iconLeft: 'home',
       label: 'Home',
       type: 'link',
-      link: '/dashboard/home'
+      routerLink: '/dashboard/home'
     },
 
     {
@@ -68,14 +69,14 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'inventory_2',
               label: 'Inventario',
               type: 'link',
-              link: ''
+              routerLink: ''
             }, 
 
             {
               iconLeft: 'local_mall',
               label: 'Pedidos',
               type: 'link',
-              link: ''
+              routerLink: ''
             }, 
 
             {
@@ -118,13 +119,13 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'inventory_2',
               label: 'Inventario',
               type: 'link',
-              link: '/dashboard/claroshop/inventario'
+              routerLink: '/dashboard/claroshop/inventario'
             },
             {
               iconLeft: 'local_mall',
               label: 'Ordenes',
               type: 'link',
-              link: '/dashboard/claroshop/ordenes'
+              routerLink: '/dashboard/claroshop/ordenes'
 
             }
           ]
@@ -140,21 +141,25 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'inventory_2',
               label: 'Inventario',
               type: 'link',
-              link: '/dashboard/woocommerce/inventario'
+              routerLink: '/dashboard/woocommerce/inventario',
+              queryParams: {
+                page: '1',
+                per_page: '10'
+              }
             },
 
             {
               iconLeft: 'local_mall',
               label: 'Ordenes',
               type: 'link',
-              link: '/dashboard/woocommerce/ordenes'
+              routerLink: '/dashboard/woocommerce/ordenes'
             },
 
             {
               iconLeft: 'group',
               label: 'Clientes',
               type: 'link',
-              link: ''
+              routerLink: ''
             }
           ]
         }
@@ -165,35 +170,35 @@ export class SidebarComponent implements OnDestroy {
       iconLeft: 'list_alt',
       label: 'Mi Inventario',
       type: 'link',
-      link: ''
+      routerLink: ''
     },
 
     {
       iconLeft: 'description',
       label: 'Ordenes',
       type: 'link',
-      link: ''
+      routerLink: ''
     },
 
     {
       iconLeft: 'receipt_long',
       label: 'Reportes',
       type: 'link',
-      link: ''
+      routerLink: ''
     },
 
     {
       iconLeft: 'receipt_long',
       label: 'Facturación',
       type: 'link',
-      link: ''
+      routerLink: ''
     },
 
     {
       iconLeft: 'local_shipping',
       label: 'Mis envios',
       type: 'link',
-      link: ''
+      routerLink: ''
     },
 
     {
@@ -280,11 +285,3 @@ export class SidebarComponent implements OnDestroy {
  
 }
 
-export interface SidebarMenu {
-  iconLeft?: string;
-  label: string;
-  iconRight?: string;
-  items?: SidebarMenu[];
-  type: 'button' | 'link';
-  link?: string;
-}

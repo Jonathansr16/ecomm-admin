@@ -1,108 +1,111 @@
-    <!-- NAVBAR -->
-    <nav class="nav">
-        <i (click)="toggleSidebar()" class='nav__i--menu material-icons' >grid_view</i>
-  
-        <form class="nav-form">
-          <div class="nav-form__box form-input">
-            <input class="nav-form__input" type="text" name="search" pInputText placeholder="buscar producto..." #searchProduct />
-            <button class="nav-form__btn search-btn" type="button" pButton icon="pi pi-search"></button>
-        
-          </div>
-        </form>
-        <div class="nav-right">
-          <div class="nav-right__message" (click)="op.toggle($event)" pTooltip="Mensajes" tooltipPosition="bottom">
-            <i class="material-icons nav-right__i text-3xl" pBadge [value]="'+10'" severity="danger">
-              email
-              </i>
-  
-            <p-overlayPanel #op>
-              <h4 class="message-tienda__title">
-                Tienes 10 mensajes de tus compradores
-              </h4>
-              <p-divider></p-divider>
-  
-              <div *ngFor="let message of messageUser" class="message-tienda">
-                <a href="#" class="message-tienda__a">
-                  <div class="message-tienda__image">
-                    <img [src]="message.avatar" class="message-tienda__img" alt="" />
-                  </div>
-  
-                  <div class="message-tienda__information">
-                    <h5 class="message-tienda__h5">{{ message.user }}</h5>
-                    <p class="message-tienda__p">{{ message.description }}</p>
-                    <span class="message-tienda__time">
-                      {{ date | date : "mediumTime" }}
-                    </span>
-                  </div>
-                </a>
-                <p-divider></p-divider>
+<!-- NAVBAR -->
+<nav class="nav">
+  <i (click)="toggleSidebar()" class='nav__i--menu material-icons' >grid_view</i>
+
+  <form class="nav-form">
+    <div class="nav-form__box form-input">
+      <input class="nav-form__input" type="text" name="search" pInputText placeholder="buscar producto..." #searchProduct />
+      <button class="nav-form__btn search-btn" type="button" pButton icon="pi pi-search"></button>
+
+    </div>
+  </form>
+  <div class="nav-right">
+    <div class="nav-right__message" (click)="op.toggle($event)" pTooltip="Mensajes" tooltipPosition="bottom">
+      <i class="material-icons nav-right__i text-3xl" pBadge [value]="'+10'" severity="danger">
+        email
+      </i>
+
+      <p-overlayPanel #op>
+        <h4 class="message-tienda__title">
+          Tienes 10 mensajes de tus compradores
+        </h4>
+        <p-divider></p-divider>
+
+        @for (message of messageUser; track message) {
+          <div class="message-tienda">
+            <a href="#" class="message-tienda__a">
+              <div class="message-tienda__image">
+                <img [src]="message.avatar" class="message-tienda__img" alt="" />
               </div>
-            
-  
-              <a class="message-tienda__more" href="#">Ver todos los mensajes ></a>
-            </p-overlayPanel>
+              <div class="message-tienda__information">
+                <h5 class="message-tienda__h5">{{ message.user }}</h5>
+                <p class="message-tienda__p">{{ message.description }}</p>
+                <span class="message-tienda__time">
+                  {{ date | date : "mediumTime" }}
+                </span>
+              </div>
+            </a>
+            <p-divider></p-divider>
           </div>
-  
-          <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
-        
-            <i (click)="notificationShow = true" class="material-icons nav-right__i text-3xl" pBadge value="2">
-              notifications
-              </i>
+        }
 
-              <p-sidebar [(visible)]="notificationShow" position="right" [dismissible]="true" [modal]="true" [autoZIndex]="true" [style]="{ width: '24rem' }" >
-              
-                <div class="notf-header">
-                  <i class="notf-header__i material-icons">notifications_active</i>
-                  <h3 class="notf-header__h3">Notificaciones nuevas</h3>
-                </div>
-                <p-divider></p-divider>
-    
-                <ul class="notf__ul">
-                  <li class="notf__li">
-                    <div class="notf__info">
-                      <h6 class="notf__h6">
-                        <i class="notf__i pi pi-check-circle"></i>
-                        Se ha realizado una venta
-                      </h6>
-    
-                      <p class="notf__p">
-                        Se vendio (x2) <strong class="notf__strong">Juego</strong>,
-                        Zelda Majora mask, en Mercado Libre, atiendalo ahora.
-                      </p>
-    
-                      <span class="notf__p notf__span"> 9:00 AM </span>
-    
-                      <p-button class="notf__btn" icon="pi pi-thumbs-up"
-                        styleClass="p-button-rounded p-button-info"></p-button>
-                    </div>
-                  </li>
-                </ul>
-              </p-sidebar>
-      
-          </div>
 
-          <div class="nav-right__profile" pTooltip="Mi perfil" tooltipPosition="bottom">
-            <p-avatar class="nav-right__i" (click)="profile.toggle($event)"
-              image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="large"
-              shape="circle"></p-avatar>
-  
-            <p-overlayPanel #profile>
-              <h4>Perfil</h4>
-              <p-divider></p-divider>
-  
-              <ul class="nav-right-profile__ul">
-                <li *ngFor="let item of menuProfile" class="nav-right-profile__li">
-                  <a class="nav-right-profile__a">
-                    <i class="nav-right-profile__i material-icons">{{
-                      item.icon
-                      }}</i>
-                    <span class="nav-right-profile__span">{{ item.label }}</span>
-                  </a>
-                </li>
-              </ul>
-            </p-overlayPanel>
-          </div>
+        <a class="message-tienda__more" href="#">Ver todos los mensajes ></a>
+      </p-overlayPanel>
+    </div>
+
+    <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
+
+      <i (click)="notificationShow = true" class="material-icons nav-right__i text-3xl" pBadge value="2">
+        notifications
+      </i>
+
+      <p-sidebar [(visible)]="notificationShow" position="right" [dismissible]="true" [modal]="true" [autoZIndex]="true" [style]="{ width: '24rem' }" >
+
+        <div class="notf-header">
+          <i class="notf-header__i material-icons">notifications_active</i>
+          <h3 class="notf-header__h3">Notificaciones nuevas</h3>
         </div>
-      </nav>
-      
-      <!-- NAVBAR -->
+        <p-divider></p-divider>
+
+        <ul class="notf__ul">
+          <li class="notf__li">
+            <div class="notf__info">
+              <h6 class="notf__h6">
+                <i class="notf__i pi pi-check-circle"></i>
+                Se ha realizado una venta
+              </h6>
+
+              <p class="notf__p">
+                Se vendio (x2) <strong class="notf__strong">Juego</strong>,
+                Zelda Majora mask, en Mercado Libre, atiendalo ahora.
+              </p>
+
+              <span class="notf__p notf__span"> 9:00 AM </span>
+
+              <p-button class="notf__btn" icon="pi pi-thumbs-up"
+              styleClass="p-button-rounded p-button-info"></p-button>
+            </div>
+          </li>
+        </ul>
+      </p-sidebar>
+
+    </div>
+
+    <div class="nav-right__profile" pTooltip="Mi perfil" tooltipPosition="bottom">
+      <p-avatar class="nav-right__i" (click)="profile.toggle($event)"
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="large"
+      shape="circle"></p-avatar>
+
+      <p-overlayPanel #profile>
+        <h4>Perfil</h4>
+        <p-divider></p-divider>
+
+        <ul class="nav-right-profile__ul">
+          @for (item of menuProfile; track item) {
+            <li class="nav-right-profile__li">
+              <a class="nav-right-profile__a">
+                <i class="nav-right-profile__i material-icons">{{
+                  item.icon
+                }}</i>
+                <span class="nav-right-profile__span">{{ item.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </p-overlayPanel>
+    </div>
+  </div>
+</nav>
+
+<!-- NAVBAR -->

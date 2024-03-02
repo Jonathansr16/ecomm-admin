@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from './core/services/theme.service';
 import { MenuItem } from 'primeng/api';
-import { MessageUserService } from '@main/services/message-user.service';
 import { MessageUser } from './core/interface/message-user.model';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [AuthService]
 })
 export class AppComponent implements OnInit{
   title = 'servitaeApp';
@@ -18,7 +23,7 @@ export class AppComponent implements OnInit{
   status = false;
   date= new Date();
   sidebarVisible: boolean = false;
-  constructor(private themeService: ThemeService, private _messageUserService: MessageUserService ) {}
+  constructor(private themeService: ThemeService ) {}
 
   changeTheme(theme:string): void {
     this.themeService.switchTheme(theme);
@@ -30,7 +35,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
    
-    this.messageUser = this._messageUserService.getMessageUser();
+    // this.messageUser = this._messageUserService.getMessageUser();
 
    
     this.items= [

@@ -1,0 +1,29 @@
+ <div class="expansion-panel">
+
+    <div #titlePanel class="expansion-panel-header" (click)="togglePanl()">
+
+        <div class="expansion-panel-header__title">
+
+            <ng-content select=".expansion-panel-header__h3"></ng-content>
+            
+                <ng-content select=".expansion-panel-header__defaultValue"></ng-content>
+           
+                <ng-content select=".expansion-panel-header__value"></ng-content>
+        </div>
+           
+
+        <div class="expansion-panel-header__icon">
+            <i class="expansion-panel-header__i material-icons">expand_more</i>
+        </div>
+    </div>
+
+        <div class="expansion-panel__body" >
+         
+             <ng-content select=".expansion-panel__content"></ng-content>
+                
+        
+        </div>
+  
+
+</div> 
+
