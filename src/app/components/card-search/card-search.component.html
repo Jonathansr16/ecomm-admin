@@ -1,0 +1,82 @@
+<div class="topbar-card sticky top-0 z-10">
+  <div
+    class="topbar-card__container container p-3 flex items-center justify-between flex-wrap gap-2 mt-8"
+  >
+    <div class="topbar-card__content-left flex item-center gap-2">
+      <ng-content #contentLeft></ng-content>
+    </div>
+    <div class="topbar-card__content-center">
+      <p-button
+        [style]="{ 'font-size': '14px' }"
+        label="Pausar"
+        [text]="true"
+        [disabled]="isOptionActive().pause === false"
+        [severity]="isOptionActive().pause ? 'warning' : 'secondary'">
+      </p-button>
+      <p-button
+      [style]="{ 'font-size': '14px' }"
+        label="Modificar"
+        [text]="true"
+        [disabled]="isOptionActive().modify === false"
+        [severity]="isOptionActive().modify ? 'primary' : 'secondary'">
+      </p-button>
+      <p-button
+      [style]="{ 'font-size': '14px' }"
+        label="Eliminar"
+        [text]="true"
+        [disabled]="isOptionActive().eliminate === false"
+        [severity]="isOptionActive().eliminate ? 'danger' : 'secondary'">
+      </p-button>
+    
+      @if(isOptionActive().massiveModification) {
+
+        <p-button
+        [style]="{ 'font-size': '14px' }"
+          label="Modificar de manera Masica"
+          [text]="true"
+          [disabled]="isOptionActive().massiveModification === false"
+          [severity]="isOptionActive().massiveModification ? 'primary' : 'secondary'">
+        </p-button>
+      }
+    </div>
+    <div class="topbar-card__content-right">
+      <div class="toolbar-actions__search" [class.toolbar-actions__search-show]="hidenSearch">
+        <button
+          (click)="showSearch()"
+          severity="success"
+          type="button"
+          class="toolbar-actions__search-btn-toggle p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+        >
+          <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+        </button>
+
+        <div class="toolbar-actions__search-wrapper">
+          <span class="toolbar-actions__search-span p-input-icon-right">
+            <input
+              #searchProduct
+              name="inputSearch"
+              [(ngModel)]="inputValue"
+              (input)="onInputChange()"
+              (keyup.enter)="searchRecord(searchProduct.value)"
+              type="text"
+              placeholder="Buscar..."
+              pinputtext=""
+              placeholder="Titulo, Codigo, SKU o #"
+              class="toolbar-actions__search-input p-inputtext p-component p-element"/>
+            @if (!showIcon) {
+            <i
+              class="toolbar-actions__search-i pi pi-search"
+              (click)="hiddenSearch()">
+            </i>
+            } @else {
+            <i
+              class="toolbar-actions__search-i pi pi-times"
+              (click)="clearInput()">
+            </i>
+            }
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

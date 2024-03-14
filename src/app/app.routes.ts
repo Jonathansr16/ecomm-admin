@@ -1,4 +1,7 @@
+
+import { provideHttpClient, withInterceptors, withRequestsMadeViaParent } from '@angular/common/http';
 import { Routes } from '@angular/router';
+import { KeyInterceptor } from '@woocommerce/interceptors/key.interceptor';
 
 export const routes: Routes = [
   
@@ -17,7 +20,6 @@ export const routes: Routes = [
     path: 'dashboard',
     title: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.routes').then( (r) => r.dashboardRoutes),
-    
   },
 
   {

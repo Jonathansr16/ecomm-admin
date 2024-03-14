@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams} from '@angular/common/http';
 import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -17,14 +17,13 @@ import { WooProducto } from '@woocommerce/models/wc-new-product.model';
 import { ProductResult } from '@woocommerce/interface/woo-producto.interface';
 import { environment } from 'src/environments/environment.development';
 
-@Injectable( {providedIn: 'root'})
-export class WcommerceService {
+
+export class WooService {
 
   private url = environment.wcommerce.apiBase;
   private cachedDataPage: { [key: string]: ProductResult[] } = {};
-  statusData: 'loading' | 'success' | 'error' | undefined;
+  http = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
 
   //* OBTIENE TODOS LOS PRODUCTOS
   getProducts(page: number, per_page: number): Observable<ProductResult[]> {
@@ -71,7 +70,7 @@ export class WcommerceService {
       short_description: producto.short_description,
       sku: producto.sku,
       regular_price: producto.regular_price,
-      sale_price: producto.sale_price,
+      price: producto.price,
       categories: producto.categories,
       images: producto.images.map((img: ProductImageResult) => ({
         ...img
@@ -120,7 +119,7 @@ export class WcommerceService {
       short_description: producto.short_description,
       sku: producto.sku,
       regular_price: producto.regular_price,
-      sale_price: producto.sale_price,
+      price: producto.price,
       categories: producto.categories,
       images: producto.images.map((img: ProductImageResult) => ({
         ...img
@@ -144,7 +143,7 @@ export class WcommerceService {
         short_description: product.short_description,
         sku: product.sku,
         regular_price: product.regular_price,
-        sale_price: product.sale_price,
+        price: product.sale_price,
         categories: product.categories,
         images: product.images,
         stock_quantity: product.stock_quantity,

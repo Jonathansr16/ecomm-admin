@@ -11,7 +11,7 @@ import { ProductResult } from '@woocommerce/interface/woo-producto.interface';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { CardProductComponent } from '@components/card-product/card-product.component';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
-
+import { CardSearchComponent } from '@components/card-search/card-search.component';
 //? MODULE COMPONENTS OF PRIMENG
 import { CheckboxModule } from 'primeng/checkbox';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -20,7 +20,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { TieredMenuModule } from 'primeng/tieredmenu';
-import { SplitButtonModule} from 'primeng/splitbutton';
+import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,10 +28,14 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TooltipModule } from 'primeng/tooltip';
 
 //? SERVICES
-import { WcommerceService } from '@woocommerce/services/wcommerce.service';
+import { WooService } from '@woocommerce/services/woo.service';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { generateProductForm } from 'src/app/core/form/generateProductForm';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ParamsPagination } from 'src/app/core/interface/pagination.interface';
+import { MyButtonInterface } from 'src/app/dashboard/interfaces/button.interface';
+import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -42,6 +46,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CommonModule,
     BreadcrumbComponent,
     CardProductComponent,
+    CardSearchComponent,
     CheckboxModule,
     PaginatorModule,
     SkeletonModule,
@@ -56,15 +61,18 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputTextModule,
     InputTextareaModule,
     TooltipModule,
-    InputNumberModule
+    InputNumberModule,
+    FileUploadModule
   ],
   styleUrls: ['./inventario.component.scss'],
-  providers: [MessageService, ConfirmationService],
+  providers: [
+    MessageService, ConfirmationService,
+
+  ],
+
 })
 export default class InventarioComponent implements OnInit, OnDestroy {
- 
 
- 
   breadcrumHome: BreadcrumbItem = {
     icon: 'list_alt',
     label: 'Inventario',
@@ -91,25 +99,30 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   ];
 
   addProductItems: MenuItem[] = [
-    {label: 'Individual',
-    command: () => {
-      this.openDialogNewProduct()
-    }
+    {
+      label: 'Individual',
+      command: () => {
+        this.openDialogNewProduct()
+      }
     },
-    { label: 'Masiva'}
+    { label: 'Masiva' }
   ]
 
   optionsProduct: MenuItem[] = [
-    {
-      label: 'Opciones',
-      items: [
-        { label: 'Modificar' },
-        { label: 'Pausar', visible: false },
-        { label: 'Activar', visible: false },
-        { label: 'Eliminar' },
-        { label: 'Ver Publicación' },
-      ],
-    },
+    // {
+    //   label: 'Opciones',
+    //   items: [
+    //     { label: 'Modificar',
+    //       command: () => {
+    //         this.editProduct(this.products!.id)
+    //       }
+    //   },
+    //     { label: 'Pausar', visible: false },
+    //     { label: 'Activar', visible: false },
+    //     { label: 'Eliminar' },
+    //     { label: 'Ver Publicación' },
+    //   ],
+    // },
   ];
 
   itemsFilter: MenuItem[] = [
@@ -143,6 +156,17 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     },
   ];
 
+  menuTopbar: MyButtonInterface[] = [
+    {
+      label: 'Pausar',
+      disabled: false,
+      type: 'button',
+      severity: 'secondary'
+    },
+
+
+
+  ]
   statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
 
   //Enlace al input search
@@ -151,10 +175,16 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   hidenSearch = false;
   showIcon = false;
   isActiveProduct: boolean[] = [];
+ 
   //Selecciona y Deselecciona cada checkbox del arreglo
   isSelectedEveryProduct: boolean[] = [];
   //selecciona y deselecciona todos los checkbox del arreglo
   isSelectAllProduct = false;
+
+  isPause: boolean[] = [];
+  isEliminate!: boolean;
+  isModify!: boolean;
+
   //data seleccionada
   selectedProduct: ProductResult[] = [];
 
@@ -172,22 +202,31 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
   totalRecords = 0;
   totalRecords$?: Subscription;
-  products: ProductResult[] = [];
   product: ProductResult | undefined;
+  productId!: number;
   suscriptions$: Subscription[] = [];
   errorMessage!: string;
 
+  handlerOptionBtn: StatusBtn = {
+    pause: false,
+    modify: false,
+    eliminate: false,
+    massiveModification: false
+  }
+
   // @ts-ignore
-  formRegisterProducto: FormGroup;
+  formRegisterGroup: FormGroup;
 
   createFormProduct(): void {
-    this.formRegisterProducto = this.formBuilder.group({
+    this.formRegisterGroup = this.formBuilder.group({
       detailsProduct: generateProductForm()
     })
   }
 
 
-  private readonly wooService = inject(WcommerceService);
+  private readonly wooService = inject(WooService);
+  products: ProductResult[] = [];
+
   private activedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private confirmService = inject(ConfirmationService);
@@ -199,28 +238,48 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.activedRoute.queryParams.subscribe( (params: Params): void => {
+    this.activedRoute.queryParams.subscribe((params: Params): void => {
       this.paginationParams.page = +params['page'] ? +params['page'] : 1;
       this.paginationParams.per_page = +params['per_page'] ? params['per_page'] : 10;
 
-      this.getProducts(this.paginationParams.page, this.paginationParams.per_page)
-    }) 
-    
-     
+      this.getProducts(this.paginationParams.page, this.paginationParams.per_page);
+      
+    });
+
+    this.optionsProduct = [
+      {
+        label: 'Opciones',
+        items: [
+          { label: 'Modificar',
+            command: (event) => {
+              this.editProduct;
+              console.log(event)
+            }
+        },
+          { label: 'Pausar', visible: false },
+          { label: 'Activar', visible: false },
+          { label: 'Eliminar' },
+          { label: 'Ver Publicación' },
+        ],
+      },
+    ];
+
+
+
   }
 
   ngOnDestroy(): void {
     this.suscriptions$.forEach((subscription) => subscription.unsubscribe());
   }
 
-openDialogNewProduct(): void {
-  this.toggleProductDialog = true;
-}
+  openDialogNewProduct(): void {
+    this.toggleProductDialog = true;
+  }
 
-closeDialogNewProduct(): void {
-  this.toggleProductDialog = false;
-}
-   
+  closeDialogNewProduct(): void {
+    this.toggleProductDialog = false;
+  }
+
   showSearch(): boolean {
     return (this.hidenSearch = true);
   }
@@ -230,11 +289,11 @@ closeDialogNewProduct(): void {
   }
 
   validField(field: string) {
-    return this.formRegisterProducto.get(`detailsProduct.${field}`)?.invalid && this.formRegisterProducto.get(`detailsProduct.${field}`)?.touched;
+    return this.formRegisterGroup.get(`detailsProduct.${field}`)?.invalid && this.formRegisterGroup.get(`detailsProduct.${field}`)?.touched;
   }
- 
+
   getValueField(field: string) {
-    return this.formRegisterProducto.get(`detailsProduct.${field}`)?.value;
+    return this.formRegisterGroup.get(`detailsProduct.${field}`)?.value;
   }
 
   getProducts(page: number, per_page: number) {
@@ -260,30 +319,24 @@ closeDialogNewProduct(): void {
   }
 
   onPageChange(event: any) {
-    
-       this.paginationParams = {
-         page: event.page + 1,
-         per_page: event.rows,
-         first: event.first,
-       };
-       //Actualizar parámetros de la URL
-       this.router.navigate([], {
-         relativeTo: this.activedRoute,
-         queryParams: {
-           page: this.paginationParams.page,
-           per_page: this.paginationParams.per_page,
-         },
-         queryParamsHandling: 'merge',
-         
-       });
 
-    
+    this.paginationParams = {
+      page: event.page + 1,
+      per_page: event.rows,
+      first: event.first,
+    };
+    //Actualizar parámetros de la URL
+    this.router.navigate([], {
+      relativeTo: this.activedRoute,
+      queryParams: {
+        page: this.paginationParams.page,
+        per_page: this.paginationParams.per_page,
+      },
+      queryParamsHandling: 'merge',
 
+    });
   }
 
-  activeOption() {
-    //   switch( item.stock_status) {
-  }
 
   ActiveProduct() {
     const isActivo = this.products.some(
@@ -292,13 +345,14 @@ closeDialogNewProduct(): void {
     console.log(isActivo);
   }
 
-  getProductsBySearch() {
+
+  getProductsBySearch(valueText: string) {
     this.statusData = 'loading';
 
     this.suscriptions$.push(
       this.wooService
         .getProductsBySearch(
-          this.inputValue,
+          valueText,
           this.paginationParams.page,
           this.paginationParams.per_page
         )
@@ -318,8 +372,16 @@ closeDialogNewProduct(): void {
     );
   }
 
-  saveProduct(product: any) {
-    
+  publishProduct() {
+    if (this.formRegisterGroup.invalid) {
+      return Object.values(this.formRegisterGroup.controls).forEach(control => {
+        control.markAsTouched();
+      });
+    }
+  }
+
+  editProduct(idProduct: number | string) {
+    this.router.navigate( ['edit-product/', {idProduct}])
   }
 
   deleteProduct(product: any) {
@@ -343,7 +405,7 @@ closeDialogNewProduct(): void {
     this.showIcon = false;
   }
 
-  getSelectedProduct(id: number) {}
+  getSelectedProduct(id: number) { }
 
   toggleSelectAllProducts() {
     // Si se selecciona la opción masiva, seleccionar todos los productos
@@ -359,6 +421,7 @@ closeDialogNewProduct(): void {
   }
 
   toggleEveryProduct(product: ProductResult) {
+   
     // Verificar si el producto está seleccionado y agregarlo o eliminarlo según sea necesario
     const index = this.selectedProduct.findIndex(
       (selectedItem: ProductResult) => selectedItem.id === product.id
@@ -370,12 +433,20 @@ closeDialogNewProduct(): void {
       this.selectedProduct.splice(index, 1);
     }
 
+
     // Verificar si todos los elementos de la parte inferior están seleccionados
     const allSelected = this.products.every((order) =>
       this.selectedProduct.some(
         (selectedOrder) => selectedOrder.id === order.id
       )
     );
+
+    this.handlerOptionBtn.pause = this.selectedProduct.every( (option) => option.stock_status === 'instock');
+    this.handlerOptionBtn.modify =  this.selectedProduct.length === 1;
+    this.handlerOptionBtn.massiveModification =  this.selectedProduct.length >= 2;
+    this.handlerOptionBtn.eliminate =  this.selectedProduct.length >= 1;
+
+    
     // Actualizar el estado de selección masiva
     this.isSelectAllProduct = allSelected;
 
@@ -384,6 +455,7 @@ closeDialogNewProduct(): void {
       this.isSelectAllProduct = false;
     }
   }
+
 
   onSwitchChange(event: any, product: ProductResult) {
     // if (event.isActiveProduct === false) {
@@ -398,7 +470,7 @@ closeDialogNewProduct(): void {
       icon: 'pi pi-exclamation-triangle',
     });
   }
-  
+
 }
 
 export interface PageEvent {
@@ -408,8 +480,3 @@ export interface PageEvent {
   pageCount: number;
 }
 
-export interface ParamsPagination {
-  page: number;
-  per_page: number;
-  first: number;
-}

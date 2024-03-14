@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { OrderResult} from '@woocommerce/interface/woo-order.interface';
-import { WcommerceService } from '@woocommerce/services/wcommerce.service';
+import { WooService } from '@woocommerce/services/woo.service';
 import { CardOrderComponent } from '@woocommerce/components/card-order/card-order.component';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +17,7 @@ export default class FailedOrdersComponent {
   canceledOrdes: OrderResult[] = [];
   statusData:  'loading' | 'success' | 'error' = 'loading';
 
-  private readonly wooService = inject(WcommerceService);
+  private readonly wooService = inject(WooService);
   private readonly suscription: Subscription[] = [];
 
   getOrders() {

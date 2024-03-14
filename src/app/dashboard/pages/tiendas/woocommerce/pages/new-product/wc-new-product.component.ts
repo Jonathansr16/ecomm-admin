@@ -1,8 +1,8 @@
-import { Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Component, ElementRef, QueryList, Renderer2, ViewChildren, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { WooProducto } from '@woocommerce/models/wc-new-product.model';
-import { WcommerceService } from '@woocommerce/services/wcommerce.service';
+import { WooService } from '@woocommerce/services/woo.service';
 
 import {  MessageService } from 'primeng/api';
 
@@ -59,12 +59,18 @@ export default class WcNewProductComponent  {
 
   }
 
-  constructor(private formBuilder: FormBuilder, private wcService: WcommerceService, private validatorService: ValidatorsService, private messageService: MessageService, private renderer2: Renderer2) {
+ private formBuilder = inject(FormBuilder);
+ private wooService = inject(WooService);
+ private validatorService = inject(ValidatorsService);
+ private messageService = inject(MessageService);
+private renderer2 = inject(Renderer2);
+
+  constructor( ) {
     this.createFormProduct();
   }
 
   getCategories() {
-    this.wcService.getCategorias().subscribe( {
+    this.wooService.getCategorias().subscribe( {
       next: (resp) => {
         this.arrayCategories = resp;
       },
@@ -142,7 +148,7 @@ export default class WcNewProductComponent  {
       description: formValues.description,
       short_description: formValues.short_description,
       regular_price: formValues.regular_price.toString(),
-      sale_price: formValues.sale_price.toString(),
+      price: formValues.sale_price.toString(),
       sku: formValues.sku,
       stock_quantity:  parseInt(formValues.stock_quantity),
       categories: formValues.categories,
@@ -159,7 +165,7 @@ export default class WcNewProductComponent  {
 
 
 
-    this.wcService.createProduct(this.producto).subscribe({
+    this.wooService.createProduct(this.producto).subscribe({
       next: (resp) => {
         this.showLoader = false;
         this.messageService.add({ key: 'tc', severity: 'success', summary: 'Exito', detail: 'Producto registrado con exito!' });

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CardOrderComponent } from '@woocommerce/components/card-order/card-order.component';
 import { OrderResult } from '@woocommerce/interface/woo-order.interface';
-import { WcommerceService } from '@woocommerce/services/wcommerce.service';
+import { WooService } from '@woocommerce/services/woo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,7 +24,7 @@ export default class CompletedOrdersComponent {
   //Selecciona y Deselecciona caa checkbox del arreglo
   selectOne:  boolean[] = [];
 
-  private readonly wooService = inject(WcommerceService);
+  private readonly wooService = inject(WooService);
   private readonly suscriptions$: Subscription[] = [];
 
   

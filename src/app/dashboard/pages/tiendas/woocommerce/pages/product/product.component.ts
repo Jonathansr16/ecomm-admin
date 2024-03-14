@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { WcommerceService } from '@woocommerce/services/wcommerce.service';
+import { Component, Input, inject, OnInit } from '@angular/core';
+import { WooService } from '@woocommerce/services/woo.service';
 
-import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 import { MessageService } from 'primeng/api';
@@ -12,19 +11,27 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToastModule } from 'primeng/toast';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
+import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
+import { InputTextModule } from 'primeng/inputtext';
+import { ExpansionPanelComponent } from '@components/expansion-panel/expansion-panel.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [ 
-    CommonModule, 
-    FormsModule, 
-    ReactiveFormsModule, 
-    ButtonModule, 
-    InputTextareaModule, 
-    ToastModule, 
-    SkeletonModule, 
-    InputNumberModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BreadcrumbComponent,
+    ExpansionPanelComponent,
+    ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    InputTextareaModule,
+    ToastModule,
+    SkeletonModule,
+    InputNumberModule
+  ],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
   providers: [MessageService]
@@ -32,8 +39,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 export default class ProductComponent {
   // @ts-ignore
   formProduct: FormGroup;
-  activeAccordeon: number = 0;
-  idProduct: any;
+  activeAccordeon: number = -1;
 
   wcProduct: WooProducto = new WooProducto();
 
@@ -41,6 +47,32 @@ export default class ProductComponent {
   currentValue: string = '';
   loading: boolean = true;
   completedEdit: number = 0;
+
+  breadcrumHome: BreadcrumbItem = {
+    icon: 'list_alt',
+    label: 'Inventario',
+    separator: true,
+  };
+
+  breadcrumbItems: BreadcrumbItem[] = [
+    {
+      icon: 'storefront',
+      label: 'Tiendas',
+      separator: true,
+    },
+
+    {
+      icon: 'store',
+      label: 'Woocommerce',
+      separator: false,
+    },
+
+    {
+      icon: 'list_alt',
+      label: 'Edit-product',
+    },
+  ];
+
   createFormUpdateProduct(): void {
     this.formProduct = this.formBuilder.group(
       {
@@ -76,48 +108,29 @@ export default class ProductComponent {
     )
   }
 
-  constructor(
-    private wcService: WcommerceService,
-    private activateRoute: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private validatorService: ValidatorsService,
-    private messageService: MessageService,
+  wooService = inject(WooService);
+  validatorService = inject(ValidatorsService);
+  formBuilder = inject(FormBuilder);
+  messageService = inject(MessageService)
+  @Input('id') productId!: number;
 
-
-  ) {
-    // this.createFormUpdateProduct();
-    // this.idProduct = this.activateRoute.snapshot.paramMap.get('id');
-
-    // this.wcService.getProduct(this.idProduct).subscribe(data => {
-    //   this.wcProduct = {
-    //     ...data
-    //   };
-
-    //   this.loading = false;
-    //   this.formProduct.patchValue({ ...data });
-
-    // })
-
+  constructor() {
+    this.createFormUpdateProduct();
 
   }
 
+  ngOnInit(): void {
 
-  // getProductById(id: number){
-  //   this.wcService.getProduct(this.idProduct).subscribe({
-  //     next: (resp) => {
-  //       this.wcProduct = {
-  //         ...resp
-  //       };
-  //     },
-  //     error: (errorMessage) => {
-  //       this.loading = false;
-  //       this.formProduct.patchValue({  });
+    this.wooService.getProduct(this.productId).subscribe(data => {
+      this.wcProduct = {
+        ...data
+      };
 
-  //     }
-  //   })
-  // }
+      this.loading = false;
+      this.formProduct.patchValue({ ...data });
+    })
+  }
 
-  
   //* EVALUA SI UN CAMPO ESPECIFICOS FUE EDITADO PARA GUARDAR
   verifyField(formField: string, value: string): boolean {
 
@@ -140,323 +153,46 @@ export default class ProductComponent {
 
   //* COMPRUEBA SI UN CAMPO ES VALIDO
   invalidField(field: string): boolean {
-    if (this.formProduct?.get(field)?.invalid && this.formProduct.touched) {
-      return true
-    } else {
-      return false;
-    }
+
+    return (this.formProduct?.get(field)?.invalid && this.formProduct.touched)
+      ? true
+      : false;
   }
 
   //* ACTUALIZA UN CAMPO ESPECIFICIO
+  updateField(field: string): void {
 
-  updateName() : void {
+    const fieldControl = this.formProduct.get(field);
 
-    const nameProduct = this.formProduct.get('name');
+    if (fieldControl?.valid) {
 
-    if (nameProduct?.valid) {
+      const newValue = fieldControl.value;
+      const data: any = { [field]: newValue };
 
-      const data: any = {
-        name: nameProduct.value
-      }
+      this.wooService.setFielUpdate(this.productId, data).subscribe({
+        next: (resp => {
 
-      // Swal.fire({
-      //   allowOutsideClick: false,
-      //   icon: 'info',
-      //   title: 'Validando',
-      //   text: 'Espere por favor...'
+        this.wcProduct[field] = resp[field];
 
-      // });
-
-      // Swal.showLoading();
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-        // Swal.close();
-        this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          key: 'tc',
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Error',
-        //   text: 'Se produjo un error'
-        // })
+          this.messageService.add({
+            key: 'tc',
+            severity: 'success',
+            summary: 'Actualización',
+            detail: '¡Actualización echa con exito!'
+          })
+        })
       })
-
     }
   }
-
-  updateDescription() : void {
-
-    const descriptionProduct = this.formProduct.get('description');
-
-    if (descriptionProduct?.valid) {
-
-      const data: any = {
-        description: descriptionProduct.value
-      }
-
-      // Swal.fire({
-      //   allowOutsideClick: false,
-      //   icon: 'info',
-      //   title: 'Validando',
-      //   text: 'Espere por favor...'
-
-      // });
-
-      // Swal.showLoading();
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-        // Swal.close();
-        this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Error',
-        //   text: 'Se produjo un error'
-        // })
-      })
-
-    }
-  }
-
-  updateShortDescription() : void {
-
-    const shortDescription = this.formProduct.get('short_description');
-
-    if (shortDescription?.valid) {
-
-      const data: any = {
-        short_description: shortDescription.value
-      }
-
-      // Swal.fire({
-      //   allowOutsideClick: false,
-      //   icon: 'info',
-      //   title: 'Validando',
-      //   text: 'Espere por favor...'
-
-      // });
-
-      // Swal.showLoading();
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-        // Swal.close();
-        this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Error',
-        //   text: 'Se produjo un error'
-        // })
-      })
-
-    }
-  }
-
-  updateRegularPrice() : void {
-
-    const regularPriceProduct = this.formProduct.get('regular_price');
-
-    if (regularPriceProduct?.valid) {
-
-      const data: any = {
-        regular_price: regularPriceProduct.value
-      }
-
-      // Swal.fire({
-      //   allowOutsideClick: false,
-      //   icon: 'info',
-      //   title: 'Validando',
-      //   text: 'Espere por favor...'
-
-      // });
-
-      // Swal.showLoading();
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-        // Swal.close();
-        // this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Error',
-        //   text: 'Se produjo un error'
-        // })
-      })
-
-    }
-  }
-
-  updateSalePrice() : void {
-
-    const salePriceProduct = this.formProduct.get('sale_price');
-
-    if (salePriceProduct?.valid) {
-
-      const data: any = {
-        sale_price: salePriceProduct.value
-      }
-
-      // Swal.fire({
-      //   allowOutsideClick: false,
-      //   icon: 'info',
-      //   title: 'Validando',
-      //   text: 'Espere por favor...'
-
-      // });
-
-      // Swal.showLoading();
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-        // Swal.close();
-        this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Error',
-        //   text: 'Se produjo un error'
-        // })
-      })
-
-    }
-  }
-
-  updateSku() : void {
-
-    const skuProduct = this.formProduct.get('sku');
-
-    if (skuProduct?.valid) {
-
-      const data: any = {
-        sku: skuProduct.value
-      }
-
-   
-
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-      
-        this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-       
-      })
-
-    }
-  }
-
-  updateQuantity() : void {
-
-    const stockProduct = this.formProduct.get('stock_quantity');
-
-    if (stockProduct?.valid) {
-
-      const data: any = {
-        stock_quantity: stockProduct.value
-      }
 
   
 
-
-
-      this.wcService.setFielUpdate(this.idProduct, data).subscribe(data => {
-
-      
-        this.wcProduct.name = data.name;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualización',
-          detail: 'Actualización echa con exito!'
-        });
-
-        console.log(data)
-
-      }, (error) => {
-        console.log(error);
-      
-      })
-
-    }
-  }
-
- 
-
-  
-
-  //* Abre & cierra cada acordeon
-  toggleAccordeon(index: number): void {
+  toggleAccordeon(index: number) {
     if (this.activeAccordeon === index) {
-      this.activeAccordeon = -1;
+      this.activeAccordeon = -1; // Cerrar el acordeón si se hace clic nuevamente en el mismo panel
     } else {
-      this.activeAccordeon = index;
-      console.log(this.formProduct.controls)
+      this.activeAccordeon = index; // Abrir el panel clickeado
     }
   }
-
 
 }

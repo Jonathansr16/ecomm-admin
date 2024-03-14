@@ -1,9 +1,9 @@
 <div class="product-card__unstyledContainer">
     
-    <div class="product-card max-w-7xl mx-auto my-6 p-4 pb-6 sm:p-10 sm:pb-8 lg:p-6 xl:p-10 xl:pb-8 rounded-lg shadow-md shadow-indigo-500/10" [class.outofstock]="outOfStock">
-        <div class="product-card__actions flex flex-row	flex-nowrap items-center justify-between ">
+    <div class="product-card max-w-7xl mx-auto my-6 p-4 pb-6 sm:p-10 rounded-lg shadow-md shadow-indigo-500/10" [class.outofstock]="outOfStock">
+        <div class="product-card__actions flex flex-row	flex-nowrap items-center justify-between gap-1 mb-8">
        
-            <div class="product-card__actions-col product-card__actions-col-left ">
+            <div class="product-card__actions-col flex flex-row gap-2 items-start lg:items-center ">
                <ng-content select="[handlerCheckProduct]"></ng-content>
                <ng-content select="[idProduct], .product-card__actions-span"></ng-content>
                
@@ -16,10 +16,10 @@
     
             </div>
         </div>
-        <div class="product-card__content grid grid-col-1 md:grid-cols-2">
+        <div class="product-card__content grid grid-cols-1 lg:grid-cols-2">
             <ng-content class=".product-card__product"> </ng-content>
     
-            <div class="product-card__details">
+            <div class="product-card__details flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
     
                  <ng-content select=".product-card__details-col"></ng-content>
                 

@@ -1,56 +1,298 @@
-<div class="breadcrumb section">
-  <ul class="breadcrumb__ul">
-    <li class="breadcrumb__li">
-      <h6 class="breadcrumb__h6">Dashboard ></h6>
-    </li>
-
-    <li class="breadcrumb__li">
-      <i class="breadcrumb__i material-icons">storefront</i>
-      <h6 class="breadcrumb__h6">Woocommerce</h6>
-      <span class="breadcrumb__span"> > </span>
-    </li>
-
-    <li class="breadcrumb__li breadcrumb__link">
-      <i class="breadcrumb__i material-icons">pallet</i>
-      <a routerLink="/dashboard/wocommerce/inventario" class="breadcrumb__a">
-      Inventario</a>
-    </li>
-  </ul>
+<div class="top-header">
+  <div class="top-header__content container">
+    <app-breadcrumb
+      [breadcrumbHomeItem]="breadcrumHome"
+      [breadcrumbItems]="breadcrumbItems"
+    ></app-breadcrumb>
+  </div>
 </div>
 
-<div class="wcproduct">
-
+<div class="wcproduct container">
+  <p-toast position="top-center" key="tc"></p-toast>
   <div class="wcproduct__left">
-
-      <form action="#" class="wcform" [formGroup]="formProduct">
-        <div class="wcform__container">
-          <div class="wcform__title">
-            <div class="wcform__details">
-              <div class="wcform__detail">
-                <a class="wcform__a" href="#">{{wcProduct.name}}</a>
-              </div>
-              <div class="wcform__detail">
-                <span class="wcform__span" href="#">#1345805537</span>
-                <p class="wcform__p" href="#">
-                  Unidades vendidas: <span class="">{{wcProduct.total_sales}}</span>
-                </p>
-              </div>
+    <form action="#" class="wcform mx-auto" [formGroup]="formProduct">
+      <div class="wcform__container">
+        <div
+          class="wcform__title flex flex-row flex-wrap lg:flex-nowrap justify-between items-center gap-1"
+        >
+          <div class="wcform__details">
+            <span
+              class="form__store font-semibold text-sm bg-indigo-100 text-indigo-700 px-2 py-1 rounded-lg"
+              >Woocommerce</span
+            >
+            <div class="wcform__detail">
+              <a class="wcform__a text-slate-700 font-bold text-2xl" href="#">{{
+                wcProduct.name
+              }}</a>
             </div>
-            <div class="wcform__image">
-              <img src="assets/img/icon_producto.png" class="wcform__img" alt="" />
+            <div class="wcform__detail">
+              <span class="wcform__span text-base" href="#">#1345805537</span>
+              <p class="wcform__p text-sm" href="#">
+                Unidades vendidas:
+                <span class="">{{ wcProduct.total_sales }}</span>
+              </p>
             </div>
           </div>
-          <div class="accordeon">
+          <div class="wcform__image">
+            <img
+              [src]="wcProduct.images![0].src"
+              class="form__img w-32 h-32 mix-blend-multiply"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <h3 class="text-2xl font-bold text-slate-700 py-3">
+          Datos basicos del producto 📓
+        </h3>
+        <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+        <app-expansion-panel
+          [label]="'Titulo'"
+          [isValid]="verifyField('name', wcProduct.name)"
+          [propertyProduct]="wcProduct.name"
+          [propertytoRequire]="
+            'Incluye producto, marca, modelo y caraterísticas principales'
+          "
+          [activeAccordeon]="activeAccordeon"
+          (panelClicked)="activeAccordeon = $event"
+          (updateProduct)="updateField('name')"
+        >
+          <div
+            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+          >
+            <label class="form__label" htmlFor="title">
+              *Titulo del producto:
+            </label>
+            <input
+              class="form__input w-full"
+              pInputText
+              id="title"
+              placeholder="Ingrese un titulo para el producto"
+              formControlName="name"
+              #inputName
+              [maxlength]="60"
+            />
+
+            @if (invalidField('name')) {
+            <small class="p-error">El titulo es obligatorio</small>
+            }
+
+          
+          </div>
+        </app-expansion-panel>
+
+        <app-expansion-panel
+          [isValid]="verifyField('description', wcProduct.description)"
+          [label]="'Descripción del producto'"
+          [propertyProduct]="wcProduct.description | slice : 0 : 300"
+          [propertytoRequire]="
+            'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
+          "
+          [activeAccordeon]="activeAccordeon"
+          (panelClicked)="activeAccordeon = $event"
+          (updateProduct)="updateField('description')"
+        >
+          <div
+            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+          >
+            <label class="form__label" htmlFor="title">
+              *descripcion del producto:
+            </label>
+
+            <textarea
+              class="wcform__textarea"
+              id="description"
+              placeholder="Descripción larga del producto"
+              formControlName="description"
+              rows="14"
+              cols="30"
+              [maxlength]="50000"
+              pInputTextarea
+              [autoResize]="true"
+              [class.is-invalid]="verifyField"
+            >
+            </textarea>
+          </div>
+        </app-expansion-panel>
+
+        <app-expansion-panel
+          [isValid]="
+            verifyField('short_description', wcProduct.short_description)
+          "
+          [label]="'Descripción corta del producto'"
+          [propertyProduct]="wcProduct.short_description | slice : 0 : 300"
+          [propertytoRequire]="
+            'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
+          "
+          [activeAccordeon]="activeAccordeon"
+          (panelClicked)="activeAccordeon = $event"
+        >
+          <div
+            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+          >
+            <label class="form__label" htmlFor="title">
+              *descripcion corta del producto:
+            </label>
+
+            <textarea
+              class="wcform__textarea"
+              id="description"
+              placeholder="Descripción larga del producto"
+              formControlName="description"
+              rows="14"
+              cols="30"
+              [maxlength]="50000"
+              pInputTextarea
+              [autoResize]="true"
+              [class.is-invalid]="verifyField"
+            >
+            </textarea>
+          </div>
+        </app-expansion-panel>
+
+        <h3 class="text-2xl font-bold text-slate-700 py-3">Inventario 🧑‍💻</h3>
+        <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+        <app-expansion-panel
+          [isValid]="verifyField('sku', wcProduct.sku)"
+          [label]="'Sku del producto'"
+          [propertyProduct]="wcProduct.sku | slice : 0 : 300"
+          [propertytoRequire]="'Indica un codigo para identificar tu producto'"
+          [activeAccordeon]="activeAccordeon"
+          (panelClicked)="activeAccordeon = $event"
+        >
+          <div
+            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+          >
+            <label class="form__label" htmlFor="title">
+              *Código de identificación del producto:
+            </label>
+
+            <input
+              class="form-product__input w-full"
+              pInputText
+              id="sku"
+              formControlName="sku"
+            />
+          </div>
+        </app-expansion-panel>
+
+        <app-expansion-panel
+          [isValid]="verifyField('stock', wcProduct.sku)"
+          [label]="'Stock del producto'"
+          [propertyProduct]="wcProduct.stock_quantity"
+          [propertytoRequire]="'Indica el stock en tu almacen'"
+          [activeAccordeon]="activeAccordeon"
+          (panelClicked)="activeAccordeon = $event"
+        >
+          <div
+            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+          >
+            <label class="form__label" htmlFor="title">
+              *Stock en inventario:
+            </label>
+
+            <input
+              class="form-product__input w-full"
+              pInputText
+              id="sku"
+              formControlName="stock_quantity"
+            />
+          </div>
+        </app-expansion-panel>
+
+        <h3 class="text-2xl font-bold text-slate-700 py-3">
+          Precio del producto 🪙
+        </h3>
+        <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+        <!-- <app-expansion-panel [isValid]="verifyField('stock_quantity', wcProduct.stock_quantity.toString())" [label]="'Precio regular del producto'" [propertyProduct]="wcProduct.stock_quantity" [propertytoRequire]="'Indica el stock en tu almacen'" [activeAccordeon]="activeAccordeon" (panelClicked)="activeAccordeon = $event" >
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <label class="form__label" htmlFor="title">
+                *Stock en inventario:
+              </label>
+              
+              <input class="form-product__input w-full" pInputText id="sku" formControlName="stock_quantity"/>
+
+            </div>
+         
+          </app-expansion-panel>
+
+          <app-expansion-panel [isValid]="verifyField('', '')" [label]="'Precio al publico del producto'" [propertyProduct]="wcProduct.stock_quantity" [propertytoRequire]="'Indica el stock en tu almacen'" [activeAccordeon]="activeAccordeon" (panelClicked)="activeAccordeon = $event" >
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <label class="form__label" htmlFor="title">
+                *Stock en inventario:
+              </label>
+              
+              <input class="form-product__input w-full" pInputText id="sku" formControlName="stock_quantity"/>
+
+            </div>
+         
+          </app-expansion-panel> -->
+
+        <!-- <app-expansion-panel [label]="'Titulo'" [accordionHeader]="wcProduct.name" >
+
+            <div class="expansion-panel__content">
+              <label class="wcform__label" htmlFor="title">
+                *Titulo del producto:
+              </label>
+              <input class="wcform__input" pInputText id="title" placeholder="Ingrese un titulo para el producto"
+              formControlName="name" #inputName [maxlength]="60" />
+
+            </div>
+
+          </app-expansion-panel> -->
+
+        <!-- <div class="accordeon__item" [ngClass]="activeAccordeon === 1 ? 'isActive' : ''">
+            <div class="accordeon__titular" (click)="toggleAccordeon(1)">
+              <div class="accordeon__titulo">
+                <h3 class="accordeon__h3">Titulo</h3>
+          
+                @if(activeAccordeon !=1) {
+                  <span class="accordeon__span">{{wcProduct.name}}</span>
+                } @else {
+                  <span #aco class="accordeon__span">Incluye producto, marca, modelo y
+                    destaca sus características principales</span>
+                }
+              </div>
+              <div class="accordeon__icon">
+                <i class="accordeon__i material-icons">expand_more</i>
+              </div>
+            </div>
+            <div class="accordeon__contenido">
+              <div class="wcform__box">
+                <label class="wcform__label" htmlFor="title">
+                  *Titulo del producto:
+                </label>
+                <input class="wcform__input" pInputText id="title" placeholder="Ingrese un titulo para el producto"
+                  formControlName="name" #inputName [maxlength]="60" />
+                <span class="wcform__span--words"> {{formProduct.get('name')?.value.length}} /60</span>
+              </div>
+              @if (invalidField('name')) {
+                <small class="p-error">El titulo es obligatorio</small>
+              }
+              <div class="wcform__action">
+                <p-toast></p-toast>
+                <p-button styleClass="p-button-raised" [disabled]="verifyField('name', wcProduct.name)"
+                (onClick)="updateName()">Aceptar</p-button>
+                <p-button styleClass="p-button-text" [disabled]="verifyField('name', wcProduct.name)"
+                (onClick)="cancelUpdate('name', wcProduct.name)">Cancelar</p-button>
+              </div>
+            </div>
+          </div> -->
+
+        <!-- <div class="accordeon">
             <div class="accordeon__item" [ngClass]="activeAccordeon === 1 ? 'isActive' : ''">
               <div class="accordeon__titular" (click)="toggleAccordeon(1)">
                 <div class="accordeon__titulo">
                   <h3 class="accordeon__h3">Titulo</h3>
-                  @if (activeAccordeon != 1) {
+            
+                  @if(activeAccordeon !=1) {
                     <span class="accordeon__span">{{wcProduct.name}}</span>
-                  }
-                  @if (activeAccordeon === 1) {
+                  } @else {
                     <span #aco class="accordeon__span">Incluye producto, marca, modelo y
-                    destaca sus características principales</span>
+                      destaca sus características principales</span>
                   }
                 </div>
                 <div class="accordeon__icon">
@@ -130,7 +372,7 @@
                   <h3 class="accordeon__h3">Precio del producto</h3>
                   <div class="wcform__prices">
                     <span class="wcform__price">Precio regular: {{wcProduct.regular_price}}</span>
-                    <span class="wcform__price">Precio con oferta: {{wcProduct.sale_price}}</span>
+                    <span class="wcform__price">Precio con oferta: {{wcProduct.price}}</span>
                   </div>
                 </div>
                 <div class="accordeon__icon">
@@ -143,20 +385,15 @@
                   <p-inputNumber class="form-product__input" inputId="price" mode="currency" currency="USD"
                     locale="en-US" placeholder="$0.00" [showClear]="true" formControlName="regular_price">
                   </p-inputNumber>
-                  <!-- <small *ngIf="regularPriceInvalid" class="p-error"
-                  >El precio es obligatorio</small
-                  > -->
+               
                 </div>
                 <div class="form-product__box">
                   <label class="form-product__label" htmlFor="rebaja">*Precio con rebaja del producto:</label>
                   <p-inputNumber class="form-product__input" inputId="rebaja" mode="currency" currency="USD"
                     locale="en-US" placeholder="$0.00" [showClear]="true" formControlName="sale_price">
                   </p-inputNumber>
-                  <!-- <small *ngIf="salePriceInvalid" class="p-error"
-                  >El precio oferta es obligatorio</small
-                  > -->
+             
                   <br>
-                    <!-- <small *ngIf="priceSaleInvalid" class="p-error">El precio oferta debe ser menor al precio regular</small> -->
                   </div>
                 </div>
               </div>
@@ -193,95 +430,144 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- <div class="form-product__section">
-            <hr />
-            <pre>
-              {{  formProduct.value | json }}
-            </pre>
           </div> -->
+      </div>
+    </form>
+
+    <div class="skeleton">
+      <div class="skeleton__section skeleton__section--title">
+        <div style="flex: 1" class="skeleton__details">
+          <p-skeleton width="100%" height="2rem" styleClass="mb-3"></p-skeleton>
+          <p-skeleton width="35%" height="2rem" styleClass="mb-3"></p-skeleton>
+          <p-skeleton width="15%" height="2rem"></p-skeleton>
         </div>
-      </form>
-    
-      <div class="skeleton">
-        <div class="skeleton__section skeleton__section--title">
-          <div style="flex: 1" class="skeleton__details">
-            <p-skeleton width="100%" height="2rem" styleClass="mb-3"></p-skeleton>
-            <p-skeleton width="35%" height="2rem" styleClass="mb-3"></p-skeleton>
-            <p-skeleton width="15%" height="2rem"></p-skeleton>
-          </div>
-          <div class="skeleton__img">
-            <p-skeleton shape="circle" size="6rem" styleClass="mr-2"></p-skeleton>
-          </div>
+        <div class="skeleton__img">
+          <p-skeleton shape="circle" size="6rem" styleClass="mr-2"></p-skeleton>
         </div>
-        <div class="skeleton__card">
-          <div class="skeleton__titular">
-            <div style="flex: 1" class="skeleton__title">
-              <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-              <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-            </div>
-            <div class="skeleton__icon">
-              <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-            </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
           </div>
-        </div>
-        <div class="skeleton__card">
-          <div class="skeleton__titular">
-            <div style="flex: 1" class="skeleton__title">
-              <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-              <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-            </div>
-            <div class="skeleton__icon">
-              <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-            </div>
-          </div>
-        </div>
-        <div class="skeleton__card">
-          <div class="skeleton__titular">
-            <div style="flex: 1" class="skeleton__title">
-              <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-              <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-            </div>
-            <div class="skeleton__icon">
-              <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-            </div>
-          </div>
-        </div>
-        <div class="skeleton__card">
-          <div class="skeleton__titular">
-            <div style="flex: 1" class="skeleton__title">
-              <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-              <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-            </div>
-            <div class="skeleton__icon">
-              <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-            </div>
-          </div>
-        </div>
-        <div class="skeleton__card">
-          <div class="skeleton__titular">
-            <div style="flex: 1" class="skeleton__title">
-              <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-              <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-            </div>
-            <div class="skeleton__icon">
-              <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-            </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2"
+            ></p-skeleton>
           </div>
         </div>
       </div>
-    
-
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2"
+            ></p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2"
+            ></p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2"
+            ></p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2"
+            ></p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2"
+            ></p-skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <aside class="wcproduct-aside">
+  <!-- <aside class="wcproduct-aside">
 
     <div class="wcproduct-aside__content">
       <div class="wcproduct-aside__complete">
-        <!-- <div class="wcproduct-aside__bar">
-          <p-knob [(ngModel)]="completedEdit" valueColor="green" [size]="130" valueTemplate="{value}%" [min]="0"
-          [max]="100" [readonly]="true"></p-knob>
-        </div> -->
+     
 
         <div class="wcnew-aside__avance">
           <span>Completado:</span>
@@ -443,6 +729,5 @@
         }
       </div>
     </div>
-  </aside>
-
+  </aside> -->
 </div>

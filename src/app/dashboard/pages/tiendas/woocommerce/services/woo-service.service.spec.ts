@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WcommerceService } from './wcommerce.service';
+import { WooService } from './woo.service';
 
-describe('WcommerceService', () => {
-  let service: WcommerceService;
+describe('WooService', () => {
+  let service: WooService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(WcommerceService);
+    service = TestBed.inject(WooService);
   });
 
   it('should be created', () => {

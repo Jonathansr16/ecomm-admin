@@ -1,15 +1,16 @@
-import {  Routes, withComponentInputBinding } from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const WoocommerceRoute: Routes = [
 
   {
     path: 'inventario',
     title: 'inventario',
-    loadComponent: () => import('@woocommerce/pages/inventario/inventario.component')
+    loadComponent: () => import('@woocommerce/pages/inventario/inventario.component'),
+ 
   },
 
   {
-    path: 'producto/:id',
+    path: 'edit-product/:id',
     title: 'producto',
     loadComponent: () => import('@woocommerce/pages/product/product.component')
   },
@@ -47,15 +48,15 @@ export const WoocommerceRoute: Routes = [
         path: '',
         redirectTo: 'pendientes',
         pathMatch: 'full'
-      }
-    ]
+      },
+      
+    
+
+    ],
+
 
   },
 
-];
-
-// @NgModule({
-//   imports: [RouterModule.forChild(WoocommerceRoute)],
-//   exports: [RouterModule],
-// })
-// export class WoocommerceRoutes {}
+ 
+  
+]

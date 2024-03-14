@@ -5,7 +5,7 @@ export interface ProductResult {
     short_description:     string;
     sku:                   string;
     regular_price:         string;
-    sale_price:            string;
+    price:            string;
     categories:            ProductCategoryResponse[];
     images:                 ProductImageResult[];
     stock_quantity:        number;

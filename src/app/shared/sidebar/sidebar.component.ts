@@ -119,7 +119,11 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'inventory_2',
               label: 'Inventario',
               type: 'link',
-              routerLink: '/dashboard/claroshop/inventario'
+              routerLink: '/dashboard/claroshop/inventario',
+              queryParams: {
+                page: '1',
+                productosporpagina: '10'
+              }
             },
             {
               iconLeft: 'local_mall',

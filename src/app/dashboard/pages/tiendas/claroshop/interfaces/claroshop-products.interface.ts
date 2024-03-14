@@ -1,4 +1,4 @@
-export interface ProductsResponse { 
+export interface ProductsOptionResponse { 
     estatus:            string;
     mensaje:            string;
     productos:          ProductResponse[];
@@ -18,7 +18,7 @@ export interface ProductResponse {
     transactionid: number;
     nombre:        string;
     precio:        number;
-    estatus:       EstatusResponse;
+    estatus:       string;
     ean:           string;
     claroid:       number;
     skupadre:      string;

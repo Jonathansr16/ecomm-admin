@@ -1,7 +1,9 @@
-export interface ProductResponse {
+import { ProductResponse } from "./claroshop-products.interface";
+
+export interface ProductSearchResponse {
     estatus:        string;
     mensaje:        string;
-    producto:       Producto;
+    producto:       ProductSearch;
     versionConfig:  string;
     versionAPP:     string;
     tagManagerID:   string;
@@ -9,7 +11,7 @@ export interface ProductResponse {
     visibleMenuCV:  boolean;
 }
 
-export interface Producto {
+export interface ProductSearch {
     transactionid:            number;
     nombre:                   string;
     descripcion:              string;
@@ -47,4 +49,16 @@ export interface Foto {
     url:     string;
     orden:   number;
     estatus: string;
+}
+
+
+export interface ProductSearchResult {
+    estatus:        string;
+    mensaje:        string;
+    productos:       ProductResponse[]
+    versionConfig:  string;
+    versionAPP:     string;
+    tagManagerID:   string;
+    tagManagerIDCS: string;
+    visibleMenuCV:  boolean;
 }

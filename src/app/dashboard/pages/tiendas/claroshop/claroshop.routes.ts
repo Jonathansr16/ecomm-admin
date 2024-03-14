@@ -44,4 +44,10 @@ export const claroRoutes: Routes = [
       },
     ],
   },
+
+  {
+    path: '',
+    redirectTo: 'dashboard/claroshop/inventario',
+    pathMatch: 'full'
+  }
 ];

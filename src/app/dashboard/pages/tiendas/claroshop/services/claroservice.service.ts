@@ -1,49 +1,60 @@
-import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { map, tap } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
 import { OrderResponse } from '@claroshop/interfaces/claroshop-orders.interface';
-import { ProductResponse, ProductsResponse } from '@claroshop/interfaces/claroshop-products.interface';
+import {  ProductSearchResponse, ProductSearchResult, } from '@claroshop/interfaces/claroshop-product.interface';
+import { ProductResponse, ProductsOptionResponse } from '@claroshop/interfaces/claroshop-products.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClaroService {
  
-  constructor(private http: HttpClient) { }
+  http = inject(HttpClient);
 
 //* OBTIENE LA LISTA DE PRODUCTOS
-getProducts(): Observable<ProductsResponse> {
-  return this.http.get<ProductsResponse>(`/producto`)
-  // .pipe(
-   
-  //   map(response => {
-  //     return {
-  //       productos: response.productos,
-  //       totalproductos: response.totalproductos,
-  //       totalpaginas: response.totalpaginas,
-  //       paginaactual: response.paginaactual,
-  //       productosporpagina: response.productosporpagina
-  //     };
-  //   }
-  //   )
-    
-  //    )
+getProducts(page:number, per_page: number): Observable<ProductsOptionResponse> {
 
+  let params = new HttpParams()
+  .append('page', page.toString())
+  .append('productosporpagina', per_page.toString())
+
+  return this.http.get<ProductsOptionResponse>(`producto`, {params})
 }
 
-//*OBTIENE UN PRODUCTO ESPECIFICO
-getProduct(id: string): Observable<ProductResponse> {
-  return this.http.get<ProductResponse>(`/producto/${id}`).pipe( map( (product: any) => ({
+ //*OBTIENE UN PRODUCTO ESPECIFICO
+ getProductsBySearch(id: string): Observable<ProductSearchResult> {
+  return this.http.get<ProductSearchResponse>(`/producto/${id}`)
+    .pipe(
+      map((resp: ProductSearchResponse) => {
+        const producto = resp.producto;
+        const productResponse: ProductResponse = {
+          transactionid: producto.transactionid,
+          nombre: producto.nombre,
+          precio: producto.preciopublicobase,
+          estatus: producto.estatus,
+          ean: producto.ean,
+          claroid: producto.transactionid,
+          skupadre: producto.skupadre,
+          fulfillment: producto.fulfillment
+        };
 
-    id: product.transactionid,
-    name: product.nombre,
-    description: product.descripcion,
-    ...product
+        const result: ProductSearchResult = {
+          estatus: resp.estatus,
+          mensaje: resp.mensaje,
+          productos: [productResponse],
+          versionConfig: resp.versionConfig,
+          versionAPP: resp.versionAPP,
+          tagManagerID: resp.tagManagerID,
+          tagManagerIDCS: resp.tagManagerIDCS,
+          visibleMenuCV: resp.visibleMenuCV
+        };
 
-
-  }) ))
+        return result;
+      }),
+      
+    );
 }
 
 //* OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS

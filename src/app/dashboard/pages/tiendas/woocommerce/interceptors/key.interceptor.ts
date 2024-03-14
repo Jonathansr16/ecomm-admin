@@ -2,13 +2,13 @@ import {
   HttpRequest,
   HttpEvent,
   HttpHandlerFn,
+ 
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 
-export function keyInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-
+export function KeyInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 
     const reqWithParams = request.clone({
       params: request.params
@@ -18,3 +18,4 @@ export function keyInterceptor(request: HttpRequest<unknown>, next: HttpHandlerF
 
     return next(reqWithParams)
 }
+

@@ -5,17 +5,17 @@
     <div class="breadcrumb__body">
 
       <div class="breadcrumb-main">
-        @if (breadcrumbHomeItem.icon) {
-          <i class="breadcrumb-main__i breadcrumb__i material-icons">{{breadcrumbHomeItem.icon}}</i>
+        @if (breadcrumbHomeItem().icon) {
+          <i class="breadcrumb-main__i breadcrumb__i material-icons">{{breadcrumbHomeItem().icon}}</i>
         }
-        <h6 class="breadcrumb-main__h6">{{breadcrumbHomeItem.label}}</h6>
-        @if (breadcrumbHomeItem.separator) {
+        <h6 class="breadcrumb-main__h6">{{breadcrumbHomeItem().label}}</h6>
+        @if (breadcrumbHomeItem().separator) {
           <span class="breadcrumb__separator">-</span>
         }
       </div>
 
       <ol class="breadcrumb__ol">
-        @for (item of breadcrumbItems; track item) {
+        @for (item of breadcrumbItems(); track item) {
           <li class="breadcrumb__li">
             @if (item.url) {
               <a class="breadcrumb__a breadcrumb__item" href="#">

@@ -1,47 +1,47 @@
 @import "mixin";
 
 .wcproduct {
-  @include flexible(flex, row, wrap, center, flex-start);
-  gap: 1.5em;
+  // @include flexible(flex, row, wrap, center, flex-start);
+  // gap: 1.5em;
 
-  &__left {
-    flex-grow: 1;
-    order: 1;
-    margin-left: auto;
-    margin-right: auto;
+  // &__left {
+  //   flex-grow: 1;
+  //   order: 1;
+  //   margin-left: auto;
+  //   margin-right: auto;
    
-  }
+  // }
 
 
 }
 
 .wcform {
   max-width: 852px;
-  margin-left: auto;
-  margin-right: auto;
+  // margin-left: auto;
+  // margin-right: auto;
   padding: 10px;
 
-  &__title {
-    @include flexible(flex, row, wrap, space-between, center);
-    gap: 1em;
-    margin-bottom: 1.3em;
-    max-width: 90%
-  }
+  // &__title {
+  //   @include flexible(flex, row, wrap, space-between, center);
+  //   gap: 1em;
+  //   margin-bottom: 1.3em;
+  //   max-width: 90%
+  // }
 
   &-details {
     @include flexible(flex, column, wrap, center, center);
     gap: 1em;
   }
 
-     &__a {
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: #FFF;
-        }
+    //  &__a {
+    //         font-size: 1.5rem;
+    //         font-weight: 500;
+    //         color: #FFF;
+    //     }
     
-        &__p, &__span {
-            color: #FFF;
-        }
+        // &__p, &__span {
+        //     color: #FFF;
+        // }
 
         &__span--words {
           color: var(--surface-500);
@@ -89,7 +89,7 @@
   }
 
   &__titular {
-    margin: 0 0 1em;
+    // margin: 0 0 1em;
     padding: 24px 32px;
     cursor: pointer;
     @include flexible(flex, row, wrap, space-between, center);
@@ -145,8 +145,8 @@
   }
 
   &__titular {
-    margin: 0 0 1em;
-    padding: 32px 24px;
+    // margin: 0 0 1em;
+    // padding: 32px 24px;
     cursor: pointer;
     @include flexible(flex, row, wrap, space-between, center);
     gap: 1em;

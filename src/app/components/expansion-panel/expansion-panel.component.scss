@@ -5,18 +5,18 @@
     max-width: 852px;
     margin-left: auto;
     margin-right: auto;
-     padding: 10px;
+     padding: 32px ;
     margin-bottom: 1em;
     background-color: var(--surface-card);
     border-radius: 6px;
 
-    &:hover {
-        background-color: var(--surface-b);
-    }
+    // &:hover {
+    //     background-color: var(--surface-b);
+    // }
 
     &-header {
-        margin: 0 0 1em;
-        padding: 24px 32px;
+        // margin: 0 0 1em;
+        // padding: 24px 32px;
       
         cursor: pointer;
         @include flexible(flex, row, nowrap, space-between, center);
@@ -41,7 +41,7 @@
     &__body {
         height: 0;
         padding: 0em;
-        overflow: hidden;
+        // overflow: hidden;
         visibility: hidden;
         pointer-events: none;
         transition: height 0.25s ease;
@@ -60,12 +60,8 @@
 .expansion-panel-header.expanded + .expansion-panel__body {
     pointer-events: auto;
     visibility: visible;
+    margin-top: 12px;
 }
 
-.expansion-panel__body.expanded{
-    pointer-events: auto;
-    visibility: visible;
-    // height: auto;
-}
 
 

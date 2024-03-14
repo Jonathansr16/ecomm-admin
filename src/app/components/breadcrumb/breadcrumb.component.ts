@@ -1,5 +1,5 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import {Router, RouterModule } from '@angular/router';
 
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
@@ -16,8 +16,12 @@ export class BreadcrumbComponent {
 
   public title: string = 'Dashboard';
 
-  @Input() breadcrumbHomeItem: BreadcrumbItem = {};
-  @Input() breadcrumbItems: BreadcrumbItem[] = [];
+  // @Input( {required: true}) breadcrumbHomeItem: BreadcrumbItem = {};
+  // @Input( { required: true}) breadcrumbItems: BreadcrumbItem[] = [];
+
+  breadcrumbHomeItem = input.required<BreadcrumbItem>();
+  breadcrumbItems = input.required<BreadcrumbItem[]>();
+
   constructor( 
     private router: Router,
    

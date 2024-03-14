@@ -1,4 +1,9 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {  Routes } from '@angular/router';
+import { DataTimeInterceptor } from '@claroshop/interceptors/date-time.interceptor';
+import { ClaroService } from '@claroshop/services/claroservice.service';
+import { KeyInterceptor } from '@woocommerce/interceptors/key.interceptor';
+import { WooService } from '@woocommerce/services/woo.service';
 
 export const dashboardRoutes: Routes = [
 
@@ -14,9 +19,33 @@ export const dashboardRoutes: Routes = [
 
 
       {
+        path: 'claroshop',
+        loadChildren: () => import('@claroshop/claroshop.routes').then( (r) => r.claroRoutes),
+
+        providers: [
+          ClaroService,
+          provideHttpClient(
+            withInterceptors([DataTimeInterceptor])
+          )
+        ]
+      },
+
+
+      {
         path: 'woocommerce',
-        loadChildren: () => import('@woocommerce/woocommerce.routes').then( (r) => r.WoocommerceRoute),
-     
+        loadChildren: () => import('@woocommerce/woo.routes').then( (r) => r.WoocommerceRoute),
+        
+          providers: [
+            WooService,
+            provideHttpClient(
+              withInterceptors([KeyInterceptor])
+            )
+          ] 
+      },
+
+      {
+        path: 'claroshop',
+        loadChildren: () => import('@claroshop/claroshop.routes').then( (r) => r.claroRoutes)
       },
 
 

@@ -3,8 +3,8 @@
     <div class="top-header__row top-header__row-breadcrumb">
       <app-breadcrumb
         [breadcrumbHomeItem]="breadcrumHome"
-        [breadcrumbItems]="breadcrumbItems"
-      ></app-breadcrumb>
+        [breadcrumbItems]="breadcrumbItems">
+      </app-breadcrumb>
     </div>
 
     <div class="top-header__row top-header__row-text">
@@ -14,215 +14,160 @@
       </div>
 
       <div class="top-header__col">
-        <!-- <button pButton pRipple label="Producto" class="p-button-success"  icon="pi pi-plus"></button> -->
         <p-splitButton
           #btnDropdown
           label="Publicar"
           icon="pi pi-plus"
           (onClick)="btnDropdown.onDropdownButtonClick($event)"
           [model]="addProductItems"
-        ></p-splitButton>
+          >
+        </p-splitButton>
       </div>
     </div>
   </div>
 </div>
 
-<div class="toolbar-actions container">
-  <div class="toolbar-actions__left">
+<app-card-search [isDisabled]="products.length ===0" [isOptionActive]="handlerOptionBtn" (searchValue)="getProductsBySearch($event)">
+  <ng-container #contentLeft>
+  
     <p-checkbox
-      [disabled]="products.length === 0"
-      [binary]="true"
-      inputId="binary"
-      [(ngModel)]="isSelectAllProduct"
-      (onChange)="toggleSelectAllProducts()"
-    ></p-checkbox>
+    [disabled]="products.length === 0"
+    [binary]="true"
+    inputId="binary"
+    [(ngModel)]="isSelectAllProduct"
+    (onChange)="toggleSelectAllProducts()">
+  </p-checkbox>
 
-    <span class="toolbar-actions__separator"> </span>
+  <span class="toolbar-actions__separator"> </span>
 
-    <div class="toolbar-actions__selection">
-      @if (selectedProduct.length) {
+  <div class="w-32">
+  @if (selectedProduct.length) {
+
       <p class="toolbar-actions__selection-label">
         {{ selectedProduct.length }} seleccionados
       </p>
-      }
-    </div>
-  </div>
-
-  <div class="toolbar-actions__center">
-    <button
-      type="button"
-      class="toolbar-actions__btn p-ripple p-element p-button p-component p-button-text"
-    >
-      Modificar
-    </button>
-    <button
-      type="button"
-      class="toolbar-actions__btn p-ripple p-element p-button p-component p-button-warning p-button-text"
-    >
-      Pausar
-    </button>
-    <button
-      type="button"
-      class="toolbar-actions__btn p-ripple p-element p-button p-component p-button-danger p-button-text"
-    >
-      Eliminar
-    </button>
-  </div>
-
-  <div class="toolbar-actions-right flex justify-end">
-    <div
-      class="toolbar-actions__search"
-      [class.toolbar-actions__search-show]="hidenSearch"
-    >
-      <button
-        (click)="showSearch()"
-        severity="success"
-        type="button"
-        class="toolbar-actions__search-btn-toggle p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
-      >
-        <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
-      </button>
-
-      <div class="toolbar-actions__search-wrapper">
-        <span class="toolbar-actions__search-span p-input-icon-right">
-          <input
-            #searchProduct
-            name="inputSearch"
-            [(ngModel)]="inputValue"
-            (input)="onInputChange()"
-            (keyup.enter)="getProductsBySearch()"
-            type="text"
-            placeholder="Buscar..."
-            pinputtext=""
-            placeholder="Titulo, Codigo, SKU o #"
-            class="toolbar-actions__search-input p-inputtext p-component p-element"
-          />
-          @if (!showIcon) {
-          <i
-            class="toolbar-actions__search-i pi pi-search"
-            (click)="hiddenSearch()"
-          ></i>
-          } @else {
-          <i
-            class="toolbar-actions__search-i pi pi-times"
-            (click)="clearInput()"
-          ></i>
-          }
-        </span>
-      </div>
-    </div>
-
-    <div class="toolbar-actions-filter relative card">
-      <!-- <p-button icon="pi pi-sliders-v" [rounded]="true" [text]="true" severity="primary" (click)="menuFilter.toggle($event)"></p-button>
       
-      <p-tieredMenu #menuFilter [model]="itemsFilter" [popup]="true" [appendTo]="con"></p-tieredMenu> -->
-    </div>
+    }
   </div>
-</div>
+</ng-container>
+</app-card-search>
 
 @switch (statusData) { @case ('success') {
 <div class="inventario">
   <p-toast></p-toast>
-  <div class="woo-inventario__content">
-    @for (product of products; track product.id; let i = $index) {
+  <div class="woo-inventario__content container">
+    @for (product of products; track product.id; let i = $index; ) {
     <app-card-product
       [menu]="optionsProduct"
-      [outOfStock]="product.stock_quantity === 0"
-    >
+      [outOfStock]="product.stock_quantity === 0 && product.stock_status === 'outofstock'">
+      
       <p-checkbox
         [binary]="true"
         inputId="checkProduct{{ product.id }}"
         handlerCheckProduct
         [value]="product"
         [(ngModel)]="isSelectedEveryProduct[i]"
-        (onChange)="toggleEveryProduct(product)"
-      ></p-checkbox>
-      <span class="product-card__actions-span" idProduct
+        (onChange)="toggleEveryProduct(product)">
+      </p-checkbox>
+      <span class="product-card__actions-id text-sm font-bold text-slate-600" idProduct
         >#{{ product.id }}</span
       >
-      <div class="product-card__product">
-        <div class="product-card__picture">
+      <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
+        <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0">
           <img
             [src]="product.images[0].src"
             alt=""
-            class="product-card__img product-card__img-simple-img"
+            class="product-card__img product-card__img-simple-img w-[160px] lg:w-[120px] object-center"
           />
         </div>
-        <div class="product-card__description">
-          <div class="product-card__sku product-card__span-small">
+        <div class="product-card__description gap-2 mb-6 lg:mb-0">
+          <div class="product-card__sku text-xs">
             #{{ product.id }} | Sku: {{ product.sku }}
           </div>
           <a href="#" class="product-card__link-product">
-            <div class="product-card__span product-card__span-bold">
+            <div class="product-card__name text-sm font-bold">
               {{ product.name | slice : 0 : 61 }}
             </div>
           </a>
-          <div class="product-card__store product-card__span-small">
+          <div class="product-card__store product-card__store-woocommerce text-xs font-bold rounded-md inline py-1 px-2">
             Woocommerce
           </div>
-          <div class="product-card__quantity product-card__span-small">
-            {{ product.stock_quantity }}
-            @switch (product.stock_quantity) { @case (0) { unidades } @case (1)
-            { unidad } @default { unidades } }
-          </div>
+          <div class="product-card__quantity text-xs font-semibold">
+          
+           
+            @if (product.stock_quantity) {
+              {{product.stock_quantity}}
+              {{product.stock_quantity === 0  ? 'unidad': 'unidades'}}
+            } 
+            @else if ( (product.stock_quantity === 0 || product.stock_quantity === null) && product.stock_status === 'outofstock' ){
+              0 Unidades
+            }
+            
+            @else {
+              <span class="text-xs font-semibold text-green-600">Hay Existencia</span>
+            } 
+                   </div>
         </div>
       </div>
-      @if (product.regular_price && product.sale_price) {
-      <div class="product-card__details-col product-card__price">
-        <span class="product-card__span product-card__span-bold"
-          >${{ product.regular_price }}</span
+      @if (product.price && product.regular_price) {
+      <div class="product-card__details-col product-card__price flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+        <span class="product-card__price text-sm font-semibold"
+          >{{ product.regular_price | currency }}</span
         >
-        <span class="product-card__span-small">precio regular</span>
-        <a href="#" class="product-card__a product-card__span-small"
+        <span class="product-card__label text-xs">precio regular</span>
+        <a href="#" class="product-card__a text-xs"
           >Modificar precio</a
         >
       </div>
-      } @if (product.regular_price && product.sale_price) {
-      <div class="product-card__details-col product-card__price">
-        <span class="product-card__span product-card__span-bold"
-          >${{ product.sale_price }}</span
+      } @if (product.price && product.regular_price) {
+      <div class="product-card__details-col product-card__price flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+        <span class="product-card__price text-sm font-semibold"
+          >{{ product.price | currency }}</span
         >
-        <span class="product-card__span-small">precio al publico</span>
+        <span class="product-card__label text-xs">precio al publico</span>
       </div>
-      } @if (!product.regular_price || !product.sale_price) {
-      <div class="product-card__details-col product-card__price">
-        <span class="product-card__span product-card__span-bold"
+      } @if (!product.price || !product.regular_price) {
+      <div class="product-card__details-col product-card__price flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+        <span class="product-card__withoutPrice text-sm font-semibold"
           >Precio no fijado</span
         >
-        <span class="product-card__span-small">Precio sin configurar</span>
-        <a href="#" class="product-card__a product-card__span-small"
+        <span class="product-card__label text-xs">Precio sin configurar</span>
+        <a href="#" class="product-card__a text-xs"
           >Modificar precio</a
         >
       </div>
       }
-      <div class="product-card__details-col product-card__status">
+      <div class="product-card__details-col product-card__status flex flex-col flex-nowrap gap-y-2 lg:gap-y-1.5">
         @switch (product.stock_status) { @case ('outofstock') {
-        <span class="product-card__span product-card__span-bold">Inactivo</span>
-        <span class="product-card__span-small"
+        <span class="product-card__inactive-title text-sm font-semibold">Inactivo</span>
+        <span class="product-card__label text-xs"
           >No tienes mas unidades a la venta</span
         >
         } @case ('instock') {
-        <span class="product-card__span product-card__span-bold">{{
+        <span class="product-card__unit-sales text-sm font-semibold">{{
           product.total_sales
         }}</span>
-        <span class="product-card__span-small">{{
+        <span class="product-card__label text-xs">{{
           product.total_sales > 1 ? "unidades vendidas" : "unidad vendida"
         }}</span>
         } }
       </div>
-      @if (product.stock_quantity >= 1) {
-      <div class="product-card__details-col product-card__toggle">
-        <span class="product-card__span-small">{{
-          product.stock_quantity >= 1 ? "Activo" : "Inactivo"
-        }}</span>
+    
+      <div class="product-card__details-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+        <span class="product-card__isActive-product text-sm font-semibold">
+          {{
+            product.stock_quantity || product.stock_status === 'instock' ? 'Activo': 'Inactivo' }}
+</span>
         <p-inputSwitch
           [name]="product.sku"
           inputId="inputSwitchProduct {{ product.id }}"
-          [(ngModel)]="isActiveProduct[i]"
+          [trueValue]="(product.stock_quantity === 0 || product.stock_quantity === null) && product.stock_status === 'outofstock'"
+          [disabled]="true"
+          [readonly]="true"
           (onChange)="onSwitchChange($event, product)"
         ></p-inputSwitch>
       </div>
-      }
+      
     </app-card-product>
     }
     <div class="max-w-7xl mx-auto my-6">
@@ -302,13 +247,14 @@
 
 <p-dialog
   [(visible)]="toggleProductDialog"
-  [style]="{ width: '550px' }"
+  [style]="{ width: '40vw' }"
   header="Detalles del Producto"
   [modal]="true"
+  [maximizable]="true"
   styleClass="p-fluid"
 >
   <ng-template pTemplate="content">
-    <form [formGroup]="formRegisterProducto" action="" class="form_product">
+    <form [formGroup]="formRegisterGroup" (ngSubmit)="publishProduct()" class="form_product">
       @if (product?.images?.length) {
 
       <img
@@ -319,6 +265,25 @@
       }
 
       <div class="formGroup" formGroupName="detailsProduct">
+
+        <div class="field mb-4">
+          <label for="imagesForProduct pb-2">Images para el producto:</label>
+          <p-fileUpload 
+          mode="advanced" 
+          [multiple]="true" 
+          accept="image/.png, .jpg, .webp" 
+          [fileLimit]="10"
+          invalidFileTypeMessageSummary="Tipo de archivo no permitido"
+          invalidFileTypeMessageDetail="Solo se permiten imagenes con extensión: .jpg, .png y .webp"
+          chooseLabel="Eligir"
+          uploadLabel="Cargar"
+          cancelLabel="Cancelar"
+        
+          >
+          
+          </p-fileUpload>
+        </div>
+
         <div class="field mb-4">
           <label class="field__label pb-2" for="titleProduct">Titulo del producto:</label>
           <i class="field__i material-icons "  pTooltip="Incluye producto, marca y destaca sus caracteristicas principales">
@@ -329,17 +294,18 @@
             type="text"
             pInputText
             id="titleProduct"
-            formControlName="title" 
+            formControlName="title"
+            [maxlength]="60" 
           />
 
-          <small class="form__length-words block">{{getValueField('title').length}} /60</small>
+          <small class="form__length-words block">{{getValueField('title')?.length}} /60</small>
           <small class="p-error" *ngIf="validField('title')">Titulo del producto es requerido.</small>
         </div>
 
         <div class="field mb-4">
           <label for="descriptionProduct">Descripción del producto:</label>
-          <textarea formControlName="descriptionProduct" name="detailProduct" class="w-full max-h[450px]" id="detailProduct" pInputTextarea cols="30" rows="8" ></textarea>
-          <small class="form__length-words block">{{getValueField('description').length}} /2000</small>
+          <textarea formControlName="description" name="detailProduct" class="w-full max-h[450px]" id="detailProduct" pInputTextarea cols="30" rows="8" ></textarea>
+          <small class="form__length-words block">{{getValueField('description')?.length}} /2000</small>
           <small class="p-error" *ngIf="validField('description')">Descripción del producto es requerido.</small>
         </div>
 
@@ -370,13 +336,28 @@
 
       <div class="field mb-4">
         <label for="stockProduct">Stock del producto:</label>
-        <input
-        id="stockProduct"
-        [class.is-invalid]="validField('stock')"
-        formControlName="stock" 
-        pInputText
-        type="text"
-      />
+ 
+      <p-inputNumber 
+       inputId="stockProduct"
+       formControlName="stock"
+       [class.is-invalid]="validField('stock')"
+       [min]="0" 
+       [max]="3"
+       [maxlength]="10">
+
+      </p-inputNumber>
+      </div>
+
+      <div class="field mb-4">
+        <pre>
+          {{ formRegisterGroup.value | json}}
+        </pre>
+      </div>
+
+      <div class="field mb-4">
+        <pre>
+         Estado del formulario: {{ formRegisterGroup.status }}
+        </pre>
       </div>
 
       </div>
@@ -385,7 +366,7 @@
 
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="closeDialogNewProduct()"></button>
-    <button pButton pRipple label="Publicar" icon="pi pi-check" class="p-button-text" (click)="saveProduct(product)"></button>
+    <button pButton pRipple label="Publicar" type="submit" icon="pi pi-check" class="p-button-text" (click)="publishProduct()"></button>
   </ng-template>
   
 </p-dialog>

@@ -1,0 +1,82 @@
+
+.topbar-card__container {
+  background-color: var(--surface-card);
+}
+
+.topbar__search-show {
+
+  .topbar__search__btn-toggle {
+
+    opacity: 0;
+    display: none;
+    pointer-events: none;
+    cursor: default;
+    transition: opacity 0.1s;
+    transition-delay: 0.1s;
+  }
+
+  .topbar__search-wrapper {
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.toolbar-actions {
+    //? search
+    &__search {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      justify-content: flex-end;
+      width: 280px;
+  
+      &-wrapper {
+        position: relative;
+        width: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+  
+        transition: 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+      }
+  
+      &-span {
+        width: 100%;
+      }
+  
+      &-input {
+        width: 100%;
+        position: relative;
+        border-radius: 0px;
+        border: none;
+        font-size: 0.875rem;
+        // border-color: transparent;
+        padding-left: 1.5em;
+        border-bottom: 1px solid var(--surface-300);
+      }
+  
+      &-i {
+        font-size: 18px;
+        margin-top: -9px;
+        cursor: pointer;
+      }
+    }
+  
+    &__search-show {
+      .toolbar-actions__search-btn-toggle {
+        opacity: 0;
+        display: none;
+        pointer-events: none;
+        cursor: default;
+        transition: opacity 0.1s;
+        transition-delay: 0.1s;
+      }
+  
+      .toolbar-actions__search-wrapper {
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+}

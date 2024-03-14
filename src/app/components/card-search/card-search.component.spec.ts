@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CardPaginationComponent } from './card-pagination.component';
 
-describe('CardPaginationComponent', () => {
-  let component: CardPaginationComponent;
-  let fixture: ComponentFixture<CardPaginationComponent>;
+import { CardSearchComponent } from './card-search.component';
+
+describe('CardSearchComponent', () => {
+  let component: CardSearchComponent;
+  let fixture: ComponentFixture<CardSearchComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ CardPaginationComponent ]
+      imports: [CardSearchComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(CardPaginationComponent);
+    
+    fixture = TestBed.createComponent(CardSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

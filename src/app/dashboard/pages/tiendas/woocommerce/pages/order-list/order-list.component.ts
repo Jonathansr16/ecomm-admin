@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CardStatsComponent } from '@components/card-stats/card-stats.component';
-import { WcommerceService } from '@woocommerce/services/wcommerce.service';
+import { WooService } from '@woocommerce/services/woo.service';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -43,9 +43,11 @@ export default class OrderListComponent implements OnInit {
     failed: true
   };
 
-  constructor(private orderService: WcommerceService) {
+  // constructor(private orderService: WcommerceService) {
 
-    }
+  //   }
+
+  orderService = inject(WooService);
    
     getNumberPendingOrders() {
    
@@ -116,6 +118,8 @@ export default class OrderListComponent implements OnInit {
    this.getNumberProcessOrders();
    this.getNumberCompletedOrders();
    this.getNumberCancelledOrders();
+   
+    
   }
 
   // search() {
