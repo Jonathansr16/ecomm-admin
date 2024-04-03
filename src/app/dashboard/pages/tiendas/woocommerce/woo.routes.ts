@@ -33,8 +33,8 @@ export const WoocommerceRoute: Routes = [
       }, 
       
       {
-        path: 'completadas',
-        title: 'Ordenes completadas',
+        path: 'concretadas',
+        title: 'Ordenes concretadas',
         loadComponent: () => import('@woocommerce/pages/order-list/completed-orders/completed-orders.component')
       },
 

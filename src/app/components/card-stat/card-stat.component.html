@@ -1,0 +1,58 @@
+<div
+  class="cards-stat__container text-gray-600 body-font shadow-slate-300 mx-auto"
+>
+  <h2 class="cards__title font-medium text-xl">{{ titleSection }}</h2>
+  <div class="cards-stat" [class]="klassContainer">
+    
+   
+      <div class="card-stat" [class]="klassCard" *ngFor="let data of dataCard" (click)="op.toggle($event)" >
+        <span
+          *ngIf="data.icon || data.iconClass"
+          class="card-stat__icon-box w-11 h-11 mr-3 flex items-center justify-center rounded-xl"
+          [class]="data.backgroundIconClass"
+        >
+          <i class="card-stat__icon w-7 h-7" class="{{ data.iconClass }}">{{
+            data.icon
+          }}</i>
+        </span>
+  
+        <div *ngIf="data.urlImage" class="card-stat__image-box mt-6">
+          <img
+            class="w-12 h-12 object-cover object-center flex-shrink-0 rounded-full mr-4"
+            [src]="data.urlImage"
+            alt=""
+          />
+        </div>
+  
+        <div>
+          <h2 class="text-gray-500 title-font font-medium text-sm line-clamp-3">
+            {{ data.label }}
+          </h2>
+          <p class="font-bold text-gray-700 text-2xl">
+            {{ data.quantity | number }}
+          </p>
+        </div>
+    
+<p-overlayPanel #op>
+
+  <p-table [value]="dataTable" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Tienda</th>
+            <th>Cantidad</th>
+         
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+        <tr>
+            <td>{{ order.store }}</td>
+            <td>{{ order.quantity }}</td>
+           
+        </tr>
+    </ng-template>
+</p-table>
+</p-overlayPanel>
+
+    </div>
+  </div>
+</div>

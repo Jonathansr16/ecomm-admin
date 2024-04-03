@@ -1,13 +1,11 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpParams} from '@angular/common/http';
-import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {  inject } from '@angular/core';
+import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import {  Observable, of } from 'rxjs';
+import { catchError, map, } from 'rxjs/operators';
 import {
-  OrderResponse,
-  OrderResult,
-  ProductOrderResult,
+  OrderResponse
+
 } from '@woocommerce/interface/woo-order.interface';
-import { Orden } from '@woocommerce/models/wc-order.model';
 import {
   ProductCategoryResponse,
   ProductImageResult,
@@ -16,118 +14,195 @@ import {
 import { WooProducto } from '@woocommerce/models/wc-new-product.model';
 import { ProductResult } from '@woocommerce/interface/woo-producto.interface';
 import { environment } from 'src/environments/environment.development';
+import { ProductInventory } from '@components/interfaces/product.interface';
+import {  Orders } from 'src/app/core/interface/order.interface';
 
 
 export class WooService {
 
   private url = environment.wcommerce.apiBase;
-  private cachedDataPage: { [key: string]: ProductResult[] } = {};
+  // private cachedDataPage: { [key: string]: any[] } = {};
+  totalItems: number =0;
+  totalOrders: number = 0;
+
   http = inject(HttpClient);
 
 
   //* OBTIENE TODOS LOS PRODUCTOS
-  getProducts(page: number, per_page: number): Observable<ProductResult[]> {
-    const cacheKey = `${page}-${per_page}`;
-    const cachedData = this.cachedDataPage[cacheKey];
+  // getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalRecords: number }> {
+  //   const cacheKey = `${page}-${per_page}`;
+  //   const cachedData = this.cachedDataPage[cacheKey];
 
-    let params = new HttpParams()
-    .append('page', page.toString())  // Convertir a cadena
-    .append('per_page', per_page.toString())  // Convertir a cadena
+  //   let params = new HttpParams()
+  //     .append('page', page.toString())
+  //     .append('per_page', per_page.toString());
+
+  //   if (cachedData) {
+  //     return of(
+  //       { 
+  //         products: cachedData, 
+  //         totalRecords: this.totalItems
+  //       }
+        
+  //       );
+      
+    
+  //   } else {
+  //     return this.http.get<ProductResponse[]>(`${this.url}/products`, { params, observe: 'response' })
+  //       .pipe(
+  //         map((response: HttpResponse<ProductResponse[]>) => {
+  //           const products = response.body; // Datos de los productos
+  //           const totalRecords = response.headers.get('X-WP-Total'); // Cantidad de registros
+  //           this.totalItems = totalRecords ? +totalRecords : 0; 
+  //           return { 
+  //             products: products ? this.transformDataProduct(products) : [], 
+  //             totalRecords: this.totalItems 
+  //           };
+
+  //         }),
+  //         tap(data => {
+  //           this.cachedDataPage[cacheKey] = data.products;
+
+  //           // Limpiar caché si se excede un límite de almacenamiento, por ejemplo, 100 páginas
+  //           if (Object.keys(this.cachedDataPage).length > 20) {
+  //             delete this.cachedDataPage[Object.keys(this.cachedDataPage)[0]];
+  //           }
+  //         }),
+  //         catchError(error => {
+  //           console.error('Error al obtener productos', error);
+  //           return of({ products: [], totalRecords: 0 }); // Manejar el error devolviendo un objeto vacío
+  //         })
+  //       );
+  //   }
+  // }
+
+  getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalRecords: number }> {
    
-    if(cachedData) {
-      return of(cachedData);
-    } else {
+    let params = new HttpParams()
+      .append('page', page.toString())
+      .append('per_page', per_page.toString());
 
-      return this.http.get<ProductResponse[]>(`${this.url}/products`, {params} )
+  
+      return this.http.get<ProductResponse[]>(`${this.url}/products`, { params, observe: 'response' })
         .pipe(
-          map(this.transformDataProduct),
-          tap({
-            next: (( data) => { 
-              this.cachedDataPage[cacheKey] = data;
+          map((response: HttpResponse<ProductResponse[]>) => {
+            const products = response.body; // Datos de los productos
+            const totalRecords = response.headers.get('X-WP-Total'); // Cantidad de registros
+            this.totalItems = totalRecords ? +totalRecords : 0; 
+            return { 
+              products: products ? this.transformDataProduct(products) : [], 
+              totalRecords: this.totalItems 
+            };
 
-               // Limpiar caché si se excede un límite de almacenamiento, por ejemplo, 100 páginas
-            if (Object.keys(this.cachedDataPage).length > 20) {
-              delete this.cachedDataPage[Object.keys(this.cachedDataPage)[0]];
-            }
-              
-            }),
-            
           }),
-          catchError( (error) => {
-            
-            return EMPTY;
+       
+          catchError(error => {
+            console.error('Error al obtener productos', error);
+            return of({ products: [], totalRecords: 0 }); // Manejar el error devolviendo un objeto vacío
           })
-          );
-    }
-
+        );
+    
   }
 
-  transformDataProduct(resp: ProductResponse[]): ProductResult[] {
-    return resp.map((producto: ProductResult) => ({
+
+  transformDataProduct(resp: ProductResponse[]): ProductInventory[] {
+    return resp.map((producto) => ({
       id: producto.id,
-      name: producto.name,
+      title: producto.name,
       description: producto.description,
       short_description: producto.short_description,
       sku: producto.sku,
-      regular_price: producto.regular_price,
-      price: producto.price,
-      categories: producto.categories,
-      images: producto.images.map((img: ProductImageResult) => ({
-        ...img
-      })),
-      stock_quantity: producto.stock_quantity,
-      stock_status: producto.stock_status,
-      status: producto.status,
-      total_sales: producto.total_sales
+      store: 'woocommerce',
+      regular_price: parseFloat(producto.price),
+      sale_price: parseFloat(producto.regular_price),
+      units: producto.stock_quantity,
+      category: producto.categories,
+      imagesProduct: producto.images,
+      status: producto.stock_quantity > 0 ? 'active' : 'inactive'
     }))
   }
 
-  getTotalProduct(): Observable<{ totalRecords: number }> {
-    return this.http.get<ProductResponse[]>(`${this.url}`).pipe(
-      map((resp) => { return { totalRecords: resp.length } }),
-      tap((resp) => console.log(resp))
-    )
-  }
 
-  //* OBTIENE PRODUCTOS RELACIONADOS CON LA BUSQUEDA
-  getProductsBySearch(searchValue: string, page: number, itemsPerPage: number): Observable<ProductResult[]> {
-    const query = `?page=${page}&per_page=${itemsPerPage}`;
-    return this.http.get<ProductResponse[]>(`${this.url}/products${query}`).pipe(
-      map(products => this.filterProducts(products, searchValue)),
-
-    );
-  }
-
-  private filterProducts(products: ProductResponse[], searchValue: string): ProductResult[] {
-    return products.filter(product => {
-      // Filtrar por id, nombre o SKU
-      return (
-        product.id.toString().includes(searchValue.toLocaleLowerCase()) || // Búsqueda por id
-        product.name.toLowerCase().includes(searchValue.toLowerCase()) || // Búsqueda por nombre (case-insensitive)
-        product.sku.toLowerCase().includes(searchValue.toLowerCase()) // Búsqueda por SKU (case-insensitive)
+    //* OBTIENE PRODUCTOS RELACIONADOS CON LA BUSQUEDA
+    getProductsBySearch(searchValue: string, page: number, itemsPerPage: number, typeSearch: 'todo' | 'id' | 'title' | 'sku'): Observable<{ products: ProductInventory[], totalRecords: number }> {
+      const query = `?page=${page}&per_page=${itemsPerPage}`;
+      return this.http.get<ProductResponse[]>(`${this.url}/products${query}`, { observe: 'response' }).pipe(
+        map((response: HttpResponse<ProductResponse[]>) => {
+          const products = response.body; // Datos de los productos
+          const totalRecords = response.headers.get('X-WP-Total');
+          this.totalItems = totalRecords ? +totalRecords : 0;
+          
+          if (products !== null) {
+            return { products: this.filterProducts(products, searchValue, typeSearch), totalRecords: this.totalItems };
+          } else {
+            this.totalItems =0;
+            throw new Error('La respuesta del servidor es nula');
+          }
+        })
       );
+    }
+  private filterProducts(products: ProductResponse[], searchValue: string, typeSearch: 'todo' | 'id' | 'title' | 'sku'): ProductInventory[] {
+  
+    return products.filter(product => {
+      
+      switch(typeSearch) {
+       
+        case 'todo': {
+
+        return product.id.toString().includes(searchValue.toLocaleLowerCase()) || // Búsqueda por id
+               product.name.toLowerCase().includes(searchValue.toLowerCase()) || // Búsqueda por nombre (case-insensitive)
+               product.sku.toLowerCase().includes(searchValue.toLowerCase()); // Búsqueda por SKU (case-insensitive)
+        break;
+        }
+
+        case 'id': {
+          return product.id.toString().includes(searchValue.toLocaleLowerCase())  ; //Búsqueda por id
+          break;
+        }
+
+        case 'title': {
+         return product.name.toLowerCase().includes(searchValue.toLowerCase()) ; //Búsqueda por SKU (case-insensitive)
+         break;
+        }
+
+        case 'sku': {
+         return product.sku.toLowerCase().includes(searchValue.toLowerCase()); //Búsqueda por SKU (case-insensitive)
+         break;
+        }
+
+         default: {
+          return  product.id.toString().includes(searchValue.toLocaleLowerCase()) || // Búsqueda por id
+          product.name.toLowerCase().includes(searchValue.toLowerCase()) || // Búsqueda por nombre (case-insensitive)
+          product.sku.toLowerCase().includes(searchValue.toLowerCase()); // Búsqueda por SKU (case-insensitive)
+          break;
+        }   
+
+      }
+
     }).map(this.transformDataProduc);
   }
 
-  private transformDataProduc(producto: ProductResponse): ProductResult {
+  private transformDataProduc(producto: ProductResponse): ProductInventory {
     // Aquí puedes realizar cualquier transformación necesaria de los datos del producto
     // Por ejemplo, mapear los datos a una interfaz diferente si es necesario
     return {
       id: producto.id,
-      name: producto.name,
+      title: producto.name,
       description: producto.description,
       short_description: producto.short_description,
       sku: producto.sku,
-      regular_price: producto.regular_price,
-      price: producto.price,
-      categories: producto.categories,
-      images: producto.images.map((img: ProductImageResult) => ({
+      store: 'woocommerce',
+      regular_price: parseFloat(producto.regular_price),
+      sale_price: parseFloat(producto.price),
+      units: producto.stock_quantity,
+      status: producto.stock_quantity > 0 ? 'active' : 'inactive',
+      total_sales: producto.total_sales,
+      category: producto.categories,
+      imagesProduct: producto.images.map((img: ProductImageResult) => ({
         ...img
       })),
-      stock_quantity: producto.stock_quantity,
-      stock_status: producto.stock_status,
-      status: producto.status,
-      total_sales: producto.total_sales
+    
+      
 
       // Otras propiedades del producto que quieras incluir
     };
@@ -164,43 +239,90 @@ export class WooService {
   }
 
   //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
-  getOrderByStatus(
-    status: 'pending' | 'processing' | 'completed' | 'cancelled',
-    page: number,
-    per_page: number
-  ): Observable<OrderResult[]> {
-
-    const params = new HttpParams()
+  getOrderByStatus(status: 'pending' | 'completed' | 'canceled' | 'failed', page: number, per_page: number): Observable<{orders: Orders[], totalOrders: number}> {
+  const params = new HttpParams()
       .append('status', status.toString())
       .append('page', page.toString())
-      .append('per_page', per_page.toString())
+      .append('per_page', per_page.toString());
 
-    return this.http
-      .get<OrderResponse[]>(`${this.url}/orders`, {params})
+      return this.http.get<OrderResponse[]>(`${this.url}/orders`, {params, observe: 'response'})
       .pipe(
-        map((resp) => {
-          return resp.map((order) => {
-            return new Orden(
-              order.id,
-              order.billing.first_name,
-              order.billing.last_name,
-              order.status,
-              order.date_created,
-              order.date_modified,
-              order.total,
-              order.line_items.map((product: ProductOrderResult) => ({
-                name: product.name,
-                quantity: product.quantity,
-                total: product.total,
-                sku: product.sku,
-                image: product.image,
-              }))
-            );
-          });
-        }),
-        catchError(this.hanlerError<OrderResult[]>('getOrderByStatus', []))
-      );
+       
+        map( (response : HttpResponse<OrderResponse[]>) => {
+
+          const ordersResponse = response.body; //datos de las ordenes
+          const totalOrders = response.headers.get('X-WP-Total');
+          this.totalOrders = totalOrders ? parseInt(totalOrders) : 0;
+          if(ordersResponse !== null) {
+          
+          return {
+            orders: ordersResponse.map( (orderResponse) => this.transformOrder(orderResponse) ),
+            totalOrders: this.totalOrders
+          } 
+          
+          } else {
+            this.totalOrders = 0;
+            throw new Error('La respuesta del servidor es nula');
+          }
+        })
+      )
+
   }
+
+  private transformOrder(orderResponse: OrderResponse): Orders {
+    return {
+      id: orderResponse.id,
+      noOrder:  orderResponse.id.toString(),
+      status: orderResponse.status,
+      date_created: orderResponse.date_created,
+      shipment_date: orderResponse.date_completed,
+      fulfillment: false,
+      total: parseFloat(orderResponse.total),
+      products: orderResponse.line_items.map( (productOrder) => ({
+        product: productOrder.name,
+        sku: productOrder.sku,
+        total: parseFloat(productOrder.total),
+        image: productOrder.image
+      }))
+    }
+  }
+  // getOrderByStatus(
+  //   status: 'pending' | 'processing' | 'completed' | 'cancelled',
+  //   page: number,
+  //   per_page: number
+  // ): Observable<OrderResult[]> {
+
+  //   const params = new HttpParams()
+  //     .append('status', status.toString())
+  //     .append('page', page.toString())
+  //     .append('per_page', per_page.toString())
+
+  //   return this.http
+  //     .get<OrderResponse[]>(`${this.url}/orders`, {params})
+  //     .pipe(
+  //       map((resp) => {
+  //         return resp.map((order) => {
+  //           return new Orden(
+  //             order.id,
+  //             order.billing.first_name,
+  //             order.billing.last_name,
+  //             order.status,
+  //             order.date_created,
+  //             order.date_modified,
+  //             order.total,
+  //             order.line_items.map((product: ProductOrderResult) => ({
+  //               name: product.name,
+  //               quantity: product.quantity,
+  //               total: product.total,
+  //               sku: product.sku,
+  //               image: product.image,
+  //             }))
+  //           );
+  //         });
+  //       }),
+  //       catchError(this.hanlerError<OrderResult[]>('getOrderByStatus', []))
+  //     );
+  // }
 
   //* OBTIENE LA CANTIDAD DE ORDENES
   getOrdersCount(

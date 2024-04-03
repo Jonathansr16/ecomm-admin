@@ -3,13 +3,13 @@ import { OrderListResponse } from '@claroshop/interfaces/claroshop-orders.interf
 import { ClaroService } from '@claroshop/services/claroservice.service';
 
 @Component({
-  selector: 'app-claroshop-pending-orders',
+  selector: 'app-pending-orders',
   standalone: true,
   imports: [],
   template: ``,
-  styleUrls: ['./claroshop-pending-orders.component.scss']
+  styleUrls: ['./pending-orders.component.scss']
 })
-export default class ClaroshopPendingOrdersComponent {
+export default class PendingOrdersComponent {
 
   searchTerm: string = '';
   pendingOrders: OrderListResponse[] = [];

@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+
+
+.inventory__search {
+  &-wrapper {
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+     overflow: hidden;
+    transition: 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+
+  }
+
+  &-show {
+
+    border-radius: 10px;
+    border: 1px solid var(--surface-300);
+    .inventory__search-btn-toggle {
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+      cursor: default;
+    }
+    .inventory__search-wrapper {
+      width: 100%;
+      opacity: 1;
+      visibility: visible;
+    }
+
+
+
+  }
+
+  &-input {
+
+    &:focus {
+      box-shadow:none;
+    }
+
+    // &:enabled:hover {
+    //   box-shadow: var(--primary-color);
+
+    // }
+
+  }
+  
+
+}
+
+.focus {
+  box-shadow: 0 0 0 0.2rem #BFDBFE;
+  border-color: #3B82F6;
+}
+
+
+::ng-deep  #menuToolbar {
+  top: 50px !important;
+  left: 20px !important;
+}
+
+
+//loader 
+.loader {
+
+  &__spiner {
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 10%);
+      top: 0;
+      background: #ff3d00;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      animation: jump 0.5s ease-in infinite alternate;
+    }
+
+    &::after {
+      background: #0000;
+      color: #fff;
+      top: 100%;
+      box-shadow: 32px -20px, -32px -20px;
+      animation: split 0.5s ease-out infinite alternate;
+    }
+  }
+
+  &__mask {
+    background-color: var(--maskbg);
+  }
+}
+
+
+//*animation for loader
+@keyframes split {
+  0% {
+    box-shadow: 8px -20px, -8px -20px;
+  }
+  100% {
+    box-shadow: 32px -20px, -32px -20px;
+  }
+}
+@keyframes jump {
+  0% {
+    transform: translate(-50%, -150%);
+  }
+  100% {
+    transform: translate(-50%, 10%);
+  }
+}

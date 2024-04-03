@@ -27,6 +27,11 @@
   //   margin-bottom: 1.3em;
   //   max-width: 90%
   // }
+  
+  background-color: var(--surface-card);
+  // padding: 32px 24px;
+  border-radius: 20px;
+  margin-top: -2em;
 
   &-details {
     @include flexible(flex, column, wrap, center, center);

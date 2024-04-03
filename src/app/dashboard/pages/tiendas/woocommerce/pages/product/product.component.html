@@ -11,22 +11,38 @@
   <p-toast position="top-center" key="tc"></p-toast>
   <div class="wcproduct__left">
     <form action="#" class="wcform mx-auto" [formGroup]="formProduct">
+      <div class="wc-product__back flex items-stretch gap-4 mt-3 mb-10">
+        <p-button
+          icon="pi pi-arrow-left"
+          [rounded]="false"
+          [text]="true"
+          [raised]="true"
+          severity="info"
+        ></p-button>
+        <div class="wc-product__back-text">
+          <p class="text-slate-600 text-xs">Regresar a Inventario</p>
+          <h5 class="text-stone-700 font-semibold text-xl">Editar Producto</h5>
+        </div>
+      </div>
+
       <div class="wcform__container">
         <div
-          class="wcform__title flex flex-row flex-wrap lg:flex-nowrap justify-between items-center gap-1"
+          class="wcform__title flex flex-row flex-wrap lg:flex-nowrap justify-between items-center gap-1 px-6 py-8"
         >
           <div class="wcform__details">
             <span
-              class="form__store font-semibold text-sm bg-indigo-100 text-indigo-700 px-2 py-1 rounded-lg"
+              class="form__store font-semibold text-sm bg-indigo-100 text-indigo-700 px-4 py-1 mb-2 inline-block rounded-lg"
               >Woocommerce</span
             >
-            <div class="wcform__detail">
+            <div class="wcform__detail mb-2">
               <a class="wcform__a text-slate-700 font-bold text-2xl" href="#">{{
                 wcProduct.name
               }}</a>
             </div>
-            <div class="wcform__detail">
-              <span class="wcform__span text-base" href="#">#1345805537</span>
+            <div class="wcform__detail mb-2">
+              <span class="wcform__span text-base mb-2 block" href="#"
+                >#1345805537</span
+              >
               <p class="wcform__p text-sm" href="#">
                 Unidades vendidas:
                 <span class="">{{ wcProduct.total_sales }}</span>
@@ -42,165 +58,173 @@
           </div>
         </div>
 
-        <h3 class="text-2xl font-bold text-slate-700 py-3">
-          Datos basicos del producto 📓
-        </h3>
-        <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+        <div class="section-product px-6 py-8">
+          <h3 class="text-2xl font-bold text-slate-500 py-3">
+            Datos basicos del producto 📓
+          </h3>
 
-        <app-expansion-panel
-          [label]="'Titulo'"
-          [isValid]="verifyField('name', wcProduct.name)"
-          [propertyProduct]="wcProduct.name"
-          [propertytoRequire]="
-            'Incluye producto, marca, modelo y caraterísticas principales'
-          "
-          [activeAccordeon]="activeAccordeon"
-          (panelClicked)="activeAccordeon = $event"
-          (updateProduct)="updateField('name')"
-        >
-          <div
-            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
-          >
-            <label class="form__label" htmlFor="title">
-              *Titulo del producto:
-            </label>
-            <input
-              class="form__input w-full"
-              pInputText
-              id="title"
-              placeholder="Ingrese un titulo para el producto"
-              formControlName="name"
-              #inputName
-              [maxlength]="60"
-            />
+          <div class="section-product__content">
+            <app-expansion-panel
+              [label]="'Titulo'"
+              [isValid]="verifyField('name', wcProduct.name)"
+              [propertyProduct]="wcProduct.name"
+              [propertytoRequire]="
+                'Incluye producto, marca, modelo y caraterísticas principales'
+              "
+              [activeAccordeon]="1"
+              (updateProduct)="updateField('name')"
+            >
+              <div
+                class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+              >
+                <label
+                  class="form__label text-sm font-semibold text-slate-500"
+                  htmlFor="title"
+                >
+                  *Titulo del producto:
+                </label>
+                <input
+                  class="form__input w-full"
+                  pInputText
+                  id="title"
+                  placeholder="Ingrese un titulo para el producto"
+                  formControlName="name"
+                  #inputName
+                  [maxlength]="60"
+                  [style]="{ 'font-size': '14px', 'border-style': 'dashed' }"
+                />
 
-            @if (invalidField('name')) {
-            <small class="p-error">El titulo es obligatorio</small>
-            }
+                @if (invalidField('name')) {
+                <small class="p-error">El titulo es obligatorio</small>
+                }
+              </div>
+            </app-expansion-panel>
 
+            <app-expansion-panel
+              [isValid]="verifyField('description', wcProduct.description)"
+              [label]="'Descripción del producto'"
+              [propertyProduct]="wcProduct.description | slice : 0 : 300"
+              [propertytoRequire]="
+                'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
+              "
+              [activeAccordeon]="2"
+           
+              (updateProduct)="updateField('description')"
+            >
+              <div
+                class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+              >
+                <label class="form__label text-sm font-semibold text-slate-500" htmlFor="title">
+                  *Descripción del producto:
+                </label>
+
+                <textarea
+                  class="wcform__textarea"
+                  id="description"
+                  placeholder="Descripción larga del producto"
+                  formControlName="description"
+                  rows="14"
+                  cols="30"
+                  [maxlength]="50000"
+                  pInputTextarea
+                  [autoResize]="true"
+                  [class.is-invalid]="verifyField"
+                >
+                </textarea>
+              </div>
+            </app-expansion-panel>
+
+            <app-expansion-panel
+              [isValid]="
+                verifyField('short_description', wcProduct.short_description)
+              "
+              [label]="'Descripción corta del producto'"
+              [propertyProduct]="wcProduct.short_description | slice : 0 : 300"
+              [propertytoRequire]="
+                'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
+              "
+              [activeAccordeon]="3"
+            
+            >
+              <div
+                class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+              >
+                <label class="form__label" htmlFor="title">
+                  *descripcion corta del producto:
+                </label>
+
+                <textarea
+                  class="wcform__textarea"
+                  id="description"
+                  placeholder="Descripción larga del producto"
+                  formControlName="description"
+                  rows="14"
+                  cols="30"
+                  [maxlength]="50000"
+                  pInputTextarea
+                  [autoResize]="true"
+                  [class.is-invalid]="verifyField"
+                >
+                </textarea>
+              </div>
+            </app-expansion-panel>
+          </div>
+        </div>
+
+        <div class="section-product">
+
+          <h3 class="text-2xl font-bold text-slate-500 py-3">Inventario 🧑‍💻</h3>
+          <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+  
+          <app-expansion-panel
+            [isValid]="verifyField('sku', wcProduct.sku)"
+            [label]="'Sku del producto'"
+            [propertyProduct]="wcProduct.sku | slice : 0 : 300"
+            [propertytoRequire]="'Indica un codigo para identificar tu producto'"
+            [activeAccordeon]="4"
           
-          </div>
-        </app-expansion-panel>
-
-        <app-expansion-panel
-          [isValid]="verifyField('description', wcProduct.description)"
-          [label]="'Descripción del producto'"
-          [propertyProduct]="wcProduct.description | slice : 0 : 300"
-          [propertytoRequire]="
-            'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
-          "
-          [activeAccordeon]="activeAccordeon"
-          (panelClicked)="activeAccordeon = $event"
-          (updateProduct)="updateField('description')"
-        >
-          <div
-            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
           >
-            <label class="form__label" htmlFor="title">
-              *descripcion del producto:
-            </label>
-
-            <textarea
-              class="wcform__textarea"
-              id="description"
-              placeholder="Descripción larga del producto"
-              formControlName="description"
-              rows="14"
-              cols="30"
-              [maxlength]="50000"
-              pInputTextarea
-              [autoResize]="true"
-              [class.is-invalid]="verifyField"
+            <div
+              class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
             >
-            </textarea>
-          </div>
-        </app-expansion-panel>
-
-        <app-expansion-panel
-          [isValid]="
-            verifyField('short_description', wcProduct.short_description)
-          "
-          [label]="'Descripción corta del producto'"
-          [propertyProduct]="wcProduct.short_description | slice : 0 : 300"
-          [propertytoRequire]="
-            'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
-          "
-          [activeAccordeon]="activeAccordeon"
-          (panelClicked)="activeAccordeon = $event"
-        >
-          <div
-            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+              <label class="form__label" htmlFor="title">
+                *Código de identificación del producto:
+              </label>
+  
+              <input
+                class="form-product__input w-full"
+                pInputText
+                id="sku"
+                formControlName="sku"
+              />
+            </div>
+          </app-expansion-panel>
+  
+          <app-expansion-panel
+            [isValid]="verifyField('stock', wcProduct.sku)"
+            [label]="'Stock del producto'"
+            [propertyProduct]="wcProduct.stock_quantity"
+            [propertytoRequire]="'Indica el stock en tu almacen'"
+            [activeAccordeon]="5"
+           
           >
-            <label class="form__label" htmlFor="title">
-              *descripcion corta del producto:
-            </label>
-
-            <textarea
-              class="wcform__textarea"
-              id="description"
-              placeholder="Descripción larga del producto"
-              formControlName="description"
-              rows="14"
-              cols="30"
-              [maxlength]="50000"
-              pInputTextarea
-              [autoResize]="true"
-              [class.is-invalid]="verifyField"
+            <div
+              class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
             >
-            </textarea>
-          </div>
-        </app-expansion-panel>
+              <label class="form__label" htmlFor="title">
+                *Stock en inventario:
+              </label>
+  
+              <input
+                class="form-product__input w-full"
+                pInputText
+                id="sku"
+                formControlName="stock_quantity"
+              />
+            </div>
+          </app-expansion-panel>
+        </div>
 
-        <h3 class="text-2xl font-bold text-slate-700 py-3">Inventario 🧑‍💻</h3>
-        <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
-
-        <app-expansion-panel
-          [isValid]="verifyField('sku', wcProduct.sku)"
-          [label]="'Sku del producto'"
-          [propertyProduct]="wcProduct.sku | slice : 0 : 300"
-          [propertytoRequire]="'Indica un codigo para identificar tu producto'"
-          [activeAccordeon]="activeAccordeon"
-          (panelClicked)="activeAccordeon = $event"
-        >
-          <div
-            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
-          >
-            <label class="form__label" htmlFor="title">
-              *Código de identificación del producto:
-            </label>
-
-            <input
-              class="form-product__input w-full"
-              pInputText
-              id="sku"
-              formControlName="sku"
-            />
-          </div>
-        </app-expansion-panel>
-
-        <app-expansion-panel
-          [isValid]="verifyField('stock', wcProduct.sku)"
-          [label]="'Stock del producto'"
-          [propertyProduct]="wcProduct.stock_quantity"
-          [propertytoRequire]="'Indica el stock en tu almacen'"
-          [activeAccordeon]="activeAccordeon"
-          (panelClicked)="activeAccordeon = $event"
-        >
-          <div
-            class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
-          >
-            <label class="form__label" htmlFor="title">
-              *Stock en inventario:
-            </label>
-
-            <input
-              class="form-product__input w-full"
-              pInputText
-              id="sku"
-              formControlName="stock_quantity"
-            />
-          </div>
-        </app-expansion-panel>
 
         <h3 class="text-2xl font-bold text-slate-700 py-3">
           Precio del producto 🪙

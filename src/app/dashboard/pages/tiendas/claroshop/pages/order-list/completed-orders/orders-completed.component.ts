@@ -3,15 +3,15 @@ import { OrderListResponse, OrderResponse } from '@claroshop/interfaces/clarosho
 import { ClaroService } from '@claroshop/services/claroservice.service';
 
 @Component({
-  selector: 'app-claro-orders-completed',
+  selector: 'app-orders-completed',
   standalone: true,
   imports: [],
   template: `
   
   `,
-  styleUrls: ['./claro-orders-completed.component.scss']
+  styleUrls: ['./orders-completed.component.scss']
 })
-export default class ClaroOrdersCompletedComponent {
+export default class OrdersCompletedComponent {
 
   searchTerm: string = '';
   ordersCompleted: OrderListResponse[]  = [];

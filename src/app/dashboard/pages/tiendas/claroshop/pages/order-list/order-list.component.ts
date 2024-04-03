@@ -5,13 +5,13 @@ import { ClaroService } from '@claroshop/services/claroservice.service';
 import { CardStatsComponent } from '@components/card-stats/card-stats.component';
 
 @Component({
-  selector: 'app-claroshop-order-list',
+  selector: 'app-order-list',
   standalone: true,
   imports: [CardStatsComponent, RouterLink, RouterOutlet],
-  templateUrl: './claroshop-order-list.component.html',
-  styleUrls: ['./claroshop-order-list.component.scss']
+  templateUrl: './order-list.component.html',
+  styleUrls: ['./order-list.component.scss']
 })
-export default class ClaroshopOrderListComponent {
+export default class OrderListComponent {
 
   //* Status para la data obtenida de la api
   //* Cantidad de pedidos 

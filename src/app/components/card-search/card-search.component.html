@@ -1,4 +1,5 @@
 <div class="topbar-card sticky top-0 z-10">
+
   <div
     class="topbar-card__container container p-3 flex items-center justify-between flex-wrap gap-2 mt-8"
   >
@@ -39,8 +40,21 @@
         </p-button>
       }
     </div>
-    <div class="topbar-card__content-right">
-      <div class="toolbar-actions__search" [class.toolbar-actions__search-show]="hidenSearch">
+    <div #divds class="topbar-card__content-right flex items-center gap-1">
+      <!-- <p-toast [autoZIndex]="true" ></p-toast> -->
+
+      <!-- search -->
+      <div class="toolbar-actions__search relative" [class.toolbar-actions__search-show]="hidenSearch">
+        @if(showMenuSearch) {
+
+          <div class="menuSearchType absolute top-12 left-5 w-44 h-auto bg-white shadow-md">
+
+            <span class="menuSearchType__title text-sm text-slate-500 px-2 py-3 block" >Buscar por:</span>
+            <ul class="menuSearchType__ul">
+              <li (click)="changeSearch(item)" class="menuSearchType__li px-2 py-3 text-sm text-slate-500 cursor-pointer hover:bg-slate-200" *ngFor="let item of menuSearch">{{item.label}}</li>
+            </ul>
+          </div>
+        }
         <button
           (click)="showSearch()"
           severity="success"
@@ -50,7 +64,13 @@
           <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
         </button>
 
-        <div class="toolbar-actions__search-wrapper">
+        <div class="toolbar-actions__search-wrapper flex items-center flex-row flex-nowrap gap-1">
+
+          <button (click)="toggleMenuSearch()" class="menuSearchType__btn flex items-center gap-1 text-sm text-slate-500 p-ripple p-element p-button p-component p-button-text p-button-plain">
+            {{changeLabelBtn}}
+          <i class="pi pi-angle-down"></i>
+          </button>
+   
           <span class="toolbar-actions__search-span p-input-icon-right">
             <input
               #searchProduct
@@ -59,9 +79,8 @@
               (input)="onInputChange()"
               (keyup.enter)="searchRecord(searchProduct.value)"
               type="text"
-              placeholder="Buscar..."
+              [placeholder]="changePlaceholderInput.placeholder"
               pinputtext=""
-              placeholder="Titulo, Codigo, SKU o #"
               class="toolbar-actions__search-input p-inputtext p-component p-element"/>
             @if (!showIcon) {
             <i
@@ -75,8 +94,13 @@
             </i>
             }
           </span>
+        
         </div>
       </div>
+
+      <!-- filter -->
+      <p-button icon="pi pi-sliders-v" [rounded]="true" [text]="true" severity="primary"></p-button>
     </div>
   </div>
 </div>
+

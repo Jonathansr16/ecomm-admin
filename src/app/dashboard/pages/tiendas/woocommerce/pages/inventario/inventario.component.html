@@ -27,7 +27,34 @@
   </div>
 </div>
 
-<app-card-search [isDisabled]="products.length ===0" [isOptionActive]="handlerOptionBtn" (searchValue)="getProductsBySearch($event)">
+
+<app-inventory 
+[statusData]="statusData"
+[dataProduct]="products" 
+[totalRecords]="totalRecords"
+[menuProduct]="menuProduct"
+(changeValueLabel)="changeTypeSearch($event)" 
+(searchValue)="getProductsBySearch($event)"
+[paginationParams]="paginationParams"
+(changePagination)="changePage($event)"
+> 
+
+</app-inventory>
+
+
+
+
+
+
+
+
+
+<!-- <app-card-search
+ [isDisabled]="products.length ===0" 
+ [isOptionActive]="handlerOptionBtn" 
+ [menuSearch]="menuFilterSearch"
+ 
+ (searchValue)="getProductsBySearch($event)">
   <ng-container #contentLeft>
   
     <p-checkbox
@@ -59,7 +86,9 @@
     @for (product of products; track product.id; let i = $index; ) {
     <app-card-product
       [menu]="optionsProduct"
-      [outOfStock]="product.stock_quantity === 0 && product.stock_status === 'outofstock'">
+      [outOfStock]="product.stock_quantity === 0 && product.stock_status === 'outofstock'"
+    
+      >
       
       <p-checkbox
         [binary]="true"
@@ -112,18 +141,21 @@
       @if (product.price && product.regular_price) {
       <div class="product-card__details-col product-card__price flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
         <span class="product-card__price text-sm font-semibold"
-          >{{ product.regular_price | currency }}</span
-        >
-        <span class="product-card__label text-xs">precio regular</span>
+          >{{ product.regular_price | currency }}
+        </span>
+
+        <span class="product-card__label text-xs">
+          precio regular
+        </span>
         <a href="#" class="product-card__a text-xs"
           >Modificar precio</a
         >
       </div>
       } @if (product.price && product.regular_price) {
       <div class="product-card__details-col product-card__price flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
-        <span class="product-card__price text-sm font-semibold"
-          >{{ product.price | currency }}</span
-        >
+        <span class="product-card__price text-sm font-semibold">
+          {{ product.price | currency }}
+          </span>
         <span class="product-card__label text-xs">precio al publico</span>
       </div>
       } @if (!product.price || !product.regular_price) {
@@ -401,4 +433,4 @@
       </div>
     </div>
   </ng-template>
-</p-confirmDialog>
+</p-confirmDialog> -->

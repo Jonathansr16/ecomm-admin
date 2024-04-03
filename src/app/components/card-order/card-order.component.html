@@ -1,0 +1,235 @@
+<div class="order unstyledContainer">
+  <div class="order__container">
+    <div class="order__toolbar sticky top-0 z-10 mb-8">
+      <div
+        [style]="{ 'background-color': 'var(--surface-card)' }"
+        class="order__toolbar-row container p-3 flex items-center justify-between flex-wrap gap-2 mt-8"
+      >
+        <div class="order__toolbar-col flex item-center gap-2">
+          <p-checkbox
+            [disabled]="dataOrders.length === 0"
+            [binary]="true"
+            inputId="binary"
+            [(ngModel)]="isSelectAllProduct"
+            (onChange)="toggleSelectAllProducts()"
+          >
+          </p-checkbox>
+
+          <div
+            class="inventory__toolbar-separator ml-2 w-[1px] items-stretch block bg-slate-300"
+          ></div>
+
+          <div class="w-32">
+            @if (selectedProduct.length) {
+
+            <p
+              class="inventory__toolbar-selection-label text-sm text-slate-600"
+            >
+              {{ selectedProduct.length }} seleccionados
+            </p>
+
+            }
+          </div>
+        </div>
+
+        <div class="order__toolbar-col flex item-center gap-2">
+          <!-- search -->
+          <div
+            [class.order__search-show]="hidenSearch"
+            class="order__search flex items-center justify-end gap-1 relative"
+          >
+            <div #menu></div>
+
+            <button
+              (click)="showSearch()"
+              severity="success"
+              type="button"
+              class="order__search-btn-toggle p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+            >
+              <span
+                class="p-button-icon pi pi-search"
+                aria-hidden="true"
+              ></span>
+            </button>
+
+            <div
+              class="order__search-wrapper relative flex items-center flex-row flex-nowrap gap-1"
+            >
+              <span
+                class="order__search-span w-[280px] flex items-center justify-end"
+              >
+                <button
+                  (click)="toggleMenuSearch()"
+                  (click)="menuOrder.toggle($event)"
+                  class="menuSearchType__btn flex items-center gap-1 text-sm text-slate-500 p-ripple p-element p-button p-component p-button-text p-button-plain"
+                >
+                  {{ changeLabelBtn }}
+                  <i class="pi pi-angle-down"></i>
+                </button>
+
+                <input
+                  #searchProduct
+                  name="inputSearch"
+                  [(ngModel)]="inputValue"
+                  (input)="onInputChange()"
+                  (keyup.enter)="searchRecord(searchProduct.value)"
+                  type="text"
+                  [placeholder]="changePlaceHolder"
+                  pinputtext=""
+                  [style]="{ 'font-size': '14px' }"
+                  class="order__search-input p-inputtext p-component p-element border-none w-full"
+                />
+
+                @if (!showIcon) {
+                <i
+                  class="order__search-i pi pi-search cursor-pointer"
+                  (click)="hiddenSearch()"
+                >
+                </i>
+                } @else {
+                <i class="order__search-i pi pi-times" (click)="clearInput()">
+                </i>
+                }
+              </span>
+
+              <p-menu
+                #menuOrder
+                [model]="menuToolbar"
+                [popup]="true"
+                [appendTo]="menu"
+                id="menuToolbar"
+                [style]="{ 'font-size': '14px' }"
+              ></p-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    @for (order of dataOrders; track order.id; let i = $index) {
+    <div
+      [ngStyle]="{ 'background-color': 'var(--surface-card)' }"
+      class="order-card container max-w-7xl mx-auto rounded-lg shadow-md shadow-indigo-500/10 mb-8"
+    >
+      <div
+        class="order-card__action-row order-card__row flex flex-row flex-nowrap items-center justify-between gap-1 p-4 border-b-2 border-b-slate-100"
+      >
+        <div
+          class="order-card__action-col flex items-center justify-start gap-4"
+        >
+          <p-checkbox
+            [binary]="true"
+            inputId="checkProduct{{ order.id }}"
+            handlerCheckProduct
+            [value]="order"
+            [(ngModel)]="isSelectedEveryProduct[i]"
+            (onChange)="toggleEveryProduct(order)"
+          >
+          </p-checkbox>
+
+          <h3 class="h3-order-card__action-h3 text-sm font-semibold">
+            # {{ order.id }}
+          </h3>
+        </div>
+
+        <div class="order-card__action-col">
+          <button
+            type="button"
+            (click)="menuOption.toggle($event)"
+            class="p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+          >
+            <i class="pi pi-ellipsis-v"></i>
+          </button>
+
+          <p-menu
+            #menuOption
+            [model]="OrderOption"
+            [popup]="true"
+            [style]="{ 'font-size': '14px' }"
+          ></p-menu>
+        </div>
+      </div>
+
+      <div class="order-card__content mt-6 p-6 py-7 flex items-center justify-between gap-1">
+     
+        @if(order.products.length > 1) {
+
+          <p-button icon="pi pi-angle-down" [rounded]="true" [text]="true" severity="danger "></p-button>
+
+          <div class="order-card__product order-card__product-multiple flex item-center gap-3">
+            <div class="order-card__picture order-card__picture-multiple-items relative  w-[62px] h-[62px] bg-transparent flex items-center flex-row flex-wrap mr-12">
+             @for (img of order.products; track $index) {
+              <div class="content__img w-[72px] h-[72px] absolute">
+                <img [src]="img.image!.src" alt="" class="order-card__img order-card__img-multiple-img rounded-lg">
+              </div>
+             }
+            </div>
+          </div>
+
+        } @else {
+
+          <div class="order-card__product order-card__product-simple flex items-center gap-3">
+            <div
+              [ngStyle]="{ 'background-color': '#efefef' }"
+              class="order-card__picture order-card__picture-simple-item mr-3 w-32 h-32 lg:w-16 lg:h-16 rounded relative"
+            >
+              <img
+                [src]="order.products[0].image!.src"
+                class="order-card__img order-card__img-simple-img object-contain w-full h-full mix-blend-multiply rounded-[1px] border-solid border-slate-100"
+                alt=""
+              />
+            </div>
+  
+            <div class="order-card__description">
+              <div class="order-card__details flex gap-1 flex-col mb-2">
+                <span
+                  class="text-xs font-semibold bg-amber-100 text-amber-700 py-1 px-2 mb-1 rounded-sm block max-w-[150px] w-full text-center"
+                >
+                  {{ order.status === "pending" && "Pendiente" }}
+                </span>
+  
+                <span class="text-sm font-semibold">Fechada:</span>
+                <span class="order-card__date text-sm">
+                  {{ order.date_created | date: 'mediumDate' }}
+                </span>
+              </div>
+  
+              <a href="#" class="order__card__a text-sm text-slate-700">
+                <div class="order-card__name">
+                  {{ order.products[0].product }}
+                </div>
+              </a>
+            </div>
+          </div>
+  
+          <div class="order-card__extraInfo flex items-start flex-col lg:flex-row gap-4 grow">
+         
+            <div class="order-card__extraInfo-col pl-0 lg:pl-12">
+              <span class="order-card__price text-xs">{{order.total | currency}}</span>            
+            </div>
+  
+            @if(order.products[0].quantity) {
+              <div class="order-card__extraInfo-col pl-0 lg:pl-12">
+                <span class="order-card__quantity text-xs">{{order.products[0].quantity}}</span>  
+                <span class="order-card__quantity-label text-xs pl-2">Unidad</span>  
+         
+              </div>
+            }
+  
+            <div class="order-card__extraInfo-col pl-0 lg:pl-12">
+              <span class="order-card__sku text-xs">SKU: {{order.products[0].sku}}</span>  
+       
+            </div>
+  
+            <div class="order-card__extraInfo-col pl-0 lg:pl-12">
+       
+            </div>
+          </div>
+        }
+        
+
+      </div>
+    </div>
+
+    }
+  </div>
+</div>

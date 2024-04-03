@@ -10,14 +10,14 @@ export const claroRoutes: Routes = [
     path: 'ordenes',
     loadComponent: () =>
       import(
-        '@claroshop/pages/claroshop-order-list/claroshop-order-list.component'
+        '@claroshop/pages/order-list/order-list.component'
       ),
     children: [
       {
         path: 'pendientes',
         loadComponent: () =>
           import(
-            '@claroshop/pages/claroshop-order-list/claroshop-pending-orders/claroshop-pending-orders.component'
+            '@claroshop/pages/order-list/pending-orders/pending-orders.component'
           ),
       },
 
@@ -25,7 +25,7 @@ export const claroRoutes: Routes = [
         path: 'embarcados',
         loadComponent: () =>
           import(
-            '@claroshop/pages/claroshop-order-list/claroshop-in-proccess-orders/claroshop-in-process-orders.component'
+            '@claroshop/pages/order-list/in-proccess-orders/in-process-orders.component'
           ),
       },
 
@@ -33,7 +33,7 @@ export const claroRoutes: Routes = [
         path: 'concretadas',
         loadComponent: () =>
           import(
-            '@claroshop/pages/claroshop-order-list/claroshop-completed-orders/claro-orders-completed.component'
+            '@claroshop/pages/order-list/completed-orders/orders-completed.component'
           ),
       },
 

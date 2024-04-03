@@ -4,12 +4,14 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { CardStatsComponent } from '@components/card-stats/card-stats.component';
 import { WooService } from '@woocommerce/services/woo.service';
 import { MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
   standalone: true,
-  imports: [CommonModule, CardStatsComponent, RouterOutlet, RouterLink],
+  imports: [CommonModule, CardStatsComponent, RouterOutlet, RouterLink, ButtonModule, TabViewModule],
   styleUrls: ['./order-list.component.scss'],
   providers: [ MessageService]
 })
@@ -43,9 +45,7 @@ export default class OrderListComponent implements OnInit {
     failed: true
   };
 
-  // constructor(private orderService: WcommerceService) {
 
-  //   }
 
   orderService = inject(WooService);
    

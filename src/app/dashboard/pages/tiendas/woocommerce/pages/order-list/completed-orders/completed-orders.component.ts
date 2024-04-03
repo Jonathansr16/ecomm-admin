@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CardOrderComponent } from '@woocommerce/components/card-order/card-order.component';
-import { OrderResult } from '@woocommerce/interface/woo-order.interface';
+import { CardOrderComponent } from '@components/card-order/card-order.component';
 import { WooService } from '@woocommerce/services/woo.service';
 import { Subscription } from 'rxjs';
 
@@ -9,12 +8,12 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [ CardOrderComponent],
   template: `
-  <app-card-order [dataOrders]="completedOrders">
+  <!-- <app-card-order [dataOrders]="completedOrders"> -->
   `  
 })
 export default class CompletedOrdersComponent {
 
-  completedOrders: OrderResult[] = [];
+  completedOrders: any[] = [];
   statusData: 'loading' | 'success' | 'error' = 'loading';
 
   selectedProducts: any = [];
@@ -33,9 +32,9 @@ export default class CompletedOrdersComponent {
     this.wooService.getOrderByStatus('completed', 1, 10).subscribe({
       next: (resp => {
         this.statusData = 'success';
-        this.completedOrders = resp;
+        this.completedOrders = resp.orders;
         console.log(resp)
-        if(resp.length === 0 || undefined) {
+        if(resp.orders.length === 0 || undefined) {
             console.log('sin data');
         }
       }), 

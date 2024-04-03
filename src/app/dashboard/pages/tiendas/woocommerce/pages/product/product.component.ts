@@ -1,6 +1,6 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
 import { WooService } from '@woocommerce/services/woo.service';
-
+import {toSignal} from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 import { MessageService } from 'primeng/api';
@@ -113,6 +113,7 @@ export default class ProductComponent {
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService)
   @Input('id') productId!: number;
+
 
   constructor() {
     this.createFormUpdateProduct();

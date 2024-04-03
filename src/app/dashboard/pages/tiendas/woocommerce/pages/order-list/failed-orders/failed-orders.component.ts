@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { OrderResult} from '@woocommerce/interface/woo-order.interface';
 import { WooService } from '@woocommerce/services/woo.service';
 import { CardOrderComponent } from '@woocommerce/components/card-order/card-order.component';
 import { Subscription } from 'rxjs';
@@ -9,37 +8,37 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CardOrderComponent],
   template: `
-  <app-card-order [dataOrders]="canceledOrdes"]>
+  <app-card-order [dataOrders]="canceledOrdes">
   `
 })
 export default class FailedOrdersComponent {
 
-  canceledOrdes: OrderResult[] = [];
+  canceledOrdes: any[] = [];
   statusData:  'loading' | 'success' | 'error' = 'loading';
 
   private readonly wooService = inject(WooService);
   private readonly suscription: Subscription[] = [];
 
-  getOrders() {
-  this.suscription.push(
-    this.wooService.getOrderByStatus('cancelled', 1, 10).subscribe({
-      next: resp=> {
+  // getOrders() {
+  // this.suscription.push(
+  //   this.wooService.getOrderByStatus('cancelled', 1, 10).subscribe({
+  //     next: resp=> {
 
-        this.canceledOrdes = resp;
-        console.log(resp);
-        this.statusData = 'success';
+  //       this.canceledOrdes = resp;
+  //       console.log(resp);
+  //       this.statusData = 'success';
 
-      },
-      error: (errorMessage) => {
-        this.statusData = 'error';
-        console.log(errorMessage)
-      }
-    })
-  )
-  }
+  //     },
+  //     error: (errorMessage) => {
+  //       this.statusData = 'error';
+  //       console.log(errorMessage)
+  //     }
+  //   })
+  // )
+  // }
 
   ngOnInit(): void {
-    this.getOrders();
+    // this.getOrders();
   }
 
   ngOnDestroy(): void {

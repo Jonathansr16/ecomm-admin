@@ -2,22 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ClaroService } from '@claroshop/services/claroservice.service';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { Table } from 'primeng/table';
 import { BreadcrumbItem } from '../../../../../../core/interface/breadcrumb.interface';
 import { EMPTY, Subscription } from 'rxjs';
-import { ToastModule } from 'primeng/toast';
-import { CardProductComponent } from '@components/card-product/card-product.component';
-import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import {  InputSwitchModule } from 'primeng/inputswitch';
-import { PaginatorModule } from 'primeng/paginator';
 import { ParamsPagination } from 'src/app/core/interface/pagination.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { SkeletonModule } from 'primeng/skeleton';
-import { CardSearchComponent } from '../../../../../../components/card-search/card-search.component';
 import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
+import { InventoryComponent } from '@components/inventory/inventory.component';
+import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -26,31 +20,17 @@ import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
     CommonModule,
     FormsModule,
     BreadcrumbComponent,
-    CardProductComponent,
-    CardSearchComponent,
     ButtonModule,
-    ToastModule,
-    CheckboxModule,
-    InputSwitchModule,
-    PaginatorModule,
-    SkeletonModule
+    InventoryComponent
   ],
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.scss'],
   providers: [MessageService, ConfirmationService],
 })
 export default class InventarioComponent {
-  isActiveProduct: boolean[] = [];
-  //Selecciona y Deselecciona cada checkbox del arreglo
-  isSelectedEveryProduct: boolean[] = [];
-  //selecciona y deselecciona todos los checkbox del arreglo
-  isSelectAllProduct = false;
-  //data seleccionada
-  selectedProduct: any[] = [];
-  statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
-  dialogVisible: boolean = false;
 
-  searchText: string = '';
+
+  dialogVisible: boolean = false;
 
   BreadcrumbHome: BreadcrumbItem = {
     icon: 'list_alt',
@@ -77,29 +57,40 @@ export default class InventarioComponent {
     },
   ];
 
-  //parametros iniciales para la paginación
-  paginationParams: ParamsPagination = {
+  //* parametros iniciales para la paginación
+  paginationParams: PaginationParams = {
     page: 1,
-    per_page: 10,
+    rows: 10,
     first: 0,
-    totalRecords: 0
   };
 
+  MenuProduct: MenuItem[] = [
 
-  handlerOptionBtn: StatusBtn = {
-    pause: false,
-    modify: false,
-    eliminate: false,
-    massiveModification: false
-  }
-    //Enlace al input search
-   inputValue = '';
-    //Estado del input
-  hidenSearch = false;
+    {
+      label: 'Opciones:',
+      items: [
+        {
+          label: 'Editar',
+        },
+
+        {
+          label: 'Pausar',
+        },
+
+        {
+          label: 'Eliminar'
+        }
+      ]
+    }
+  ];
+
+  //* Enlace al input search
+  inputValue = '';
+  typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
   totalRecords = 0;
+  statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
   suscriptions$: Subscription[] = [];
-  showIcon = false;
-
+  
   private activedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private readonly claroService = inject(ClaroService);
@@ -110,80 +101,67 @@ export default class InventarioComponent {
   ngOnInit(): void {
     this.activedRoute.queryParams.subscribe( (params: Params): void => {
       this.paginationParams.page = +params['page'] ? +params['page'] : 1;
-      this.paginationParams.per_page = +params['productosporpagina'] ? params['productosporpagina'] : 10;
+      this.paginationParams.rows = +params['productosporpagina'] ? params['productosporpagina'] : 10;
 
-      this.getProducts(this.paginationParams.page, this.paginationParams.per_page)
+      this.getProducts(this.paginationParams.page, this.paginationParams.rows)
     })
 
   }
 
   getProducts(page: number, per_page: number) {
+    this.statusData = 'loading';
+
     this.suscriptions$.push(
       this.claroService.getProducts(page, per_page).subscribe({
-        next: (data) => {
-          this.products = data.productos;
-          this.paginationParams.totalRecords = data.totalproductos;
-          this.paginationParams.page = data.paginaactual
+        next: (resp) => {
+          this.products = resp;
+          this.totalRecords = resp.length;
+          this.paginationParams.page
           this.statusData = 'success';
         },
         error: (msgErorr) => {
           console.log(msgErorr);
           this.statusData = 'error';
-          this.paginationParams.totalRecords = 0;
+          this.totalRecords = 0;
+          return EMPTY;
 
         },
       })
     );
   }
 
-  onPageChange(event: any) {
+  paginationChanged(event: any) {
 
-    this.paginationParams = {
-      page: event.page + 1,
-      per_page: event.rows,
-      first: event.first,
-    };
     //Actualizar parámetros de la URL
     this.router.navigate([], {
       relativeTo: this.activedRoute,
       queryParams: {
         page: this.paginationParams.page,
-        productosporpagina: this.paginationParams.per_page,
+        productosporpagina: this.paginationParams.rows,
       },
       queryParamsHandling: 'merge',
 
     });
 }
 
-onInputChange(): void {
-  this.showIcon = this.inputValue.trim().length > 0;
-}
 
-showSearch(): boolean {
-  return (this.hidenSearch = true);
-}
 
-hiddenSearch(): boolean {
-  return (this.hidenSearch = false);
-}
-
-getProductsBySearch() {
+getProductsBySearch(value: string) {
   this.statusData = 'loading';
 
   this.suscriptions$.push(
     this.claroService
-      .getProductsBySearch(this.inputValue).subscribe(
+      .getProductsBySearch(value, this.typeSearch, this.paginationParams.page).subscribe(
         {
         next: (data) => {
-        
-          this.products = data.productos;
-       
-          this.statusData = this.products ? 'success' : 'empty';
-        
+          this.statusData = data.length > 0 ? 'success' : 'empty';
+         this.totalRecords = data.length;
+          this.products = data;
         },
         error: (err: string) => {
           this.statusData = 'error';
           this.products = [];
+          this.totalRecords= 0;
           // this.errorMessage = err;
 
           return EMPTY;
@@ -192,52 +170,10 @@ getProductsBySearch() {
   );
 }
 
-clearInput(): void {
-  this.inputValue = '';
-  this.showIcon = false;
+
+getSearchValue(value: string) {
+  this.inputValue = value;
 }
-
-  toggleSelectAllProducts() {
-    // Si se selecciona la opción masiva, seleccionar todos los productos
-    if (this.isSelectAllProduct) {
-      // Si se selecciona la opción masiva, seleccionar todos los productos
-      this.selectedProduct = this.products.slice();
-      this.isSelectedEveryProduct = this.products.map(() => true) || [];
-    } else {
-      // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
-      this.selectedProduct = [];
-      this.isSelectedEveryProduct = [];
-    }
-  }
-
-  toggleEveryProduct(product: any) {
-    // Verificar si el producto está seleccionado y agregarlo o eliminarlo según sea necesario
-    const index = this.selectedProduct.findIndex(
-      (selectedItem: any) =>
-        selectedItem.transit === product.transactionid
-    );
-
-    if (index === -1) {
-      this.selectedProduct.push(product);
-    } else {
-      this.selectedProduct.splice(index, 1);
-    }
-
-    // Verificar si todos los elementos de la parte inferior están seleccionados
-    const allSelected = this.products.every((order: any) =>
-      this.selectedProduct.some(
-        (selectedOrder) => selectedOrder.claroid === order.claroid
-      )
-    );
-    // Actualizar el estado de selección masiva
-    this.isSelectAllProduct = allSelected;
-
-    // Si se deselecciona un elemento de la parte superior, quitar el check de la opción masiva
-    if (!this.isSelectAllProduct) {
-      this.isSelectAllProduct = false;
-    }
-  }
-
   // searchFilter($event: any, value: string) {
   //   this.productos?.filterGlobal(($event.target as HTMLInputElement).value, value)
   // }

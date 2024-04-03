@@ -1,36 +1,3 @@
-export interface OrderTable {
-  id: number;
-  date_created: Date;
-  first_name: OrderBillingResponse;
-  last_name: OrderBillingResponse;
-  status: string;
-  date_modified: Date;
-  title: string;
-  img: OrderLineItemResponse[];
-  sku: OrderLineItemResponse[];
-  price: number;
-  quantity: number;
-}
-
-export interface OrderResult {
-  id: number;
-  first_name: string;
-  last_name: string;
-  status: string;
-  date_created: Date;
-  date_modified: Date;
-  product: ProductOrderResult[];
-  total: string;
-}
-
-export interface ProductOrderResult {
-  name: string;
-  quantity: number;
-  total: string;
-  sku: string;
-  price: number;
-  image: OrderImageResponse;
-}
 
 export interface OrderResponse {
   id: number;
@@ -167,4 +134,8 @@ export interface OrderTaxLineResponse {
   tax_total: string;
   shipping_tax_total: string;
   meta_data: any[];
+}
+
+export interface OrderStatusResponse {
+  status: 'pending' | 'processing' | 'on-hold' | 'completed' | 'cancelled' | 'refunded' | 'failed' | 'trash'
 }

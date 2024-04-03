@@ -37,7 +37,7 @@
         opacity: 0;
         visibility: hidden;
         overflow: hidden;
-  
+        border-bottom: 1px solid var(--surface-300);
         transition: 0.4s cubic-bezier(0.86, 0, 0.07, 1);
       }
   
@@ -51,9 +51,6 @@
         border-radius: 0px;
         border: none;
         font-size: 0.875rem;
-        // border-color: transparent;
-        padding-left: 1.5em;
-        border-bottom: 1px solid var(--surface-300);
       }
   
       &-i {
@@ -79,4 +76,9 @@
         visibility: visible;
       }
     }
+}
+
+
+.menuSearchType__btn:focus {
+ box-shadow: none;
 }

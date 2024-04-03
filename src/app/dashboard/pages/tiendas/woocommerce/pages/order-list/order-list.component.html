@@ -1,9 +1,11 @@
 
 <div class="container order-quantity">
-    <app-card-stats [label]="'En proceso'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'pendientes']" [count]="pendingOrdersCount" [isLoading]="status.pending"></app-card-stats>
-    <app-card-stats [label]="'No Concretadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'falladas']" [count]="processingOrdersCount" [isLoading]="status.shipped"></app-card-stats>
-    <app-card-stats [label]="'Concretadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'concretadas']" [count]="completedOrdersCount" [isLoading]="status.completed"></app-card-stats>
+    <app-card-stats [label]="'En proceso'"     [routerLink]="['/dashboard/woocommerce/ordenes', 'pendientes']" [count]="pendingOrdersCount" [isLoading]="status.pending"></app-card-stats>
+    <app-card-stats [label]="'No Concretadas'" [routerLink]="['/dashboard/woocommerce/ordenes', 'falladas']" [count]="processingOrdersCount" [isLoading]="status.shipped"></app-card-stats>
+    <app-card-stats [label]="'Concretadas'"    [routerLink]="['/dashboard/woocommerce/ordenes', 'concretadas']" [count]="completedOrdersCount" [isLoading]="status.completed"></app-card-stats>
 </div>
+
+
 
 <router-outlet></router-outlet>
 

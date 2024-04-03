@@ -5,7 +5,7 @@ import { Component, Input, Output, ViewEncapsulation } from '@angular/core';
   standalone: true,
   templateUrl: './card-order-template.component.html',
   styleUrls: ['./card-order-template.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+ 
 })
 export class CardOrderTemplateComponent {
 
