@@ -46,6 +46,10 @@ export class CardOrderComponent {
     //data seleccionada
     selectedProduct: any[] = [];
 
+    // Índice de acordeon abierto, inicialmente cerrado
+  selectedIndex: number = -1; 
+
+
     inputValue = '';
     changePlaceHolder: string = 'Buscar por #, Sku o titulo';
     changeLabelBtn = 'Todo';
@@ -125,6 +129,19 @@ export class CardOrderComponent {
       this.searchValue.emit(value);
       this.searchedData.emit()
     }
+
+    collapseContent(index: number) {
+      if (this.selectedIndex === index) {
+        this.selectedIndex = -1; // Cierra el acordeón si ya está abierto
+      } else {
+        this.selectedIndex = index; // Abre el acordeón haciendo clic en un elemento
+      }
+    }
+  
+    isCollapsing(index: number): boolean {
+      return this.selectedIndex === index;
+    }
+  
   
   
 }

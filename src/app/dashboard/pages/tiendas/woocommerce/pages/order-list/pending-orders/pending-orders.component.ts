@@ -95,7 +95,7 @@ export default class PendingOrdersComponent {
           quantity: 1,
           image: 
             {
-              src: '	https://http2.mlstatic.com/D_NQ_NP_2X_888113-MLM70540748659_072023-F.webp'
+              src: 'https://http2.mlstatic.com/D_NQ_NP_2X_888113-MLM70540748659_072023-F.webp'
             }
           
         }
