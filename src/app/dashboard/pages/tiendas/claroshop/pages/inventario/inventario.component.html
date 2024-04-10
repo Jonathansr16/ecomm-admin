@@ -26,13 +26,16 @@
   </div>
 </div>
 
-<app-inventory 
-[statusData]="statusData"
-[dataProduct]="products"
+<app-card-inventory-list 
+[statusDataProducts]="statusData"
+[dataProducts]="products"
+[statusDataProduct]="statusProduct"
+[dataProduct]="product"
 [menuProduct]="MenuProduct"
  [totalRecords]="totalRecords"
  (searchValue)="getProductsBySearch($event)"
+ (emitProduct)="getProduct($event)"
  [paginationParams]="paginationParams"
  (changePagination)="paginationChanged($event)"
  >
-</app-inventory>
+</app-card-inventory-list>

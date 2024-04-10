@@ -1,36 +1,37 @@
 <!-- NAVBAR -->
-<nav class="nav">
-  <i (click)="toggleSidebar()" class='nav__i--menu material-icons' >grid_view</i>
+<nav class="nav h-[66px] py-10 px-8 flex items-center top-0 left-0 z-1 border-b-[1px] border-solid border-b-slate-100">
+  <i (click)="toggleSidebar()" class='nav__i--menu material-icons text-white cursor-pointer' >grid_view</i>
 
   <form class="nav-form">
-    <div class="nav-form__box form-input">
-      <input class="nav-form__input" type="text" name="search" pInputText placeholder="buscar producto..." #searchProduct />
-      <button class="nav-form__btn search-btn" type="button" pButton icon="pi pi-search"></button>
+    <div class="nav-form__box form-input text-slate-700 flex bg-white rounded-3xl">
+      <input class="nav-form__input bg-transparent px-2 py-3 text-sm lg:block hidden" type="text" name="search" pInputText placeholder="buscar producto..." #searchProduct />
+      <button class="nav-form__btn search-btn bg-transparent border-none text-slate-600" type="button" pButton icon="pi pi-search"></button>
 
     </div>
   </form>
-  <div class="nav-right">
-    <div class="nav-right__message" (click)="op.toggle($event)" pTooltip="Mensajes" tooltipPosition="bottom">
+  <div class="nav-right flex items-center justify-end gap-4  w-full">
+  
+    <div class="nav-right__message mr-4" (click)="op.toggle($event)" pTooltip="Mensajes" tooltipPosition="bottom">
       <i class="material-icons nav-right__i text-3xl" pBadge [value]="'+10'" severity="danger">
         email
       </i>
 
       <p-overlayPanel #op>
-        <h4 class="message-tienda__title">
+        <h4 class="message-tienda__title text-lg font-semibold">
           Tienes 10 mensajes de tus compradores
         </h4>
         <p-divider></p-divider>
 
         @for (message of messageUser; track message) {
           <div class="message-tienda">
-            <a href="#" class="message-tienda__a">
+            <a href="#" class="message-tienda__a flex flex-row flex-wrap justify-start items-center gap-4 my-6">
               <div class="message-tienda__image">
-                <img [src]="message.avatar" class="message-tienda__img" alt="" />
+                <img [src]="message.avatar" class="message-tienda__img w-14" alt="" />
               </div>
               <div class="message-tienda__information">
-                <h5 class="message-tienda__h5">{{ message.user }}</h5>
-                <p class="message-tienda__p">{{ message.description }}</p>
-                <span class="message-tienda__time">
+                <h5 class="message-tienda__h5 font-semibold text-sm">{{ message.user }}</h5>
+                <p class="message-tienda__p text-sm">{{ message.description }}</p>
+                <span class="message-tienda__time text-xs">
                   {{ date | date : "mediumTime" }}
                 </span>
               </div>
@@ -40,11 +41,11 @@
         }
 
 
-        <a class="message-tienda__more" href="#">Ver todos los mensajes ></a>
+        <a class="message-tienda__more text-sm text-sky-700 font-semibold" href="#">Ver todos los mensajes ></a>
       </p-overlayPanel>
     </div>
 
-    <div class="nav-right__notification" pTooltip="Notificaciones" tooltipPosition="bottom">
+    <div class="nav-right__notification relative mr-4" pTooltip="Notificaciones" tooltipPosition="bottom">
 
       <i (click)="notificationShow = true" class="material-icons nav-right__i text-3xl" pBadge value="2">
         notifications
@@ -52,26 +53,26 @@
 
       <p-sidebar [(visible)]="notificationShow" position="right" [dismissible]="true" [modal]="true" [autoZIndex]="true" [style]="{ width: '24rem' }" >
 
-        <div class="notf-header">
+        <div class="notf-header flex items-center justify-start mb-4 px-4 py-4 gap-1">
           <i class="notf-header__i material-icons">notifications_active</i>
-          <h3 class="notf-header__h3">Notificaciones nuevas</h3>
+          <h3 class="notf-header__h3 text-lg">Notificaciones nuevas</h3>
         </div>
         <p-divider></p-divider>
 
         <ul class="notf__ul">
-          <li class="notf__li">
+          <li class="notf__li px-4 py-4 rounded-lg mb-3 flex items-center justify-between">
             <div class="notf__info">
-              <h6 class="notf__h6">
+              <h6 class="notf__h6 text-base font-semibold mb-3">
                 <i class="notf__i pi pi-check-circle"></i>
                 Se ha realizado una venta
               </h6>
 
-              <p class="notf__p">
+              <p class="notf__p leading-3 mb-2">
                 Se vendio (x2) <strong class="notf__strong">Juego</strong>,
                 Zelda Majora mask, en Mercado Libre, atiendalo ahora.
               </p>
 
-              <span class="notf__p notf__span"> 9:00 AM </span>
+              <span class="notf__p notf__span block font-semibold text-sm text-right"> 9:00 AM </span>
 
               <p-button class="notf__btn" icon="pi pi-thumbs-up"
               styleClass="p-button-rounded p-button-info"></p-button>
@@ -93,12 +94,12 @@
 
         <ul class="nav-right-profile__ul">
           @for (item of menuProfile; track item) {
-            <li class="nav-right-profile__li">
-              <a class="nav-right-profile__a">
-                <i class="nav-right-profile__i material-icons">{{
+            <li class="nav-right-profile__li py-1">
+              <a class="nav-right-profile__a text-sm flex flex-row flex-wrap items-center justify-start gap-1 py-3 px-2 rounded-lg hover:bg-indigo-500 hover:text-white cursor-pointer">
+                <i class="nav-right-profile__i material-icons text-xs">{{
                   item.icon
                 }}</i>
-                <span class="nav-right-profile__span">{{ item.label }}</span>
+                <span class="nav-right-profile__span text-sm">{{ item.label }}</span>
               </a>
             </li>
           }

@@ -28,9 +28,9 @@
 </div>
 
 
-<app-inventory 
-[statusData]="statusData"
-[dataProduct]="products" 
+<app-card-inventory-list 
+[statusDataProducts]="statusData"
+[dataProducts]="products" 
 [totalRecords]="totalRecords"
 [menuProduct]="menuProduct"
 (changeValueLabel)="changeTypeSearch($event)" 
@@ -39,7 +39,7 @@
 (changePagination)="changePage($event)"
 > 
 
-</app-inventory>
+</app-card-inventory-list>
 
 
 

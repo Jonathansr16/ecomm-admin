@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
-import { HandlerHeaderService } from 'src/app/core/services/handlerHeader/handler-header.service';
 import { SidebarMenu } from 'src/app/dashboard/interfaces/menuBar';
+import { SidebarService } from '@shared/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -16,11 +16,13 @@ export class SidebarMenuComponent {
 
   @Input() menuData: SidebarMenu[] = [];
   @Input() titleSection!: string;
-  hiddenMenu$ = this.hanlderHeader.sidebarVisibility$;
   activeMenu = -1;
   activeSubMenu = -1;
 
-  constructor(private hanlderHeader: HandlerHeaderService) {}
+  sidebarService = inject(SidebarService);
+  hiddenMenu = this.sidebarService.sidebarCollapse;
+
+  constructor() {}
 
   toggleMenu(index: number) {
     if(this.activeMenu === index) {

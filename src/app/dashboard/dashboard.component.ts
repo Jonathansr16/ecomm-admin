@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 
 import { ThemeService } from '../core/services/theme.service';
-import { HandlerHeaderService } from '../core/services/handlerHeader/handler-header.service';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '@shared/sidebar/sidebar.component';
 import { NavbarComponent } from '@shared/navbar/navbar.component';
 import { RouterModule} from '@angular/router';
 import { SidebarModule } from 'primeng/sidebar';
+import { SidebarService } from '@shared/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,16 +26,13 @@ export default class DashboardComponent  {
 
   //Sidebar toggle show hide function
 
-  constructor( 
-    private themeService: ThemeService,
-    private sidebarService: HandlerHeaderService) {}
+  themeService = inject(ThemeService);
+  sidebarService = inject(SidebarService);
+  sidebarVisible = this.sidebarService.sidebarCollapse;
+  handlerOverlay = this.sidebarService.sidebarCollapse;
+  
 
-
- 
-
-
-sidebarVisible$ = this.sidebarService.sidebarVisibility$;
-handlerOverlay$ = this.sidebarService.sidebarVisibility$;
+  constructor( ) {}
 
 changeTheme(theme: string) {
   this.themeService.switchTheme(theme);

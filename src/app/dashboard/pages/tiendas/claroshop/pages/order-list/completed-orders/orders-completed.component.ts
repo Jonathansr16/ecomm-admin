@@ -1,40 +1,56 @@
-import { Component } from '@angular/core';
-import { OrderListResponse, OrderResponse } from '@claroshop/interfaces/claroshop-orders.interface';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { ClaroService } from '@claroshop/services/claroservice.service';
+import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
+import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-orders-completed',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    CardOrderListComponent
+  ],
   template: `
-  
+    <app-card-order-list 
+  [statusData]="statusData"
+  [paginationParams]="paginationParams"
+  [OrderOption]="orderOption"
+  [dataOrders]="ordersCompleted"> 
+  </app-card-order-list>
   `,
   styleUrls: ['./orders-completed.component.scss']
 })
 export default class OrdersCompletedComponent {
 
-  searchTerm: string = '';
-  ordersCompleted: OrderListResponse[]  = [];
-  // isLoading: boolean;
-  // isError: boolean;
-  statusData: 'loading' | 'success' | 'error';
-  totalItem: number =30;
+  statusData: 'loading' | 'success' | 'error' = 'loading';
 
-  titleError: string = '';
-  detailsError: string = '';
-  constructor(private orderCompletedService: ClaroService) {
+  ordersCompleted: any[]  = [];
+  orderOption: MenuItem[] = [
 
- this.statusData = 'loading';
+    {
+      label: 'Opciones'
+    }
+  ];
 
+  paginationParams: PaginationParams = {
+    page: 1,
+    rows: 10,
+    first: 0,
+  };
 
-  }
+  claroService = inject(ClaroService)
+
+  constructor() { }
 
 
   getCompletedOrder() {
-    this.orderCompletedService.getOrderByStatus('entregados').subscribe({
-      next: (response: OrderResponse) => {
+    this.statusData = 'loading';
+    this.claroService.getOrderByStatus('entregados', this.paginationParams.page, this.paginationParams.rows).subscribe({
+      next: (response) => {
         this.statusData = 'success';
-        this.ordersCompleted = response.orden
+        this.ordersCompleted = response.orders
         console.log(response);
       },
        error: (errorMessage) => {
@@ -48,7 +64,8 @@ export default class OrdersCompletedComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-  this.getCompletedOrder()
+   this.getCompletedOrder()
+
   }
 }
 

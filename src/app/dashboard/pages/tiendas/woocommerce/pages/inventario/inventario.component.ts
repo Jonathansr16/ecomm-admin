@@ -22,7 +22,7 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { generateProductForm } from 'src/app/core/form/generateProductForm';
 import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 
-import { InventoryComponent } from '@components/inventory/inventory.component';
+import { CardInventoryListComponent } from '@components/card-inventory-list/card-inventory-list.component';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 
@@ -37,7 +37,7 @@ import { PaginationParams } from '@components/interfaces/pagination-params.inter
     InputSwitchModule,
     ButtonModule,
     SplitButtonModule,
-    InventoryComponent
+    CardInventoryListComponent
   ],
   styleUrls: ['./inventario.component.scss'],
   providers: [
@@ -215,8 +215,8 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       this.wooService
         .getProductsBySearch(
           value,
-          this.paginationParams.page,
-          this.paginationParams.rows,
+          this.paginationParams.page = 1,
+          this.paginationParams.rows = 10,
           this.typeSearch,
         )
         .subscribe({

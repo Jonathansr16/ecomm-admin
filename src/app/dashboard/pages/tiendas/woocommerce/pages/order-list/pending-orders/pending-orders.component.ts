@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CardOrderComponent } from '@components/card-order/card-order.component';
+import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { WooService } from '@woocommerce/services/woo.service';
 import { MenuItem } from 'primeng/api';
@@ -10,15 +10,16 @@ import { Orders } from 'src/app/core/interface/order.interface';
   selector: 'app-pending-orders',
   standalone: true,
   imports: [
-    CardOrderComponent
+    CardOrderListComponent
   ],
   template: ` 
-  <app-card-order 
+  <app-card-order-list 
+  [statusData]="statusData"
   [dataOrders]="testOrders"
   [paginationParams]="paginationParams"
   [OrderOption]="menuOrder"
   >
-  </app-card-order>`,
+  </app-card-order-list>`,
 })
 export default class PendingOrdersComponent {
   pendingOrders: any[] = [];
@@ -56,17 +57,17 @@ export default class PendingOrdersComponent {
     {
       id: 2304,
       noOrder: '2304',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date(),
       shipment_date: new Date(),
       fulfillment: false,
-      total: 365,
+      total_order: 365,
       products: [
 
         {
           product: 'Repuesto Filtro De Aire Nuevo Dedakj Original',
           sku: 'Filter-org-1u',
-          total: 365,
+          total_product: 365,
           quantity: 1,
           image: 
           {
@@ -82,16 +83,16 @@ export default class PendingOrdersComponent {
     {
       id: 2941,
       noOrder: '2941',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date('2024-03-05'),
      shipment_date: new Date('2024-03-06'),
      fulfillment: false,
-     total: 899.20,
+     total_order: 899.20,
       products: [
         {
           product: 'Colección De Juegos Clásicos Nes 852 En 1 Juegos Físicos',
           sku: 'colec-852',
-          total: 899.20,
+          total_product: 899.20,
           quantity: 1,
           image: 
             {
@@ -106,16 +107,16 @@ export default class PendingOrdersComponent {
     {
       id: 34563,
       noOrder: '34563',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date('2024-03-08'),
      shipment_date: new Date('2024-03-08'),
      fulfillment: false,
-     total: 1385,
+     total_order: 1385,
       products: [
         {
           product: 'Super Mario All-stars + Super Mario World Super Mario Standard Edition Ninten',
           sku: 'spr20',
-          total: 486,
+          total_product: 486,
           quantity: 1,
           image: 
             {
@@ -127,7 +128,7 @@ export default class PendingOrdersComponent {
         {
           product: 'Colección De Juegos Clásicos Nes 852 En 1 Juegos Físicos',
           sku: 'colect-852',
-          total: 899,
+          total_product: 899,
           quantity: 1,
           image: 
             {
@@ -142,16 +143,16 @@ export default class PendingOrdersComponent {
     {
       id: 3201,
       noOrder: '3201',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date('2024-03-15'),
      shipment_date: new Date('2024-03-16'),
      fulfillment: false,
-     total: 499,
+     total_order: 499,
       products: [
         {
           product: 'La Leyenda De Zelda Ocarina Of Time Nintendo 64 Gold Salva',
           sku: 'zelda-ofn64',
-          total: 499,
+          total_product: 499,
           quantity: 1,
           image: 
             {
@@ -166,16 +167,16 @@ export default class PendingOrdersComponent {
     {
       id: 2941,
       noOrder: '2941',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date('2024-03-16'),
      shipment_date: new Date('2024-03-16'),
      fulfillment: false,
-     total: 989,
+     total_order: 989,
       products: [
         {
           product: 'Super Smash Bros Nintendo 64 Físico En Caja Con Manual',
           sku: 'super-smash',
-          total: 989,
+          total_product: 989,
           quantity: 1,
           image: 
             {
@@ -190,16 +191,16 @@ export default class PendingOrdersComponent {
     {
       id: 3827,
       noOrder: '3827',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date('2024-03-016'),
      shipment_date: new Date('2024-03-17'),
      fulfillment: false,
-     total: 1995,
+     total_order: 1995,
       products: [
         {
           product: 'Adaptador Convertidor Hdmi Consolas Snes/n64/ngc/sfc 720p',
           sku: 'N64toHDMI',
-          total: 597,
+          total_product: 597,
           quantity: 1,
           image: 
             {
@@ -211,7 +212,7 @@ export default class PendingOrdersComponent {
         {
           product: 'Mario Party 2 Nintendo 64 N64',
           sku: 'MP2R',
-          total: 499,
+          total_product: 499,
           quantity: 1,
           image: 
 
@@ -224,7 +225,7 @@ export default class PendingOrdersComponent {
         {
           product: 'Starcraft 64 N64 Estándar Físico Nuevo',
           sku: 'MP2R',
-          total: 899,
+          total_product: 899,
           quantity: 1,
           image: 
             {
@@ -239,16 +240,16 @@ export default class PendingOrdersComponent {
     {
       id: 2941,
       noOrder: '2941',
-      status: 'pending',
+      status: 'En Proceso',
       date_created: new Date('2024-03-05'),
      shipment_date: new Date('2024-03-06'),
-     total: 750,
+     total_order: 750,
      fulfillment: false,
       products: [
         {
           product: 'Vaso Humidificador Borboteador Concentrador Dedakj De-2a',
           sku: 'DE-2A',
-          total: 750,
+          total_product: 750,
           quantity: 1,
           image: 
             {

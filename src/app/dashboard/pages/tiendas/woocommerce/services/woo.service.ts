@@ -76,6 +76,8 @@ export class WooService {
   //   }
   // }
 
+
+
   getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalRecords: number }> {
    
     let params = new HttpParams()
@@ -118,7 +120,9 @@ export class WooService {
       units: producto.stock_quantity,
       category: producto.categories,
       imagesProduct: producto.images,
-      status: producto.stock_quantity > 0 ? 'active' : 'inactive'
+      status: producto.stock_quantity > 0 ? 'active' : 'inactive',
+      isDropdownInformation: false
+
     }))
   }
 
@@ -201,6 +205,7 @@ export class WooService {
       imagesProduct: producto.images.map((img: ProductImageResult) => ({
         ...img
       })),
+      isDropdownInformation: false
     
       
 
@@ -273,15 +278,15 @@ export class WooService {
     return {
       id: orderResponse.id,
       noOrder:  orderResponse.id.toString(),
-      status: orderResponse.status,
+      status: orderResponse.status === 'pending' ? 'En Proceso' : 'Concretado',
       date_created: orderResponse.date_created,
       shipment_date: orderResponse.date_completed,
       fulfillment: false,
-      total: parseFloat(orderResponse.total),
+      total_order: parseFloat(orderResponse.total),
       products: orderResponse.line_items.map( (productOrder) => ({
         product: productOrder.name,
         sku: productOrder.sku,
-        total: parseFloat(productOrder.total),
+        total_product: parseFloat(productOrder.total),
         image: productOrder.image
       }))
     }

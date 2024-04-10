@@ -12,4 +12,5 @@ export interface ProductInventory {
     total_sales?: number;
     category?: any;
     imagesProduct?: any[];
+    isDropdownInformation: boolean;
 }

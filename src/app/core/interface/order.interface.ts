@@ -1,20 +1,22 @@
 export interface Orders {
+    
     id: number;
     noOrder: string;
-    status: string;
+    status:  'Pendiente' | 'En Proceso' | 'Concretado';
     date_created: Date;
     shipment_date: Date;
     fulfillment: boolean;
-    total: number;
+    total_order: number;
     messeger_service?: string;
     tracking_guide?: string;
     products: ProductOrder[];
+    channel?:  string;
 }
 
 export interface ProductOrder {
     product: string;
     sku: string;
-    total: number;
+    total_product: number;
     quantity?: number;
     image?: ProductOrderImages;
 }

@@ -12,37 +12,37 @@ export const claroRoutes: Routes = [
       import(
         '@claroshop/pages/order-list/order-list.component'
       ),
-    children: [
-      {
-        path: 'pendientes',
-        loadComponent: () =>
-          import(
-            '@claroshop/pages/order-list/pending-orders/pending-orders.component'
-          ),
-      },
+    // children: [
+    //   {
+    //     path: 'pendientes',
+    //     loadComponent: () =>
+    //       import(
+    //         '@claroshop/pages/order-list/pending-orders/pending-orders.component'
+    //       ),
+    //   },
 
-      {
-        path: 'embarcados',
-        loadComponent: () =>
-          import(
-            '@claroshop/pages/order-list/in-proccess-orders/in-process-orders.component'
-          ),
-      },
+    //   {
+    //     path: 'embarcados',
+    //     loadComponent: () =>
+    //       import(
+    //         '@claroshop/pages/order-list/in-proccess-orders/in-process-orders.component'
+    //       ),
+    //   },
 
-      {
-        path: 'concretadas',
-        loadComponent: () =>
-          import(
-            '@claroshop/pages/order-list/completed-orders/orders-completed.component'
-          ),
-      },
+    //   {
+    //     path: 'concretadas',
+    //     loadComponent: () =>
+    //       import(
+    //         '@claroshop/pages/order-list/completed-orders/orders-completed.component'
+    //       ),
+    //   },
 
-      {
-        path: '',
-        redirectTo: 'pendientes',
-        pathMatch: 'full',
-      },
-    ],
+    //   {
+    //     path: '',
+    //     redirectTo: 'pendientes',
+    //     pathMatch: 'full',
+    //   },
+    // ],
   },
 
   {

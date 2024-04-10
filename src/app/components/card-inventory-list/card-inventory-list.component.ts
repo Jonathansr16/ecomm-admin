@@ -10,14 +10,13 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { CardSearchComponent } from '@components/card-search/card-search.component';
 import { ButtonModule } from 'primeng/button';
 import { SearchMenuFilter } from '@components/interfaces/search-menu-filter.interface';
-import { SearchFilter } from '@components/interfaces/search-filter.interface';
 import { ToastModule } from 'primeng/toast';
 import { PaginatorModule } from 'primeng/paginator';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
-  selector: 'app-inventory',
+  selector: 'app-card-inventory-list',
   standalone: true,
   imports: [
     CommonModule, 
@@ -31,22 +30,25 @@ import { SkeletonModule } from 'primeng/skeleton';
     PaginatorModule,
     SkeletonModule
   ],
-  templateUrl: './inventory.component.html',
-  styleUrl: './inventory.component.scss',
+  templateUrl: './card-inventory-list.component.html',
+  styleUrl: './card-inventory-list.component.scss',
 })
-export class InventoryComponent {
+export class CardInventoryListComponent {
 
-  @Input( { required: true}) statusData!: 'loading' | 'success' | 'error' | 'empty'; 
-  @Input( {required: true }) dataProduct: ProductInventory[] = [];
-  @Input() menuSearch :SearchMenuFilter[] = [];
+  @Input( {required: true} ) statusDataProducts!: 'loading' | 'success' | 'error' | 'empty'; 
+  @Input( {required: true }) dataProducts: ProductInventory[] = [];
+  @Input()                   statusDataProduct?: 'loading' | 'success' | 'error' | 'empty'; 
+  @Input()                   dataProduct?: ProductInventory;
+  @Input()                   menuSearch :SearchMenuFilter[] = [];
   @Input( { required: true}) totalRecords!: number;
   @Input( { required: true}) paginationParams!: PaginationParams; 
   @Input( { required: true}) menuProduct!: MenuItem[];
 
   @Output() searchValue = new EventEmitter<string>();
-  @Output() searchedData = new EventEmitter<any>()
+  // @Output() searchedData = new EventEmitter<any>()
   @Output() changeValueLabel = new EventEmitter<'todo' | 'id' | 'title' | 'sku'>();
   @Output() changePagination = new EventEmitter<PaginationParams>();
+  @Output() emitProduct = new EventEmitter<number>();
   
   perPageOptions: number[] = [10, 20, 30, 50];
 
@@ -80,6 +82,8 @@ export class InventoryComponent {
   isSelectAllProduct = false;
   //data seleccionada
   selectedProduct: ProductInventory[] = [];
+    // Índice de acordeon abierto, inicialmente cerrado
+    selectedIndex: number = -1; 
 
   menuToolbar: MenuItem[] = [
     {
@@ -131,12 +135,15 @@ export class InventoryComponent {
     }
   ];
 
+
+
+
   toggleSelectAllProducts() {
     // Si se selecciona la opción masiva, seleccionar todos los productos
     if (this.isSelectAllProduct) {
       // Si se selecciona la opción masiva, seleccionar todos los productos
-      this.selectedProduct = this.dataProduct?.slice();
-      this.isSelectedEveryProduct = this.dataProduct?.map(() => true) || [];
+      this.selectedProduct = this.dataProducts?.slice();
+      this.isSelectedEveryProduct = this.dataProducts?.map(() => true) || [];
       this.isBtnActive.massiveModification = true;
     } else {
       // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
@@ -161,7 +168,7 @@ export class InventoryComponent {
 
 
     // Verificar si todos los elementos de la parte inferior están seleccionados
-    const allSelected = this.dataProduct.every((product) =>
+    const allSelected = this.dataProducts.every((product) =>
       this.selectedProduct.some(
         (selectedOrder) => selectedOrder.id === product.id
       )
@@ -201,7 +208,7 @@ export class InventoryComponent {
   
   searchRecord(value: any) {
     this.searchValue.emit(value);
-    this.searchedData.emit()
+    // this.searchedData.emit()
   }
 
   onItemChange(event: any) {
@@ -224,6 +231,22 @@ export class InventoryComponent {
 
     this.changePagination.emit(this.paginationParams);
   }
+
+  collapseContent(index: number, idProduct: number) {
+    if (this.selectedIndex === index) {
+      this.selectedIndex = -1; // Cierra el acordeón si ya está abierto
+    } else {
+      this.emitProduct.emit(idProduct);
+     
+      this.selectedIndex = index; // Abre el acordeón haciendo clic en un elemento
+    }
+  }
+
+  isCollapsing(index: number): boolean {
+    return this.selectedIndex === index;
+    
+  }
+
 
  }
 

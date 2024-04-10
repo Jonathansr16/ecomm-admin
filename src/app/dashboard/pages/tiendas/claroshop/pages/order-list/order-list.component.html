@@ -1,9 +1,56 @@
-
+<!-- 
 <div class="container order-quantity">
-    <app-card-stats [label]="'En proceso'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'pendientes']" [count]="pendingOrdersCount" [isLoading]="statusOfData.pending"></app-card-stats>
-    <app-card-stats [label]="'Embarcadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'embarcadas']" [count]="pendingOrdersCount" [isLoading]="statusOfData.pending"></app-card-stats>
-    <app-card-stats [label]="'Concretadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'concretadas']" [count]="completedOrdersCount" [isLoading]="statusOfData.completed"></app-card-stats>
+    <app-card-stats [label]="'En proceso'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'pendientes']" [count]="pendingOrdersCount()" [isLoading]="statusOfData.pending"></app-card-stats>
+    <app-card-stats [label]="'Embarcadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'embarcadas']" [count]="shippedOrdersCount()" [isLoading]="statusOfData.pending"></app-card-stats>
+    <app-card-stats [label]="'Concretadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'concretadas']" [count]="completedOrdersCount()" [isLoading]="statusOfData.completed"></app-card-stats>
 </div>
 
-<router-outlet></router-outlet>
+ <router-outlet></router-outlet>
+
+ -->
+
+
+ 
+<div class="container order-quantity">
+
+<app-card-stats 
+    [label]="'En proceso'"
+    [count]="pendingOrdersCount()" 
+    [isLoading]="statusOfData.pending"
+    (click)="getOrderstByStatus('pendientes')"
+   >
+</app-card-stats>
+
+<app-card-stats 
+    [label]="'Embarcadas'"  
+    [count]="shippedOrdersCount()" 
+    [isLoading]="statusOfData.shipped"
+    (click)="getOrderstByStatus('embarcados')"
+  
+    >
+</app-card-stats>
+
+<app-card-stats 
+    [label]="'Concretadas'"  
+    [count]="completedOrdersCount()" 
+    [isLoading]="statusOfData.completed"
+    (click)="getOrderstByStatus('entregados')"
+   >
+</app-card-stats>
+
+</div>
+
+<div class="container mt-8">
+
+    <app-card-order-list
+     [statusData]="statusData"
+      [dataOrders]="orders"
+      [paginationParams]="paginationParams"
+      [OrderOption]="MenuProduct"
+      >
+
+    </app-card-order-list>
+
+</div>
+
 

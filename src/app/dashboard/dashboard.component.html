@@ -1,7 +1,7 @@
 <div class="dashboard__unstyledContainer">
   <div
     class="dashboard__wrapperOverlay fixed z-10 lg:w-0 lg:h-0 lg:top-0 lg:left-0 lg:hidden"
-    [class.isActive-overlay]="handlerOverlay$ | async">
+    [class.isActive-overlay]="handlerOverlay()">
   </div>
 
   <div class="dashboard__wrapper">
@@ -11,7 +11,7 @@
 
     <div
       class="dashboard__body lg:ml-[92px]"
-      [class.translate-body]="sidebarVisible$ | async">
+      [class.translate-body]="sidebarVisible()">
       <div class="dashboard__navbar">
         <app-navbar></app-navbar>
       </div>
@@ -21,8 +21,8 @@
       </div>
     </div>
 
-    <div class="theme">
-      <i class="theme__i material-icons" (click)="handlerSidebarTheme = true"
+    <div class="theme fixed top-60 right-0 z-[9] w-16 h-12 bg-indigo-700 text-white flex items-center justify-center cursor-pointer rounded-tl-2xl rounded-bl-2xl">
+      <i class="theme__i material-icons text-3xl" (click)="handlerSidebarTheme = true"
         >settings</i
       >
     </div>
@@ -34,9 +34,9 @@
     >
       <h3>Elige un tema:</h3>
 
-      <div class="theme__content">
+      <div class="theme__content pl-8 pr-8">
         <h4>Temas Claros</h4>
-        <div class="theme__card card">
+        <div class="theme__card card flex flex-wrap mr-[-0.5em] ml-[-0.5em] mt-[-0.5em]">
           <div class="gap-2 flex items-center flex-col">
             <button (click)="changeTheme('purple')" class="mr-3 cursor-pointer">
               <img
@@ -46,7 +46,7 @@
               />
             </button>
 
-            <span class="whitespace-nowrap theme__span">Purple</span>
+            <span class="whitespace-nowrap theme__span text-sm">Purple</span>
           </div>
 
           <div class="gap-2 flex items-center flex-col">

@@ -4,11 +4,12 @@ import {
   OnDestroy,
   Renderer2,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router, RouterModule } from '@angular/router';
-import { HandlerHeaderService } from 'src/app/core/services/handlerHeader/handler-header.service';
+import { SidebarService } from '@shared/sidebar/sidebar.service';
 import { AuthService } from '@auth/services/auth.service';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
@@ -41,7 +42,7 @@ export class SidebarComponent implements OnDestroy {
   // activeSubMenu = -1;
   isOpenMenu = false;
   isOpenSubMenu = false;
-  private unlistener!: () => void;
+  // private unlistener!: () => void;
 
 
   //? MENU SECTION MAIN
@@ -121,6 +122,7 @@ export class SidebarComponent implements OnDestroy {
               type: 'link',
               routerLink: '/dashboard/claroshop/inventario',
               queryParams: {
+                action: 'pendientes',
                 page: '1',
                 productosporpagina: '10'
               }
@@ -129,7 +131,12 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'local_mall',
               label: 'Ordenes',
               type: 'link',
-              routerLink: '/dashboard/claroshop/ordenes'
+              routerLink: '/dashboard/claroshop/ordenes',
+              queryParams: {
+                action: 'pendientes',
+                page: 1,
+                limit: '10'
+              }
 
             }
           ]
@@ -238,16 +245,20 @@ export class SidebarComponent implements OnDestroy {
       label: 'Cerra Sesión',
       type: 'link'
     },
-  ]
+  ];
 
-  handlerSidebar$ = this.hanlderSidebarService.sidebarVisibility$;
+  // isSidebarCollapsed = false;
 
-  constructor(
-    private renderer2: Renderer2,
-    private authService: AuthService,
-    private router: Router,
-    private hanlderSidebarService: HandlerHeaderService
-  ) {}
+  // handlerSidebar$ = this.hanlderSidebarService.sidebarVisibility$;
+
+  renderer2 = inject(Renderer2);
+  authService  = inject(AuthService);
+  router = inject(Router);
+  sidebarService = inject(SidebarService);
+  sidebarCollapse = this.sidebarService.sidebarCollapse;
+
+  constructor() {}
+
 
 
 
@@ -270,7 +281,8 @@ export class SidebarComponent implements OnDestroy {
   // }
 
   toggleSidebar() {
-    this.hanlderSidebarService.toggleSidebar();
+    // this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    this.sidebarService.toggleSidebar();
   }
 
   cerrarSesion(): void {
@@ -283,7 +295,7 @@ export class SidebarComponent implements OnDestroy {
   // }
 
   ngOnDestroy(): void {
-    this.unlistener;
+    // this.unlistener;
   }
 
  

@@ -9,7 +9,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { Orders } from 'src/app/core/interface/order.interface';
 
 @Component({
-  selector: 'app-card-order',
+  selector: 'app-card-order-list',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,12 +19,12 @@ import { Orders } from 'src/app/core/interface/order.interface';
     MenuModule
   ],
 
-  templateUrl: './card-order.component.html',
-  styleUrl: './card-order.component.scss',
+  templateUrl: './card-order-list.component.html',
+  styleUrl: './card-order-list.component.scss',
 })
-export class CardOrderComponent {
+export class CardOrderListComponent {
 
-  // @Input( { required: true}) statusData!: 'loading' | 'success' | 'error' | 'empty'; 
+  @Input( { required: true}) statusData!: 'loading' | 'success' | 'error' | 'empty'; 
   @Input( { required: true}) dataOrders!: Orders[]; 
   @Input( { required: true}) paginationParams!: PaginationParams; 
   @Input( ) menuToolbar!: MenuItem[];

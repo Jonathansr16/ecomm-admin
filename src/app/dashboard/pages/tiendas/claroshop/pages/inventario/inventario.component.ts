@@ -10,8 +10,9 @@ import { FormsModule } from '@angular/forms';
 import { ParamsPagination } from 'src/app/core/interface/pagination.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
-import { InventoryComponent } from '@components/inventory/inventory.component';
+import { CardInventoryListComponent } from '@components/card-inventory-list/card-inventory-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { ProductInventory } from '@components/interfaces/product.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -21,7 +22,7 @@ import { PaginationParams } from '@components/interfaces/pagination-params.inter
     FormsModule,
     BreadcrumbComponent,
     ButtonModule,
-    InventoryComponent
+    CardInventoryListComponent
   ],
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.scss'],
@@ -88,14 +89,15 @@ export default class InventarioComponent {
   inputValue = '';
   typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
   totalRecords = 0;
+  statusProduct:  'loading' | 'success' | 'error' | 'empty' = 'loading';
   statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
   suscriptions$: Subscription[] = [];
   
   private activedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private readonly claroService = inject(ClaroService);
-  products: any[] = [];
-
+  products: ProductInventory[] = [];
+  product?: ProductInventory;
   private confirmService = inject(ConfirmationService);
 
   ngOnInit(): void {
@@ -128,6 +130,22 @@ export default class InventarioComponent {
         },
       })
     );
+  }
+
+  getProduct(idProduct: number) {
+  
+    this.claroService.getProduct(idProduct).subscribe( {
+      next: (resp) => {
+        this.statusProduct = resp ? 'success' : 'empty';
+        this.product = resp;
+        console.log(resp)
+      },
+
+      error: (err) => {
+        this.product = undefined;
+        this.statusProduct = 'error';
+      }
+    })
   }
 
   paginationChanged(event: any) {
