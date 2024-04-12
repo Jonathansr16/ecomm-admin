@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, input, output } from '@angular/core';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { StatusData } from '@components/interfaces/status-data.interface';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -24,17 +25,26 @@ import { Orders } from 'src/app/core/interface/order.interface';
 })
 export class CardOrderListComponent {
 
-  @Input( { required: true}) statusData!: 'loading' | 'success' | 'error' | 'empty'; 
-  @Input( { required: true}) dataOrders!: Orders[]; 
-  @Input( { required: true}) paginationParams!: PaginationParams; 
-  @Input( ) menuToolbar!: MenuItem[];
-  @Input( { required: true}) OrderOption!: MenuItem[];
+statusData = input.required<StatusData>();
+dataOrders = input.required<Orders[]>();
+paginationParams = input.required<PaginationParams>();
+menuToolbar = input<MenuItem[]>();
+OrderOption = input.required<MenuItem[]>();
+  
+searchValue = output<string>();
+searchedData = output<string>();
+changeValueLabel = output<'todo' | 'id' | 'title' | 'sku'>();
+changePagination = output<PaginationParams>();
+  // @Input( { required: true}) statusData!: 'loading' | 'success' | 'error' | 'empty'; 
+  // @Input( { required: true}) dataOrders!: Orders[]; 
+  // @Input( { required: true}) paginationParams!: PaginationParams; 
+  // @Input( ) menuToolbar!: MenuItem[];
+  // @Input( { required: true}) OrderOption!: MenuItem[];
 
-
-  @Output() searchValue = new EventEmitter<string>();
-  @Output() searchedData = new EventEmitter<any>()
-  @Output() changeValueLabel = new EventEmitter<'todo' | 'id' | 'title' | 'sku'>();
-  @Output() changePagination = new EventEmitter<PaginationParams>();
+  // @Output() searchValue = new EventEmitter<string>();
+  // @Output() searchedData = new EventEmitter<any>()
+  // @Output() changeValueLabel = new EventEmitter<'todo' | 'id' | 'title' | 'sku'>();
+  // @Output() changePagination = new EventEmitter<PaginationParams>();
  
   perPageOptions: number[] = [10, 20, 30, 50];
 
@@ -63,8 +73,8 @@ export class CardOrderListComponent {
       // Si se selecciona la opción masiva, seleccionar todos los productos
       if (this.isSelectAllProduct) {
         // Si se selecciona la opción masiva, seleccionar todos los productos
-        this.selectedProduct = this.dataOrders?.slice();
-        this.isSelectedEveryProduct = this.dataOrders?.map(() => true) || [];
+        this.selectedProduct = this.dataOrders()?.slice();
+        this.isSelectedEveryProduct = this.dataOrders()?.map(() => true) || [];
       } else {
         // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
         this.selectedProduct = [];
@@ -87,7 +97,7 @@ export class CardOrderListComponent {
   
   
       // Verificar si todos los elementos de la parte inferior están seleccionados
-      const allSelected = this.dataOrders.every((order) =>
+      const allSelected = this.dataOrders().every((order) =>
         this.selectedProduct.some(
           (selectedOrder) => selectedOrder.id === order.id
         )
@@ -127,7 +137,7 @@ export class CardOrderListComponent {
     
     searchRecord(value: any) {
       this.searchValue.emit(value);
-      this.searchedData.emit()
+      // this.searchedData.emit()
     }
 
     collapseContent(index: number) {
@@ -145,3 +155,4 @@ export class CardOrderListComponent {
   
   
 }
+

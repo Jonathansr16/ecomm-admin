@@ -7,12 +7,11 @@ import { ButtonModule } from 'primeng/button';
 import { BreadcrumbItem } from '../../../../../../core/interface/breadcrumb.interface';
 import { EMPTY, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ParamsPagination } from 'src/app/core/interface/pagination.interface';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 import { CardInventoryListComponent } from '@components/card-inventory-list/card-inventory-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { ProductInventory } from '@components/interfaces/product.interface';
+import { StatusData } from '@components/interfaces/status-data.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -30,9 +29,7 @@ import { ProductInventory } from '@components/interfaces/product.interface';
 })
 export default class InventarioComponent {
 
-
   dialogVisible: boolean = false;
-
   BreadcrumbHome: BreadcrumbItem = {
     icon: 'list_alt',
     label: 'Inventario',
@@ -89,29 +86,30 @@ export default class InventarioComponent {
   inputValue = '';
   typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
   totalRecords = 0;
-  statusProduct:  'loading' | 'success' | 'error' | 'empty' = 'loading';
-  statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
+  statusProducts: StatusData = {status: 'loading'};
   suscriptions$: Subscription[] = [];
-  
+
   private activedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private readonly claroService = inject(ClaroService);
   products: ProductInventory[] = [];
-  product?: ProductInventory;
-  private confirmService = inject(ConfirmationService);
+  productsDetail: ProductInventory[] = [];
+  statusProductsDetail: StatusData[] = [];
+
+  private readonly confirmService = inject(ConfirmationService);
 
   ngOnInit(): void {
-    this.activedRoute.queryParams.subscribe( (params: Params): void => {
+    this.activedRoute.queryParams.subscribe((params: Params): void => {
       this.paginationParams.page = +params['page'] ? +params['page'] : 1;
       this.paginationParams.rows = +params['productosporpagina'] ? params['productosporpagina'] : 10;
 
-      this.getProducts(this.paginationParams.page, this.paginationParams.rows)
+      this.getProducts(this.paginationParams.page, this.paginationParams.rows);
     })
 
   }
 
   getProducts(page: number, per_page: number) {
-    this.statusData = 'loading';
+    this.statusProducts.status = 'loading';
 
     this.suscriptions$.push(
       this.claroService.getProducts(page, per_page).subscribe({
@@ -119,11 +117,11 @@ export default class InventarioComponent {
           this.products = resp;
           this.totalRecords = resp.length;
           this.paginationParams.page
-          this.statusData = 'success';
+          this.statusProducts.status = 'success';
         },
         error: (msgErorr) => {
           console.log(msgErorr);
-          this.statusData = 'error';
+          this.statusProducts.status = 'error';
           this.totalRecords = 0;
           return EMPTY;
 
@@ -132,20 +130,33 @@ export default class InventarioComponent {
     );
   }
 
-  getProduct(idProduct: number) {
-  
-    this.claroService.getProduct(idProduct).subscribe( {
-      next: (resp) => {
-        this.statusProduct = resp ? 'success' : 'empty';
-        this.product = resp;
-        console.log(resp)
-      },
+  getProduct(product: DetailProductInterface) {
+   
+    this.statusProductsDetail[product.index] = { status: 'loading' };
+    const existingProduct = !this.productsDetail[product.index] || this.productsDetail[product.index].id !== product.idProduct ? true : false;
+    if(existingProduct) {
 
-      error: (err) => {
-        this.product = undefined;
-        this.statusProduct = 'error';
-      }
-    })
+      this.claroService.getProduct(product.idProduct).subscribe({
+        next: (resp) => {
+          this.productsDetail[product.index] = resp
+          this.statusProductsDetail[product.index] = { status: 'success' };
+  
+        },
+  
+        error: (err) => {
+          this.statusProductsDetail[product.index] = { status: 'error' };
+  
+          //  this.statusProductDetail= 'error';
+  
+        }
+      })
+    
+    }
+  
+
+
+
+
   }
 
   paginationChanged(event: any) {
@@ -160,38 +171,36 @@ export default class InventarioComponent {
       queryParamsHandling: 'merge',
 
     });
-}
+  }
+
+  getProductsBySearch(value: string) {
+    this.statusProducts.status = 'loading';
+
+    this.suscriptions$.push(
+      this.claroService
+        .getProductsBySearch(value, this.typeSearch, this.paginationParams.page).subscribe(
+          {
+            next: (data) => {
+              this.statusProducts.status = data.length > 0 ? 'success' : 'empty';
+              this.totalRecords = data.length;
+              this.products = data;
+            },
+            error: (err: string) => {
+              this.statusProducts.status = 'error';
+              this.products = [];
+              this.totalRecords = 0;
+              // this.errorMessage = err;
+
+              return EMPTY;
+            },
+          })
+    );
+  }
 
 
-
-getProductsBySearch(value: string) {
-  this.statusData = 'loading';
-
-  this.suscriptions$.push(
-    this.claroService
-      .getProductsBySearch(value, this.typeSearch, this.paginationParams.page).subscribe(
-        {
-        next: (data) => {
-          this.statusData = data.length > 0 ? 'success' : 'empty';
-         this.totalRecords = data.length;
-          this.products = data;
-        },
-        error: (err: string) => {
-          this.statusData = 'error';
-          this.products = [];
-          this.totalRecords= 0;
-          // this.errorMessage = err;
-
-          return EMPTY;
-        },
-      })
-  );
-}
-
-
-getSearchValue(value: string) {
-  this.inputValue = value;
-}
+  getSearchValue(value: string) {
+    this.inputValue = value;
+  }
   // searchFilter($event: any, value: string) {
   //   this.productos?.filterGlobal(($event.target as HTMLInputElement).value, value)
   // }
@@ -201,4 +210,11 @@ getSearchValue(value: string) {
     //Add 'implements OnDestroy' to the class.
     this.suscriptions$.forEach((suscription) => suscription.unsubscribe());
   }
+}
+
+
+
+interface DetailProductInterface {
+  index: number;
+  idProduct: number;
 }

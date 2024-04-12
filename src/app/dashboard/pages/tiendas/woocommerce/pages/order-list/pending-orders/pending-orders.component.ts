@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { StatusData } from '@components/interfaces/status-data.interface';
 import { WooService } from '@woocommerce/services/woo.service';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -23,7 +24,7 @@ import { Orders } from 'src/app/core/interface/order.interface';
 })
 export default class PendingOrdersComponent {
   pendingOrders: any[] = [];
-  statusData: 'success' | 'error' | 'loading' | 'empty' = 'loading';
+  statusData: StatusData = {status: 'loading'};
   //parametros iniciales para la paginación
   paginationParams: PaginationParams = {
     page: 1,

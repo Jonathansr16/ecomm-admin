@@ -1,5 +1,5 @@
 import { AfterViewInit, Component,  OnInit,  Renderer2, Inject, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioModel } from '@auth/models/usuario.model';
 import { AuthService } from '../services/auth.service';
@@ -12,13 +12,24 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import { InputGroupModule } from 'primeng/inputgroup';
 
 @Component({
   selector: 'login-auth',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule, CheckboxModule, ButtonModule, HeaderComponent],
+  imports: [
+    CommonModule, 
+    RouterLink,
+    ReactiveFormsModule, 
+    InputTextModule, 
+    InputGroupModule,
+    PasswordModule, 
+    CheckboxModule, 
+    ButtonModule, 
+    HeaderComponent
+  ],
   templateUrl: './login.component.html',
-  styleUrls: ['../auth.style.scss', './login.component.scss']
+  styleUrl: './login.component.scss'
 })
 export default class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 

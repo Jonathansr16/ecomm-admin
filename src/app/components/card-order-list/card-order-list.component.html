@@ -54,14 +54,14 @@
                 }
               </span>
 
-              <p-menu #menuOrder [model]="menuToolbar" [popup]="true" [appendTo]="menu" id="menuToolbar"
+              <p-menu #menuOrder [model]="menuToolbar()" [popup]="true" [appendTo]="menu" id="menuToolbar"
                 [style]="{ 'font-size': '14px' }"></p-menu>
             </div>
           </div>
         </div>
       </div>
     </div>
-    @for (order of dataOrders; track order.id; let i = $index) {
+    @for (order of dataOrders(); track order.id; let i = $index) {
     <div [ngStyle]="{ 'background-color': 'var(--surface-card)' }"
       class="order-card container max-w-7xl mx-auto rounded-lg shadow-md shadow-indigo-500/10 mb-8">
       <div
@@ -85,7 +85,7 @@
             <i class="pi pi-ellipsis-v"></i>
           </button>
 
-          <p-menu #menuOption [model]="OrderOption" [popup]="true" [style]="{ 'font-size': '14px' }"></p-menu>
+          <p-menu #menuOption [model]="OrderOption()" [popup]="true" [style]="{ 'font-size': '14px' }"></p-menu>
         </div>
       </div>
 
@@ -314,7 +314,7 @@
     }
 
     <div class="inventory__pagination my-8 container">
-      <p-paginator [style]="{ 'font-size': '14px' }" [first]="paginationParams.first" [rows]="paginationParams.rows"
+      <p-paginator [style]="{ 'font-size': '14px' }" [first]="paginationParams().first" [rows]="paginationParams().rows"
         [totalRecords]="10" [rowsPerPageOptions]="perPageOptions">
       </p-paginator>
     </div>

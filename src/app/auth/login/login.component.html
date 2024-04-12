@@ -1,33 +1,30 @@
 
-<div class="acceso">
+<div class="acceso relative">
 
   <div class="acceso-info animate__animated animate__fadeIn">
 
     <app-header acceso-header__title>
-      <h1 class="acceso-header__h1 title">Bievenido, ingresa a tu plataforma</h1>
-      <p class="acceso-header__p">Ingresa a tu cuenta y empieza a administrar tus tiendas</p>
+      <h1 class="acceso-header__h1 title text-white text-3xl font-semibold text-center">Hola Bievenido 👋</h1>
+      <p class="acceso-header__p text-white text-lg">Ingresa a tu cuenta y empieza a administrar tus tiendas</p>
     </app-header>
   </div>
 
-  <div class="forms container animate__animated animate__fadeInLeft">
-    <form class="form" autocomplete="off" [formGroup]="formSignIn" (ngSubmit)="login()">
+  <div class="forms container animate__animated animate__fadeInLeft relative pb-12 mt-[-8rem]">
+    <form class="form bg-white max-w-[550px] w-full flex items-center justify-center flex-col p-4 mx-auto mb-8 rounded-lg" autocomplete="off" [formGroup]="formSignIn" (ngSubmit)="login()">
 
-      <div class="form__header form__section">
+      <div class="form__header form__section border-b-[1px] w-full">
 
         <!-- <div class="form__logo">
-        <img src="assets/img/logo_servitae.webp" class="form__img--logo" alt="servitae">
+        <img src="assets/img/logo_servitae.webp" class="form__img--logo max-w-48 mx-auto"" alt="servitae">
       </div> -->
 
-      <h2 class="form__h2 title">Ingresa a tu plataforma</h2>
+      <h2 class="form__h2 text-2xl font-semibold text-slate-500 text-center my-3">Ingresa a tu plataforma</h2>
     </div>
 
 
-    <div class="form__section">
-      <label class="form__label" htmlFor="correo_login">Correo:</label>
+    <div class="form__section w-full mt-2 mb-2">
+      <label class="form__label text-sm font-semibold text-gray-500 p-2 block" htmlFor="correo_login">Correo:</label>
 
-      <!-- <input pInputText class="form__input" name="correo_login" placeholder="Introduce tu correo electrónico"
-      formControlName="emailLogin" [class.is-invalid]="emaiLoginlInvalid"
-      [ngClass]="{ 'ng-invalid ng-dirty': emaiLoginlInvalid }" /> -->
 
       <div class="p-inputgroup">
         <span class="p-inputgroup-addon">
@@ -42,14 +39,14 @@
       }
     </div>
 
-    <div class="form__section">
-      <label class="form__label" htmlFor="password_Login">Contraseña:</label>
+    <div class="form__section w-full mb-2">
+      <label class="form__label text-sm font-semibold text-gray-500 p-2 block" htmlFor="password_Login">Contraseña:</label>
       <div class="p-inputgroup">
-        <span class="p-inputgroup-addon">
+        <span class="p-inputgroup-addon ">
           <i class="material-icons form__i">key</i>
         </span>
 
-        <p-password id="passConfirm" autocomplete="on" name="password_Login" class="form__input" placeholder="Ingrese su contraseña"
+        <p-password [style]="{ 'width': '100%'}" id="passConfirm" autocomplete="on" name="password_Login" class="form__input" placeholder="Ingrese su contraseña"
           [feedback]="false" [toggleMask]="true" formControlName="passLogin" [class.is-invalid]="passLoginInvalid"
         [ngClass]="{'ng-invalid ng-dirty': passLoginInvalid }"></p-password>
       </div>
@@ -60,23 +57,21 @@
     </div>
 
 
-    <div class="form__section form__remember mt-3">
+    <div class="form__section flex items-center justify-start gap-1 w-full mb-2">
       <p-checkbox name="rememberme" [binary]="true" inputId="binary"></p-checkbox>
 
-      <label for="rememberme">Recodar contraseña</label>
+      <label class="form__label text-sm font-semibold text-slate-700 p-2 block" for="rememberme">Recordar contraseña</label>
     </div>
 
-    <div class="form__section">
-
-      <p-button class="form__btn mt-3" styleClass="p-button-help" label="INGRESAR" type="submit"
-      styleClass="p-button-rounded"></p-button>
+    <div class="form__section flex items-center justify-center w-full mb-2">
+      <button [style]="{ 'width' : '60%'}" class="form__btn-summit" pButton pRipple label="Ingresar" class="p-button-primary"></button>
     </div>
 
   </form>
 
-  <div class="form__section form-actions">
+  <div class="form__section max-w-[550px] w-full mx-auto flex items-center justify-between gap-4 flex-row">
     <!-- <a class="form-actions__a" href="#">Olvidaste tu contraseña?</a> -->
-    <a class="form-actions__a" routerLink="/register">Crear una nueva cuenta</a>
+    <a routerLink="/registro" class="form-actions__a text-sm text-white font-semibold cursor-pointer">Crear una nueva cuenta</a>
   </div>
 
 </div>

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 //? INTERFACES
 import { ProductResult } from '@woocommerce/interface/woo-producto.interface';
@@ -25,6 +25,7 @@ import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 import { CardInventoryListComponent } from '@components/card-inventory-list/card-inventory-list.component';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { StatusData } from '@components/interfaces/status-data.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -115,7 +116,7 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   };
 
   typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
-  statusData: 'success' | 'loading' | 'error' | 'empty' = 'loading';
+  statusData: StatusData = {status: 'loading'};
 
   //ARREGLO PARA CACHEAR LA DATA
   private readonly cachedDataRows: { [key: string]: ProductResult[] } = {};
@@ -181,18 +182,18 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
   getProducts(page: number, per_page: number) {
     // Realiza una llamada a la API si no hay datos en caché
-    this.statusData = 'loading';
+    this.statusData.status = 'loading';
     return this.suscriptions$.push(
       this.wooService.getProducts(page, per_page).subscribe({
         next: (resp) => {
           this.products = resp.products;
           // this.cachedDataRows[per_page] = resp;
-          this.statusData = resp.totalRecords > 0 ? 'success' : 'empty' ;
+          this.statusData.status = resp.totalRecords > 0 ? 'success' : 'empty' ;
           this.totalRecords = resp.totalRecords;
         },
         error: (error: string) => {
           this.errorMessage = error;
-          this.statusData = 'error';
+          this.statusData.status = 'error';
           this.totalRecords = 0;
           this.products = [];
           // this.cachedDataRows[page] = []; // Limpia la caché en caso de error
@@ -209,7 +210,7 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
 
   getProductsBySearch(value: string) {
-    this.statusData = 'loading';
+    this.statusData.status = 'loading';
 
     this.suscriptions$.push(
       this.wooService
@@ -222,12 +223,12 @@ export default class InventarioComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data) => {
             this.products = data.products;
-            this.statusData = data.totalRecords > 0 ? 'success' : 'empty';
+            this.statusData.status = data.totalRecords > 0 ? 'success' : 'empty';
             this.totalRecords = data.totalRecords;
             console.log(data)
           },
           error: (err: string) => {
-            this.statusData = 'error';
+            this.statusData.status = 'error';
             this.products = [];
             this.errorMessage = err;
 

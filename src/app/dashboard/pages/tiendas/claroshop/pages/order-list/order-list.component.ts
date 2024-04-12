@@ -4,6 +4,7 @@ import { ClaroService } from '@claroshop/services/claroservice.service';
 import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
 import { CardStatsComponent } from '@components/card-stats/card-stats.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { StatusData } from '@components/interfaces/status-data.interface';
 import { MenuItem } from 'primeng/api';
 import { Orders } from 'src/app/core/interface/order.interface';
 
@@ -32,7 +33,7 @@ export default class OrderListComponent {
 
   //* Status de la cada orden
  
-  statusData: 'loading' | 'success' | 'error' | 'empty' = 'loading';
+  statusData: StatusData = {status: 'loading'};
   // estatusByOrderList: 'pendientes' | 'entregados' | 'embarcados' = 'pendientes';
   //* parametros iniciales para la paginación
   paginationParams: PaginationParams = {

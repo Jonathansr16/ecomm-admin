@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import {FormBuilder, FormGroup,  FormsModule,  ReactiveFormsModule,  Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@auth/services/auth.service';
 import { UsuarioModel } from '@auth/models/usuario.model'; 
 import { ValidatorsService } from 'src/app/core/services/validators.service';
@@ -9,19 +9,27 @@ import { HeaderComponent } from '@auth/components/header/header.component';
 import { FooterComponent } from '@auth/components/footer/footer.component';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [ 
     CommonModule, 
+    RouterLink,
     ReactiveFormsModule,
     ButtonModule, 
+    InputTextModule,
+    InputGroupModule,
     PasswordModule, 
+    CheckboxModule, 
     HeaderComponent, 
     FooterComponent],
   templateUrl: './register.component.html',
-  styleUrls: ['../auth.style.scss', './register.component.scss']
+  styleUrl: './register.component.scss'
 })
 export default class RegisterComponent  implements OnInit, OnDestroy{
 
