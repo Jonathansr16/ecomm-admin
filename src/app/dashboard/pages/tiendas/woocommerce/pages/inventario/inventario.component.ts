@@ -22,7 +22,7 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { generateProductForm } from 'src/app/core/form/generateProductForm';
 import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 
-import { CardInventoryListComponent } from '@components/card-inventory-list/card-inventory-list.component';
+import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
@@ -38,7 +38,7 @@ import { StatusData } from '@components/interfaces/status-data.interface';
     InputSwitchModule,
     ButtonModule,
     SplitButtonModule,
-    CardInventoryListComponent
+    InventoryListComponent
   ],
   styleUrls: ['./inventario.component.scss'],
   providers: [
@@ -285,7 +285,7 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
 
-  changeTypeSearch(value: 'todo' | 'id' | 'title' | 'sku') {
+  changeTypeSearch(value: any) {
     this.typeSearch = value;
   }
 }

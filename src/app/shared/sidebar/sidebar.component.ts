@@ -122,9 +122,9 @@ export class SidebarComponent implements OnDestroy {
               type: 'link',
               routerLink: '/dashboard/claroshop/inventario',
               queryParams: {
-                action: 'pendientes',
+             
                 page: '1',
-                productosporpagina: '10'
+             
               }
             },
             {

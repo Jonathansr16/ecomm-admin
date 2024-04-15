@@ -19,6 +19,7 @@
           [style]="{ 'font-size': '14px', padding: '0.5em 0.6em' }"
           label="Agregar producto"
           severity="success"
+          
         >
         </p-button>
       </div>
@@ -26,16 +27,17 @@
   </div>
 </div>
 
-<app-card-inventory-list 
+<app-inventory-list 
 [statusProducts]="statusProducts"
 [products]="products"
 [statusProductsExtraInfo]="statusProductsDetail"
 [productsExtraInfo]="productsDetail"
 [menuProduct]="MenuProduct"
  [totalRecords]="totalRecords"
+ (changeLabelValue)="changeTypeSearch($event)"
  (searchValue)="getProductsBySearch($event)"
  (emitProduct)="getProduct($event)"
  [paginationParams]="paginationParams"
- (changePagination)="paginationChanged($event)"
+ (changedPagination)="paginationChanged($event)"
  >
-</app-card-inventory-list>
+</app-inventory-list>

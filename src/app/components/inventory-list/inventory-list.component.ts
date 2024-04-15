@@ -20,9 +20,10 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { SkeletonModule } from 'primeng/skeleton';
 import { StatusData } from '@components/interfaces/status-data.interface';
+import { CardProductComponent } from './card-product/card-product.component';
 
 @Component({
-  selector: 'app-card-inventory-list',
+  selector: 'app-inventory-list',
   standalone: true,
   imports: [
     CommonModule,
@@ -35,11 +36,12 @@ import { StatusData } from '@components/interfaces/status-data.interface';
     ToastModule,
     PaginatorModule,
     SkeletonModule,
+    CardProductComponent
   ],
-  templateUrl: './card-inventory-list.component.html',
-  styleUrl: './card-inventory-list.component.scss',
+  templateUrl: './inventory-list.component.html',
+  styleUrl: './inventory-list.component.scss',
 })
-export class CardInventoryListComponent {
+export class InventoryListComponent {
   statusProducts = input.required<StatusData>();
   
   products = input.required<ProductInventory[]>();
@@ -51,9 +53,11 @@ export class CardInventoryListComponent {
   paginationParams = input.required<PaginationParams>();
   menuProduct = input.required<MenuItem[]>();
 
-  searchValue = output<string>();
-  changeValueLabel = output<'todo' | 'title' | 'id' | 'sku'>();
-  changePagination = output<PaginationParams>();
+  
+   searchValue = output<string>();
+   changeLabelValue = output<'todo' | 'title' | 'id' | 'sku'>();
+  // changeValueLabel = output<'todo' | 'title' | 'id' | 'sku'>();
+  changedPagination = output<PaginationParams>();
   emitProduct = output<EmitDetailProduct>();
 
   perPageOptions: number[] = [10, 20, 30, 50];
@@ -84,7 +88,7 @@ export class CardInventoryListComponent {
           command: (event) => {
             this.changePlaceHolder = 'Titulo, código o sku';
             this.changeLabelBtn = 'Todo';
-            this.changeValueLabel.emit('todo');
+            this.changeLabelValue.emit('todo');
           },
         },
 
@@ -93,7 +97,7 @@ export class CardInventoryListComponent {
           command: (event) => {
             this.changePlaceHolder = event.item?.label || 'Id del Producto';
             this.changeLabelBtn = 'Id';
-            this.changeValueLabel.emit('id');
+            this.changeLabelValue.emit('id');
           },
         },
 
@@ -102,7 +106,7 @@ export class CardInventoryListComponent {
           command: (event) => {
             this.changePlaceHolder = event.item?.label || 'Titulo del Producto';
             this.changeLabelBtn = 'Titulo';
-            this.changeValueLabel.emit('title');
+            this.changeLabelValue.emit('title');
           },
         },
 
@@ -111,13 +115,14 @@ export class CardInventoryListComponent {
           command: (event) => {
             this.changePlaceHolder = event.item?.label || 'sku del Producto';
             this.changeLabelBtn = 'Sku';
-            this.changeValueLabel.emit('sku');
+            this.changeLabelValue.emit('sku');
           },
         },
       ],
     },
   ];
 
+  isOpen: boolean[] = [];
   //Selecciona y Deselecciona cada checkbox del arreglo
   isSelectedEveryProduct: boolean[] = [];
   //data seleccionada
@@ -135,12 +140,13 @@ export class CardInventoryListComponent {
   // Índice de acordeon abierto, inicialmente cerrado
   selectedIndex: number = -1;
   // productsExtraInfo: ProductInventory[] = [];
-  // statusProductsExtraInfo: StatusExtraInfoInterface[] = [];
+  // statusProductsExtraInfo: StatusData[] = [];
 
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+
   }
 
 
@@ -150,52 +156,83 @@ export class CardInventoryListComponent {
     // Si se selecciona la opción masiva, seleccionar todos los productos
     if (this.isSelectAllProduct) {
       // Si se selecciona la opción masiva, seleccionar todos los productos
-      this.selectedProduct = this.products()?.slice();
-      this.isSelectedEveryProduct = this.products()?.map(() => true) || [];
+      this.selectedProduct = this.products().slice();
+       this.isSelectedEveryProduct = this.products().map(() => true);
+  
       this.isBtnActive.massiveModification = true;
     } else {
       // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
       this.selectedProduct = [];
-      this.isSelectedEveryProduct = [];
+      this.isSelectedEveryProduct = this.products().map(() => false);
       this.isBtnActive.massiveModification = false;
     }
   }
 
-  toggleEveryProduct(product: ProductInventory): void {
-    // Verificar si el producto está seleccionado y agregarlo o eliminarlo según sea necesario
-    const index = this.selectedProduct.findIndex(
-      (selectedItem: ProductInventory) => selectedItem.id === product.id
-    );
+  // toggleEveryProduct(product: ProductInventory): void {
+  //   // Verificar si el producto está seleccionado y agregarlo o eliminarlo según sea necesario
+  //   const index = this.selectedProduct.findIndex(
+  //     (selectedItem: ProductInventory) => selectedItem.id === product.id
+  //   );
 
+  //   if (index === -1) {
+  //     this.selectedProduct = [product];
+  //   } else {
+  //     this.selectedProduct.splice(index, 1);
+  //   }
+
+  //   // Verificar si todos los elementos de la parte inferior están seleccionados
+  //   const allSelected = this.products().every((product) =>
+  //     this.selectedProduct.some(
+  //       (selectedOrder) => selectedOrder.id === product.id
+  //     )
+  //   );
+
+  //   this.handlerOptionBtn.pause = this.selectedProduct.every(
+  //     (option) => option.status === 'active'
+  //   );
+  //   this.handlerOptionBtn.modify = this.selectedProduct.length === 1;
+  //   this.handlerOptionBtn.massiveModification =
+  //     this.selectedProduct.length >= 2;
+  //   this.handlerOptionBtn.eliminate = this.selectedProduct.length >= 1;
+
+  //   // Actualizar el estado de selección masiva
+  //   this.isSelectAllProduct = allSelected;
+
+  //   // Si se deselecciona un elemento de la parte superior, quitar el check de la opción masiva
+  //   if (!this.isSelectAllProduct) {
+  //     this.isSelectAllProduct = false;
+  //   }
+  // }
+
+
+ 
+  toggleEveryProduct(product: ProductInventory, i: number): void {
+    const index = this.selectedProduct.findIndex((selected) => selected.id === product.id);
+  
     if (index === -1) {
+      // Si el producto no está seleccionado, lo agregamos
       this.selectedProduct.push(product);
+      this.isSelectedEveryProduct[i] = true;
     } else {
+      // Si el producto está seleccionado, lo eliminamos
       this.selectedProduct.splice(index, 1);
+      this.isSelectedEveryProduct[i] = false;
     }
-
-    // Verificar si todos los elementos de la parte inferior están seleccionados
-    const allSelected = this.products().every((product) =>
-      this.selectedProduct.some(
-        (selectedOrder) => selectedOrder.id === product.id
-      )
+  
+    // Verificamos si todos los productos están seleccionados
+    const allSelected = this.products().every((prod) =>
+      this.selectedProduct.some((selected) => selected.id === prod.id)
     );
-
-    this.handlerOptionBtn.pause = this.selectedProduct.every(
-      (option) => option.status === 'active'
-    );
-    this.handlerOptionBtn.modify = this.selectedProduct.length === 1;
-    this.handlerOptionBtn.massiveModification =
-      this.selectedProduct.length >= 2;
-    this.handlerOptionBtn.eliminate = this.selectedProduct.length >= 1;
-
-    // Actualizar el estado de selección masiva
+  
+    // Actualizamos el estado de selección masiva
     this.isSelectAllProduct = allSelected;
-
-    // Si se deselecciona un elemento de la parte superior, quitar el check de la opción masiva
-    if (!this.isSelectAllProduct) {
+  
+    // Si se deselecciona un producto del hijo y el padre está seleccionado, deseleccionar el padre
+    if (!this.isSelectedEveryProduct[i] && this.isSelectAllProduct) {
       this.isSelectAllProduct = false;
     }
   }
+  
 
   toggleMenuSearch() {
     this.showMenuSearch = !this.showMenuSearch;
@@ -233,28 +270,33 @@ export class CardInventoryListComponent {
     this.paginationParams().rows = event.rows;
     this.paginationParams().first = event.first;
 
-    this.changePagination.emit(this.paginationParams());
+    this.changedPagination.emit(this.paginationParams());
   }
 
-  collapseContent(index: number, idProduct: number) {
-    if (this.selectedIndex === index) {
-      this.selectedIndex = -1; // Cierra el acordeón si ya está abierto
-    } else {
-      this.selectedIndex = index;
-     if(!this.productsExtraInfo![index]) {
+  //  collapseContent(index: number, idProduct: number) {
+  //    if (this.selectedIndex === index) {
+  //      this.selectedIndex = -1; // Cierra el acordeón si ya está abierto
+  //   } else {
+  //     this.selectedIndex = index;
+  //     if(!this.productsExtraInfo![index]) {
+  //      this.emitProduct.emit({index, idProduct});
+    
+  //     } 
+  //   }
+  //  }
+
+  // isCollapsing(index: number): boolean {
+  //   return this.selectedIndex === index;
+  // }
+
+  toggleAccordeon(index: number, idProduct: number) { 
+
+    this.isOpen[index] = !this.isOpen[index];
+
+    if( this.isOpen[index] && !this.productsExtraInfo![index]) {
       this.emitProduct.emit({index, idProduct});
-    // console.log('holaaa!ds')
-      //  this.statusProductsExtraInfo![index] = { status: 'loading' }
-     } else {
-      //  this.statusProductsExtraInfo![index] = { status: 'success' }
-     }
-    }
+    } 
   }
-
-  isCollapsing(index: number): boolean {
-    return this.selectedIndex === index;
-  }
-
 
 }
 

@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
+import { OrderListComponent } from '@components/order-list/order-list.component';
 import { WooService } from '@woocommerce/services/woo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-completed-orders',
   standalone: true,
-  imports: [ CardOrderListComponent],
+  imports: [ OrderListComponent],
   template: `
   <!-- <app-card-order [dataOrders]="completedOrders"> -->
   `  

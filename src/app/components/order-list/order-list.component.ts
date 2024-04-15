@@ -10,7 +10,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { Orders } from 'src/app/core/interface/order.interface';
 
 @Component({
-  selector: 'app-card-order-list',
+  selector: 'app-order-list',
   standalone: true,
   imports: [
     CommonModule,
@@ -20,10 +20,10 @@ import { Orders } from 'src/app/core/interface/order.interface';
     MenuModule
   ],
 
-  templateUrl: './card-order-list.component.html',
-  styleUrl: './card-order-list.component.scss',
+  templateUrl: './order-list.component.html',
+  styleUrl: './order-list.component.scss',
 })
-export class CardOrderListComponent {
+export class OrderListComponent {
 
 statusData = input.required<StatusData>();
 dataOrders = input.required<Orders[]>();

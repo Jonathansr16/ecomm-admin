@@ -1,8 +1,8 @@
 import { map,  } from 'rxjs/operators';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {  ProductsOptionResponse } from '@claroshop/interfaces/claroshop-products.interface';
+import {  ProductResponse, ProductsOptionResponse } from '@claroshop/interfaces/claroshop-products.interface';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { Orders } from 'src/app/core/interface/order.interface';
 import { ProductSearchResponse } from '@claroshop/interfaces/claroshop-product.interface';
@@ -13,7 +13,7 @@ import { ProductSearchResponse } from '@claroshop/interfaces/claroshop-product.i
 export class ClaroService {
 
   http = inject(HttpClient);
-
+ 
   //* OBTIENE LA LISTA DE PRODUCTOS
   getProducts(page: number, per_page: number): Observable<ProductInventory[]> {
     let params = new HttpParams()
@@ -34,35 +34,48 @@ export class ClaroService {
     return this.http.get<ProductsOptionResponse>(`producto`, { params })
 
       .pipe(
-        map((resp) => this.transformDataProducts(resp)),
-        map ( (products) => products.filter( product => {
+        map ( (products) => products.productos.filter( product => {
 
           switch(typeSearch) {
             
             case 'todo': {
-              return product.id.toString().includes(searchedValue.toLocaleLowerCase()) ||
-                    product.title.toLocaleLowerCase().includes(searchedValue.toLocaleLowerCase()) ||
-                    product.sku.toLocaleLowerCase().includes(searchedValue.toLocaleLowerCase());     
+              return product.claroid.toString().includes(searchedValue.toLowerCase().trim()) ||
+                    product.nombre.toLowerCase().includes(searchedValue.toLowerCase().trim()) ||
+                    product.skupadre.toLowerCase().includes(searchedValue.toLowerCase().trim());     
             }
 
             case 'id': {
-              return product.id.toString().includes(searchedValue.toLocaleLowerCase())  ; //Búsqueda por id
+              return  product.claroid.toString().includes(searchedValue.toLowerCase().trim()) ; //Búsqueda por id
             }
 
             case 'title': {
-              return product.title.toLowerCase().includes(searchedValue.toLowerCase()) ; //Búsqueda por SKU (case-insensitive)
+              return product.nombre.toLowerCase().includes(searchedValue.toLowerCase().trim()); //Búsqueda por SKU (case-insensitive)
             }
 
             case 'sku': {
-              return product.sku.toLowerCase().includes(searchedValue.toLowerCase()); //Búsqueda por SKU (case-insensitive)
+              return product.skupadre.toLowerCase().includes(searchedValue.toLowerCase().trim()); //Búsqueda por SKU (case-insensitive)
 
             }
           }
 
-        }) )
+        }).map( (product) =>  this.transformProduct(product))
+      ),
       )
   }
 
+
+  transformProduct(product: ProductResponse): ProductInventory {
+    return {
+      id: product.transactionid,
+      title: product.nombre,
+      sku: product.skupadre,
+      store: 'claroshop',
+      regular_price: product.precio,
+      sale_price: 0, // You need to set this value accordingly
+      status: product.estatus === 'activo' ? 'active' : 'inactive',
+      isDropdownInformation: true
+    };
+}
   //* OBTIENE UN PRODUCTO ESPECIFICO 
   getProduct(idProduct: number) : Observable<ProductInventory>{
 
@@ -114,8 +127,6 @@ export class ClaroService {
   }
 
   //* OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
-
-
   getOrderByStatus( status: 'pendientes' | 'entregados' | 'embarcados',page: number, per_page: number): Observable< {orders: Orders[]} > {
     
     const params = new HttpParams() 
@@ -146,7 +157,6 @@ export class ClaroService {
             })
           );
   }
-
 
   private transformOrder(orderResponse: any[]): Orders[] {
     return orderResponse.map((order) => {
@@ -213,6 +223,15 @@ export class ClaroService {
     return this.http.post<any>(`/producto`, product)
   }
 
+  //? actualiza un campo especifico
+  
+  // updateField(idProduct: number, field: ProductInventory): Observable<ProductInventory> {
+
+  
+  //  return this.http.put<ProductInventory>(`producto/${idProduct}`, field).pipe(
+  //   map( (product) => this.transformDataProducts(product))
+  //  )
+  // }
 }
 
 

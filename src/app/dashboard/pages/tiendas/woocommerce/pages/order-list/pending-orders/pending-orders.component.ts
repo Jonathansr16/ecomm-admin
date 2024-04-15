@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
+import { OrderListComponent } from '@components/order-list/order-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
 import { WooService } from '@woocommerce/services/woo.service';
@@ -11,16 +11,16 @@ import { Orders } from 'src/app/core/interface/order.interface';
   selector: 'app-pending-orders',
   standalone: true,
   imports: [
-    CardOrderListComponent
+    OrderListComponent
   ],
   template: ` 
-  <app-card-order-list 
+  <app-order-list 
   [statusData]="statusData"
   [dataOrders]="testOrders"
   [paginationParams]="paginationParams"
   [OrderOption]="menuOrder"
   >
-  </app-card-order-list>`,
+  </app-order-list>`,
 })
 export default class PendingOrdersComponent {
   pendingOrders: any[] = [];

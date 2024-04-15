@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Params, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ClaroService } from '@claroshop/services/claroservice.service';
-import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
+import { OrderListComponent } from '@components/order-list/order-list.component';
 import { CardStatsComponent } from '@components/card-stats/card-stats.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
@@ -9,17 +9,17 @@ import { MenuItem } from 'primeng/api';
 import { Orders } from 'src/app/core/interface/order.interface';
 
 @Component({
-  selector: 'app-order-list',
+  selector: 'app-orders',
   standalone: true,
   imports: [ 
     CardStatsComponent,
-    CardOrderListComponent, 
+    OrderListComponent, 
     RouterLink, 
     RouterOutlet],
-  templateUrl: './order-list.component.html',
-  styleUrls: ['./order-list.component.scss']
+  templateUrl: './orders.component.html',
+  styleUrl: './orders.component.scss'
 })
-export default class OrderListComponent {
+export default class OrdersComponent {
 
   //* Status para la data obtenida de la api
   //* Cantidad de pedidos 

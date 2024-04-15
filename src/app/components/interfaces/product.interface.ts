@@ -4,7 +4,7 @@ export interface ProductInventory {
     description?: string;
     short_description?: string;
     sku: string;
-    store: 'woocommerce' | 'mercado libre' | 'amazon' | 'claroshop',
+    store: 'woocommerce' | 'mely' | 'amazon' | 'claroshop',
     regular_price?: number;
     sale_price: number;
     units?: number;

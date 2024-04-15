@@ -8,7 +8,7 @@ import { BreadcrumbItem } from '../../../../../../core/interface/breadcrumb.inte
 import { EMPTY, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { CardInventoryListComponent } from '@components/card-inventory-list/card-inventory-list.component';
+import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
@@ -21,7 +21,7 @@ import { StatusData } from '@components/interfaces/status-data.interface';
     FormsModule,
     BreadcrumbComponent,
     ButtonModule,
-    CardInventoryListComponent
+    InventoryListComponent
   ],
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.scss'],
@@ -73,6 +73,7 @@ export default class InventarioComponent {
 
         {
           label: 'Pausar',
+          // command: () => this.changeStatusProduct('inactivo')
         },
 
         {
@@ -93,6 +94,51 @@ export default class InventarioComponent {
   private router = inject(Router);
   private readonly claroService = inject(ClaroService);
   products: ProductInventory[] = [];
+  // products: ProductInventory[] = [
+
+  //   {
+  //     id: 2345,
+  //     title: 'Memoria 1tb con adaptador Android e IOS',
+  //     sku: 'djk20',
+  //     store: 'claroshop',
+  //     sale_price: 233,
+  //     status: 'active',
+  //     isDropdownInformation: true
+  //   },
+
+  //   {
+  //     id: 2915,
+  //     title: 'Ecualizador LED',
+  //     sku: 'eku-var',
+  //     store: 'claroshop',
+  //     sale_price: 1034,
+  //     status: 'active',
+  //     isDropdownInformation: true
+  //   },
+
+
+  //   {
+  //     id: 3541,
+  //     title: 'Paper mario en caja nuevo',
+  //     sku: 'pm-n64',
+  //     store: 'claroshop',
+  //     sale_price: 1034,
+  //     status: 'active',
+  //     isDropdownInformation: true
+  //   },
+
+    
+  //   {
+  //     id: 3240,
+  //     title: 'Zelda ocarina of time',
+  //     sku: 'zelda-n64',
+  //     store: 'claroshop',
+  //     sale_price: 1034,
+  //     status: 'active',
+  //     isDropdownInformation: true
+  //   }
+
+  // ];
   productsDetail: ProductInventory[] = [];
   statusProductsDetail: StatusData[] = [];
 
@@ -101,9 +147,8 @@ export default class InventarioComponent {
   ngOnInit(): void {
     this.activedRoute.queryParams.subscribe((params: Params): void => {
       this.paginationParams.page = +params['page'] ? +params['page'] : 1;
-      this.paginationParams.rows = +params['productosporpagina'] ? params['productosporpagina'] : 10;
 
-      this.getProducts(this.paginationParams.page, this.paginationParams.rows);
+       this.getProducts(this.paginationParams.page, this.paginationParams.rows);
     })
 
   }
@@ -159,6 +204,10 @@ export default class InventarioComponent {
 
   }
 
+  changeTypeSearch(value: 'todo' | 'id' | 'title' | 'sku') {
+    this.typeSearch = value;
+  }
+
   paginationChanged(event: any) {
 
     //Actualizar parámetros de la URL
@@ -197,10 +246,11 @@ export default class InventarioComponent {
     );
   }
 
-
   getSearchValue(value: string) {
     this.inputValue = value;
   }
+
+
   // searchFilter($event: any, value: string) {
   //   this.productos?.filterGlobal(($event.target as HTMLInputElement).value, value)
   // }

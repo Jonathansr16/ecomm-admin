@@ -1,25 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ClaroService } from '@claroshop/services/claroservice.service';
-import { CardOrderListComponent } from '@components/card-order-list/card-order-list.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { Orders } from 'src/app/core/interface/order.interface';
 import { MenuItem } from 'primeng/api';
+import { OrderListComponent } from '@components/order-list/order-list.component';
+import { StatusData } from '@components/interfaces/status-data.interface';
 
 @Component({
   selector: 'app-pending-orders',
   standalone: true,
   imports: [
     CommonModule,
-    CardOrderListComponent
+    OrderListComponent
   ],
   template: `
-  <app-card-order-list 
+  <app-order-list 
   [statusData]="statusData"
   [paginationParams]="paginationParams"
   [OrderOption]="orderOption"
   [dataOrders]="pendingOrders"> 
- </app-card-order-list>
+ </app-order-list>
   `,
   styleUrls: ['./pending-orders.component.scss']
 })
@@ -34,7 +35,7 @@ export default class PendingOrdersComponent implements OnInit {
   };
 
   // isError: boolean;
-  statusData: 'loading' | 'success' | 'error' = 'loading';
+  statusData!: StatusData;
   orderOption: MenuItem[] = [
 
     {
@@ -51,11 +52,11 @@ export default class PendingOrdersComponent implements OnInit {
     this.orderService.getOrderByStatus('pendientes',this.paginationParams.page, this.paginationParams.rows).subscribe({
       next: (resp) => {
         this.pendingOrders = resp.orders;
-        this.statusData = 'success';
+        this.statusData.status = 'success';
         console.log(resp);
       }, 
       error: (errorMessage) => {
-        this.statusData = 'error';
+        this.statusData.status = 'error';
         console.log(errorMessage);
       }
     })

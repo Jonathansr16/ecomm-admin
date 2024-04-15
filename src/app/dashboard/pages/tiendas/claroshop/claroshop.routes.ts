@@ -10,7 +10,7 @@ export const claroRoutes: Routes = [
     path: 'ordenes',
     loadComponent: () =>
       import(
-        '@claroshop/pages/order-list/order-list.component'
+        '@claroshop/pages/orders/orders.component'
       ),
     // children: [
     //   {

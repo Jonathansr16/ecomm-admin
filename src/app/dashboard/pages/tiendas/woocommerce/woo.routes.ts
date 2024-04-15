@@ -24,7 +24,7 @@ export const WoocommerceRoute: Routes = [
   {
     path: 'ordenes',
     title: 'Lista de Ordenes',
-    loadComponent: () => import ('@woocommerce/pages/order-list/order-list.component'),
+    loadComponent: () => import ('@woocommerce/pages/order-list/orders.component'),
     children: [
       {
         path: 'pendientes',

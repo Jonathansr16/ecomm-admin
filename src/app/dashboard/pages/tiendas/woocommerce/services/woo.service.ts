@@ -128,63 +128,37 @@ export class WooService {
 
 
     //* OBTIENE PRODUCTOS RELACIONADOS CON LA BUSQUEDA
-    getProductsBySearch(searchValue: string, page: number, itemsPerPage: number, typeSearch: 'todo' | 'id' | 'title' | 'sku'): Observable<{ products: ProductInventory[], totalRecords: number }> {
+    getProductsBySearch(searchedValue: string, page: number, itemsPerPage: number, typeSearch: 'todo' | 'id' | 'title' | 'sku'): Observable<{ products: ProductInventory[], totalRecords: number }> {
       const query = `?page=${page}&per_page=${itemsPerPage}`;
       return this.http.get<ProductResponse[]>(`${this.url}/products${query}`, { observe: 'response' }).pipe(
-        map((response: HttpResponse<ProductResponse[]>) => {
-          const products = response.body; // Datos de los productos
-          const totalRecords = response.headers.get('X-WP-Total');
-          this.totalItems = totalRecords ? +totalRecords : 0;
-          
-          if (products !== null) {
-            return { products: this.filterProducts(products, searchValue, typeSearch), totalRecords: this.totalItems };
-          } else {
-            this.totalItems =0;
-            throw new Error('La respuesta del servidor es nula');
-          }
-        })
+          map((response: HttpResponse<ProductResponse[]>) => {
+              const products = response.body ? response.body : []; // Datos de los productos
+              // const totalRecords = response.headers.get('X-WP-Total');
+            
+
+              // Filtrar los productos según el tipo de búsqueda
+              const filteredProducts = products.filter(product => {
+                  switch (typeSearch) {
+                      case 'todo':
+                          return product.id.toString().includes(searchedValue.toLowerCase().trim()) ||
+                              product.name.toLowerCase().includes(searchedValue.toLowerCase().trim()) ||
+                              product.sku.toLowerCase().includes(searchedValue.toLowerCase().trim());
+                      case 'id':
+                          return product.id.toString().includes(searchedValue.toLowerCase().trim());
+                      case 'title':
+                          return product.name.toLowerCase().includes(searchedValue.toLowerCase().trim());
+                      case 'sku':
+                          return product.sku.toLowerCase().includes(searchedValue.toLowerCase().trim());
+                      default:
+                          return true; // Por defecto, retornar todos los productos
+                  }
+              }); 
+              return { products: this.transformDataProduct(filteredProducts), totalRecords: filteredProducts.length}
+              
+          })
       );
-    }
-  private filterProducts(products: ProductResponse[], searchValue: string, typeSearch: 'todo' | 'id' | 'title' | 'sku'): ProductInventory[] {
-  
-    return products.filter(product => {
-      
-      switch(typeSearch) {
-       
-        case 'todo': {
-
-        return product.id.toString().includes(searchValue.toLocaleLowerCase()) || // Búsqueda por id
-               product.name.toLowerCase().includes(searchValue.toLowerCase()) || // Búsqueda por nombre (case-insensitive)
-               product.sku.toLowerCase().includes(searchValue.toLowerCase()); // Búsqueda por SKU (case-insensitive)
-        break;
-        }
-
-        case 'id': {
-          return product.id.toString().includes(searchValue.toLocaleLowerCase())  ; //Búsqueda por id
-          break;
-        }
-
-        case 'title': {
-         return product.name.toLowerCase().includes(searchValue.toLowerCase()) ; //Búsqueda por SKU (case-insensitive)
-         break;
-        }
-
-        case 'sku': {
-         return product.sku.toLowerCase().includes(searchValue.toLowerCase()); //Búsqueda por SKU (case-insensitive)
-         break;
-        }
-
-         default: {
-          return  product.id.toString().includes(searchValue.toLocaleLowerCase()) || // Búsqueda por id
-          product.name.toLowerCase().includes(searchValue.toLowerCase()) || // Búsqueda por nombre (case-insensitive)
-          product.sku.toLowerCase().includes(searchValue.toLowerCase()); // Búsqueda por SKU (case-insensitive)
-          break;
-        }   
-
-      }
-
-    }).map(this.transformDataProduc);
   }
+  
 
   private transformDataProduc(producto: ProductResponse): ProductInventory {
     // Aquí puedes realizar cualquier transformación necesaria de los datos del producto
@@ -291,43 +265,6 @@ export class WooService {
       }))
     }
   }
-  // getOrderByStatus(
-  //   status: 'pending' | 'processing' | 'completed' | 'cancelled',
-  //   page: number,
-  //   per_page: number
-  // ): Observable<OrderResult[]> {
-
-  //   const params = new HttpParams()
-  //     .append('status', status.toString())
-  //     .append('page', page.toString())
-  //     .append('per_page', per_page.toString())
-
-  //   return this.http
-  //     .get<OrderResponse[]>(`${this.url}/orders`, {params})
-  //     .pipe(
-  //       map((resp) => {
-  //         return resp.map((order) => {
-  //           return new Orden(
-  //             order.id,
-  //             order.billing.first_name,
-  //             order.billing.last_name,
-  //             order.status,
-  //             order.date_created,
-  //             order.date_modified,
-  //             order.total,
-  //             order.line_items.map((product: ProductOrderResult) => ({
-  //               name: product.name,
-  //               quantity: product.quantity,
-  //               total: product.total,
-  //               sku: product.sku,
-  //               image: product.image,
-  //             }))
-  //           );
-  //         });
-  //       }),
-  //       catchError(this.hanlerError<OrderResult[]>('getOrderByStatus', []))
-  //     );
-  // }
 
   //* OBTIENE LA CANTIDAD DE ORDENES
   getOrdersCount(

@@ -9,10 +9,10 @@ import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-order-list',
-  templateUrl: './order-list.component.html',
+  templateUrl: './orders.component.html',
   standalone: true,
   imports: [CommonModule, CardStatsComponent, RouterOutlet, RouterLink, ButtonModule, TabViewModule],
-  styleUrls: ['./order-list.component.scss'],
+  styleUrl: './orders.component.scss',
   providers: [ MessageService]
 })
 export default class OrderListComponent implements OnInit {
