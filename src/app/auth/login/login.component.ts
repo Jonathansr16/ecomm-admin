@@ -1,4 +1,4 @@
-import { AfterViewInit, Component,  OnInit,  Renderer2, Inject, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Renderer2, Inject, OnDestroy, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioModel } from '@auth/models/usuario.model';
@@ -13,21 +13,27 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { InputGroupModule } from 'primeng/inputgroup';
+import { FooterComponent } from '@shared/footer/footer.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'login-auth',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterLink,
-    ReactiveFormsModule, 
-    InputTextModule, 
+    ReactiveFormsModule,
+    InputTextModule,
     InputGroupModule,
-    PasswordModule, 
-    CheckboxModule, 
-    ButtonModule, 
-    HeaderComponent
+    PasswordModule,
+    CheckboxModule,
+    ButtonModule,
+    HeaderComponent,
+    ToastModule
   ],
+
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -37,47 +43,51 @@ export default class LoginComponent implements OnInit, AfterViewInit, OnDestroy 
   checkRemember: boolean = false;
   signInSubmitted: boolean = false
 
+  isVisible: boolean = false;
   // @ts-ignore
   formSignIn: FormGroup;
 
-    //* CREAR FORMULARIO LOGIN
-    createformSignIn(): void {
-      this.formSignIn = this.formBuilder.group({
-        emailLogin: ['', [Validators.required, Validators.minLength(6), this.validatorsService.notWhitesSpaceValid]],
-        passLogin: ['', [Validators.required, Validators.minLength(5), this.validatorsService.notWhitesSpaceValid]],
-        rememberLogin: ['']
-      });
-  
-      this.formSignIn.valueChanges.subscribe( formValues => {
-        this.usuario.email= formValues.emailLogin;
-        this.usuario.password = formValues.passLogin;
-         this.checkRemember = formValues.rememberLogin;
-  
-      });
-    }
+  //* CREAR FORMULARIO LOGIN
+  createformSignIn(): void {
+    this.formSignIn = this.formBuilder.group({
+      emailLogin: ['', [Validators.required, Validators.minLength(6), this.validatorsService.notWhitesSpaceValid]],
+      passLogin: ['', [Validators.required, Validators.minLength(5), this.validatorsService.notWhitesSpaceValid]],
+      rememberLogin: ['']
+    });
 
-  constructor(@Inject(DOCUMENT) private document: Document,
-    private formBuilder: FormBuilder, 
-    private renderer2: Renderer2, 
-    private router: Router, 
-    private validatorsService: ValidatorsService, 
-    private authService: AuthService) {
+    this.formSignIn.valueChanges.subscribe(formValues => {
+      this.usuario.email = formValues.emailLogin;
+      this.usuario.password = formValues.passLogin;
+      this.checkRemember = formValues.rememberLogin;
+
+    });
+  }
+
+  private readonly router = inject(Router);
+  private readonly document = inject(DOCUMENT);
+  private readonly renderer2 = inject(Renderer2);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly validatorsService = inject(ValidatorsService);
+  private readonly authService = inject(AuthService);
+  private readonly messageService = inject(MessageService);
+
+  constructor() {
 
     this.createformSignIn();
   }
 
   ngOnInit(): void {
-    
-    if(localStorage.getItem('email')) {
+
+    if (localStorage.getItem('email')) {
       this.usuario.email = localStorage.getItem('email') as string;
-      this.checkRemember= true; 
+      this.checkRemember = true;
     }
 
     this.renderer2.setStyle(this.document.body, "background-color", "#172b4d")
   }
 
   ngOnDestroy(): void {
-      this.renderer2.removeStyle(this.document.body, "background-color")
+    this.renderer2.removeStyle(this.document.body, "background-color")
   }
 
   // //*GET DATA LOGIN FORM
@@ -90,7 +100,7 @@ export default class LoginComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-  
+
   }
 
 
@@ -101,37 +111,41 @@ export default class LoginComponent implements OnInit, AfterViewInit, OnDestroy 
         control.markAsTouched();
       });
     }
-    // Swal.fire({
-    //   allowOutsideClick: false,
-    //   icon: 'info',
-    //   title: 'Valindando',
-    //   text: 'Espere por favor...'
-    // });
 
-    // Swal.showLoading();
+    this.isVisible = true;
 
     this.authService.signIn(this.usuario).subscribe(data => {
-      // Swal.close();
-    
-      if(this.checkRemember) {
+      this.isVisible = false;
+
+      this.messageService.add({
+        key: 'tc',
+        severity: 'success',
+        summary: 'Exito!',
+        detail: 'Su registro fue echa con exito!'
+      });
+
+      if (this.checkRemember) {
         localStorage.setItem('email', this.usuario.email);
 
-       
+
       } else {
-    
-      console.log('no se guardo email')
+
+        console.log('no se guardo email')
 
       }
       this.router.navigateByUrl('/dashboard/home')
-      
+
     }, (error) => {
       console.log(error);
-      // Swal.fire({
-      //   icon: 'error',
-      //   title: 'Error al autenticar',
-      //   text: error.error.error.message
-      // });
-  
+      this.isVisible = false;
+      this.messageService.add({
+        key: 'tc',
+        severity: 'error',
+        summary: 'Error al Autenticar!',
+        detail: error.error.error.message
+      });
+
+
     })
   }
 

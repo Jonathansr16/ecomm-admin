@@ -30,6 +30,10 @@ export const dashboardRoutes: Routes = [
         ]
       },
 
+      {
+        path: 'mely',
+        loadChildren: () => import('@mely/mely.routes').then( (m) => m.MelyRoutes)
+      },
 
       {
         path: 'woocommerce',

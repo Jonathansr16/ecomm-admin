@@ -7,19 +7,50 @@ import { PaginationParams } from '@components/interfaces/pagination-params.inter
 import { StatusData } from '@components/interfaces/status-data.interface';
 import { MenuItem } from 'primeng/api';
 import { Orders } from 'src/app/core/interface/order.interface';
+import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
+import { ButtonModule } from 'primeng/button';
+import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
   imports: [ 
+    RouterLink, 
+    RouterOutlet,
+    BreadcrumbComponent,
     CardStatsComponent,
     OrderListComponent, 
-    RouterLink, 
-    RouterOutlet],
+    ButtonModule
+  ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
 export default class OrdersComponent {
+
+  BreadcrumbHome: BreadcrumbItem = {
+    icon: 'list_alt',
+    label: 'Ordenes',
+    separator: true,
+  };
+
+  breadcrumbItems: BreadcrumbItem[] = [
+    {
+      icon: 'storefront',
+      label: 'Tiendas',
+      separator: true,
+    },
+
+    {
+      icon: 'store',
+      label: 'ClaroShop',
+      separator: false,
+    },
+
+    {
+      icon: 'list_alt',
+      label: 'Ordenes',
+    },
+  ];
 
   //* Status para la data obtenida de la api
   //* Cantidad de pedidos 
@@ -27,12 +58,11 @@ export default class OrdersComponent {
   shippedOrdersCount = signal(0);
   completedOrdersCount = signal(0);
   orders: Orders[] = [];
-  porOrden: string = '';
-      // Índice de acordeon abierto, inicialmente cerrado
-      selectedIndex: number = -1; 
+  totalRecords: number =0;
+  // Índice de acordeon abierto, inicialmente cerrado
+  selectedIndex: number = -1; 
 
   //* Status de la cada orden
- 
   statusData: StatusData = {status: 'loading'};
   // estatusByOrderList: 'pendientes' | 'entregados' | 'embarcados' = 'pendientes';
   //* parametros iniciales para la paginación
@@ -40,23 +70,24 @@ export default class OrdersComponent {
     page: 1,
     rows: 10,
     first: 0,
+    type: 'pendientes'
   };
 
-  MenuProduct: MenuItem[] = [
+  menuOrder: MenuItem[] = [
 
     {
       label: 'Opciones:',
       items: [
         {
-          label: 'Editar',
+          label: 'Ver Detalles',
         },
 
         {
-          label: 'Pausar',
+          label: 'Agregar Nota',
         },
 
         {
-          label: 'Eliminar'
+          label: 'Adjuntar factura'
         }
       ]
     }
@@ -102,7 +133,6 @@ export default class OrdersComponent {
         next: (resp) => {
           this.statusOfData.shipped = false;
           this.shippedOrdersCount.set(resp.totalOrders);
-       
         },
 
         error: (errorMessage) => {
@@ -138,49 +168,53 @@ export default class OrdersComponent {
   this.getNumberCompletedOrders();
 
   this.activedRouter.queryParamMap.subscribe( (params: Params) => {
-    const actionParam = params['action'];
-    const parsedAction = actionParam ? (isNaN(Number(actionParam)) ? actionParam : 'pendientes') : 'pendientes';
-    this.paginationParams.page =+params['page'] ? +params['page'] : 1;
-    this.paginationParams.rows = +params['limit'] ? params['limit'] : 10;
+    // const actionParam = params['action'];
+    // const parsedAction = actionParam ? (isNaN(Number(actionParam)) ? actionParam : 'pendientes') : 'pendientes';
 
-    // this.getOrderstByStatus('pendientes')
-    this.getOrderstByStatus(parsedAction)
+    this.paginationParams.type =  params['action'] ? params['action'] : this.paginationParams.type;
+    this.paginationParams.page = params['page'] ? params['page'] : 1;
+    this.paginationParams.rows =  params['limit'] ? params['limit'] : 10;
+
+
+     this.getOrderstByStatus(this.paginationParams.type)
   })
   }
 
-getOrderstByStatus(status: 'pendientes' | 'embarcados' | 'entregados' = 'pendientes') {
+getOrderstByStatus(status: 'pendientes' | 'embarcados' | 'entregados') {
   
+
+  this.paginationParams.type = status;
+
   this.router.navigate([], {
     relativeTo: this.activedRouter,
     queryParams: {
-      action: status,
+      action: this.paginationParams.type,
       page: this.paginationParams.page,
       limit: this.paginationParams.rows
     },
     queryParamsHandling: 'merge'
-  })
+  });
+  // Llamar al servicio después de la navegación
+   this.getOrders(status)
+  }
 
-
+  getOrders(status: 'pendientes' | 'embarcados' | 'entregados') {
+   this.statusData.status = 'loading';
     this.claroService.getOrderByStatus(status, this.paginationParams.page, this.paginationParams.rows)
-    .subscribe( {
+    .subscribe({
       next: (resp) => {
         this.orders = resp.orders;
-        console.log(resp.orders)
+        this.totalRecords= resp.orders.length;
+        this.statusData.status = resp.orders.length ? 'success' : 'empty';
+      console.log(resp)
+      }, 
+      error: (err) => {
+        this.statusData.status = 'error';
       }
-    }
-
-      
-    )
+    });
   }
 
 
-  getProduct(idx: number) {
-    this.claroService.getProduct(idx).subscribe( {
-      next: (resp) => {
-
-      }
-    })
-  }
 
   collapseContent(index: number) {
     if (this.selectedIndex === index) {
@@ -203,3 +237,9 @@ getOrderstByStatus(status: 'pendientes' | 'embarcados' | 'entregados' = 'pendien
 
 
 
+interface PaginationParamsOrder {
+  page: number;
+  rows: number;
+  first: number;
+  typeOrder: string;
+}

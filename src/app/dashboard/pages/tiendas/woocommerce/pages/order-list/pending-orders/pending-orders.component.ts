@@ -18,12 +18,14 @@ import { Orders } from 'src/app/core/interface/order.interface';
   [statusData]="statusData"
   [dataOrders]="testOrders"
   [paginationParams]="paginationParams"
-  [OrderOption]="menuOrder"
+  [orderOption]="menuOrder"
+  [totalRecors]="testOrders.length"]
   >
   </app-order-list>`,
 })
 export default class PendingOrdersComponent {
   pendingOrders: any[] = [];
+  totalRecords: number = 0;
   statusData: StatusData = {status: 'loading'};
   //parametros iniciales para la paginación
   paginationParams: PaginationParams = {
@@ -60,7 +62,7 @@ export default class PendingOrdersComponent {
       noOrder: '2304',
       status: 'En Proceso',
       date_created: new Date(),
-      shipment_date: new Date(),
+      authorization_date: new Date(),
       fulfillment: false,
       total_order: 365,
       products: [
@@ -86,7 +88,7 @@ export default class PendingOrdersComponent {
       noOrder: '2941',
       status: 'En Proceso',
       date_created: new Date('2024-03-05'),
-     shipment_date: new Date('2024-03-06'),
+     authorization_date: new Date('2024-03-06'),
      fulfillment: false,
      total_order: 899.20,
       products: [
@@ -110,7 +112,7 @@ export default class PendingOrdersComponent {
       noOrder: '34563',
       status: 'En Proceso',
       date_created: new Date('2024-03-08'),
-     shipment_date: new Date('2024-03-08'),
+     authorization_date: new Date('2024-03-08'),
      fulfillment: false,
      total_order: 1385,
       products: [
@@ -146,7 +148,7 @@ export default class PendingOrdersComponent {
       noOrder: '3201',
       status: 'En Proceso',
       date_created: new Date('2024-03-15'),
-     shipment_date: new Date('2024-03-16'),
+     authorization_date: new Date('2024-03-16'),
      fulfillment: false,
      total_order: 499,
       products: [
@@ -170,7 +172,7 @@ export default class PendingOrdersComponent {
       noOrder: '2941',
       status: 'En Proceso',
       date_created: new Date('2024-03-16'),
-     shipment_date: new Date('2024-03-16'),
+     authorization_date: new Date('2024-03-16'),
      fulfillment: false,
      total_order: 989,
       products: [
@@ -194,7 +196,7 @@ export default class PendingOrdersComponent {
       noOrder: '3827',
       status: 'En Proceso',
       date_created: new Date('2024-03-016'),
-     shipment_date: new Date('2024-03-17'),
+     authorization_date: new Date('2024-03-17'),
      fulfillment: false,
      total_order: 1995,
       products: [
@@ -243,7 +245,7 @@ export default class PendingOrdersComponent {
       noOrder: '2941',
       status: 'En Proceso',
       date_created: new Date('2024-03-05'),
-     shipment_date: new Date('2024-03-06'),
+     authorization_date: new Date('2024-03-06'),
      total_order: 750,
      fulfillment: false,
       products: [

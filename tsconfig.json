@@ -3,28 +3,14 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@auth/*": [
-        "src/app/auth/*"
-      ],
-      "@ayuda/*": [
-        "src/app/dashboard/pages/ayuda/*"
-      ],
-      "@claroshop/*": [
-        "src/app/dashboard/pages/tiendas/claroshop/*"
-        
-      ],
-      "@components/*": [
-        "src/app/components/*"
-      ],
-      "@home/*": [
-        "src/app/dashboard/pages/home/*"
-      ],
-      "@shared/*": [
-        "src/app/shared/*"
-      ],
-      "@woocommerce/*": [
-        "src/app/dashboard/pages/tiendas/woocommerce/*"
-      ]
+      "@auth/*": ["src/app/auth/*"],
+      "@ayuda/*": ["src/app/dashboard/pages/ayuda/*"],
+      "@claroshop/*": ["src/app/dashboard/pages/tiendas/claroshop/*"],
+      "@mely/*": ["src/app/dashboard/pages/tiendas/mely/*"],
+      "@woocommerce/*": ["src/app/dashboard/pages/tiendas/woocommerce/*"],
+      "@components/*": ["src/app/components/*"],
+      "@home/*": ["src/app/dashboard/pages/home/*"],
+      "@shared/*": ["src/app/shared/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -42,10 +28,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

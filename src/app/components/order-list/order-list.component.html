@@ -1,20 +1,21 @@
 <div class="order unstyledContainer">
   <div class="order__container">
     <div class="order__toolbar sticky top-0 z-[3] mb-8">
+   
       <div [style]="{ 'background-color': 'var(--surface-card)' }"
         class="order__toolbar-row container p-3 flex items-center justify-between flex-wrap gap-2 mt-8">
         <div class="order__toolbar-col flex item-center gap-2">
-          <p-checkbox [disabled]="dataOrders.length === 0" [binary]="true" inputId="binary"
-            [(ngModel)]="isSelectAllProduct" (onChange)="toggleSelectAllProducts()">
+          <p-checkbox  [binary]="true" inputId="binary"
+            [(ngModel)]="isSelectAllOrder" (onChange)="toggleSelectAllOrders()">
           </p-checkbox>
 
           <div class="inventory__toolbar-separator ml-2 w-[1px] items-stretch block bg-slate-300"></div>
 
           <div class="w-32">
-            @if (selectedProduct.length) {
+            @if (selectedOrder.length) {
 
             <p class="inventory__toolbar-selection-label text-sm text-slate-600">
-              {{ selectedProduct.length }} seleccionados
+              {{ selectedOrder.length }} seleccionados
             </p>
 
             }
@@ -60,263 +61,81 @@
           </div>
         </div>
       </div>
+      
     </div>
-    @for (order of dataOrders(); track order.id; let i = $index) {
-    <div [ngStyle]="{ 'background-color': 'var(--surface-card)' }"
-      class="order-card container max-w-7xl mx-auto rounded-lg shadow-md shadow-indigo-500/10 mb-8">
-      <div
-        class="order-card__action-row order-card__row flex flex-row flex-nowrap items-center justify-between gap-1 p-4 border-b-2 border-b-slate-100">
-        <div class="order-card__action-col flex items-center justify-start gap-4">
-          <p-checkbox [binary]="true" inputId="checkProduct{{ order.id }}" handlerCheckProduct [value]="order"
-            [(ngModel)]="isSelectedEveryProduct[i]" (onChange)="toggleEveryProduct(order)">
-          </p-checkbox>
 
-          <h3 class="h3-order-card__action-h3 text-sm font-semibold">
-            # {{ order.id }}
-          </h3>
-        </div>
 
-        <div class="order-card__action-col flex flex-nowrap items-center">
-          <span class="text-sm pr-2 text-slate-700">Fecha de recibido:</span>
-          <span class="text-sm text-slate-700 font-semibold">
-            {{ order.date_created | date : "mediumDate" }}</span>
-          <button type="button" (click)="menuOption.toggle($event)"
-            class="p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text">
-            <i class="pi pi-ellipsis-v"></i>
-          </button>
 
-          <p-menu #menuOption [model]="OrderOption()" [popup]="true" [style]="{ 'font-size': '14px' }"></p-menu>
-        </div>
-      </div>
+    @switch (statusData().status ) {
 
-      @if(order.products.length > 1) {
-      <div class="order-card__content flex-col lg:flex-row mt-6 p-6 py-7 flex items-center gap-1">
-        <div class="order-card__toggle-btn flex items-start justify-start">
-          <p-button (onClick)="collapseContent(i)" icon="pi pi-angle-down" [rounded]="true" [text]="true"></p-button>
-        </div>
+      @case('success') {
+        @for (order of dataOrders(); track order.id; let i = $index) {
 
-        @if (!isCollapsing(i)) {
-
-        <div
-          class="order-card__product order-card__product-multiple flex flex-col lg:flex-row item-center gap-3 lg:w-2/4">
-          <div
-            class="order-card__picture order-card__picture-multiple-items relative bg-transparent flex items-center flex-row flex-wrap">
-            @for (img of order.products; track $index) {
-            <div class="order-card__content-img w-24 h-24 lg:w-[64px] lg:h-[64px] relative">
-              <img [src]="img.image!.src" alt=""
-                class="order-card__img order-card__img-multiple-items object-contain w-full h-full mix-blend-multiply" />
-            </div>
-            }
-          </div>
-
-          <div [class]="
-              order.products.length === 2
-                ? 'order-card__description-simple-item'
-                : 'order-card__description-multiple-items'
-            "
-            class="order-card__description relative flex gap-1 items-center justify-center flex-col mt-4 lg:mt-0 mb-2 left-0">
-            @if(order.status === 'Pendiente') {
-            <span
-              class="text-xs font-semibold bg-amber-100 text-amber-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-              <i class="order-card__i pi pi-stopwatch"></i>
-
-              {{ order.status }}
-            </span>
-            } @if(order.status === 'Concretado') {
-            <span
-              class="text-xs font-semibold bg-green-100 text-green-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-              <i class="order-card__i pi pi-stopwatch"></i>
-
-              {{ order.status }}
-            </span>
-            } @if(order.status === 'En Proceso') {
-            <div class="flex items-center flex-wrap gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-1">
-              <span class="text-xs font-semibold text-center">
-                {{ order.status }}
-              </span>
-              <i class="order-card__i material-icons">local_shipping</i>
-            </div>
-            }
-            <span class="text-sm font-semibold">Paquete de:</span>
-            <span class="order-card__name text-sm">
-              {{ order.products.length }} unidades
-            </span>
-          </div>
-        </div>
-
-        <div
-          class="order-card__extraInfo flex items-start justify-start lg:justify-around flex-col lg:flex-row gap-4 grow lg:w-2/4">
-          <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-[33%]">
-            <span class="text-sm font-semibold text-slate-700">Fecha de despacho:</span>
-            <span class="order-card__date text-sm">
-              {{ order.date_created | date : "mediumDate" }}
-            </span>
-          </div>
-
-          <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-[33%]">
-            <span class="text-sm font-semibold text-slate-700">Total:</span>
-
-            <span class="order-card__price text-sm">
-              {{ order.total_order | currency }}
-            </span>
-          </div>
-        </div>
-        } @else {
-
-        <div class="order-card__collapsed-container flex flex-col w-full">
-          @for (product of order.products; track $index) {
-          <div
-            class="order-card__collapsed-content flex flex-col lg:flex-row justify-between w-full h-full max-h-[270px] overflow-hidden border-solid border-b-2 border-b-slate-100">
-            <div class="order-card__product flex flex-col lg:flex-row items-center gap-3 w-full lg:w-2/4">
-              <div
-                class="order-card__picture order-card__picture-simple-item mr-3 w-32 h-32 lg:w-16 lg:h-16 rounded relative">
-                <img [src]="product.image!.src"
-                  class="order-card__img order-card__img-simple-item object-contain w-full h-full mix-blend-multiply"
-                  alt="" />
-              </div>
-
-              <div class="order-card__description flex items-center lg:items-start gap-1 flex-col mb-2 mt-4 lg:mt-0">
-                <span class="text-sm font-semibold">Producto:</span>
-                <span class="order-card__name text-sm">
-                  {{ product.product | slice : 0 : 60 }}
-                </span>
-              </div>
-            </div>
-
-            <div
-              class="order-card__extraInfo flex items-start justify-start lg:justify-around flex-col lg:flex-row gap-4 grow w-full lg:w-2/4">
-              <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-[33%]">
-                <span class="order-card__date text-sm font-semibold text-slate-700">
-                  Total:
-                </span>
-                <span class="order-card__price text-sm">{{
-                  product.total_product | currency
-                  }}</span>
-              </div>
-
-              @if(product.quantity) {
-              <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-[33%]">
-                <span class="order-card__quantity text-sm font-semibold text-slate-700">{{ product.quantity }}</span>
-                <span class="order-card__quantity-label text-sm pl-2">Unidad</span>
-              </div>
-              }
-
-              <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-[33%]">
-                <span class="order-card__date text-sm font-semibold text-slate-700">
-                  Sku:
-                </span>
-                <span class="order-card__sku text-sm">{{ product.sku }}</span>
-              </div>
-            </div>
-          </div>
-          }
-        </div>
+          <app-card-order
+          [order]="order"
+          [menuOrder]="orderOption()"
+          [isSelectedOrder]="isSelectedEveryOrder[i]"
+          (onChangeValue)="toggleEveryOrder($event, i)"
+          >
+          </app-card-order>
         }
-      </div>
-      } @else {
-      <div class="order-card__content flex-col lg:flex-row mt-6 p-6 py-7 flex items-center gap-1">
-        <div
-          class="order-card__product order-card__product-simple flex flex-col lg:flex-row items-center gap-3 w-full lg:w-2/4">
-          @if(order.products[0].image){
+    
+        <div class="inventory__pagination my-8 container">
+          <p-paginator [style]="{ 'font-size': '14px' }" [first]="paginationParams().first" [rows]="paginationParams().rows"
+            [totalRecords]="10" [rowsPerPageOptions]="perPageOptions">
+          </p-paginator>
+        </div>
+      }
+
+      @case('loading') {
+        <div class="loader fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10">
+          <div class="loader__mask absolute top-0 left-0 w-full h-screen z-[10]"></div>
+          <div class="loader__spiner w-20 h-4 relative z-[11]"></div>
+        </div>
+        <div class="container mt-4">
+          @for (_ of [1, 2, 3, 4, 5]; track _) {
           <div
-            class="order-card__picture order-card__picture-simple-item mr-3 w-32 h-32 lg:w-16 lg:h-16 rounded relative">
-            <img [src]="order.products[0].image!.src"
-              class="order-card__img order-card__img-simple-item object-contain w-full h-full mix-blend-multiply"
-              alt="" />
-          </div>
-          }
-
-          <div class="order-card__description flex items-center mt-4 lg:mt-0 lg:items-start gap-1 flex-col mb-2">
-            @if(order.status === 'Pendiente') {
-            <span
-              class="text-xs font-semibold bg-amber-100 text-amber-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-              <i class="order-card__i pi pi-stopwatch"></i>
-
-              {{ order.status }}
-            </span>
-            } @if(order.status === 'Concretado') {
-            <span
-              class="text-xs font-semibold bg-green-100 text-green-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-              <i class="order-card__i pi pi-stopwatch"></i>
-
-              {{ order.status }}
-            </span>
-            } @if(order.status === 'En Proceso') {
-            <div class="flex items-center flex-wrap gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-1">
-              <span class="text-xs font-semibold text-center">
-                {{ order.status }}
-              </span>
-              <i class="order-card__i material-icons">local_shipping</i>
+            class="skeleton__card flex flex-col lg:flex-row gap-1 flex-wrap items-center justify-between p-6 bg-white mt-10">
+            <div class="skeleton__col skeleton__col-product flex mb-3">
+              <p-skeleton size="4rem" styleClass="mr-2"></p-skeleton>
+              <div>
+                <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="5rem"></p-skeleton>
+              </div>
             </div>
-            }
-
-            <span class="text-sm font-semibold">Producto:</span>
-            <span class="order-card__name text-sm">
-              {{ order.products[0].product | slice : 0 : 60 }}
-            </span>
-          </div>
-        </div>
-
-        <div
-          class="order-card__extraInfo flex items-start justify-start lg:justify-around flex-col lg:flex-row gap-4 grow w-full lg:w-2/4">
-          <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-1/5">
-            <span class="order-card__date text-sm font-semibold text-slate-700">
-              Fecha de despacho:
-            </span>
-
-            <span class="order-card__date text-sm">
-              {{ order.date_created | date : "mediumDate" }}
-            </span>
-          </div>
-
-          <!-- <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-1/5"> 
-            <span class="order-card__date text-sm font-semibold text-slate-700">
-              Estatus:  
-              </span>
-            <span
-            class="text-xs font-semibold bg-amber-100 text-amber-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-            <i class="order-card__i pi pi-stopwatch"></i>
-
-            {{ order.status === "pending" && "Pendiente" }}
-          </span>
-          </div> -->
-
-          <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-1/5">
-            <span class="order-card__date text-sm font-semibold text-slate-700">
-              Total:
-            </span>
-            <span class="order-card__price text-sm">{{
-              order.total_order | currency
-              }}</span>
-          </div>
-
-          @if(order.products[0].quantity) {
-          <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-1/5">
-            <span class="order-card__quantity text-sm font-semibold text-slate-700">{{ order.products[0].quantity
-              }}</span>
-            <span class="order-card__quantity-label text-sm">Unidad</span>
+            <div class="skeleton__col skeleton__col-details flex mb-3">
+              <p-skeleton width="30rem" height="6rem" styleClass="mr-2"></p-skeleton>
+            </div>
           </div>
           }
-
-          <div class="order-card__extraInfo-col flex items-center gap-1 flex-col w-full lg:w-1/5">
-            <span class="order-card__date text-sm font-semibold text-slate-700">
-              Sku:
-            </span>
-            <span class="order-card__sku text-sm">{{
-              order.products[0].sku
-              }}</span>
-          </div>
         </div>
+      }
+
+      @case('error') {
+        <div [style]="{ 'background-color': 'var(--surface-card)' }"
+        class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2"> 
+
+        <img src="assets/img/svg/error-2.svg" alt="Error" class="max-w-60 max-h-60 w-full h-full block">
+
+        <h2 class="order-card__empty text-xl text-balance font-semibold text-slate-700">Error</h2>
+        <p class="order-card__empty text-sm text-slate-500 mb-4">Se produjo en la consulta</p>
       </div>
       }
-    </div>
 
+      @case('empty') {
+    
+        <div 
+        class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2 bg-gray-200"> 
+
+        <img src="assets/img/empty.png" alt="empty items" class="order-card__empty-img max-w-44 max-h-44 w-full h-full block mix-blend-multiply">
+
+        <h2 class="order-card__empty text-xl text-balance font-semibold text-slate-700 rounded">Sin registros</h2>
+        <p class="order-card__empty text-sm text-slate-700 mb-4">No tienes ordenes que coincidan con los parametros de consulta</p>
+      </div>
+      }
     }
 
-    <div class="inventory__pagination my-8 container">
-      <p-paginator [style]="{ 'font-size': '14px' }" [first]="paginationParams().first" [rows]="paginationParams().rows"
-        [totalRecords]="10" [rowsPerPageOptions]="perPageOptions">
-      </p-paginator>
-    </div>
+
   </div>
 </div>

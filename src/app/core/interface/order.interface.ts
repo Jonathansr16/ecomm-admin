@@ -2,9 +2,9 @@ export interface Orders {
     
     id: number;
     noOrder: string;
-    status:  'Pendiente' | 'En Proceso' | 'Concretado';
+    status:  'Pendiente' | 'En Proceso' | 'Concretado' | 'En Devolucion' | 'No Concretada';
     date_created: Date;
-    shipment_date: Date;
+    authorization_date: Date;
     fulfillment: boolean;
     total_order: number;
     messeger_service?: string;

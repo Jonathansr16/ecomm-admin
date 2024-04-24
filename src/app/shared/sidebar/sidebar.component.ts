@@ -70,7 +70,11 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'inventory_2',
               label: 'Inventario',
               type: 'link',
-              routerLink: ''
+              routerLink: '/dashboard/mely/inventario',
+              queryParams: {
+                offset: '0',
+                limit: '10'
+              }
             }, 
 
             {
@@ -90,7 +94,6 @@ export class SidebarComponent implements OnDestroy {
         },
 
         { 
-        
           iconLeft: 'storefront',
           label: 'Amazon',
           iconRight: 'navigate_next',

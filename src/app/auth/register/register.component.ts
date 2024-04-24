@@ -1,7 +1,12 @@
-import { Component, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '@auth/services/auth.service';
-import { UsuarioModel } from '@auth/models/usuario.model'; 
+import { UsuarioModel } from '@auth/models/usuario.model';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 
 import { CommonModule, DOCUMENT } from '@angular/common';
@@ -13,134 +18,191 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RouterLink } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ 
-    CommonModule, 
+  imports: [
+    CommonModule,
     RouterLink,
     ReactiveFormsModule,
-    ButtonModule, 
+    ButtonModule,
     InputTextModule,
     InputGroupModule,
-    PasswordModule, 
-    CheckboxModule, 
-    HeaderComponent, 
-    FooterComponent],
+    PasswordModule,
+    CheckboxModule,
+    HeaderComponent,
+    FooterComponent,
+    ToastModule,
+  ],
+  providers:[MessageService],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
-export default class RegisterComponent  implements OnInit, OnDestroy{
-
+export default class RegisterComponent implements OnInit, OnDestroy {
   signUpSubmitted: boolean = false;
   checkTerminos: boolean = false;
-    // @ts-ignore
-    formSignUp: FormGroup;
+  // @ts-ignore
+  formSignUp: FormGroup;
 
   usuario: UsuarioModel = new UsuarioModel();
-   
-   //*CREAR FORMULARIO REGISTRO
-   createformSignUp(): void {
-    this.formSignUp = this.formBuilder.group({
-      fullName:        ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      emailRegister:   ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      password:        ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8), this.validatorsService.notWhitesSpaceValid]],
-      aceptTerm:       ['', [Validators.required                                                                     ]]
-    }, {
-      validator: this.validatorsService.matchValidator('password', 'confirmPassword')
-    });
-  
+  showLoader = false;
+
+  //*CREAR FORMULARIO REGISTRO
+  createformSignUp(): void {
+    this.formSignUp = this.formBuilder.group(
+      {
+        fullName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.validatorsService.notWhitesSpaceValid,
+          ],
+        ],
+        emailRegister: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.validatorsService.notWhitesSpaceValid,
+          ],
+        ],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.validatorsService.notWhitesSpaceValid,
+          ],
+        ],
+        confirmPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.validatorsService.notWhitesSpaceValid,
+          ],
+        ],
+        aceptTerm: ['', [Validators.required]],
+      },
+      {
+        validator: this.validatorsService.matchValidator(
+          'password',
+          'confirmPassword'
+        ),
+      }
+    );
   }
 
-  
-  constructor (@Inject(DOCUMENT) private document: Document,  private renderer2: Renderer2, private formBuilder: FormBuilder,  private validatorsService: ValidatorsService,  private authService: AuthService) {
+ private readonly document: Document = inject(DOCUMENT);
+ private readonly renderer2 = inject(Renderer2);
+ private readonly formBuilder = inject(FormBuilder);
+ private readonly validatorsService = inject(ValidatorsService);
+ private readonly authService = inject(AuthService);
+ private readonly messageService = inject(MessageService);
+
+  constructor() {
     this.createformSignUp();
-
   }
-
 
   ngOnInit(): void {
-    this.renderer2.setStyle(this.document.body, "background-color", "#172b4d")
-
+    this.renderer2.setStyle(this.document.body, 'background-color', '#172b4d');
   }
 
   ngOnDestroy(): void {
-    this.renderer2.removeStyle(this.document.body, "background-color")
-
+    this.renderer2.removeStyle(this.document.body, 'background-color');
   }
 
-    //*GET DATA REGISTER FORM
-    get fullNameInvalid() {
-      return this.formSignUp.get('fullName')?.invalid && this.formSignUp.get('fullName')?.touched;
-    }
-  
-    get emailRegisterInvalid() {
-      return this.formSignUp.get('emailRegister')?.invalid && this.formSignUp.get('emailRegister')?.touched;
-    }
-  
-    get pass1Invalid() {
-      return this.formSignUp.get('password')?.invalid && this.formSignUp.get('password')?.touched;
-    }
-  
-    get matchInvalid() {
-      const pass1 = this.formSignUp.get('password')?.value;
-      const pass2 = this.formSignUp.get('confirmPassword')?.value;
-  
-      return  (pass1 === pass2) ? false : true;
-    }
-  
-    get termInvalid() {
-      return this.formSignUp.get('aceptTerm')?.invalid && this.formSignUp.get('aceptTerm')?.touched;
-    }
-  
-  register() {
+  //*GET DATA REGISTER FORM
+  get fullNameInvalid() {
+    return (
+      this.formSignUp.get('fullName')?.invalid &&
+      this.formSignUp.get('fullName')?.touched
+    );
+  }
 
+  get emailRegisterInvalid() {
+    return (
+      this.formSignUp.get('emailRegister')?.invalid &&
+      this.formSignUp.get('emailRegister')?.touched
+    );
+  }
+
+  get pass1Invalid() {
+    return (
+      this.formSignUp.get('password')?.invalid &&
+      this.formSignUp.get('password')?.touched
+    );
+  }
+
+  get matchInvalid() {
+    const pass1 = this.formSignUp.get('password')?.value;
+    const pass2 = this.formSignUp.get('confirmPassword')?.value;
+
+    return pass1 === pass2 ? false : true;
+  }
+
+  get termInvalid() {
+    return (
+      this.formSignUp.get('aceptTerm')?.invalid &&
+      this.formSignUp.get('aceptTerm')?.touched
+    );
+  }
+
+  register() {
     if (this.formSignUp.invalid) {
-      return Object.values(this.formSignUp.controls).forEach( (control: any) => {
+      return Object.values(this.formSignUp.controls).forEach((control: any) => {
         control.markAsTouched();
       });
     }
 
-    console.log(this.formSignUp )
+    this.showLoader = true;
     const formValues = this.formSignUp.value;
 
-      this.usuario.fullName= formValues.fullName;
-      this.usuario.email = formValues.emailRegister;
-      this.usuario.password = formValues.pass1;
-      this.checkTerminos = formValues.aceptTerm;
- 
+    this.usuario.fullName = formValues.fullName;
+    this.usuario.email = formValues.emailRegister;
+    this.usuario.password = formValues.pass1;
+    this.checkTerminos = formValues.aceptTerm;
 
-    // Swal.fire({
-    //   allowOutsideClick: false,
-    //   icon: 'info',
-    //   title: 'Validando datos',
-    //   text: 'Espere por favor...'
-    // });
 
-  //  Swal.showLoading();
+    setTimeout( () => {
+        this.showLoader = false;
 
-    this.authService.signUp(this.usuario).subscribe(data => {
- 
-    //  Swal.fire({
-    //     allowOutsideClick: true,
-    //     icon: 'success',
-    //     title: 'Registro echo con exito',
-    //   });
+        this.messageService.add( {
+          key: 'tc',
+          severity: 'success',
+          summary: 'Exito!',
+          detail: 'Su registro fue echa con exito!'
+        });
 
-    
+    }, 3000)
 
-      this.formSignUp.reset();
+    // this.authService.signUp(this.usuario).subscribe(
+    //   (data) => {
+    //     this.showLoader = false;
+
+    //     this.messageService.add( {
+    //       key: 'tc',
+    //       severity: 'success',
+    //       summary: 'Exito!',
+    //       detail: 'Su registro fue echa con exito!'
+    //     });
+
+    //     this.formSignUp.reset();
+    //   },
+    //   (error) => {
+    //     this.showLoader = false;
+    //     this.messageService.add( {
+    //       key: 'tc',
+    //       severity: 'error',
+    //       summary: 'Error!',
+    //       detail: 'UPS! Se ha producido un error'
+    //     });
   
-    }, (error) => {
-      //  Swal.fire({
-      //   icon: 'error',
-      //   title: 'Se produjo un error',
-      //   text: error.error.error.message
-      // });
-
-    });
+    //   }
+    // );
   }
-
 }

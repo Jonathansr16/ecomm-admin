@@ -8,7 +8,21 @@
     </app-header>
   </div>
 
+<div class="mt-4">
+  <p-toast position="top-center" key="tc"></p-toast>
+</div>
+  @if (showLoader) {
+
+
+    <div class="loader fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10 flex-col">
+      <div class="loader__mask absolute top-0 left-0 w-full h-screen z-[10]"></div>
+      <div class="loader__spinner z-[11]"></div>
+      <span class="text-xl text-white my-4 z-10">Espere por favor...</span>
+    </div>
+  }
   <div class="forms container animate__animated animate__fadeInRight relative pb-12 mt-[-8rem]">
+    
+    
     <form class="form bg-white max-w-[550px] w-full flex items-center justify-center flex-col p-4 mx-auto mb-8 rounded-lg" autocomplete="off" [formGroup]="formSignUp" (ngSubmit)="register()">
 
       <div class="form__header form__section border-b-[1px] w-full">
@@ -114,10 +128,10 @@
       <p-checkbox inputId="ny" value="recordar" formControlName="aceptTerm" [class.is-invalid]="termInvalid"
       [ngClass]="{ 'ng-invalid ng-dirty': termInvalid }"></p-checkbox>
       <label class="text-sm font-semibold text-blue-600 p-2 block" for="ny">Acepto terminos y condiciones</label>
-      @if (termInvalid) {
-        <small class="p-error">Debe aceptar los terminos y condiciones</small>
-      }
     </div>
+    @if (termInvalid) {
+      <small class="p-error mr-auto mb-4">Debe aceptar los terminos y condiciones</small>
+    }
 
     <div class="form__section flex items-center justify-center w-full mb-2 mt-1">
 

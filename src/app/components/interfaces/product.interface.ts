@@ -1,5 +1,5 @@
 export interface ProductInventory {
-    id: number;
+    id: any;
     title: string;
     description?: string;
     short_description?: string;
@@ -11,6 +11,6 @@ export interface ProductInventory {
     status: 'active' | 'inactive';
     total_sales?: number;
     category?: any;
-    imagesProduct?: any[];
+    imagesProduct?: any;
     isDropdownInformation: boolean;
 }

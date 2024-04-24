@@ -1,52 +1,82 @@
-<!-- 
-<div class="container order-quantity">
-    <app-card-stats [label]="'En proceso'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'pendientes']" [count]="pendingOrdersCount()" [isLoading]="statusOfData.pending"></app-card-stats>
-    <app-card-stats [label]="'Embarcadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'embarcadas']" [count]="shippedOrdersCount()" [isLoading]="statusOfData.pending"></app-card-stats>
-    <app-card-stats [label]="'Concretadas'" [routerLink]="['/dashboard/woocommerce/lista-ordenes', 'concretadas']" [count]="completedOrdersCount()" [isLoading]="statusOfData.completed"></app-card-stats>
-</div>
+<div class="top-header">
+    <div class="top-header__content container">
+      <div class="top-header__row top-header__row-breadcrumb">
+        <app-breadcrumb
+          [breadcrumbHomeItem]="BreadcrumbHome"
+          [breadcrumbItems]="breadcrumbItems">
+        </app-breadcrumb>
+      </div>
+  
+      <div class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2">
+        <div class="top-header__col">
+          <h1 class="top-header__h1 text-3xl font-semibold text text-white">Ordenes {{paginationParams.type}}</h1>
+        </div>
+  
+        <div class="top-header__col">
+          <!-- <p-button
+            icon="pi pi-plus"
+            [style]="{ 'font-size': '14px', padding: '0.5em 0.6em' }"
+            label="Agregar producto"
+            severity="success"
+            
+          >
+          </p-button> -->
+          <span class="top-header__span text-white font-semibold">26 productos</span>
 
- <router-outlet></router-outlet>
-
- -->
-
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
  
-<div class="container order-quantity">
+<div class="container order-quantity flex items-center justify-between gap-4 flex-col lg:flex-row">
 
-<app-card-stats 
-    [label]="'En proceso'"
-    [count]="pendingOrdersCount()" 
-    [isLoading]="statusOfData.pending"
-    (click)="getOrderstByStatus('pendientes')"
-   >
-</app-card-stats>
+    <div class="order-quantity-card w-full lg:w-1/3">
+        <app-card-stats 
+            [label]="'En proceso'"
+            [count]="pendingOrdersCount()" 
+            [isLoading]="statusOfData.pending"
+            (click)="getOrderstByStatus('pendientes')"
+           >
+        </app-card-stats>
+    </div>
 
-<app-card-stats 
-    [label]="'Embarcadas'"  
-    [count]="shippedOrdersCount()" 
-    [isLoading]="statusOfData.shipped"
-    (click)="getOrderstByStatus('embarcados')"
-  
-    >
-</app-card-stats>
 
-<app-card-stats 
-    [label]="'Concretadas'"  
-    [count]="completedOrdersCount()" 
-    [isLoading]="statusOfData.completed"
-    (click)="getOrderstByStatus('entregados')"
-   >
-</app-card-stats>
+<div class="order-quantity-card  w-full lg:w-1/3"> 
+
+    <app-card-stats 
+        [label]="'Embarcadas'"  
+        [count]="shippedOrdersCount()" 
+        [isLoading]="statusOfData.shipped"
+        (click)="getOrderstByStatus('embarcados')"
+      
+        >
+    </app-card-stats>
+</div>
+
+<div class="order-quantity-card  w-full lg:w-1/3">
+
+    <app-card-stats 
+        [label]="'Concretadas'"  
+        [count]="completedOrdersCount()" 
+        [isLoading]="statusOfData.completed"
+        (click)="getOrderstByStatus('entregados')"
+       >
+    </app-card-stats>
+</div>
 
 </div>
 
-<div class="container mt-8">
+<div class="mt-8">
 
     <app-order-list
      [statusData]="statusData"
+     [orderOption]="menuOrder"
       [dataOrders]="orders"
+      [totalRecors]="orders.length"
       [paginationParams]="paginationParams"
-      [OrderOption]="MenuProduct"
+   
       >
 
     </app-order-list>

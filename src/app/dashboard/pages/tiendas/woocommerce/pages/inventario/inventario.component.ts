@@ -147,9 +147,9 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   private readonly wooService = inject(WooService);
   products: ProductInventory[] = [];
 
-  private activedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
-  private confirmService = inject(ConfirmationService);
+  private readonly activedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly confirmService = inject(ConfirmationService);
   private readonly formBuilder = inject(FormBuilder);
 
   constructor() {

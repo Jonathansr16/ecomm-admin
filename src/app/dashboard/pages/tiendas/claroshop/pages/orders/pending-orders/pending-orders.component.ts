@@ -15,12 +15,12 @@ import { StatusData } from '@components/interfaces/status-data.interface';
     OrderListComponent
   ],
   template: `
-  <app-order-list 
+  <!-- <app-order-list 
   [statusData]="statusData"
   [paginationParams]="paginationParams"
   [OrderOption]="orderOption"
   [dataOrders]="pendingOrders"> 
- </app-order-list>
+ </app-order-list> -->
   `,
   styleUrls: ['./pending-orders.component.scss']
 })

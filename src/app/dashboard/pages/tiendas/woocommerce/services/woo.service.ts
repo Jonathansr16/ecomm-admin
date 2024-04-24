@@ -20,12 +20,12 @@ import {  Orders } from 'src/app/core/interface/order.interface';
 
 export class WooService {
 
-  private url = environment.wcommerce.apiBase;
+  private readonly url = environment.wcommerce.apiBase;
   // private cachedDataPage: { [key: string]: any[] } = {};
   totalItems: number =0;
   totalOrders: number = 0;
 
-  http = inject(HttpClient);
+ private readonly http = inject(HttpClient);
 
 
   //* OBTIENE TODOS LOS PRODUCTOS
@@ -254,7 +254,7 @@ export class WooService {
       noOrder:  orderResponse.id.toString(),
       status: orderResponse.status === 'pending' ? 'En Proceso' : 'Concretado',
       date_created: orderResponse.date_created,
-      shipment_date: orderResponse.date_completed,
+      authorization_date: orderResponse.date_completed,
       fulfillment: false,
       total_order: parseFloat(orderResponse.total),
       products: orderResponse.line_items.map( (productOrder) => ({

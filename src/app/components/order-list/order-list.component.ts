@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, input, output } from '@angular/core';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
+import { CardOrderComponent } from '@components/order-list/card-order/card-order.component';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
 import { PaginatorModule } from 'primeng/paginator';
+import { SkeletonModule } from 'primeng/skeleton';
 import { Orders } from 'src/app/core/interface/order.interface';
 
 @Component({
@@ -17,7 +19,9 @@ import { Orders } from 'src/app/core/interface/order.interface';
     CheckboxModule,
     ButtonModule,
     PaginatorModule,
-    MenuModule
+    SkeletonModule,
+    MenuModule,
+    CardOrderComponent
   ],
 
   templateUrl: './order-list.component.html',
@@ -27,34 +31,23 @@ export class OrderListComponent {
 
 statusData = input.required<StatusData>();
 dataOrders = input.required<Orders[]>();
+totalRecors = input.required<number>();
 paginationParams = input.required<PaginationParams>();
 menuToolbar = input<MenuItem[]>();
-OrderOption = input.required<MenuItem[]>();
+orderOption = input.required<MenuItem[]>();
   
 searchValue = output<string>();
 searchedData = output<string>();
 changeValueLabel = output<'todo' | 'id' | 'title' | 'sku'>();
 changePagination = output<PaginationParams>();
-  // @Input( { required: true}) statusData!: 'loading' | 'success' | 'error' | 'empty'; 
-  // @Input( { required: true}) dataOrders!: Orders[]; 
-  // @Input( { required: true}) paginationParams!: PaginationParams; 
-  // @Input( ) menuToolbar!: MenuItem[];
-  // @Input( { required: true}) OrderOption!: MenuItem[];
-
-  // @Output() searchValue = new EventEmitter<string>();
-  // @Output() searchedData = new EventEmitter<any>()
-  // @Output() changeValueLabel = new EventEmitter<'todo' | 'id' | 'title' | 'sku'>();
-  // @Output() changePagination = new EventEmitter<PaginationParams>();
- 
-  perPageOptions: number[] = [10, 20, 30, 50];
-
+perPageOptions: number[] = [10, 20, 30, 50];
 
     //Selecciona y Deselecciona cada checkbox del arreglo
-    isSelectedEveryProduct: boolean[] = [];
+    isSelectedEveryOrder: boolean[] = [];
     //selecciona y deselecciona todos los checkbox del arreglo
-    isSelectAllProduct = false;
+    isSelectAllOrder = false;
     //data seleccionada
-    selectedProduct: any[] = [];
+    selectedOrder: Orders[] = [];
 
     // Índice de acordeon abierto, inicialmente cerrado
   selectedIndex: number = -1; 
@@ -69,46 +62,53 @@ changePagination = output<PaginationParams>();
 
 
 
-    toggleSelectAllProducts() {
+    toggleSelectAllOrders() {
       // Si se selecciona la opción masiva, seleccionar todos los productos
-      if (this.isSelectAllProduct) {
+      if (this.isSelectAllOrder) {
         // Si se selecciona la opción masiva, seleccionar todos los productos
-        this.selectedProduct = this.dataOrders()?.slice();
-        this.isSelectedEveryProduct = this.dataOrders()?.map(() => true) || [];
+        this.selectedOrder = this.dataOrders()?.slice();
+        this.isSelectedEveryOrder = this.dataOrders()?.map(() => true) || [];
       } else {
         // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
-        this.selectedProduct = [];
-        this.isSelectedEveryProduct = [];
+        this.selectedOrder = [];
+        this.isSelectedEveryOrder = [];
       }
     }
   
-    toggleEveryProduct(product: any) {
+    toggleEveryOrder(order: Orders, i: number) {
      
       // Verificar si el producto está seleccionado y agregarlo o eliminarlo según sea necesario
-      const index = this.selectedProduct.findIndex(
-        (selectedItem: any) => selectedItem.id === product.id
+      const index = this.selectedOrder.findIndex(
+        (selectedItem: any) => selectedItem.id === order.id
       );
   
       if (index === -1) {
-        this.selectedProduct.push(product);
+       // Si la orden no está seleccionado, lo agregamos
+        this.selectedOrder.push(order);
+        this.isSelectedEveryOrder[i] = true;
       } else {
-        this.selectedProduct.splice(index, 1);
+        this.selectedOrder.splice(index, 1);
+        this.isSelectedEveryOrder[i] = false;
       }
   
   
       // Verificar si todos los elementos de la parte inferior están seleccionados
       const allSelected = this.dataOrders().every((order) =>
-        this.selectedProduct.some(
+        this.selectedOrder.some(
           (selectedOrder) => selectedOrder.id === order.id
         )
       );
   
       // Actualizar el estado de selección masiva
-      this.isSelectAllProduct = allSelected;
+      this.isSelectAllOrder= allSelected;
   
       // Si se deselecciona un elemento de la parte superior, quitar el check de la opción masiva
-      if (!this.isSelectAllProduct) {
-        this.isSelectAllProduct = false;
+      // if (!this.isSelectAllOrder) {
+      //   this.isSelectAllOrder = false;
+      // }
+
+      if(!this.isSelectedEveryOrder[i] && this.isSelectAllOrder) {
+        this.isSelectAllOrder = false;
       }
     }
 
@@ -155,4 +155,52 @@ changePagination = output<PaginationParams>();
   
   
 }
+
+   
+/*
+{
+    "totalpaginas": 1,
+    "totalpendientes": 1,
+    "totalregistros": "1",
+    "listapendientes": [
+        {
+            "nopedido": "83539216",
+            "estatus": "Pendiente",
+            "fechacolocacion": "2024-04-07",
+            "fechaautorizacion": "2024-04-07",
+            "sku": "GBAPKMSP",
+            "articulo": "Pok&eacute;mon Sapphire Gba Juego F&iacute;sico En Caja Con Protecci&oacute;n",
+            "claroid": "2828788",
+            "idpedidorelacion": "12035596",
+            "fulfillment": false,
+            "sla": "En tiempo de embarque",
+            "comision": "69.86",
+            "totalproducto": "499",
+            "totalpedido": "499",
+            "skuhijo": "GBAPKMSP",
+            "channel": "SR",
+            "transactionid": null
+        }
+    ],
+    "versionConfig": "2.0.17112023-1.0",
+    "versionAPP": "2.0.17112023-1.0",
+    "tagManagerID": "GTM-5Q7VB6N",
+    "tagManagerIDCS": "",
+    "visibleMenuCV": true
+}
+*/
+
+/* 
+--> ordenes pendientes
+- fecha de recibido
+- fecha de autorización
+
+--> ordenes en proceso
+- fecha de recibido
+- fecha de despacho
+
+--> ordenes concretadas
+- fecha de autorización
+- fecha de despacho
+*/
 
