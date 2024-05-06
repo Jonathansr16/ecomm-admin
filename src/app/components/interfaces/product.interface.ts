@@ -6,6 +6,7 @@ export interface ProductInventory {
     sku: string;
     store: 'woocommerce' | 'mely' | 'amazon' | 'claroshop',
     regular_price?: number;
+    isFulfillment?: boolean;
     sale_price: number;
     units?: number;
     status: 'active' | 'inactive';
@@ -13,4 +14,6 @@ export interface ProductInventory {
     category?: any;
     imagesProduct?: any;
     isDropdownInformation: boolean;
+    channel: string;
+    
 }

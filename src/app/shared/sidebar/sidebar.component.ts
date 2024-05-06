@@ -81,7 +81,7 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'local_mall',
               label: 'Pedidos',
               type: 'link',
-              routerLink: ''
+              routerLink: '/dashboard/mely/ordenes'
             }, 
 
             {
@@ -166,7 +166,12 @@ export class SidebarComponent implements OnDestroy {
               iconLeft: 'local_mall',
               label: 'Ordenes',
               type: 'link',
-              routerLink: '/dashboard/woocommerce/ordenes'
+              routerLink: '/dashboard/woocommerce/ordenes',
+              queryParams: {
+                page: '1',
+                per_page: '10',
+                status: 'pending'
+              }
             },
 
             {

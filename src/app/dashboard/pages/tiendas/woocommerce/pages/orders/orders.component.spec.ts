@@ -3,7 +3,7 @@ import OrdersComponent from './orders.component';
 
 
 
-describe('OrderListComponent', () => {
+describe('OrdersComponent', () => {
   let component: OrdersComponent;
   let fixture: ComponentFixture<OrdersComponent>;
 

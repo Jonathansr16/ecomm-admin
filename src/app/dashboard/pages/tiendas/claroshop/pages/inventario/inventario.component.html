@@ -3,13 +3,18 @@
     <div class="top-header__row top-header__row-breadcrumb">
       <app-breadcrumb
         [breadcrumbHomeItem]="BreadcrumbHome"
-        [breadcrumbItems]="breadcrumbItems">
+        [breadcrumbItems]="breadcrumbItems"
+      >
       </app-breadcrumb>
     </div>
 
-    <div class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2">
+    <div
+      class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2"
+    >
       <div class="top-header__col">
-        <h1 class="top-header__h1 text-3xl font-bold text text-white">Inventario</h1>
+        <h1 class="top-header__h1 text-3xl font-bold text text-white">
+          Inventario
+        </h1>
         <span class="top-header__span text-white">26 productos</span>
       </div>
 
@@ -19,7 +24,6 @@
           [style]="{ 'font-size': '14px', padding: '0.5em 0.6em' }"
           label="Agregar producto"
           severity="success"
-          
         >
         </p-button>
       </div>
@@ -27,17 +31,16 @@
   </div>
 </div>
 
-<app-inventory-list 
+<app-inventory-list
 [statusProducts]="statusProducts"
 [products]="products"
+[totalRecords]="totalProducts"
 [statusProductsExtraInfo]="statusProductsDetail"
 [productsExtraInfo]="productsDetail"
 [menuProduct]="MenuProduct"
- [totalRecords]="totalRecords"
  (changeLabelValue)="changeTypeSearch($event)"
  (searchValue)="getProductsBySearch($event)"
  (emitProduct)="getProduct($event)"
- [paginationParams]="paginationParams"
  (changedPagination)="paginationChanged($event)"
- >
+>
 </app-inventory-list>

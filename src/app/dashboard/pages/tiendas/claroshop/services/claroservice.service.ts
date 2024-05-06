@@ -17,14 +17,19 @@ export class ClaroService {
   http = inject(HttpClient);
 
   //* OBTIENE LA LISTA DE PRODUCTOS
-  getProducts(page: number, per_page: number): Observable<ProductInventory[]> {
+  getProducts(page: number): Observable<{products: ProductInventory[], totalItems: number}> {
     let params = new HttpParams()
       .append('page', page.toString())
-      .append('productosporpagina', per_page.toString());
 
     return this.http
       .get<ProductsOptionResponse>('producto', { params })
-      .pipe(map((resp) => this.transformDataProducts(resp)));
+      .pipe(map((resp) => {
+     return {
+       products: this.transformDataProducts(resp),
+       totalItems: resp.totalproductos
+     }  
+      })
+    )
   }
 
   //*OBTIENE LOS PRODUCTOS QUE COINCIDAN CON EL TIPO DE BUSQUEDA
@@ -91,6 +96,7 @@ export class ClaroService {
       sale_price: 0, // You need to set this value accordingly
       status: product.estatus === 'activo' ? 'active' : 'inactive',
       isDropdownInformation: true,
+      channel: 'claroshop'
     };
   }
   //* OBTIENE UN PRODUCTO ESPECIFICO
@@ -110,6 +116,7 @@ export class ClaroService {
           units: producto.cantidad,
           status: producto.estatus === 'activo' ? 'active' : 'inactive',
           isDropdownInformation: true,
+          channel: 'claroshop',
           imagesProduct: producto.fotos.map((img) => ({
             alt: img.idfoto,
             src: img.url,
@@ -130,6 +137,7 @@ export class ClaroService {
       sale_price: 0, // You need to set this value accordingly
       status: product.estatus === 'activo' ? 'active' : 'inactive',
       isDropdownInformation: true,
+      channel: 'claroshop'
     }));
   }
 
@@ -138,7 +146,7 @@ export class ClaroService {
     status: 'pendientes' | 'entregados' | 'embarcados',
     page: number,
     per_page: number
-  ): Observable<{ orders: Orders[] }> {
+  ): Observable<{ orders: Orders[], totalOrders: number }> {
     const params = new HttpParams()
       .append('action', status)
       .append('page', page)
@@ -149,17 +157,24 @@ export class ClaroService {
         if (status === 'pendientes') {
           return {
             orders: this.transformOrder(resp['listapendientes']),
+            totalOrders: resp.totalregistros
           };
         } else if (status === 'embarcados') {
           return {
             orders: this.transformOrder(resp['listaguiasautomaticas']),
+            totalOrders: resp.totalembarcados
           };
         } else if (status === 'entregados') {
           return {
             orders: this.transformOrder(resp['listaentregados']),
+            totalOrders: resp.totalregistros
           };
         } else {
-          return { orders: [] };
+          return { 
+            orders: [],
+            totalOrders: 0
+
+           };
         }
       })
     );
@@ -193,6 +208,7 @@ export class ClaroService {
         authorization_date: authorization,
         fulfillment: order.fulfillment,
         total_order: parseFloat(order.totalpedido), // Convertir a número
+        channel: 'claroshop',
         products: [
           {
             product: order.articulo,

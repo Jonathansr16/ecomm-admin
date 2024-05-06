@@ -12,7 +12,7 @@
                     [ngModel]="isSelectedOrder()" (onChange)="onChangeValue.emit(order())">
                 </p-checkbox>
 
-                <h3 class="card-order__toolbar-h3 text-sm font-semibold">
+                <h3 class="card-order__toolbar-h3 text-slate-700 text-sm font-semibold">
                     # {{ order().id }}
                 </h3>
             </div>
@@ -23,12 +23,12 @@
                     {{ order().date_created | date : "mediumDate" }}
                 </span>
 
-                <button type="button" (click)="menuOption.toggle($event)"
+                <button type="button" (click)="[menuOption.toggle($event), emitId.emit(order().id) ]"
                     class="p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text">
                     <i class="pi pi-ellipsis-v"></i>
                 </button>
 
-                <p-menu #menuOption [model]="menuOrder()" [popup]="true" [style]="{ 'font-size': '14px' }"></p-menu>
+                <p-menu #menuOption  [id]="order().id.toString()" [model]="menuOrder()" [popup]="true" [style]="{ 'font-size': '14px' }"></p-menu>
 
             </div>
         </div>
@@ -123,7 +123,7 @@
                     <span class="text-sm font-semibold text-slate-700">Total:</span>
 
                     <span class="order-card__price text-sm">
-                        {{ order().total_order | currency }}
+                        {{ order().total_order | currency: 'MXN' }}
                     </span>
                 </div>
 
@@ -159,7 +159,7 @@
                                 Total:
                             </span>
                             <span class="card-order__price text-sm">
-                                {{product.total_product | currency  }}
+                                ${{product.total_product | currency: 'MXN'  }}
                             </span>
                         </div>
 
@@ -186,8 +186,75 @@
             }
         </div>
         } @else {
-        <div class="card-order__content flex-col lg:flex-row mt-6 p-6 py-7 flex items-center gap-1">
 
+            <div class="card-order__row flex flex-wrap flex-col lg:flex-row gap-1 items-center justify-center lg:justify-between px-6 pt-7 pb-[14px]">
+                
+                <div class="card-order__col">
+                    @if(order().status === 'Pendiente') {
+                        <div class="flex items-center flex-wrap gap-2 rounded-sm bg-blue-100 text-blue-700 px-3 py-[6px] max-w-48">
+                            <span class="text-xs font-semibold text-center">
+                                {{ order().status }}
+                            </span>
+                            <i class="card-order__i pi pi-stopwatch"></i>
+                        </div>
+                        <p class="text-sm py-2">Tienes que despachar el paquetes cuanto antes, para no demorarte.</p>
+
+                        } @else if(order().status === 'Concretado') {
+                       
+                        <div class="flex flex-row flex-nowrap items-center justify-center gap-2 rounded-sm bg-green-100 text-green-700 px-3 py-[6px] max-w-48 w-full">
+                            <span class="text-xs font-semibold text-center">
+                                {{ order().status }}
+                            </span>
+                            <i class="card-order__i pi pi-check"></i>
+                        </div>
+
+                        <p class="text-sm py-2">Entregado el día: <strong class="text-slate-700">{{order().authorization_date | date:  'MMM d'}}</strong></p>
+
+                        } @else if (order().status === 'En Proceso') {
+                        <div class="flex flex-row flex-nowrap items-center justify-center gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-[6px] max-w-48 w-full">
+                            <span class="text-xs font-semibold text-center">
+                                {{ order().status }}
+                            </span>
+                            <i class="card-order__i material-icons">local_shipping</i>
+                        </div>
+
+                        <p class="text-sm py-2">Salio el: <strong class="text-slate-700">{{order().authorization_date | date: 'EEE, MMMM d'}}</strong> y sigue en camino</p>
+                        } @else if (order().status === 'No Concretada') {
+                            <div class="flex flex-row flex-nowrap items-center justify-center gap-2 rounded-sm bg-red-100 text-red-700 px-3 py-[6px] max-w-48 w-full">
+                                <span class="text-xs font-semibold text-center">
+                                    {{ order().status }}
+                                </span>
+                                <i class="card-order__i pi pi-times"></i>
+                            </div>
+    
+                            <p class="text-sm py-2">Asegúrate de no enviar este paquete. La persona que compró canceló.</p>
+                            }
+                </div>
+                <div class="card-order__col">
+                    
+                    @if(order().status === 'Pendiente') {
+                        <button class="card-order__btn card-order__btn-pending text-sm font-medium py-2 px-12 bg-blue-500 text-white rounded-md">
+                            Generar guia
+                        </button>
+                    } @else if(order().status === 'Concretado') {
+                        <button class="card-order__btn card-order__btn-completed text-sm font-medium py-2 px-12 bg-blue-100 text-blue-700 rounded-md">
+                            Ver detalles
+                        </button>
+                    } @else if(order().status === 'En Proceso') {
+                        <button class="card-order__btn card-order__btn-progress text-sm font-medium py-2 px-12 bg-blue-500 text-white rounded-md">
+                            Seguir envio
+                        </button>
+                    } @else {
+                        <button class="card-order__btn card-order__btn-failed text-sm font-medium py-2 px-12 bg-blue-100 text-blue-700 rounded-md">
+                            Ver detalles
+                        </button>
+                    }
+
+                </div>
+            </div>
+
+        <div class="card-order__content flex-col lg:flex-row px-6 pt-[14px] pb-7 flex items-center gap-1">
+        
             <div
                 class="card-order__product card-order__product-simple flex flex-col lg:flex-row items-center gap-3 w-full lg:w-2/4">
 
@@ -201,39 +268,33 @@
                 }
 
                 <div class="card-order__description flex items-center mt-4 lg:mt-0 lg:items-start gap-1 flex-col mb-2">
-                    @if(order().status === 'Pendiente') {
-                    <span
-                        class="text-xs font-semibold bg-amber-100 text-amber-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-                        <i class="card-order__i pi pi-stopwatch"></i>
-
-                        {{ order().status }}
-                    </span>
-                    } @else if(order().status === 'Concretado') {
-                    <span
-                        class="text-xs font-semibold bg-green-100 text-green-700 py-1 px-2 rounded-sm block max-w-[150px] w-full text-center">
-                        <i class="card-order__i pi pi-stopwatch"></i>
-
-                        {{ order().status }}
-                    </span>
-                    } @else if (order().status === 'En Proceso') {
-                    <div class="flex items-center flex-wrap gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-1">
-                        <span class="text-xs font-semibold text-center">
-                            {{ order().status }}
-                        </span>
-                        <i class="card-order__i material-icons">local_shipping</i>
-                    </div>
-                    }
+                 
                     <span class="text-sm font-semibold">Producto:</span>
                     <span class="card-order__name text-sm">
                         {{ order().products[0].product | slice : 0 : 60 }}
                     </span>
                 </div>
 
-           
-
             </div>
+
             <div
             class="card-order__extraInfo flex items-start justify-start lg:justify-around flex-col lg:flex-row gap-4 grow w-full lg:w-2/4">
+
+            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col w-full lg:w-1/5">
+                <span class="card-order__date text-sm font-semibold text-slate-700">
+                    Canal de venta:
+                </span>
+                @if (order().channel === 'mely') {
+                 <img class="card-order__channel w-11 h-11 m-auto rounded-[50%]" src="assets/img/mely_logo.webp" alt="mercado libre">
+                 }  @else if (order().channel === 'amazon') {
+                    <img class="card-order__channel w-11 h-11 mx-auto rounded-[50%]" src="assets/img/amazon_logo.webp" alt="Amazon">
+                    } @else if (order().channel === 'claroshop') {
+                     <img class="card-order__channel w-11 h-11 mx-auto rounded-[50%]" src="assets/img/claroshop_logo-2.png" alt="Claroshop">
+                    } @else {
+                     <img class="card-order__channel w-11 h-11 mx-auto rounded-[50%]" src="assets/img/woocommerce__logo.png" alt="Woocommerce">
+                    }
+            </div>
+
 
             <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col w-full lg:w-1/5">
                 <span class="text-sm font-semibold text-slate-700">
@@ -253,7 +314,7 @@
                     Total:
                 </span>
                 <span class="card-order__price text-sm">
-                    {{ order().products[0].total_product | currency }}
+                    ${{ order().products[0].total_product | currency: 'MXN' }}
                     </span>
             </div>
 

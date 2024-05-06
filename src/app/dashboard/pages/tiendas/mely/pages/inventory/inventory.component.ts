@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { ProductInventory } from '@components/interfaces/product.interface';
+import { StatusInfoData } from '@components/interfaces/status-data-info.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
 import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
 import { MelyService } from '@mely/mely.service';
@@ -50,8 +51,10 @@ export default class InventoryComponent {
   ];
 
   statusData: StatusData = { status: 'loading' };
+  StatusExtraInfo?: StatusInfoData;
   melyProducts: ProductInventory[] = [];
-  totalRecords: number = 0;
+  itemsWithIds: string[] = [];
+
 
   //parametros iniciales para la paginación
   paginationParams: PaginationParams = {
@@ -60,6 +63,7 @@ export default class InventoryComponent {
     first: 0,
   };
 
+  totalProducts: number =0;
   menuProduct: MenuItem[] = [
     {
       label: 'Opciones:',
@@ -82,45 +86,57 @@ export default class InventoryComponent {
   private readonly melyService = inject(MelyService);
   private readonly activedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
+
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    this.activedRoute.queryParamMap.subscribe( (params: ParamMap) => {
 
-    this.activedRoute.queryParamMap.subscribe((params: ParamMap) => {
-
-      const offsetParam = params.get('offset');
-      const limitParam = params.get('limit');
-
-      // Verificar si offsetParam es null o undefined antes de convertirlo a un número
-      this.paginationParams.page = offsetParam !== null ? +offsetParam : 0;
-
-      // Verificar si limitParam es null o undefined antes de convertirlo a un número
-      this.paginationParams.rows = limitParam !== null ? +limitParam : 10;
-
-  
+      const limit = params.get('limit');
+      const offset = params.get('offset');
+      this.paginationParams.rows = limit !== null ? +limit : 10;
+      this.paginationParams.page = offset !== null ? +offset : 0;
+    
       this.getProducts();
-    });
+
+    })
   }
 
   getProducts(): void {
+  
     this.statusData.status = 'loading';
-    this.melyService
-      .getProductBySeller(
-        this.paginationParams.page,
-        this.paginationParams.rows
-      )
-      .subscribe({
+    this.melyService.getProductsBySeller(this.paginationParams.page, this.paginationParams.rows).subscribe({
         next: (resp) => {
-          this.statusData.status =
-            resp.products.length > 0 ? 'success' : 'empty';
-          this.melyProducts = resp.products;
-          this.totalRecords = resp.totalRecords;
+          this.statusData.status = resp.totalProducts> 0 ? 'success' : 'empty';
+          this.totalProducts = resp.totalProducts;
+          this.itemsWithIds = resp.idProducts;
+          console.log(resp.totalProducts)
+
+       this.getProductsIds()
         },
         error: (err) => {
           this.statusData.status = 'error';
           this.melyProducts = [];
+          this.totalProducts = 0;
+          this.StatusExtraInfo = {
+            titleError: 'Error',
+            summaryError: err
+      
+          };
         },
       });
+  }
+
+
+  getProductsIds() {
+  this.melyService.getProductsByids(this.itemsWithIds).subscribe( {
+    next: (resp) => {
+      console.log(resp)
+      this.melyProducts = resp
+    }, error: (err) => {
+      console.log(err)
+    }
+  })
   }
 
   changedPage(event: any) {

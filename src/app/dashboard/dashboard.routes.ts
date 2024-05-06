@@ -2,6 +2,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {  Routes } from '@angular/router';
 import { DataTimeInterceptor } from '@claroshop/interceptors/date-time.interceptor';
 import { ClaroService } from '@claroshop/services/claroservice.service';
+import { injectTokenInterceptor } from '@mely/interceptors/injectToken.interceptor';
+import { MelyService } from '@mely/mely.service';
 import { KeyInterceptor } from '@woocommerce/interceptors/key.interceptor';
 import { WooService } from '@woocommerce/services/woo.service';
 
@@ -32,7 +34,13 @@ export const dashboardRoutes: Routes = [
 
       {
         path: 'mely',
-        loadChildren: () => import('@mely/mely.routes').then( (m) => m.MelyRoutes)
+        loadChildren: () => import('@mely/mely.routes').then( (m) => m.MelyRoutes),
+        providers: [
+          MelyService,
+          provideHttpClient(
+            withInterceptors([injectTokenInterceptor])
+          )
+        ]
       },
 
       {

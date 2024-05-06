@@ -1,11 +1,11 @@
 <div
   class="cards-stat__container text-gray-600 body-font shadow-slate-300 mx-auto"
 >
-  <h2 class="cards__title font-medium text-xl">{{ titleSection }}</h2>
-  <div class="cards-stat" [class]="klassContainer">
+  <!-- <h2 class="cards__title font-medium text-xl">{{ titleSection() }}</h2> -->
+  <div class="cards-stat" [class]="klassContainer()">
     
    
-      <div class="card-stat" [class]="klassCard" *ngFor="let data of dataCard" (click)="op.toggle($event)" >
+      <div class="card-stat cursor-pointer" [class]="klassCard()" *ngFor="let data of dataCard()" (click)="executeCommand(data)" >
         <span
           *ngIf="data.icon || data.iconClass"
           class="card-stat__icon-box w-11 h-11 mr-3 flex items-center justify-center rounded-xl"
@@ -16,9 +16,9 @@
           }}</i>
         </span>
   
-        <div *ngIf="data.urlImage" class="card-stat__image-box mt-6">
+        <div *ngIf="data.urlImage" class="card-stat__image-box ">
           <img
-            class="w-12 h-12 object-cover object-center flex-shrink-0 rounded-full mr-4"
+            class="w-10 h-10 object-cover object-center  mr-4"
             [src]="data.urlImage"
             alt=""
           />
@@ -33,25 +33,6 @@
           </p>
         </div>
     
-<p-overlayPanel #op>
-
-  <p-table [value]="dataTable" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Tienda</th>
-            <th>Cantidad</th>
-         
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-order>
-        <tr>
-            <td>{{ order.store }}</td>
-            <td>{{ order.quantity }}</td>
-           
-        </tr>
-    </ng-template>
-</p-table>
-</p-overlayPanel>
 
     </div>
   </div>

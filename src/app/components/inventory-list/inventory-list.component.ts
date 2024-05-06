@@ -1,11 +1,6 @@
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Input,
-  input,
-  output,
-} from '@angular/core';
+import { Component, Input, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -21,6 +16,8 @@ import { PaginationParams } from '@components/interfaces/pagination-params.inter
 import { SkeletonModule } from 'primeng/skeleton';
 import { StatusData } from '@components/interfaces/status-data.interface';
 import { CardProductComponent } from './card-product/card-product.component';
+import { StatusInfoData } from '@components/interfaces/status-data-info.interface';
+import { CardDropdownProductComponent } from './card-dropdown-product/card-dropdown-product.component';
 
 @Component({
   selector: 'app-inventory-list',
@@ -36,32 +33,38 @@ import { CardProductComponent } from './card-product/card-product.component';
     ToastModule,
     PaginatorModule,
     SkeletonModule,
-    CardProductComponent
+    CardProductComponent,
+    CardDropdownProductComponent,
   ],
   templateUrl: './inventory-list.component.html',
   styleUrl: './inventory-list.component.scss',
 })
 export class InventoryListComponent {
   statusProducts = input.required<StatusData>();
-  
+  statusInfoProducts = input<StatusInfoData>();
   products = input.required<ProductInventory[]>();
+  isOpen: boolean[] = [];
+  totalRecords = input.required<number>();
+
+  //multiple
   @Input() statusProductsExtraInfo: StatusData[] = [];
   @Input() productsExtraInfo: ProductInventory[] = [];
 
   menuSearch = input<SearchMenuFilter[]>();
-  totalRecords = input.required<number>();
-  paginationParams = input.required<PaginationParams>();
+  // totalRecords = input.required<number>();
+  paginationParams: PaginationParams = {
+    page: 1,
+    rows: 10,
+    first: 1,
+  };
   menuProduct = input.required<MenuItem[]>();
 
-  
-   searchValue = output<string>();
-   changeLabelValue = output<'todo' | 'title' | 'id' | 'sku'>();
-  // changeValueLabel = output<'todo' | 'title' | 'id' | 'sku'>();
+  searchValue = output<string>();
+  changeLabelValue = output<'todo' | 'title' | 'id' | 'sku'>();
   changedPagination = output<PaginationParams>();
-  emitProduct = output<EmitDetailProduct>();
+  emitProduct = output<any>();
 
   perPageOptions: number[] = [10, 20, 30, 50];
-
 
   menu: MenuItem[] = [];
   handlerOptionBtn: StatusBtn = {
@@ -122,7 +125,6 @@ export class InventoryListComponent {
     },
   ];
 
-  isOpen: boolean[] = [];
   //Selecciona y Deselecciona cada checkbox del arreglo
   isSelectedEveryProduct: boolean[] = [];
   //data seleccionada
@@ -139,26 +141,19 @@ export class InventoryListComponent {
   showIcon = false;
   // Índice de acordeon abierto, inicialmente cerrado
   selectedIndex: number = -1;
-  // productsExtraInfo: ProductInventory[] = [];
-  // statusProductsExtraInfo: StatusData[] = [];
-
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-
   }
-
-
-
 
   toggleSelectAllProducts(): void {
     // Si se selecciona la opción masiva, seleccionar todos los productos
     if (this.isSelectAllProduct) {
       // Si se selecciona la opción masiva, seleccionar todos los productos
       this.selectedProduct = this.products().slice();
-       this.isSelectedEveryProduct = this.products().map(() => true);
-  
+      this.isSelectedEveryProduct = this.products().map(() => true);
+
       this.isBtnActive.massiveModification = true;
     } else {
       // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
@@ -168,47 +163,11 @@ export class InventoryListComponent {
     }
   }
 
-  // toggleEveryProduct(product: ProductInventory): void {
-  //   // Verificar si el producto está seleccionado y agregarlo o eliminarlo según sea necesario
-  //   const index = this.selectedProduct.findIndex(
-  //     (selectedItem: ProductInventory) => selectedItem.id === product.id
-  //   );
-
-  //   if (index === -1) {
-  //     this.selectedProduct = [product];
-  //   } else {
-  //     this.selectedProduct.splice(index, 1);
-  //   }
-
-  //   // Verificar si todos los elementos de la parte inferior están seleccionados
-  //   const allSelected = this.products().every((product) =>
-  //     this.selectedProduct.some(
-  //       (selectedOrder) => selectedOrder.id === product.id
-  //     )
-  //   );
-
-  //   this.handlerOptionBtn.pause = this.selectedProduct.every(
-  //     (option) => option.status === 'active'
-  //   );
-  //   this.handlerOptionBtn.modify = this.selectedProduct.length === 1;
-  //   this.handlerOptionBtn.massiveModification =
-  //     this.selectedProduct.length >= 2;
-  //   this.handlerOptionBtn.eliminate = this.selectedProduct.length >= 1;
-
-  //   // Actualizar el estado de selección masiva
-  //   this.isSelectAllProduct = allSelected;
-
-  //   // Si se deselecciona un elemento de la parte superior, quitar el check de la opción masiva
-  //   if (!this.isSelectAllProduct) {
-  //     this.isSelectAllProduct = false;
-  //   }
-  // }
-
-
- 
   toggleEveryProduct(product: ProductInventory, i: number): void {
-    const index = this.selectedProduct.findIndex((selected) => selected.id === product.id);
-  
+    const index = this.selectedProduct.findIndex(
+      (selected) => selected.id === product.id
+    );
+
     if (index === -1) {
       // Si el producto no está seleccionado, lo agregamos
       this.selectedProduct.push(product);
@@ -218,21 +177,20 @@ export class InventoryListComponent {
       this.selectedProduct.splice(index, 1);
       this.isSelectedEveryProduct[i] = false;
     }
-  
+
     // Verificamos si todos los productos están seleccionados
     const allSelected = this.products().every((prod) =>
       this.selectedProduct.some((selected) => selected.id === prod.id)
     );
-  
+
     // Actualizamos el estado de selección masiva
     this.isSelectAllProduct = allSelected;
-  
+
     // Si se deselecciona un producto del hijo y el padre está seleccionado, deseleccionar el padre
     if (!this.isSelectedEveryProduct[i] && this.isSelectAllProduct) {
       this.isSelectAllProduct = false;
     }
   }
-  
 
   toggleMenuSearch() {
     this.showMenuSearch = !this.showMenuSearch;
@@ -252,7 +210,6 @@ export class InventoryListComponent {
 
   searchRecord(value: any) {
     this.searchValue.emit(value);
-    // this.searchedData.emit()
   }
 
   onItemChange(event: any) {
@@ -266,41 +223,30 @@ export class InventoryListComponent {
   }
 
   onPageChange(event: any) {
-    this.paginationParams().page = event.page + 1;
-    this.paginationParams().rows = event.rows;
-    this.paginationParams().first = event.first;
+    this.paginationParams.page = event.page;
+    this.paginationParams.rows = event.rows;
+    this.paginationParams.first = event.first;
 
-    this.changedPagination.emit(this.paginationParams());
+    this.changedPagination.emit(event);
   }
 
-  //  collapseContent(index: number, idProduct: number) {
-  //    if (this.selectedIndex === index) {
-  //      this.selectedIndex = -1; // Cierra el acordeón si ya está abierto
+  toggleAccordeon(index: number, idProduct: number) {
+    // this.isOpen[index] = !this.isOpen[index];
+
+    if (!this.productsExtraInfo![index]) {
+      this.emitProduct.emit({ index, idProduct });
+    }
+  }
+
+  // emitProducto(i: number, id: any) {
+  //   if(this.productsExtraInfo[i] !== this.products()[i]) {
+  //     this.productsExtraInfo[i] = this.pro
   //   } else {
-  //     this.selectedIndex = index;
-  //     if(!this.productsExtraInfo![index]) {
-  //      this.emitProduct.emit({index, idProduct});
-    
-  //     } 
+  //     this.emitProduct.emit(id);
+  //     this.statusProductsExtraInfo[i].status = 'loading'
   //   }
-  //  }
-
-  // isCollapsing(index: number): boolean {
-  //   return this.selectedIndex === index;
   // }
-
-  toggleAccordeon(index: number, idProduct: number) { 
-
-    this.isOpen[index] = !this.isOpen[index];
-
-    if( this.isOpen[index] && !this.productsExtraInfo![index]) {
-      this.emitProduct.emit({index, idProduct});
-    } 
-  }
-
 }
-
-
 
 interface EmitDetailProduct {
   idProduct: number;

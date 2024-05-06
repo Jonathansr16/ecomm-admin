@@ -27,14 +27,13 @@
     </div>
   </div>
 
-  <app-inventory-list
+<app-inventory-list
+[statusProducts]="statusData"
   [products]="melyProducts"
-  [statusProducts]="statusData"
-  [paginationParams]="paginationParams"
-  [totalRecords]="totalRecords"
+  [totalRecords]="totalProducts"
+  [statusInfoProducts]="StatusExtraInfo"
   [menuProduct]="menuProduct"
   (changedPagination)="changedPage($event)"
-  
-  >
+  > 
 
-  </app-inventory-list>
+  </app-inventory-list> 

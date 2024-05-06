@@ -1,3 +1,5 @@
+import { MenuItemCommandEvent } from "primeng/api";
+
 export interface dataStat {
 
     icon?: string;
@@ -13,5 +15,8 @@ export interface dataStat {
     style?: {
       [klass: string]: any;
   } | null | undefined;
+
+  command?(event?: Event): void;
+
   
    }

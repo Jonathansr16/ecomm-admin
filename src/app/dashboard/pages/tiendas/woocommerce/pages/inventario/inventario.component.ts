@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { EMPTY, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -112,8 +112,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   paginationParams: PaginationParams = {
     page: 1,
     rows: 10,
-    first: 0,
+    first: 1,
   };
+
+  totalProducts: number= 0;
 
   typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
   statusData: StatusData = {status: 'loading'};
@@ -121,8 +123,6 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   //ARREGLO PARA CACHEAR LA DATA
   private readonly cachedDataRows: { [key: string]: ProductResult[] } = {};
 
-  totalRecords = 0;
-  totalRecords$?: Subscription;
   product: ProductResult | undefined;
   suscriptions$: Subscription[] = [];
   errorMessage!: string;
@@ -146,7 +146,6 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
   private readonly wooService = inject(WooService);
   products: ProductInventory[] = [];
-
   private readonly activedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly confirmService = inject(ConfirmationService);
@@ -158,11 +157,20 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.activedRoute.queryParams.subscribe((params: Params): void => {
-      this.paginationParams.page = +params['page'] ? +params['page'] : 1;
-      this.paginationParams.rows = +params['per_page'] ? params['per_page'] : 10;
+    this.activedRoute.queryParamMap.subscribe((params: ParamMap) => {
 
-      this.getProducts(this.paginationParams.page, this.paginationParams.rows);
+      const page = params.get('page');
+      const per_page = params.get('per_page');
+
+      // Verificar si page es null o undefined antes de convertirlo a un número
+      this.paginationParams.page = page !== null ? +page : 0;
+
+      // Verificar si per_page es null o undefined antes de convertirlo a un número
+      this.paginationParams.rows = per_page !== null ? +per_page : 10;
+
+  
+      this.getProducts();
+
 
     });
 
@@ -180,21 +188,20 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     return this.formRegisterGroup.get(`detailsProduct.${field}`)?.value;
   }
 
-  getProducts(page: number, per_page: number) {
+  getProducts() {
     // Realiza una llamada a la API si no hay datos en caché
     this.statusData.status = 'loading';
     return this.suscriptions$.push(
-      this.wooService.getProducts(page, per_page).subscribe({
+      this.wooService.getProducts(this.paginationParams.page, this.paginationParams.rows).subscribe({
         next: (resp) => {
           this.products = resp.products;
           // this.cachedDataRows[per_page] = resp;
-          this.statusData.status = resp.totalRecords > 0 ? 'success' : 'empty' ;
-          this.totalRecords = resp.totalRecords;
+          this.statusData.status = resp.totalProducts > 0 ? 'success' : 'empty' ;
+          this.totalProducts = resp.totalProducts;
         },
         error: (error: string) => {
           this.errorMessage = error;
           this.statusData.status = 'error';
-          this.totalRecords = 0;
           this.products = [];
           // this.cachedDataRows[page] = []; // Limpia la caché en caso de error
           return EMPTY;
@@ -202,6 +209,7 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       })
     );
   }
+
 
 
   getSearchValue(value: string) {
@@ -223,8 +231,8 @@ export default class InventarioComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data) => {
             this.products = data.products;
-            this.statusData.status = data.totalRecords > 0 ? 'success' : 'empty';
-            this.totalRecords = data.totalRecords;
+            this.statusData.status = data.totalProducts > 0 ? 'success' : 'empty';
+          
             console.log(data)
           },
           error: (err: string) => {
@@ -239,9 +247,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
  
   }
 
-  changePage(event: any) {
+  paginationChanged(event: any) {
 
- 
+    this.paginationParams.page = event.page +1;
+    this.paginationParams.rows = event.rows;
     //Actualizar parámetros de la URL
     this.router.navigate([], {
       relativeTo: this.activedRoute,

@@ -1,6 +1,6 @@
 import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, input, output } from '@angular/core';
 import { dataStat } from 'src/app/core/interface/stats.interface';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
@@ -18,16 +18,19 @@ import { TableModule } from 'primeng/table';
 })
 export class CardStatComponent {
 
-@Input( {required: true}) dataCard: dataStat[] = [];
-@Input() titleSection!: string;
-@Input( {required: true}) klassCard!: string ;
-@Input( {required: true}) klassContainer!: string ;
-@Input() dataTable: any[] = [];
+dataCard = input.required<dataStat[]>();
+titleSection = input.required<string>();
+klassCard = input.required<string>();
+klassContainer = input.required<string>();
 
-@Output() OpenPanel = new EventEmitter<any>();
+// @Input() dataTable: any[] = [];
+emitEvent = output<any>();
 
-openDialog() {
 
+executeCommand(data: dataStat) {
+  if (data.command) {
+    data.command();
+  }
 }
  }
 

@@ -1,11 +1,8 @@
 import {  inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {  Observable, of } from 'rxjs';
-import { catchError, map, } from 'rxjs/operators';
-import {
-  OrderResponse
-
-} from '@woocommerce/interface/woo-order.interface';
+import { catchError, map } from 'rxjs/operators';
+import { OrderResponse } from '@woocommerce/interface/woo-order.interface';
 import {
   ProductCategoryResponse,
   ProductImageResult,
@@ -17,6 +14,7 @@ import { environment } from 'src/environments/environment.development';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import {  Orders } from 'src/app/core/interface/order.interface';
 
+import * as CryptoJS from 'crypto-js';
 
 export class WooService {
 
@@ -78,7 +76,7 @@ export class WooService {
 
 
 
-  getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalRecords: number }> {
+  getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalProducts: number }> {
    
     let params = new HttpParams()
       .append('page', page.toString())
@@ -93,14 +91,18 @@ export class WooService {
             this.totalItems = totalRecords ? +totalRecords : 0; 
             return { 
               products: products ? this.transformDataProduct(products) : [], 
-              totalRecords: this.totalItems 
+              totalProducts: this.totalItems 
             };
 
-          }),
+          }), 
+
+          // tap( (resp) => {
+          //   console.info(resp)
+          // }),
        
           catchError(error => {
             console.error('Error al obtener productos', error);
-            return of({ products: [], totalRecords: 0 }); // Manejar el error devolviendo un objeto vacío
+            return of({ products: [], totalProducts: 0 }); // Manejar el error devolviendo un objeto vacío
           })
         );
     
@@ -120,15 +122,15 @@ export class WooService {
       units: producto.stock_quantity,
       category: producto.categories,
       imagesProduct: producto.images,
-      status: producto.stock_quantity > 0 ? 'active' : 'inactive',
-      isDropdownInformation: false
-
+      status: producto.stock_quantity > 0 || producto.stock_status === 'instock' ? 'active' : 'inactive',
+      isDropdownInformation: false,
+      channel: 'woocommerce'
     }))
   }
 
 
     //* OBTIENE PRODUCTOS RELACIONADOS CON LA BUSQUEDA
-    getProductsBySearch(searchedValue: string, page: number, itemsPerPage: number, typeSearch: 'todo' | 'id' | 'title' | 'sku'): Observable<{ products: ProductInventory[], totalRecords: number }> {
+    getProductsBySearch(searchedValue: string, page: number, itemsPerPage: number, typeSearch: 'todo' | 'id' | 'title' | 'sku'): Observable<{ products: ProductInventory[], totalProducts: number }> {
       const query = `?page=${page}&per_page=${itemsPerPage}`;
       return this.http.get<ProductResponse[]>(`${this.url}/products${query}`, { observe: 'response' }).pipe(
           map((response: HttpResponse<ProductResponse[]>) => {
@@ -153,7 +155,7 @@ export class WooService {
                           return true; // Por defecto, retornar todos los productos
                   }
               }); 
-              return { products: this.transformDataProduct(filteredProducts), totalRecords: filteredProducts.length}
+              return { products: this.transformDataProduct(filteredProducts), totalProducts: filteredProducts.length}
               
           })
       );
@@ -179,7 +181,8 @@ export class WooService {
       imagesProduct: producto.images.map((img: ProductImageResult) => ({
         ...img
       })),
-      isDropdownInformation: false
+      isDropdownInformation: false,
+      channel: 'woocommerce'
     
       
 

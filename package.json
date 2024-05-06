@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "nx serve",
-    "build": "nx build",
-    "watch": "nx build --watch --configuration development",
-    "test": "nx test"
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +23,6 @@
     "@swimlane/ngx-charts": "^20.5.0",
     "animate.css": "^4.1.1",
     "crypto-js": "^4.1.1",
-    "http-proxy-middleware": "^2.0.6",
     "install": "^0.13.0",
     "material-icons": "^1.13.9",
     "npm": "^10.4.0",

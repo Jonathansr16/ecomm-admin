@@ -2,11 +2,9 @@ import {
   HttpRequest,
   HttpEvent,
   HttpHandlerFn,
- 
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-
 
 export function KeyInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 
@@ -16,6 +14,6 @@ export function KeyInterceptor(request: HttpRequest<unknown>, next: HttpHandlerF
       .set('consumer_secret', environment.wcommerce.secret_key)
     })
 
-    return next(reqWithParams)
+    return next(reqWithParams);
 }
 

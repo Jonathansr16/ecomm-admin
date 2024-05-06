@@ -8,6 +8,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
+import { StatusData } from '@components/interfaces/status-data.interface';
+import { CardDropdownProductComponent } from '../card-dropdown-product/card-dropdown-product.component';
 
 @Component({
   selector: 'app-card-product',
@@ -19,29 +21,38 @@ import { SkeletonModule } from 'primeng/skeleton';
     MenuModule,
     ButtonModule,
     InputSwitchModule,
-    SkeletonModule
+    SkeletonModule,
+    CardDropdownProductComponent
+    
   ],
   templateUrl: './card-product.component.html',
   styleUrl: './card-product.component.scss',
 })
-export class CardProductComponent { 
-
+export class CardProductComponent {
   product = input.required<ProductInventory>();
+
+ dropdownInfo = input<ProductInventory>();
+ statusDropdownInfo = input<StatusData>();
+
   menuProduct = input.required<MenuItem[]>();
-  onChangeValue = output<any>();
   isSelected = input<boolean>();
+
+  onChangeValue = output<any>();
+  // emitIdProduct = output<any>();
+
   // @Input() isSelected = false;
 
-  
-// isSelected: boolean = false;
-  
+  // isSelected: boolean = false;
 
-toggleProductSelection(): void {
-  this.onChangeValue.emit(this.product); // Emitir el evento con el nuevo estado
+  toggleProductSelection(): void {
+    this.onChangeValue.emit(this.product); // Emitir el evento con el nuevo estado
+  }
+
+  //   emitId() {
+  //   if (!this.dropdownInfo || this.dropdownInfo()?.id !== this.product().id) {
+  //     this.emitIdProduct.emit(this.product().id);
+  //   }
+  // }
+
+
 }
- 
-
-
-}
-
-

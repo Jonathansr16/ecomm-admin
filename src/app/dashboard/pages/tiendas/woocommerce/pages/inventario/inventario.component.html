@@ -15,6 +15,7 @@
 
       <div class="top-header__col">
         <p-splitButton
+          [style]="{ 'font-size': '14px', 'padding': '0.5em 0.6em'}"
           #btnDropdown
           label="Publicar"
           icon="pi pi-plus"
@@ -31,12 +32,11 @@
 <app-inventory-list 
 [statusProducts]="statusData"
 [products]="products" 
-[totalRecords]="totalRecords"
+[totalRecords]="totalProducts"
 [menuProduct]="menuProduct"
 (changedLabelValue)="changeTypeSearch($event)" 
 (searchValue)="getProductsBySearch($event)"
-[paginationParams]="paginationParams"
-(changePagination)="changePage($event)"
+(changedPagination)="paginationChanged($event)"
 > 
 
 </app-inventory-list>

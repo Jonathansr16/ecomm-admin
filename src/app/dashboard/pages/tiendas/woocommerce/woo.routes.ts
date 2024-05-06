@@ -24,35 +24,35 @@ export const WoocommerceRoute: Routes = [
   {
     path: 'ordenes',
     title: 'Lista de Ordenes',
-    loadComponent: () => import ('@woocommerce/pages/order-list/orders.component'),
-    children: [
-      {
-        path: 'pendientes',
-        title: 'Ordenes Pendientes',
-        loadComponent: () => import('@woocommerce/pages/order-list/pending-orders/pending-orders.component')
-      }, 
+    loadComponent: () => import ('@woocommerce/pages/orders/orders.component'),
+    // children: [
+    //   {
+    //     path: 'pendientes',
+    //     title: 'Ordenes Pendientes',
+    //     loadComponent: () => import('@woocommerce/pages/order-list/pending-orders/pending-orders.component')
+    //   }, 
       
-      {
-        path: 'concretadas',
-        title: 'Ordenes concretadas',
-        loadComponent: () => import('@woocommerce/pages/order-list/completed-orders/completed-orders.component')
-      },
+    //   {
+    //     path: 'concretadas',
+    //     title: 'Ordenes concretadas',
+    //     loadComponent: () => import('@woocommerce/pages/order-list/completed-orders/completed-orders.component')
+    //   },
 
-      {
-        path: 'falladas',
-        title: 'Ordenes falladas',
-        loadComponent: () => import('@woocommerce/pages/order-list/failed-orders/failed-orders.component')
-      },
+    //   {
+    //     path: 'falladas',
+    //     title: 'Ordenes falladas',
+    //     loadComponent: () => import('@woocommerce/pages/order-list/failed-orders/failed-orders.component')
+    //   },
 
-      {
-        path: '',
-        redirectTo: 'pendientes',
-        pathMatch: 'full'
-      },
+    //   {
+    //     path: '',
+    //     redirectTo: 'pendientes',
+    //     pathMatch: 'full'
+    //   },
       
     
 
-    ],
+    // ],
 
 
   },

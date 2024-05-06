@@ -1,20 +1,29 @@
 <div class="order unstyledContainer">
   <div class="order__container">
     <div class="order__toolbar sticky top-0 z-[3] mb-8">
-   
-      <div [style]="{ 'background-color': 'var(--surface-card)' }"
-        class="order__toolbar-row container p-3 flex items-center justify-between flex-wrap gap-2 mt-8">
+      <div
+        [style]="{ 'background-color': 'var(--surface-card)' }"
+        class="order__toolbar-row container p-3 flex items-center justify-between flex-wrap gap-2 mt-8"
+      >
         <div class="order__toolbar-col flex item-center gap-2">
-          <p-checkbox  [binary]="true" inputId="binary"
-            [(ngModel)]="isSelectAllOrder" (onChange)="toggleSelectAllOrders()">
+          <p-checkbox
+            [binary]="true"
+            inputId="binary"
+            [(ngModel)]="isSelectAllOrder"
+            (onChange)="toggleSelectAllOrders()"
+          >
           </p-checkbox>
 
-          <div class="inventory__toolbar-separator ml-2 w-[1px] items-stretch block bg-slate-300"></div>
+          <div
+            class="inventory__toolbar-separator ml-2 w-[1px] items-stretch block bg-slate-300"
+          ></div>
 
           <div class="w-32">
             @if (selectedOrder.length) {
 
-            <p class="inventory__toolbar-selection-label text-sm text-slate-600">
+            <p
+              class="inventory__toolbar-selection-label text-sm text-slate-600"
+            >
               {{ selectedOrder.length }} seleccionados
             </p>
 
@@ -24,30 +33,57 @@
 
         <div class="order__toolbar-col flex item-center gap-2">
           <!-- search -->
-          <div [class.order__search-show]="hidenSearch"
-            class="order__search flex items-center justify-end gap-1 relative">
+          <div
+            [class.order__search-show]="hidenSearch"
+            class="order__search flex items-center justify-end gap-1 relative"
+          >
             <div #menu></div>
 
-            <button (click)="showSearch()" severity="success" type="button"
-              class="order__search-btn-toggle p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text">
-              <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+            <button
+              (click)="showSearch()"
+              severity="success"
+              type="button"
+              class="order__search-btn-toggle p-ripple p-element p-button p-component p-button-icon-only p-button-rounded p-button-text"
+            >
+              <span
+                class="p-button-icon pi pi-search"
+                aria-hidden="true"
+              ></span>
             </button>
 
-            <div class="order__search-wrapper relative flex items-center flex-row flex-nowrap gap-1">
-              <span class="order__search-span w-[280px] flex items-center justify-end">
-                <button (click)="toggleMenuSearch()" (click)="menuOrder.toggle($event)"
-                  class="menuSearchType__btn flex items-center gap-1 text-sm text-slate-500 p-ripple p-element p-button p-component p-button-text p-button-plain">
+            <div
+              class="order__search-wrapper relative flex items-center flex-row flex-nowrap gap-1"
+            >
+              <span
+                class="order__search-span w-[280px] flex items-center justify-end"
+              >
+                <button
+                  (click)="toggleMenuSearch()"
+                  (click)="menuOrder.toggle($event)"
+                  class="menuSearchType__btn flex items-center gap-1 text-sm text-slate-500 p-ripple p-element p-button p-component p-button-text p-button-plain"
+                >
                   {{ changeLabelBtn }}
                   <i class="pi pi-angle-down"></i>
                 </button>
 
-                <input #searchProduct name="inputSearch" [(ngModel)]="inputValue" (input)="onInputChange()"
-                  (keyup.enter)="searchRecord(searchProduct.value)" type="text" [placeholder]="changePlaceHolder"
-                  pinputtext="" [style]="{ 'font-size': '14px' }"
-                  class="order__search-input p-inputtext p-component p-element border-none w-full" />
+                <input
+                  #searchProduct
+                  name="inputSearch"
+                  [(ngModel)]="inputValue"
+                  (input)="onInputChange()"
+                  (keyup.enter)="searchRecord(searchProduct.value)"
+                  type="text"
+                  [placeholder]="changePlaceHolder"
+                  pinputtext=""
+                  [style]="{ 'font-size': '14px' }"
+                  class="order__search-input p-inputtext p-component p-element border-none w-full"
+                />
 
                 @if (!showIcon) {
-                <i class="order__search-i pi pi-search cursor-pointer" (click)="hiddenSearch()">
+                <i
+                  class="order__search-i pi pi-search cursor-pointer"
+                  (click)="hiddenSearch()"
+                >
                 </i>
                 } @else {
                 <i class="order__search-i pi pi-times" (click)="clearInput()">
@@ -55,87 +91,116 @@
                 }
               </span>
 
-              <p-menu #menuOrder [model]="menuToolbar()" [popup]="true" [appendTo]="menu" id="menuToolbar"
-                [style]="{ 'font-size': '14px' }"></p-menu>
+              <p-menu
+                #menuOrder
+                [model]="menuToolbar()"
+                [popup]="true"
+                [appendTo]="menu"
+                id="menuToolbar"
+                [style]="{ 'font-size': '14px' }"
+              ></p-menu>
             </div>
           </div>
         </div>
       </div>
-      
     </div>
 
+    @switch (statusData().status ) { @case('success') { @for (order of
+    dataOrders(); track order.id; let i = $index) {
 
-
-    @switch (statusData().status ) {
-
-      @case('success') {
-        @for (order of dataOrders(); track order.id; let i = $index) {
-
-          <app-card-order
-          [order]="order"
-          [menuOrder]="orderOption()"
-          [isSelectedOrder]="isSelectedEveryOrder[i]"
-          (onChangeValue)="toggleEveryOrder($event, i)"
-          >
-          </app-card-order>
-        }
-    
-        <div class="inventory__pagination my-8 container">
-          <p-paginator [style]="{ 'font-size': '14px' }" [first]="paginationParams().first" [rows]="paginationParams().rows"
-            [totalRecords]="10" [rowsPerPageOptions]="perPageOptions">
-          </p-paginator>
-        </div>
-      }
-
-      @case('loading') {
-        <div class="loader fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10">
-          <div class="loader__mask absolute top-0 left-0 w-full h-screen z-[10]"></div>
-          <div class="loader__spiner w-20 h-4 relative z-[11]"></div>
-        </div>
-        <div class="container mt-4">
-          @for (_ of [1, 2, 3, 4, 5]; track _) {
-          <div
-            class="skeleton__card flex flex-col lg:flex-row gap-1 flex-wrap items-center justify-between p-6 bg-white mt-10">
-            <div class="skeleton__col skeleton__col-product flex mb-3">
-              <p-skeleton size="4rem" styleClass="mr-2"></p-skeleton>
-              <div>
-                <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
-                <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
-                <p-skeleton width="5rem"></p-skeleton>
-              </div>
-            </div>
-            <div class="skeleton__col skeleton__col-details flex mb-3">
-              <p-skeleton width="30rem" height="6rem" styleClass="mr-2"></p-skeleton>
-            </div>
-          </div>
-          }
-        </div>
-      }
-
-      @case('error') {
-        <div [style]="{ 'background-color': 'var(--surface-card)' }"
-        class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2"> 
-
-        <img src="assets/img/svg/error-2.svg" alt="Error" class="max-w-60 max-h-60 w-full h-full block">
-
-        <h2 class="order-card__empty text-xl text-balance font-semibold text-slate-700">Error</h2>
-        <p class="order-card__empty text-sm text-slate-500 mb-4">Se produjo en la consulta</p>
-      </div>
-      }
-
-      @case('empty') {
-    
-        <div 
-        class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2 bg-gray-200"> 
-
-        <img src="assets/img/empty.png" alt="empty items" class="order-card__empty-img max-w-44 max-h-44 w-full h-full block mix-blend-multiply">
-
-        <h2 class="order-card__empty text-xl text-balance font-semibold text-slate-700 rounded">Sin registros</h2>
-        <p class="order-card__empty text-sm text-slate-700 mb-4">No tienes ordenes que coincidan con los parametros de consulta</p>
-      </div>
-      }
+    <app-card-order
+      [order]="order"
+      [menuOrder]="orderOption()"
+      [isSelectedOrder]="isSelectedEveryOrder[i]"
+      (onChangeValue)="toggleEveryOrder($event, i)"
+      (emitId)="emitId.emit($event)"
+    >
+    </app-card-order>
     }
 
+    <div class="inventory__pagination my-8 container">
+      <p-paginator
+        [style]="{ 'font-size': '14px' }"
+        [first]="paginationParams.first"
+        [rows]="paginationParams.rows"
+        [totalRecords]="totalOrders()"
+        (onPageChange)="onPageChange($event)"
+        [rowsPerPageOptions]="perPageOptions"
+      >
+      </p-paginator>
+    </div>
+    } @case('loading') {
+    <div
+      class="loader fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10"
+    >
+      <div
+        class="loader__mask absolute top-0 left-0 w-full h-screen z-[10]"
+      ></div>
+      <div class="loader__spiner w-20 h-4 relative z-[11]"></div>
+    </div>
+    <div class="container mt-4">
+      @for (_ of [1, 2, 3, 4, 5]; track _) {
+      <div
+        class="skeleton__card flex flex-col lg:flex-row gap-1 flex-wrap items-center justify-between p-6 bg-white mt-10"
+      >
+        <div class="skeleton__col skeleton__col-product flex mb-3">
+          <p-skeleton size="4rem" styleClass="mr-2"></p-skeleton>
+          <div>
+            <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="5rem"></p-skeleton>
+          </div>
+        </div>
+        <div class="skeleton__col skeleton__col-details flex mb-3">
+          <p-skeleton
+            width="30rem"
+            height="6rem"
+            styleClass="mr-2"
+          ></p-skeleton>
+        </div>
+      </div>
+      }
+    </div>
+    } @case('error') {
+    <div
+      [style]="{ 'background-color': 'var(--surface-card)' }"
+      class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2"
+    >
+      <img
+        src="assets/img/svg/error-2.svg"
+        alt="Error"
+        class="max-w-60 max-h-60 w-full h-full block"
+      />
 
+      <h2
+        class="order-card__empty text-xl text-balance font-semibold text-slate-700"
+      >
+        Error
+      </h2>
+      <p class="order-card__empty text-sm text-slate-500 mb-4">
+        Se produjo en la consulta
+      </p>
+    </div>
+    } @case('empty') {
+
+    <div
+      class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2 bg-gray-200"
+    >
+      <img
+        src="assets/img/empty.png"
+        alt="empty items"
+        class="order-card__empty-img max-w-44 max-h-44 w-full h-full block mix-blend-multiply"
+      />
+
+      <h2
+        class="order-card__empty text-xl text-balance font-semibold text-slate-700 rounded"
+      >
+        Sin registros
+      </h2>
+      <p class="order-card__empty text-sm text-slate-700 mb-4">
+        No tienes ordenes que coincidan con los parametros de consulta
+      </p>
+    </div>
+    } }
   </div>
 </div>

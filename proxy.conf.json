@@ -1,0 +1,29 @@
+{
+  "/sites/*": {
+    "target": "https://api.mercadolibre.com",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+
+  "/users/*": {
+    "target": "https://api.mercadolibre.com",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+
+  "/items/*": {
+    "target": "https://api.mercadolibre.com",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+
+  "/orders/*": {
+    "target": "https://api.mercadolibre.com",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

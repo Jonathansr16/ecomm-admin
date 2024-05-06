@@ -12,6 +12,7 @@ import { InventoryListComponent } from '@components/inventory-list/inventory-lis
 import { PaginationParams } from '@components/interfaces/pagination-params.interface';
 import { ProductInventory } from '@components/interfaces/product.interface';
 import { StatusData } from '@components/interfaces/status-data.interface';
+import { StatusInfoData } from '@components/interfaces/status-data-info.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -62,6 +63,8 @@ export default class InventarioComponent {
     first: 0,
   };
 
+  totalProducts: number = 0;
+
   MenuProduct: MenuItem[] = [
 
     {
@@ -93,52 +96,13 @@ export default class InventarioComponent {
   private activedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private readonly claroService = inject(ClaroService);
+  statusInfoProducts?: StatusInfoData;
   products: ProductInventory[] = [];
-  // products: ProductInventory[] = [
 
-  //   {
-  //     id: 2345,
-  //     title: 'Memoria 1tb con adaptador Android e IOS',
-  //     sku: 'djk20',
-  //     store: 'claroshop',
-  //     sale_price: 233,
-  //     status: 'active',
-  //     isDropdownInformation: true
-  //   },
+ 
 
-  //   {
-  //     id: 2915,
-  //     title: 'Ecualizador LED',
-  //     sku: 'eku-var',
-  //     store: 'claroshop',
-  //     sale_price: 1034,
-  //     status: 'active',
-  //     isDropdownInformation: true
-  //   },
-
-
-  //   {
-  //     id: 3541,
-  //     title: 'Paper mario en caja nuevo',
-  //     sku: 'pm-n64',
-  //     store: 'claroshop',
-  //     sale_price: 1034,
-  //     status: 'active',
-  //     isDropdownInformation: true
-  //   },
-
-    
-  //   {
-  //     id: 3240,
-  //     title: 'Zelda ocarina of time',
-  //     sku: 'zelda-n64',
-  //     store: 'claroshop',
-  //     sale_price: 1034,
-  //     status: 'active',
-  //     isDropdownInformation: true
-  //   }
-
-  // ];
+  // productDetails?: ProductInventory;
+  // statusProductDetails: StatusData = {status: 'loading'};
   productsDetail: ProductInventory[] = [];
   statusProductsDetail: StatusData[] = [];
 
@@ -148,26 +112,30 @@ export default class InventarioComponent {
     this.activedRoute.queryParams.subscribe((params: Params): void => {
       this.paginationParams.page = +params['page'] ? +params['page'] : 1;
 
-       this.getProducts(this.paginationParams.page, this.paginationParams.rows);
+       this.getProducts(this.paginationParams.page);
     })
 
   }
 
-  getProducts(page: number, per_page: number) {
+  getProducts(page: number) {
     this.statusProducts.status = 'loading';
 
     this.suscriptions$.push(
-      this.claroService.getProducts(page, per_page).subscribe({
+      this.claroService.getProducts(page).subscribe({
         next: (resp) => {
-          this.products = resp;
-          this.totalRecords = resp.length;
+          this.products = resp.products;
           this.paginationParams.page
           this.statusProducts.status = 'success';
+          this.totalProducts= resp.totalItems
         },
         error: (msgErorr) => {
-          console.log(msgErorr);
+          this.statusInfoProducts! = {
+            titleError: msgErorr.error.errors[0],
+            summaryError: msgErorr.error.message
+          };
+
           this.statusProducts.status = 'error';
-          this.totalRecords = 0;
+          this.totalProducts = 0;
           return EMPTY;
 
         },
@@ -175,8 +143,10 @@ export default class InventarioComponent {
     );
   }
 
+  
+
   getProduct(product: DetailProductInterface) {
-   
+ console.log(product)
     this.statusProductsDetail[product.index] = { status: 'loading' };
     const existingProduct = !this.productsDetail[product.index] || this.productsDetail[product.index].id !== product.idProduct ? true : false;
     if(existingProduct) {
@@ -191,17 +161,10 @@ export default class InventarioComponent {
         error: (err) => {
           this.statusProductsDetail[product.index] = { status: 'error' };
   
-          //  this.statusProductDetail= 'error';
   
         }
       })
-    
     }
-  
-
-
-
-
   }
 
   changeTypeSearch(value: 'todo' | 'id' | 'title' | 'sku') {
@@ -215,7 +178,6 @@ export default class InventarioComponent {
       relativeTo: this.activedRoute,
       queryParams: {
         page: this.paginationParams.page,
-        productosporpagina: this.paginationParams.rows,
       },
       queryParamsHandling: 'merge',
 
