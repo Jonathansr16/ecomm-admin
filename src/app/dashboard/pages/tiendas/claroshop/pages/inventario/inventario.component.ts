@@ -9,10 +9,10 @@ import { EMPTY, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
-import { ProductInventory } from '@components/interfaces/product.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
-import { StatusInfoData } from '@components/interfaces/status-data-info.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
+import { StatusInfoData } from 'src/app/core/interface/status-data-info.interface';
 
 @Component({
   selector: 'app-inventario',

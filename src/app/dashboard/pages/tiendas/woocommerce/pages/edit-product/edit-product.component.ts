@@ -32,11 +32,11 @@ import { ExpansionPanelComponent } from '@components/expansion-panel/expansion-p
     SkeletonModule,
     InputNumberModule
   ],
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss'],
+  templateUrl: './edit-product.component.html',
+  styleUrls: ['./edit-product.component.scss'],
   providers: [MessageService]
 })
-export default class ProductComponent {
+export default class EditProductComponent {
   // @ts-ignore
   formProduct: FormGroup;
   activeAccordeon: number = -1;
@@ -128,6 +128,7 @@ export default class ProductComponent {
       };
 
       this.loading = false;
+      console.log(data)
       this.formProduct.patchValue({ ...data });
     })
   }

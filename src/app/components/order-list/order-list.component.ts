@@ -7,8 +7,8 @@ import {
   input,
   output,
 } from '@angular/core';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardOrderComponent } from '@components/order-list/card-order/card-order.component';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -16,7 +16,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
-import { Orders } from 'src/app/core/interface/order.interface';
+import { Orders } from 'src/app/core/interface/orders.interface';
 
 @Component({
   selector: 'app-order-list',

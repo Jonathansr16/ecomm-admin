@@ -55,27 +55,31 @@
 
         <div class="notf-header flex items-center justify-start mb-4 px-4 py-4 gap-1">
           <i class="notf-header__i material-icons">notifications_active</i>
-          <h3 class="notf-header__h3 text-lg">Notificaciones nuevas</h3>
+          <h3 class="notf-header__h3 text-lg font-semibold">Notificaciones nuevas</h3>
         </div>
         <p-divider></p-divider>
 
         <ul class="notf__ul">
-          <li class="notf__li px-4 py-4 rounded-lg mb-3 flex items-center justify-between">
+          <li class="notf__li px-4 py-4 rounded-lg mb-3 flex items-center flex-col justify-between shadow shadow-indigo-500/20 bg-white rounded-m">
             <div class="notf__info">
               <h6 class="notf__h6 text-base font-semibold mb-3">
                 <i class="notf__i pi pi-check-circle"></i>
                 Se ha realizado una venta
               </h6>
 
-              <p class="notf__p leading-3 mb-2">
+              <p class="notf__p  mb-2">
                 Se vendio (x2) <strong class="notf__strong">Juego</strong>,
                 Zelda Majora mask, en Mercado Libre, atiendalo ahora.
               </p>
 
-              <span class="notf__p notf__span block font-semibold text-sm text-right"> 9:00 AM </span>
+            </div>
+            <div class="notf__foooter flex items-center justify-between gap-4 w-full">
 
-              <p-button class="notf__btn" icon="pi pi-thumbs-up"
-              styleClass="p-button-rounded p-button-info"></p-button>
+            
+
+              <p-button [style]="{ 'width': '2.5rem', 'height': '2.5rem'}" class="notf__btn" [rounded]="true" severity="help" icon="pi pi-thumbs-up">
+            </p-button>
+              <span class="notf__p notf__span block font-semibold text-sm text-right"> 9:00 AM </span>
             </div>
           </li>
         </ul>

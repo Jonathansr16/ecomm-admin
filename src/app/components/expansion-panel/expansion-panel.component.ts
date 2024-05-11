@@ -10,11 +10,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   Input,
-  Renderer2,
-  ViewChild,
-  ElementRef,
   input,
-  inject,
   EventEmitter,
   Output,
 } from '@angular/core';

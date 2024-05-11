@@ -1,61 +1,61 @@
-export interface OrdersResponse {
+export interface MelyOrders {
     query:           string;
-    results:         Result[];
-    sort:            Sort;
-    available_sorts: Sort[];
+    results:         MelyResult[];
+    sort:            MelySort;
+    available_sorts: MelySort[];
     filters:         any[];
-    paging:          Paging;
+    paging:          MelyPaging;
     display:         string;
 }
 
-export interface Sort {
+export interface MelySort {
     id:   string;
     name: string;
 }
 
-export interface Paging {
+export interface MelyPaging {
     total:  number;
     offset: number;
     limit:  number;
 }
 
-export interface Result {
-    payments:                  Payment[];
+export interface MelyResult {
+    payments:                  MelyPayment[];
     fulfilled:                 null;
-    taxes:                     Taxes;
-    order_request:             OrderRequest;
+    taxes:                     MelyTaxes;
+    order_request:             MelyOrderRequest;
     expiration_date:           Date;
-    feedback:                  Feedback;
-    shipping:                  Shipping;
+    feedback:                  MelyFeedback;
+    shipping:                  MelyShipping;
     date_closed:               Date;
     id:                        number;
     manufacturing_ending_date: null;
-    order_items:               OrderItem[];
+    order_items:               MelyOrderItem[];
     date_last_updated:         Date;
     last_updated:              Date;
     comment:                   null;
     pack_id:                   number | null;
-    coupon:                    Coupon;
+    coupon:                    MelyCoupon;
     shipping_cost:             null;
     date_created:              Date;
     pickup_id:                 null;
     status_detail:             null;
     tags:                      string[];
-    buyer:                     Buyer;
-    seller:                    Buyer;
+    buyer:                     MelyBuyer;
+    seller:                    MelyBuyer;
     total_amount:              number;
     paid_amount:               number;
     currency_id:               string;
     status:                    string;
-    context:                   Context;
+    context:                   MelyContext;
 }
 
-export interface Buyer {
+export interface MelyBuyer {
     id:       number;
     nickname: string;
 }
 
-export interface Context {
+export interface MelyContext {
     application: null;
     product_id:  null;
     channel:     string;
@@ -63,25 +63,25 @@ export interface Context {
     flows:       string[];
 }
 
-export interface Coupon {
+export interface MelyCoupon {
     amount: number;
     id:     null;
 }
 
-export interface Feedback {
+export interface MelyFeedback {
     buyer:  null;
     seller: null;
 }
 
-export interface OrderItem {
-    item:               Item;
+export interface MelyOrderItem {
+    item:               MelyItem;
     quantity:           number;
     unit_price:         number;
     full_unit_price:    number;
     currency_id:        string;
     manufacturing_days: null;
     picked_quantity:    null;
-    requested_quantity: RequestedQuantity;
+    requested_quantity: MelyRequestedQuantity;
     sale_fee:           number;
     listing_type_id:    string;
     base_exchange_rate: null;
@@ -90,7 +90,7 @@ export interface OrderItem {
     element_id:         number;
 }
 
-export interface Item {
+export interface MelyItem {
     id:                   string;
     title:                string;
     category_id:          string;
@@ -104,17 +104,17 @@ export interface Item {
     seller_sku:           string;
 }
 
-export interface RequestedQuantity {
+export interface MelyRequestedQuantity {
     measure: string;
     value:   number;
 }
 
-export interface OrderRequest {
+export interface MelyOrderRequest {
     change: null;
     return: null;
 }
 
-export interface Payment {
+export interface MelyPayment {
     reason:                      string;
     status_code:                 null;
     total_paid_amount:           number;
@@ -122,7 +122,7 @@ export interface Payment {
     transaction_amount:          number;
     transaction_amount_refunded: number;
     date_approved:               Date;
-    collector:                   Shipping;
+    collector:                   MelyShipping;
     coupon_id:                   null;
     installments:                number;
     authorization_code:          null;
@@ -142,7 +142,7 @@ export interface Payment {
     payment_method_id:           string;
     payment_type:                string;
     deferred_period:             null;
-    atm_transfer_reference:      ATMTransferReference;
+    atm_transfer_reference:      MelyATMTransferReference;
     site_id:                     string;
     payer_id:                    number;
     order_id:                    number;
@@ -151,16 +151,16 @@ export interface Payment {
     transaction_order_id:        null;
 }
 
-export interface ATMTransferReference {
+export interface MelyATMTransferReference {
     transaction_id: null | string;
     company_id:     null;
 }
 
-export interface Shipping {
+export interface MelyShipping {
     id: number;
 }
 
-export interface Taxes {
+export interface MelyTaxes {
     amount:      null;
     currency_id: null;
     id:          null;

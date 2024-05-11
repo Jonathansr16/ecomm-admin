@@ -228,7 +228,16 @@
                             </div>
     
                             <p class="text-sm py-2">Asegúrate de no enviar este paquete. La persona que compró canceló.</p>
-                            }
+                        } @else {
+                            <div class="flex flex-row flex-nowrap items-center justify-center gap-2 rounded-sm bg-amber-100 text-amber-700 px-3 py-[6px] max-w-48 w-full">
+                                <span class="text-xs font-semibold text-center">
+                                    En resolución
+                                </span>
+                                <i class="card-order__i pi pi-exclamation-triangle"></i>
+                            </div>
+    
+                            <p class="text-sm py-2">En proceso de resolución con el cliente.</p>
+                        }
                 </div>
                 <div class="card-order__col">
                     

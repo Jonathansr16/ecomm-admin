@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { ProductInventory } from '@components/interfaces/product.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { ButtonModule } from 'primeng/button';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SkeletonModule } from 'primeng/skeleton';

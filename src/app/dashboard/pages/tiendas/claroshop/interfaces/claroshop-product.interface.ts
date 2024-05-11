@@ -1,9 +1,9 @@
-import { ProductResponse } from "./claroshop-products.interface";
+import { ClaroshopProduct } from "./claroshop-products-options.interface";
 
-export interface ProductSearchResponse {
+export interface ClaroshopProductSearch {
     estatus:        string;
     mensaje:        string;
-    producto:       ProductSearch;
+    producto:       ClaroshopProductSearch;
     versionConfig:  string;
     versionAPP:     string;
     tagManagerID:   string;
@@ -11,7 +11,7 @@ export interface ProductSearchResponse {
     visibleMenuCV:  boolean;
 }
 
-export interface ProductSearch {
+export interface ClaroshopProductSearch {
     transactionid:            number;
     nombre:                   string;
     descripcion:              string;
@@ -31,20 +31,20 @@ export interface ProductSearch {
     videos:                   string;
     tienda:                   string;
     tag:                      string;
-    categorias:               Categorias;
+    categorias:               ClaroshopCategorias;
     filtro:                   any[];
-    fotos:                    Foto[];
+    fotos:                    ClaroshopFoto[];
     atributos:                null;
     fulfillment:              boolean;
     garantia:                 string;
 }
 
-export interface Categorias {
+export interface ClaroshopCategorias {
     idcategoria: number;
     categoria:   string;
 }
 
-export interface Foto {
+export interface ClaroshopFoto {
     idfoto:  number;
     url:     string;
     orden:   number;
@@ -52,10 +52,10 @@ export interface Foto {
 }
 
 
-export interface ProductSearchResult {
+export interface ClaroshopProductSearchResult {
     estatus:        string;
     mensaje:        string;
-    productos:       ProductResponse[]
+    productos:       ClaroshopProduct[]
     versionConfig:  string;
     versionAPP:     string;
     tagManagerID:   string;

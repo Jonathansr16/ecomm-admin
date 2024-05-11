@@ -7,7 +7,7 @@ import { WooService } from '@woocommerce/services/woo.service';
 import {  MessageService } from 'primeng/api';
 
 import { ValidatorsService } from 'src/app/core/services/validators.service';
-import { ProductCategoryResponse } from '@woocommerce/interface/woo-producto.interface';
+import { WooProductCategory } from '@woocommerce/interface/woo-producto.interface';
 import { ToastModule } from 'primeng/toast';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TooltipModule } from 'primeng/tooltip';
@@ -35,7 +35,7 @@ export default class WcNewProductComponent  {
   images: any[] = [];
   imagesBack: FormData = new FormData();
   // activeAccordeon: number = 0;
-  arrayCategories: ProductCategoryResponse[] = [];
+  arrayCategories: WooProductCategory[] = [];
   completed: number = 0;
   numFieldValid: number = 0;
 

@@ -10,9 +10,9 @@ import { TabViewModule } from 'primeng/tabview';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
 import { OrderListComponent } from '@components/order-list/order-list.component';
-import { StatusData } from '@components/interfaces/status-data.interface';
-import { Orders } from 'src/app/core/interface/order.interface';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
+import { Orders } from 'src/app/core/interface/orders.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
 
 @Component({
   selector: 'app-orders',

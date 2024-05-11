@@ -124,6 +124,9 @@
         </div>
       </div>
 
+      @if(!isOpen && product().store === 'mely') {
+        hola desde meluy
+      }
       } @else { 
         
         @switch (dropdownStatus().status) {

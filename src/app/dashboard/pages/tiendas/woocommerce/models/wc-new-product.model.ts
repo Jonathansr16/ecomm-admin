@@ -1,8 +1,8 @@
-import { ProductCategoryResponse, ProductImageResponse, ProductImageResult, ProductResult } from "../interface/woo-producto.interface";
+import { WooProductCategory, WooProductImage, WooProductResult } from "../interface/woo-producto.interface";
 
 export class WooProducto {
 
-  static newProductFromJSON(obj : ProductResult) {
+  static newProductFromJSON(obj : WooProductResult) {
     return new WooProducto
   }
 
@@ -17,10 +17,10 @@ export class WooProducto {
   sku               = "";
   status?            = "";
   total_sales?:          number;
-  categories:           ProductCategoryResponse[] = [];
+  categories:           WooProductCategory[] = [];
   stock_quantity:       number = 1;
   stock_status? = "";
-  images?:                ProductImageResult[] = [];
+  images?:                WooProductImage[] = [];
 
   constructor() {
     

@@ -1,4 +1,4 @@
-export interface ProductsByUserResponse{
+export interface MelyProductByUserID {
     seller_id:        string;
     results:          string[];
     paging:           Paging;

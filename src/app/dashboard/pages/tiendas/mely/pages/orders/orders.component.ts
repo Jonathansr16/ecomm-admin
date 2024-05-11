@@ -3,14 +3,18 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { CardStatComponent } from '@components/card-stat/card-stat.component';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { OrderListComponent } from '@components/order-list/order-list.component';
 import { MelyService } from '@mely/mely.service';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
-import { Orders } from 'src/app/core/interface/order.interface';
+import { Orders } from 'src/app/core/interface/orders.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
+import { ButtonModule } from 'primeng/button';
+import { AUTO_STYLE, animate, state, style, transition, trigger } from '@angular/animations';
+
+const DEFAULT_DURATION = 0.35;
 
 @Component({
   selector: 'app-order',
@@ -20,12 +24,31 @@ import { dataStat } from 'src/app/core/interface/stats.interface';
     CardStatComponent,
     BreadcrumbComponent,
     RouterLink,
-    OrderListComponent
+    OrderListComponent,
+    CardStatComponent,
+    ButtonModule
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
+  animations: [
+    trigger('isActivo', [
+      state(
+        'true',
+        style({ height: AUTO_STYLE, visibility: 'visible', opacity: 1 })
+      ),
+      state(
+        'false',
+        style({ height: '0px', visibility: 'hidden', opacity: 0 })
+      ),
+      transition('false => true', animate(DEFAULT_DURATION + 's ease')),
+      transition('true => false', animate(DEFAULT_DURATION + 's ease')),
+    ]),
+  ],
 })
 export default class OrderComponent { 
+
+  productId = '';
+
   breadcrumbHome: BreadcrumbItem = {
     icon: 'list_alt',
     label: 'Inventario',
@@ -82,7 +105,13 @@ export default class OrderComponent {
       label: 'Opciones:',
       items: [
         {
-          label: 'Ver detalle'
+          id: this.productId,
+          label: 'Ver detalles',
+          command: (c) => {
+            this.router.navigate([
+              '/dashboard/mely/ordenes/order-details', this.productId
+            ])
+          }
         }, 
 
         {
@@ -96,9 +125,28 @@ export default class OrderComponent {
     }
   ];
 
-  melyService = inject(MelyService);
-  activatedRoute = inject(ActivatedRoute);
+  dataMelyOptions: dataStat[] = [
+    {
+      label: 'Ordenes pendientes',
+      quantity: 20,
+    },
+
+    {
+      label: 'En proceso de entrega',
+      quantity: 30
+    }, 
+
+    {
+      label: 'Concretadas',
+      quantity: 65
+    }
+  ];
+
+  isActive = false;
+
   router = inject(Router);
+  activatedRoute = inject(ActivatedRoute);
+  melyService = inject(MelyService);
 
   melyOrders: Orders[] = [];
   statusOrders: StatusData = {status: 'loading'};
@@ -110,6 +158,7 @@ export default class OrderComponent {
 
   totalOrders: number = 0;
   sort: string = "date_desc";
+
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -158,6 +207,24 @@ changedPage(event: any) {
 
       queryParamsHandling: 'merge',
     });
+  }
+
+  // handlerWrapper() {
+  //   this.handlerOrders = !this.handlerOrders;
+  //   const wrapper= this.actionsWrapper()?.nativeElement;
+
+  //   if(!this.handlerOrders && wrapper.classList.contains('show-wrapper')) {
+  //     this.renderer2.removeClass(wrapper, 'show-wrapper');
+  //     this.renderer2.setStyle(wrapper, 'height', `0px`)
+  //   } else {
+  //     this.renderer2.addClass(wrapper, 'show-wrapper');
+  //     this.renderer2.setStyle(wrapper, 'height', `${wrapper.scrollHeight}px`);
+
+  //   }
+  // }
+
+  getProductId(value: any) {
+this.productId = value;
   }
 
 }

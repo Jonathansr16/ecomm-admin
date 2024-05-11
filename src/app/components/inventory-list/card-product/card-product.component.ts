@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProductInventory } from '@components/interfaces/product.interface';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardDropdownProductComponent } from '../card-dropdown-product/card-dropdown-product.component';
 
 @Component({

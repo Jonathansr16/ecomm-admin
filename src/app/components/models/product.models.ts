@@ -1,4 +1,4 @@
-import { ProductInventory } from "@components/interfaces/product.interface";
+import { ProductInventory } from "src/app/core/interface/product.interface";
 
 export class Product {
 

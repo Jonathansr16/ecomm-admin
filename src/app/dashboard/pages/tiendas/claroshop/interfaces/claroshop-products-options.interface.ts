@@ -1,7 +1,7 @@
-export interface ProductsOptionResponse { 
+export interface ClaroshopProductsOption { 
     estatus:            string;
     mensaje:            string;
-    productos:          ProductResponse[];
+    productos:          ClaroshopProduct[];
     totalproductos:     number;
     totalpaginas:       number;
     paginaactual:       number;
@@ -14,7 +14,7 @@ export interface ProductsOptionResponse {
 }
 
 
-export interface ProductResponse {
+export interface ClaroshopProduct {
     transactionid: number;
     nombre:        string;
     precio:        number;
@@ -25,7 +25,7 @@ export interface ProductResponse {
     fulfillment:   boolean;
 }
 
-export enum EstatusResponse {
+export enum claroshopEstatus {
     Activo = "activo",
     Inactivo = "inactivo",
 }

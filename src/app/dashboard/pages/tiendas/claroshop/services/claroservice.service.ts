@@ -2,13 +2,13 @@ import { map } from 'rxjs/operators';
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {
-  ProductResponse,
-  ProductsOptionResponse,
-} from '@claroshop/interfaces/claroshop-products.interface';
-import { ProductInventory } from '@components/interfaces/product.interface';
-import { Orders } from 'src/app/core/interface/order.interface';
-import { ProductSearchResponse } from '@claroshop/interfaces/claroshop-product.interface';
+
+import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { Orders, ProductOrder } from 'src/app/core/interface/orders.interface';
+import { ClaroshopProductSearch } from '@claroshop/interfaces/claroshop-product.interface';
+import { ClaroshopProduct, ClaroshopProductsOption } from '@claroshop/interfaces/claroshop-products-options.interface';
+import { ClaroshopOrderByID } from '@claroshop/interfaces/claroshop-order-by-Id.interface';
+import { OrderDetails } from 'src/app/core/interface/order-details.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class ClaroService {
       .append('page', page.toString())
 
     return this.http
-      .get<ProductsOptionResponse>('producto', { params })
+      .get<ClaroshopProductsOption>('producto', { params })
       .pipe(map((resp) => {
      return {
        products: this.transformDataProducts(resp),
@@ -41,7 +41,7 @@ export class ClaroService {
     let params = new HttpParams().append('page', page.toString());
 
     return this.http
-      .get<ProductsOptionResponse>(`producto`, { params })
+      .get<ClaroshopProductsOption>(`producto`, { params })
 
       .pipe(
         map((products) =>
@@ -86,7 +86,7 @@ export class ClaroService {
       );
   }
 
-  transformProduct(product: ProductResponse): ProductInventory {
+  transformProduct(product: ClaroshopProduct): ProductInventory {
     return {
       id: product.transactionid,
       title: product.nombre,
@@ -101,7 +101,7 @@ export class ClaroService {
   }
   //* OBTIENE UN PRODUCTO ESPECIFICO
   getProduct(idProduct: number): Observable<ProductInventory> {
-    return this.http.get<ProductSearchResponse>(`producto/${idProduct}`).pipe(
+    return this.http.get<ClaroshopProductSearch>(`producto/${idProduct}`).pipe(
       map((resp) => {
         const producto = resp.producto;
 
@@ -127,7 +127,7 @@ export class ClaroService {
   }
 
   //* TRANSFORM DATA
-  transformDataProducts(products: ProductsOptionResponse): ProductInventory[] {
+  transformDataProducts(products: ClaroshopProductsOption): ProductInventory[] {
     return products.productos.map((product) => ({
       id: product.transactionid,
       title: product.nombre,
@@ -240,13 +240,53 @@ export class ClaroService {
     );
   }
 
-  //* OBTIENE LA CANTIDAD DE ORDENES EMBARCADAS
-  getOrdersCountByShipped(): Observable<{ totalOrders: number }> {
-    return this.http.get<any>('/pedidos?action=embarcados').pipe(
-      map((resp) => {
-        return { totalOrders: resp['totalembarcados'] };
+
+  //* OBTIENE UNA ORDEN ESPECIFICA
+  getOrderById(idProduct: number): Observable<OrderDetails> {
+    return this.http.get<ClaroshopOrderByID>(`pedidos?action=detallepedido&nopedido=${idProduct}`).pipe(
+      map( (order) => {
+        
+        let status: 'Pendiente' | 'En Proceso' | 'Concretado' = 'Concretado';
+      
+        if (order.estatuspedido.estatus === 'Pendiente') {
+          status = 'Pendiente';
+     
+        } else if (order.estatuspedido.estatus === 'Embarcado') {
+          status = 'En Proceso';
+        
+        } else {
+          status = 'Concretado';
+       
+        }
+
+        return {
+          id: order.productos[0].claroid,
+          status: status,
+          shipping: {
+            client: order.datosenvio.entregara,
+            address: order.datosenvio.direccion,
+            cp: order.datosenvio.cp,
+            city: order.datosenvio.ciudad,
+            country: 'MX',
+          },
+          products: order.productos.map( product => ({
+            title: product.producto,
+            sku: product.sku,
+           total: product.importe
+          })),
+          date_created: order.estatuspedido.fechacolocado,
+          shipment_date: order.productos[0].fechaasignacion,
+          fulfillment: order.productos[0].skufullfilment ? true : false,
+          tracking_guide: order.productos[0].guia,
+          channel: 'mely',
+          total_order: order.productos[0].importe,
+          messenger_service: 'DHL'
+        }
+
+        
       })
-    );
+    )
+      
   }
   //* CREA UN PRODUCTO
   postProduct(product: any): Observable<any> {

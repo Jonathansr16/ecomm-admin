@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
-import { ProductInventory } from '@components/interfaces/product.interface';
-import { StatusInfoData } from '@components/interfaces/status-data-info.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { StatusInfoData } from 'src/app/core/interface/status-data-info.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
 import { MelyService } from '@mely/mely.service';
 import { MenuItem } from 'primeng/api';
@@ -64,6 +64,14 @@ export default class InventoryComponent {
   };
 
   totalProducts: number =0;
+  // ordersBy:
+  //  'total_sold_quantity_asc' | 'total_sold_quantity_desc' 
+  //  | 'available_quantity_asc' | 'available_quantity_desc' |
+  //  "last_updated_desc"| "last_updated_asc" = 'total_sold_quantity_asc';
+
+
+  ordersBy = 'total_sold_quantity_desc';
+
   menuProduct: MenuItem[] = [
     {
       label: 'Opciones:',
@@ -88,51 +96,44 @@ export default class InventoryComponent {
   private readonly router = inject(Router);
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     this.activedRoute.queryParamMap.subscribe( (params: ParamMap) => {
-
+      const orders = params.get('orders');
       const limit = params.get('limit');
       const offset = params.get('offset');
       this.paginationParams.rows = limit !== null ? +limit : 10;
       this.paginationParams.page = offset !== null ? +offset : 0;
-    
-      this.getProducts();
+      this.ordersBy = orders !== null ? orders : 'total_sold_quantity_desc';
+      this.getProductsByUser()
+    });
 
-    })
   }
 
-  getProducts(): void {
-  
+
+  getProductsByUser() {
+
+    this.melyService.getProductsByUserId(this.ordersBy, this.paginationParams.rows, this.paginationParams.page).subscribe(
+      { 
+        next: (resp) => 
+          {
+           this.getProductsIds(resp.products);
+           this.totalProducts = resp.totalproducts;
+         },
+         error: (err) => 
+          {
+           console.log(err)
+          }
+    }
+    )
+  }
+
+
+  getProductsIds(productsId: string[]) {
     this.statusData.status = 'loading';
-    this.melyService.getProductsBySeller(this.paginationParams.page, this.paginationParams.rows).subscribe({
-        next: (resp) => {
-          this.statusData.status = resp.totalProducts> 0 ? 'success' : 'empty';
-          this.totalProducts = resp.totalProducts;
-          this.itemsWithIds = resp.idProducts;
-          console.log(resp.totalProducts)
 
-       this.getProductsIds()
-        },
-        error: (err) => {
-          this.statusData.status = 'error';
-          this.melyProducts = [];
-          this.totalProducts = 0;
-          this.StatusExtraInfo = {
-            titleError: 'Error',
-            summaryError: err
-      
-          };
-        },
-      });
-  }
-
-
-  getProductsIds() {
-  this.melyService.getProductsByids(this.itemsWithIds).subscribe( {
+  this.melyService.getProductsByids(productsId).subscribe( {
     next: (resp) => {
-      console.log(resp)
-      this.melyProducts = resp
+     this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+      this.melyProducts = resp;
     }, error: (err) => {
       console.log(err)
     }

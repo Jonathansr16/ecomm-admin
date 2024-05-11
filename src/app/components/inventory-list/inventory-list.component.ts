@@ -1,4 +1,4 @@
-import { ProductInventory } from '@components/interfaces/product.interface';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { CommonModule } from '@angular/common';
 import { Component, Input, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -9,14 +9,14 @@ import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CardSearchComponent } from '@components/card-search/card-search.component';
 import { ButtonModule } from 'primeng/button';
-import { SearchMenuFilter } from '@components/interfaces/search-menu-filter.interface';
+import { SearchMenuFilter } from 'src/app/core/interface/search-menu-filter.interface';
 import { ToastModule } from 'primeng/toast';
 import { PaginatorModule } from 'primeng/paginator';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
 import { SkeletonModule } from 'primeng/skeleton';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardProductComponent } from './card-product/card-product.component';
-import { StatusInfoData } from '@components/interfaces/status-data-info.interface';
+import { StatusInfoData } from 'src/app/core/interface/status-data-info.interface';
 import { CardDropdownProductComponent } from './card-dropdown-product/card-dropdown-product.component';
 
 @Component({

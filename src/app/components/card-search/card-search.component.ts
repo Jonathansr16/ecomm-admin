@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SearchFilter } from '@components/interfaces/search-filter.interface';
-import { SearchMenuFilter } from '@components/interfaces/search-menu-filter.interface';
+import { SearchFilter } from 'src/app/core/interface/search-filter.interface';
+import { SearchMenuFilter } from 'src/app/core/interface/search-menu-filter.interface';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';

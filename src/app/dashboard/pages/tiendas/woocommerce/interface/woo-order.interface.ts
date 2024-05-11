@@ -1,5 +1,16 @@
 
-export interface OrderResponse {
+export interface WooOrderResult {
+id: number;
+first_name: string;
+last_name: string;
+status: string;
+date_created: Date;
+date_modified: Date;
+total: number;
+product: any[];
+}
+
+export interface WooOrders {
   id: number;
   parent_id: number;
   status: string;
@@ -17,8 +28,8 @@ export interface OrderResponse {
   total_tax: string;
   customer_id: number;
   order_key: string;
-  billing: OrderBillingResponse;
-  shipping: OrderBillingResponse;
+  billing: WooOrderBilling;
+  shipping: WooOrderBilling;
   payment_method: string;
   payment_method_title: string;
   transaction_id: string;
@@ -30,10 +41,10 @@ export interface OrderResponse {
   date_paid: Date;
   cart_hash: string;
   number: string;
-  meta_data: OrderMetaDatumResponse[];
-  line_items: OrderLineItemResponse[];
+  meta_data: WooOrderMetaData[];
+  line_items: WooOrderLineItem[];
   tax_lines: any[];
-  shipping_lines: OrderShippingLineResponse[];
+  shipping_lines: WooOrderShippingLine[];
   fee_lines: any[];
   coupon_lines: any[];
   refunds: any[];
@@ -46,10 +57,10 @@ export interface OrderResponse {
   date_completed_gmt: Date;
   date_paid_gmt: Date;
   currency_symbol: string;
-  _links: OrderLinksResponse;
+  _links: WooOrderLinks;
 }
 
-export interface OrderBillingResponse {
+export interface WooOrderBilling{
   first_name: string;
   last_name: string;
   company: string;
@@ -63,7 +74,7 @@ export interface OrderBillingResponse {
   phone: string;
 }
 
-export interface OrderLineItemResponse {
+export interface WooOrderLineItem {
   id: number;
   name: string;
   product_id: number;
@@ -74,58 +85,58 @@ export interface OrderLineItemResponse {
   subtotal_tax: string;
   total: string;
   total_tax: string;
-  taxes: OrderTaxResponse[];
-  meta_data: OrderMetaDatumResponse[];
+  taxes: WooOrderTax[];
+  meta_data: WooOrderMetaData[];
   sku: string;
   price: number;
-  image: OrderImageResponse;
+  image: WooOrderImage;
   parent_name: null;
 }
 
-export interface OrderImageResponse {
+export interface WooOrderImage {
   id: string;
   src: string;
 }
 
-export interface OrderLinksResponse {
-  self: OrderCollectionResponse[];
-  collection: OrderCollectionResponse[];
-  customer?: OrderCollectionResponse[];
+export interface  WooOrderLinks {
+  self: WooOrderCollection[];
+  collection: WooOrderCollection[];
+  customer?: WooOrderCollection[];
 }
 
-export interface OrderCollectionResponse {
+export interface WooOrderCollection {
   href: string;
 }
 
-export interface OrderMetaDatumResponse {
+export interface WooOrderMetaData {
   id: number;
   key: string;
   value: string;
 }
 
-export interface OrderTaxResponse {
+export interface WooOrderTax {
   id: number;
   total: string;
   subtotal: string;
 }
 
-export interface OrderRefundResponse {
+export interface WooOrderRefund {
   id: number;
   refund: string;
   total: string;
 }
 
-export interface OrderShippingLineResponse {
+export interface WooOrderShippingLine{
   id: number;
   method_title: string;
   method_id: string;
   total: string;
   total_tax: string;
   taxes: any[];
-  meta_data: OrderMetaDatumResponse[];
+  meta_data: WooOrderMetaData[];
 }
 
-export interface OrderTaxLineResponse {
+export interface WooOrderTaxLine{
   id: number;
   rate_code: string;
   rate_id: number;
@@ -136,6 +147,6 @@ export interface OrderTaxLineResponse {
   meta_data: any[];
 }
 
-export interface OrderStatusResponse {
+export interface WooOrderStatus {
   status: 'pending' | 'processing' | 'on-hold' | 'completed' | 'cancelled' | 'refunded' | 'failed' | 'trash'
 }

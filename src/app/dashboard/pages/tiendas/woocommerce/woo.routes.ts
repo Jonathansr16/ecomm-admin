@@ -12,7 +12,7 @@ export const WoocommerceRoute: Routes = [
   {
     path: 'edit-product/:id',
     title: 'producto',
-    loadComponent: () => import('@woocommerce/pages/product/product.component')
+    loadComponent: () => import('@woocommerce/pages/edit-product/edit-product.component')
   },
 
   {
@@ -24,37 +24,7 @@ export const WoocommerceRoute: Routes = [
   {
     path: 'ordenes',
     title: 'Lista de Ordenes',
-    loadComponent: () => import ('@woocommerce/pages/orders/orders.component'),
-    // children: [
-    //   {
-    //     path: 'pendientes',
-    //     title: 'Ordenes Pendientes',
-    //     loadComponent: () => import('@woocommerce/pages/order-list/pending-orders/pending-orders.component')
-    //   }, 
-      
-    //   {
-    //     path: 'concretadas',
-    //     title: 'Ordenes concretadas',
-    //     loadComponent: () => import('@woocommerce/pages/order-list/completed-orders/completed-orders.component')
-    //   },
-
-    //   {
-    //     path: 'falladas',
-    //     title: 'Ordenes falladas',
-    //     loadComponent: () => import('@woocommerce/pages/order-list/failed-orders/failed-orders.component')
-    //   },
-
-    //   {
-    //     path: '',
-    //     redirectTo: 'pendientes',
-    //     pathMatch: 'full'
-    //   },
-      
-    
-
-    // ],
-
-
+    loadComponent: () => import ('@woocommerce/pages/orders/orders.component')
   },
 
  

@@ -1,9 +1,9 @@
-import { OrderResult } from "@woocommerce/interface/woo-order.interface";
+import { WooOrderResult, WooOrders } from "@woocommerce/interface/woo-order.interface";
 
 export class Orden {
 
 
-static orderFromJSON(obj: OrderResult) {
+static orderFromJSON(obj: WooOrderResult) {
     return new Orden(
        obj['id'],
        obj['first_name'],
@@ -24,7 +24,7 @@ static orderFromJSON(obj: OrderResult) {
        public status:        string,
        public date_created:  Date,
        public date_modified: Date,
-       public total:         string,
+       public total:         number,
        public product:       any[]
     ) { }
 

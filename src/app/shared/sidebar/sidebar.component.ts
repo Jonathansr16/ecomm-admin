@@ -72,8 +72,9 @@ export class SidebarComponent implements OnDestroy {
               type: 'link',
               routerLink: '/dashboard/mely/inventario',
               queryParams: {
+                orders: 'total_sold_quantity_desc',
                 offset: '0',
-                limit: '10'
+                limit: '10',
               }
             }, 
 

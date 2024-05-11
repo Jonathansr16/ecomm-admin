@@ -5,7 +5,7 @@ import { EMPTY, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 //? INTERFACES
-import { ProductResult } from '@woocommerce/interface/woo-producto.interface';
+import { WooProductResult } from '@woocommerce/interface/woo-producto.interface';
 
 //? COMPONENTS
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
@@ -23,9 +23,9 @@ import { generateProductForm } from 'src/app/core/form/generateProductForm';
 import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
 
 import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
-import { ProductInventory } from '@components/interfaces/product.interface';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -121,9 +121,9 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   statusData: StatusData = {status: 'loading'};
 
   //ARREGLO PARA CACHEAR LA DATA
-  private readonly cachedDataRows: { [key: string]: ProductResult[] } = {};
+  private readonly cachedDataRows: { [key: string]: WooProductResult[] } = {};
 
-  product: ProductResult | undefined;
+  product: WooProductResult | undefined;
   suscriptions$: Subscription[] = [];
   errorMessage!: string;
 

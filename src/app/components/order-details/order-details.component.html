@@ -1,1 +1,259 @@
-<p>order-details works!</p>,
+
+<div class="container mt-10">
+    <div class="order-details__breadcrumb">
+        <ul class="breadcrumb__ul flex items-center justify-start gap-2">
+
+            <li class="breadcrumb__li flex flex-row items-center justify-start">
+                <span class="breadcrumb__label text-sm">Claroshop</span>
+              <div class="breadcrumb__chevron px-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="8"><path fill="none" stroke="#666" d="M1 0l4 4-4 4"></path></svg>
+              </div>
+            </li>
+
+            <li class="breadcrumb__li flex flex-row items-center justify-start">
+                <span class="breadcrumb__label text-sm text-blue-600 cursor-pointer font-medium">Ordenes</span>
+              <div class="breadcrumb__chevron px-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="8"><path fill="none" stroke="#666" d="M1 0l4 4-4 4"></path></svg>
+              </div>
+            </li>
+            <li class="breadcrumb__li flex flex-row items-center justify-start">
+                <span class="breadcrumb__label text-sm">Order-details</span>
+                <div class="breadcrumb__chevron px-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="8"><path fill="none" stroke="#666" d="M1 0l4 4-4 4"></path></svg>
+                </div>
+            </li>
+            <li class="breadcrumb__li flex flex-row items-center justify-start">
+                <span class="breadcrumb__label text-sm">230459</span>
+               
+            </li>
+        </ul>
+    </div>
+</div>
+
+@defer(when statusData().status === 'success') {
+    <div class="container mt-10">
+        <div class="flex items-center justify-start gap-4 mb-4">
+
+            <p-button icon="pi pi-angle-left
+            " [rounded]="true" [text]="true" [raised]="true"></p-button>
+            <h1 class="text-2xl text-slate-700 font-semibold">Detalles de la orden</h1>
+        </div>
+        <div class="order-details__row grid grid-cols-1 lg:grid-cols-2 gap-4">
+    
+            <div class="order-details__col">
+               
+                <div class="order-details__section bg-white py-4 px-6 rounded-xl">
+    
+                    <div class="order-details__row border-b-2 border-slate-100 pb-4 flex items-center justify-between flex-col lg:flex-row gap-1">
+                     
+                            <p class="order-details__p text-slate-600 font-semibold">Venta: #{{order().id}}</p>
+                      
+                      
+                            <span class="order-details__status text-sm  bg-green-100 text-green-700 py-2 px-4 rounded-lg block max-w-32 w-full text-center font-semibold">
+                                {{order().status}}
+                            </span>
+                      
+                    </div>
+                    <div class="order-details__row mt-4">
+                        <p class="text-base mb-4 font-semibold text-slate-700">Detalles del envio</p>
+                
+                        <div class="order-detais__row mb-4">
+                            <p class="text-sm font-semibold text-slate-700">Nombre</p>
+        
+                            <p class="text-base">{{order().shipping.client}}</p>
+                        </div>
+        
+                        <div class="order-detais__row mb-4">
+                            <p class="text-sm font-semibold text-slate-700">Dirección</p>
+        
+                            <p class="text-base">{{order().shipping.address}} , CP: {{order().shipping.cp}}</p>
+                        </div>
+                    </div>
+        
+                </div>
+                
+                <div class="order-details__section bg-white py-4 px-6 rounded-xl mt-8">
+                    <div class="order-details__col">
+                        <p class="order-details__p text-slate-600 font-semibold border-b-2 border-slate-100 pb-4 ">Detalles de los productos</p>
+                    </div>
+    
+                  
+                    <div class="order-details__table">
+                        <div class="order-details__headers flex flex-col lg:flex-row gap-4 items-center justify-center mt-4 lg:justify-between">
+                            <div class="order-details__table-header w-full lg:w-1/4">
+                                <p class="font-semibold text-sm text-slate-700">
+                                    Producto
+                                </p>
+                            </div>
+                        
+                            <div class="order-details__table-header w-full lg:w-1/4">
+                                <p class="font-semibold text-sm text-slate-700">
+                                    Sku
+                                </p>
+                            </div>
+    
+                            <div class="order-details__table-header w-full lg:w-1/4">
+                                <p class="font-semibold text-sm text-slate-700">
+                                    Cantidad
+                                </p>
+                            </div>
+    
+                            <div class="order-details__table-header w-full lg:w-1/4">
+                                <p class="font-semibold text-sm text-slate-700">
+                                    Precio
+                                </p>
+                            </div>
+                        </div>
+    
+                        <div class="order-details__body mt-4">
+    
+                            @for (product of order().products; track $index) {
+
+                                <div class="order-details__row flex flex-col lg:flex-row gap-4 items-start justify-between border-b-2 border-slate-100 pb-4">
+                                    <div class="order-details-col w-full lg:w-1/4">
+                                        <p class="text-sm">
+                                            {{product.title}}
+                                        </p>
+                                    </div>
+                           
+        
+                                    <div class="order-details-col w-full lg:w-1/4">
+                                        <p class="text-sm">
+                                           {{product.sku}}
+                                        </p>
+                                    </div>
+        
+                                    <div class="order-details-col w-full lg:w-1/4">
+                                        <p class="text-sm">
+                                            {{product.quantity}}
+                                        </p>
+                                    </div>
+        
+                                    <div class="order-details-col w-full lg:w-1/4">
+                                        <p class="text-sm">
+                                            {{product.total | currency}}
+                                        </p>
+                                    </div>
+        
+                                </div>
+                            }
+    
+                      
+                            <div class="order-details__row order-details__total flex items-center justify-end py-4">
+                                <p class="text-sm font-semibold text-slate-700">   
+                                   Total = {{order().total_order}}
+                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-details__section bg-white py-4 px-6 rounded-xl mt-8 mb-4 flex flex-row items-center justify-between gap-4">
+                    <div class="order-details__col">
+                        <p class="order-details__p text-sm font-semibold text-slate-700">Facturación</p>
+                    </div>
+    
+                    <div class="order-details__col">
+                        <p-button [style]="{ 'font-size': '14px'}" label="Adjuntar factura" [text]="true"></p-button>
+    
+                    </div>
+                </div>
+    
+                        
+            </div>
+    
+            <div class="order-details__col">
+                  <div class="order-details__section bg-white py-4 px-6 rounded-xl"> 
+                  
+                    <div class="order-details__row border-b-2 border-slate-100 pb-4">
+                        <p class="order-details__p text-slate-600 font-semibold">Detalle del paquete</p>
+                   </div>
+    
+                   <div class="order-details__row mt-4 flex flex-col lg:flex-row gap-4 justify-start items-start">
+    
+                    <div class="order-detais__col mb-4">
+                       <div class="order-details__col">
+                        <img src="assets/img/envio.png" alt="envio" class="order-details__img-envio w-16 h-16">
+                       </div> 
+                    </div>
+    
+                    <div class="order-details__col">
+                     <p class="text-sm font-semibold text-slate-700">Numero de guia</p>
+                     <p class="text-sm text-slate-600"> {{order().tracking_guide}}</p>
+                    </div>
+                   </div>
+    
+                   <div class="order-details__row mt-4 flex flex-col lg:flex-row gap-10 justify-start items-start">
+    
+                    <div class="order-detais__col mb-4">
+                        <p class="text-sm font-semibold text-slate-700">Paqueteria</p>
+                        <p class="text-sm text-slate-600"> {{order().messenger_service}}</p>
+                    </div>
+    
+                    <div class="order-details__col">
+                     <p class="text-sm font-semibold text-slate-700">Despachado el día</p>
+                     <p class="text-sm text-slate-600"> 03 de mayo</p>
+                    </div>
+                   </div>
+    
+                   <div class="order-details__row mt-4 flex flex-col lg:flex-row gap-10 justify-start items-start">
+    
+                    <div class="order-detais__col mb-4">
+                        <p class="text-sm font-semibold text-slate-700">Paqueteria</p>
+                        <p class="text-sm text-slate-600"> DHL</p>
+                    </div>
+    
+                    <div class="order-details__col">
+                     <p class="text-sm font-semibold text-slate-700">Status</p>
+                     <p class="text-sm text-slate-600"> Despachado</p>
+                    </div>
+                   </div>
+    
+    
+                  </div>
+            </div>
+        </div>
+    </div>
+} @placeholder{
+    <div class="container mt-10">
+
+        <div class="skeleton__row grid  grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="skeleton__col">
+                <div class="skeleton__section bg-white py-4 px-6 rounded-xl mb-6">
+                    <p-skeleton height="3rem" styleClass="mb-4"></p-skeleton>
+                    <p-skeleton height="14rem" styleClass="mb-2"></p-skeleton>
+
+                </div>
+                <div class="skeleton__section bg-white py-4 px-6 rounded-xl mb-6">
+                    <p-skeleton height="3rem" styleClass="mb-4"></p-skeleton>
+                    <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+
+                </div>
+                <div class="skeleton__section bg-white py-4 px-6 rounded-xl">
+                    <p-skeleton height="3rem" styleClass="mb-2"></p-skeleton>
+
+                </div>
+
+            </div>
+            <div class="skeleton__col">
+                <div class="skeleton__section bg-white py-4 px-6 rounded-xl mb-6">
+                    <p-skeleton height="3rem" styleClass="mb-4"></p-skeleton>
+                    <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+
+                </div>
+                <div class="skeleton__section bg-white py-4 px-6 rounded-xl">
+                    <p-skeleton height="3rem" styleClass="mb-4"></p-skeleton>
+                    <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+                </div>
+
+            </div>
+        </div>
+    </div>
+} @error {
+    <div class="container mt-10">
+        <div class="skeleton__section bg-white py-4 px-6 rounded-xl mb-6">
+        <h1>Se produjo un error</h1>
+        </div>
+
+    </div>
+}

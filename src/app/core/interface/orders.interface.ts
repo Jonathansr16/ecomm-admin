@@ -1,6 +1,6 @@
 export interface Orders {
     
-    id: number;
+    id: string;
     noOrder: string;
     status:  'Pendiente' | 'En Proceso' | 'Concretado' | 'En Devolucion' | 'No Concretada';
     date_created: Date;

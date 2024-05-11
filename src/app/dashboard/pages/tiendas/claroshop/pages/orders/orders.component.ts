@@ -9,10 +9,10 @@ import {
 } from '@angular/router';
 import { ClaroService } from '@claroshop/services/claroservice.service';
 import { OrderListComponent } from '@components/order-list/order-list.component';
-import { PaginationParams } from '@components/interfaces/pagination-params.interface';
-import { StatusData } from '@components/interfaces/status-data.interface';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { MenuItem } from 'primeng/api';
-import { Orders } from 'src/app/core/interface/order.interface';
+import { Orders } from 'src/app/core/interface/orders.interface';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
