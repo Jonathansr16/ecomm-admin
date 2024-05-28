@@ -117,10 +117,10 @@ export class ClaroService {
           status: producto.estatus === 'activo' ? 'active' : 'inactive',
           isDropdownInformation: true,
           channel: 'claroshop',
-          imagesProduct: producto.fotos.map((img) => ({
-            alt: img.idfoto,
-            src: img.url,
-          })),
+          imageProduct: {
+            url: producto.fotos[0].url,
+          
+          },
         };
       })
     );
@@ -206,11 +206,12 @@ export class ClaroService {
         status: status,
         date_created: creation,
         authorization_date: authorization,
-        fulfillment: order.fulfillment,
+        isFulfillment: order.fulfillment ? true : false,
         total_order: parseFloat(order.totalpedido), // Convertir a número
         channel: 'claroshop',
         products: [
           {
+            id: order.transactionid,
             product: order.articulo,
             sku: order.sku,
             total_product: parseFloat(order.totalproducto), // Convertir a número

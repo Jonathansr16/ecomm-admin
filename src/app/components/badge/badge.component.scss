@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.sidebar-badge {
+   position: relative;
+  padding-left: 3px;
+  padding-bottom: 4px;
+  padding-bottom: 1em;
+
+
+  &__wrapper {
+    padding-left: 12px;
+  }
+
+  &__count {
+  
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+  text-align: center;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    transform: translate(50%, -50%);
+    transform-origin: 100% 0;
+    margin: 0;
+  display: inline-block;
+  }
+
+  &__more-count {
+    display: inline-block;
+    border-radius: 10px;
+    text-align: center;
+    padding: 0 .5rem;
+  }
+}

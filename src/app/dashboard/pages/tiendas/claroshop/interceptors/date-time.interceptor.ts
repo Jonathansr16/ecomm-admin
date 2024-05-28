@@ -24,7 +24,7 @@ export const DataTimeInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, ne
   const asignature = SHA256(dataString).toString();
   const url = environment.claro.apiBase;
 
-  const modifiedUrl = `${environment.claro.apiBase}/${environment.claro.public_key}/${asignature}/${formattedTime}/${req.url}`;
+  const modifiedUrl = `${url}/${environment.claro.public_key}/${asignature}/${formattedTime}/${req.url}`;
 
 const modifiedUr = req.clone({
     url: modifiedUrl

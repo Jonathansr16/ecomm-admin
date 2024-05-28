@@ -5,6 +5,7 @@ import {
   Renderer2,
   ViewChild,
   inject,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -17,7 +18,7 @@ import { MenuModule } from 'primeng/menu';
 import { StyleClassModule } from 'primeng/styleclass';
 import { SidebarMenuComponent } from '@components/sidebar-menu/sidebar-menu.component';
 import { SidebarMenu } from 'src/app/dashboard/interfaces/menuBar';
-
+import { BadgeModule } from 'primeng/badge';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -28,7 +29,8 @@ import { SidebarMenu } from 'src/app/dashboard/interfaces/menuBar';
     MenuModule,
     StyleClassModule,
     RouterModule,
-    SidebarMenuComponent
+    SidebarMenuComponent,
+    BadgeModule
   ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
@@ -36,13 +38,13 @@ import { SidebarMenu } from 'src/app/dashboard/interfaces/menuBar';
 })
 export class SidebarComponent implements OnDestroy {
   // @ViewChild('menu') menu?: ElementRef;
-  @ViewChild('arrow') arrow?: ElementRef;
-
   // activeMenu = -1;
   // activeSubMenu = -1;
   isOpenMenu = false;
   isOpenSubMenu = false;
   // private unlistener!: () => void;
+
+
 
 
   //? MENU SECTION MAIN
@@ -51,7 +53,8 @@ export class SidebarComponent implements OnDestroy {
       iconLeft: 'home',
       label: 'Home',
       type: 'link',
-      routerLink: '/dashboard/home'
+      routerLink: '/dashboard/home',
+      isBadge: false,
     },
 
     {
@@ -59,12 +62,18 @@ export class SidebarComponent implements OnDestroy {
       label: 'Tiendas',
       iconRight: 'navigate_next',
       type: 'button',
+      isBadge: true,
+      badgeClass: 'bg-red-500 text-white',
+      badegeCount: 30,
       items: [
         {
           iconLeft: 'storefront',
           label: 'Mely',
           iconRight: 'navigate_next',
           type: 'button',
+          isBadge: true,
+          badgeClass: 'bg-yellow-300 text-black',
+          badegeCount: 10,
           items: [
             {
               iconLeft: 'inventory_2',
@@ -75,20 +84,39 @@ export class SidebarComponent implements OnDestroy {
                 orders: 'total_sold_quantity_desc',
                 offset: '0',
                 limit: '10',
-              }
+              },
+              isBadge: false
             }, 
 
             {
               iconLeft: 'local_mall',
               label: 'Pedidos',
               type: 'link',
-              routerLink: '/dashboard/mely/ordenes'
+              routerLink: '/dashboard/mely/ordenes',
+              queryParams: {
+                limit: '10',
+                offset: '0',
+                sort: 'date_desc',
+              },
+              isBadge: true,
+              badgeClass: 'bg-yellow-300 text-black',
+              badegeCount: 3,
             }, 
 
             {
               iconLeft: 'contact_support',
               type: 'link',
-              label: 'Preguntas'
+              label: 'Preguntas',
+              isBadge: true,
+              badgeClass: 'bg-yellow-300 text-black',
+              badegeCount: 2,
+              routerLink: '/dashboard/mely/preguntas',
+              queryParams: {
+                sort_fields: 'date_created',
+                sort_types: 'DESC',
+                limit: 10,
+                offset: 0
+              }
             },
 
           ]
@@ -99,17 +127,23 @@ export class SidebarComponent implements OnDestroy {
           label: 'Amazon',
           iconRight: 'navigate_next',
           type: 'button',
+          isBadge: true,
+          badgeClass: 'bg-orange-500 text-white',
+          badegeCount: 6,
           items: [
             {
               iconLeft: 'inventory_2',
               type: 'link',
-              label: 'Inventario'
+              label: 'Inventario',
+              isBadge: false
             },
 
             {
               iconLeft: 'storefront',
               type: 'link',
-              label: 'Pedidos'
+              label: 'Pedidos',
+              isBadge: true,
+              badgeClass: ''
             }
           ]
         },
@@ -119,6 +153,9 @@ export class SidebarComponent implements OnDestroy {
           label: 'Claroshop',
           iconRight: 'navigate_next',
           type: 'button',
+          isBadge: true,
+          badgeClass: 'bg-red-500 text-white',
+          badegeCount: 9,
           items: [
             {
               iconLeft: 'inventory_2',
@@ -126,10 +163,9 @@ export class SidebarComponent implements OnDestroy {
               type: 'link',
               routerLink: '/dashboard/claroshop/inventario',
               queryParams: {
-             
                 page: '1',
-             
-              }
+              },
+              isBadge: false
             },
             {
               iconLeft: 'local_mall',
@@ -140,8 +176,9 @@ export class SidebarComponent implements OnDestroy {
                 action: 'pendientes',
                 page: 1,
                 limit: '10'
-              }
-
+              },
+              isBadge: true,
+              badgeClass: ''
             }
           ]
         },
@@ -151,6 +188,9 @@ export class SidebarComponent implements OnDestroy {
           label: 'Woocommerce',
           iconRight: 'navigate_next',
           type: 'button',
+          isBadge: true,
+          badgeClass: 'bg-purple-500 text-white',
+          badegeCount: 5,
           items: [
             {
               iconLeft: 'inventory_2',
@@ -160,7 +200,8 @@ export class SidebarComponent implements OnDestroy {
               queryParams: {
                 page: '1',
                 per_page: '10'
-              }
+              },
+              isBadge: false,
             },
 
             {
@@ -172,15 +213,19 @@ export class SidebarComponent implements OnDestroy {
                 page: '1',
                 per_page: '10',
                 status: 'pending'
-              }
+              },
+              isBadge: true,
+              badgeClass: ''
             },
 
             {
               iconLeft: 'group',
               label: 'Clientes',
               type: 'link',
-              routerLink: ''
-            }
+              routerLink: '',
+              isBadge: false
+            },
+            
           ]
         }
       ]
@@ -190,41 +235,52 @@ export class SidebarComponent implements OnDestroy {
       iconLeft: 'list_alt',
       label: 'Mi Inventario',
       type: 'link',
-      routerLink: ''
+      routerLink: '',
+      isBadge: false
     },
 
     {
       iconLeft: 'description',
       label: 'Ordenes',
       type: 'link',
-      routerLink: ''
+      routerLink: '/dashboard/all-orders',
+      isBadge: true,
+      badgeClass: '',
+      badegeCount: 20
     },
 
     {
       iconLeft: 'receipt_long',
       label: 'Reportes',
       type: 'link',
-      routerLink: ''
+      routerLink: '',
+      isBadge: false
     },
 
     {
       iconLeft: 'receipt_long',
       label: 'Facturación',
       type: 'link',
-      routerLink: ''
+      routerLink: '',
+      isBadge: true,
+      badgeClass: '',
+      badegeCount: 7
     },
 
     {
       iconLeft: 'local_shipping',
       label: 'Mis envios',
       type: 'link',
-      routerLink: ''
+      routerLink: '',
+      isBadge: false
     },
 
     {
       iconLeft: 'dashboard_customize',
       label: 'Integraciones',
-      type: 'link'
+      type: 'link',
+      routerLink: '/dashboard/integraciones/mi-integraciones',
+      isBadge: false
     }
 
   ];
@@ -234,25 +290,30 @@ export class SidebarComponent implements OnDestroy {
     {
       iconLeft: 'help',
       label: 'Ayuda',
-      type: 'link'
+      type: 'link',
+      routerLink: '/dashboard/ayuda/ayuda',
+      isBadge: false
     }, 
     
     {
       iconLeft: 'support_agent',
       label: 'Soporte',
-      type: 'link'
+      type: 'link',
+      isBadge: false
     },
 
     {
       iconLeft: 'build',
       label: 'Configuración',
-      type: 'link'
+      type: 'link',
+      isBadge: false,
     },
 
     {
       iconLeft: 'logout',
       label: 'Cerra Sesión',
-      type: 'link'
+      type: 'link',
+      isBadge: false
     },
   ];
 
@@ -267,6 +328,7 @@ export class SidebarComponent implements OnDestroy {
   sidebarCollapse = this.sidebarService.sidebarCollapse;
 
   constructor() {}
+
 
 
 
@@ -291,6 +353,8 @@ export class SidebarComponent implements OnDestroy {
 
   toggleSidebar() {
     // this.isSidebarCollapsed = !this.isSidebarCollapsed;
+
+    this.renderer2
     this.sidebarService.toggleSidebar();
   }
 

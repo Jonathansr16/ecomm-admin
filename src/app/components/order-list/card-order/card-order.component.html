@@ -190,8 +190,8 @@
             <div class="card-order__row flex flex-wrap flex-col lg:flex-row gap-1 items-center justify-center lg:justify-between px-6 pt-7 pb-[14px]">
                 
                 <div class="card-order__col">
-                    @if(order().status === 'Pendiente') {
-                        <div class="flex items-center flex-wrap gap-2 rounded-sm bg-blue-100 text-blue-700 px-3 py-[6px] max-w-48">
+                    @if(order().status === 'Pendiente' && !order().isFulfillment) {
+                        <div class="flex items-center flex-wrap gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-[6px] max-w-48">
                             <span class="text-xs font-semibold text-center">
                                 {{ order().status }}
                             </span>
@@ -199,7 +199,18 @@
                         </div>
                         <p class="text-sm py-2">Tienes que despachar el paquetes cuanto antes, para no demorarte.</p>
 
-                        } @else if(order().status === 'Concretado') {
+                        } @else if(order().status === 'Pendiente' && order().isFulfillment) {
+                            <div class="flex items-center flex-wrap gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-[6px] max-w-48">
+                                <span class="text-xs font-semibold text-center">
+                                    {{ order().status }}
+                                </span>
+                                <i class="card-order__i pi pi-stopwatch"></i>
+                            </div>
+                            <p class="text-sm py-2">Procesando en bodega</p>
+
+                        }
+                        
+                        @else if(order().status === 'Concretado') {
                        
                         <div class="flex flex-row flex-nowrap items-center justify-center gap-2 rounded-sm bg-green-100 text-green-700 px-3 py-[6px] max-w-48 w-full">
                             <span class="text-xs font-semibold text-center">
@@ -241,11 +252,15 @@
                 </div>
                 <div class="card-order__col">
                     
-                    @if(order().status === 'Pendiente') {
+                    @if(order().status === 'Pendiente' && !order().isFulfillment) {
                         <button class="card-order__btn card-order__btn-pending text-sm font-medium py-2 px-12 bg-blue-500 text-white rounded-md">
                             Generar guia
                         </button>
-                    } @else if(order().status === 'Concretado') {
+                    } @else if(order().status === 'Pendiente' && order().isFulfillment) {
+                        <button class="card-order__btn card-order__btn-pending text-sm font-medium py-2 px-12 bg-blue-500 text-white rounded-md">
+                           Seguir envio
+                        </button>
+                    }    @else if(order().status === 'Concretado') {
                         <button class="card-order__btn card-order__btn-completed text-sm font-medium py-2 px-12 bg-blue-100 text-blue-700 rounded-md">
                             Ver detalles
                         </button>
@@ -289,12 +304,25 @@
             <div
             class="card-order__extraInfo flex items-start justify-start lg:justify-around flex-col lg:flex-row gap-4 grow w-full lg:w-2/4">
 
-            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col w-full lg:w-1/5">
+            <div class="card-order__extraInfo-col flex items-center lg:items-center gap-1 flex-col">
+            
+                <span class="text-sm font-semibold">FulFilment</span>
+
+
+                @if (order().isFulfillment) {
+                    <svg class="sc-icon__svg" xmlns="http://www.w3.org/2000/svg" width="40" height="12" viewBox="0 0 40 12"><g fill="#00A650" fill-rule="evenodd"><path fill-rule="nonzero" d="M13.597 9h-1.892l1.617-7.337h5.379l-.363 1.65h-3.487l-.242 1.144h3.399l-.363 1.65h-3.41L13.597 9zm9.35.132c-2.255 0-3.366-1.078-3.366-2.618 0-.121.033-.374.055-.484l.968-4.367h1.925l-.957 4.323a1.62 1.62 0 0 0-.033.308c.011.605.473 1.188 1.408 1.188 1.012 0 1.529-.638 1.716-1.496l.957-4.323h1.914l-.957 4.356c-.396 1.782-1.364 3.113-3.63 3.113zM32.924 9h-4.84l1.617-7.337h1.892L30.35 7.35h2.937L32.924 9zm6.655 0h-4.84l1.617-7.337h1.892L37.005 7.35h2.937L39.579 9z"></path><path d="M2.455 0L0 6.857h4.09L2.456 12 9 4.286H4.91L7.363 0z"></path></g></svg>
+                  } @else {
+                    <span class="text-sm font-semibold">No</span>
+      
+                  }
+            </div>
+
+            <div class="card-order__extraInfo-col flex items-center  gap-1 flex-col">
                 <span class="card-order__date text-sm font-semibold text-slate-700">
                     Canal de venta:
                 </span>
                 @if (order().channel === 'mely') {
-                 <img class="card-order__channel w-11 h-11 m-auto rounded-[50%]" src="assets/img/mely_logo.webp" alt="mercado libre">
+                 <img class="card-order__channel w-11 h-11 mx-auto rounded-[50%]" src="assets/img/mely_logo.webp" alt="mercado libre">
                  }  @else if (order().channel === 'amazon') {
                     <img class="card-order__channel w-11 h-11 mx-auto rounded-[50%]" src="assets/img/amazon_logo.webp" alt="Amazon">
                     } @else if (order().channel === 'claroshop') {
@@ -305,7 +333,7 @@
             </div>
 
 
-            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col w-full lg:w-1/5">
+            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col ">
                 <span class="text-sm font-semibold text-slate-700">
                     {{ order().status === 'Pendiente' && 'Fecha de Autorización' || 
                        order().status === 'En Proceso' && 'Fecha de Despacho' ||
@@ -318,7 +346,7 @@
             </div>
 
 
-            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col w-full lg:w-1/5">
+            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col ">
                 <span class="card-order__date text-sm font-semibold text-slate-700">
                     Total:
                 </span>
@@ -337,7 +365,7 @@
                 </div>
             }
 
-            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col w-full lg:w-1/5">
+            <div class="card-order__extraInfo-col flex items-center lg:items-start gap-1 flex-col ">
                 <span class="card-order__date text-sm font-semibold text-slate-700">
                   Sku:
                 </span>
@@ -345,7 +373,8 @@
                   order().products[0].sku
                   }}</span>
               </div>
-        </div>
+           </div>
+
         </div>
         }
 

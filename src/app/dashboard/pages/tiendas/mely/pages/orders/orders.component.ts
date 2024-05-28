@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { CardStatComponent } from '@components/card-stat/card-stat.component';
@@ -13,6 +13,7 @@ import { Orders } from 'src/app/core/interface/orders.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
 import { ButtonModule } from 'primeng/button';
 import { AUTO_STYLE, animate, state, style, transition, trigger } from '@angular/animations';
+import { combineLatest } from 'rxjs';
 
 const DEFAULT_DURATION = 0.35;
 
@@ -45,7 +46,7 @@ const DEFAULT_DURATION = 0.35;
     ]),
   ],
 })
-export default class OrderComponent { 
+export default class OrderComponent {
 
   productId = '';
 
@@ -95,9 +96,9 @@ export default class OrderComponent {
       quantity: 40,
       urlImage: '/assets/img/order_completed.png'
 
-    }, 
+    },
 
-   
+
   ];
 
   ordersOption: MenuItem[] = [
@@ -112,7 +113,7 @@ export default class OrderComponent {
               '/dashboard/mely/ordenes/order-details', this.productId
             ])
           }
-        }, 
+        },
 
         {
           label: 'Adjuntar factura'
@@ -129,18 +130,62 @@ export default class OrderComponent {
     {
       label: 'Ordenes pendientes',
       quantity: 20,
+      urlImage: '/assets/img/order_pending.png',
+
     },
 
     {
       label: 'En proceso de entrega',
-      quantity: 30
-    }, 
+      quantity: 30,
+      urlImage: '/assets/img/order_proccesing.png',
+
+    },
 
     {
       label: 'Concretadas',
-      quantity: 65
+      quantity: 65,
+      urlImage: '/assets/img/order_completed.png',
+
     }
   ];
+
+  tags1 = ['not_delivered', 'not_paid'];
+
+  //* Cantidad de pedidos
+  pendingOrdersCount = signal(0);
+  shippedOrdersCount = signal(0);
+  completedOrdersCount = signal(0);
+  unsoldOrdersCount = signal(0);
+  returnOrdersCount = signal(0);
+
+  //* Status de los pedidos
+  statusEveryOrder: {
+    pending: boolean;
+    shipped: boolean;
+    completed: boolean;
+    unsold: boolean;
+    return: boolean;
+  } = {
+      pending: true,
+      shipped: true,
+      completed: true,
+      unsold: true,
+      return: true
+    };
+
+  dataActionsOrder = [
+    {
+      label: 'Concretadas',
+      units: 1030,
+      command: () => this.getOrdersByStatus('cancelled')
+    },
+
+    {
+      label: 'No Concretadas',
+      units: 30,
+      command: () => this.getOrdersByStatus('paid')
+    }
+  ]
 
   isActive = false;
 
@@ -149,30 +194,36 @@ export default class OrderComponent {
   melyService = inject(MelyService);
 
   melyOrders: Orders[] = [];
-  statusOrders: StatusData = {status: 'loading'};
+  statusOrders: StatusData = { status: 'loading' };
   paginationParams: PaginationParams = {
     page: 1,
-    rows: 10, 
+    rows: 10,
     first: 0,
   };
 
   totalOrders: number = 0;
   sort: string = "date_desc";
+  idProducts: string[] = [];
+  combine$= combineLatest([
+    this.melyService.getOrders(this.paginationParams.rows, this.paginationParams.first, this.sort),
+    this.melyService.getProductByIdOrder()
+  ]) 
+
+
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.activatedRoute.queryParamMap.subscribe( (params: ParamMap) => {
+    this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
 
       const limit = params.get('limit');
       const offset = params.get('offset');
       const order_type = params.get('sort');
       this.paginationParams.rows = limit !== null ? +limit : 10;
       this.paginationParams.page = offset !== null ? +offset : 0
-      this.sort = order_type !== null ? order_type :  'date_desc';
+      this.sort = order_type !== null ? order_type : 'date_desc';
       this.getOrders();
-
-  
+      
     })
   }
 
@@ -182,7 +233,11 @@ export default class OrderComponent {
       next: (resp) => {
         this.melyOrders = resp.orders;
         this.totalOrders = resp.totalOrders;
-        this.statusOrders.status = resp.orders.length > 0 ? 'success' : 'empty'
+        this.statusOrders.status = resp.orders.length > 0 ? 'success' : 'empty';
+      this.getProductById()
+        // resp.orders.forEach( item => {
+        //   this.productId = item.id
+        // })
       },
 
       error: (err) => {
@@ -194,8 +249,41 @@ export default class OrderComponent {
     })
   }
 
+  getOrdersByStatus(status: string) {
+    this.statusOrders.status = 'loading';
+    this.melyService.getOrdersByStatus(status, this.sort, this.tags1, this.paginationParams.rows, this.paginationParams.first).subscribe({
+      next: (resp) => {
+        console.log(resp)
+        this.melyOrders = resp.orders;
+        this.totalOrders = resp.totalOrders;
+        this.statusOrders.status = resp.orders.length > 0 ? 'success' : 'empty';
+      },
+      error: (err) => {
+        this.statusOrders.status = 'error';
+        this.totalOrders = 0;
+        this.melyOrders = [];
 
-changedPage(event: any) {
+      }
+    })
+  }
+
+  getProductById() {
+    this.melyService.getProductByIdOrder().subscribe(
+      {
+        next: (resp) => {
+          //  console.log(resp)
+        },
+
+        error: (err) => {
+          console.log(err)
+        }
+      }
+
+    )
+  }
+
+
+  changedPage(event: any) {
     this.paginationParams.page = event.first;
     this.paginationParams.rows = event.rows;
     this.router.navigate([], {
@@ -208,6 +296,8 @@ changedPage(event: any) {
       queryParamsHandling: 'merge',
     });
   }
+
+
 
   // handlerWrapper() {
   //   this.handlerOrders = !this.handlerOrders;
@@ -224,7 +314,7 @@ changedPage(event: any) {
   // }
 
   getProductId(value: any) {
-this.productId = value;
+    this.productId = value;
   }
 
 }

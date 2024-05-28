@@ -9,10 +9,50 @@
   <!-- DETAILS ORDER FOR ALL CHANNEL -->
   <div class="section-details__orders container-bg">
   
-      <h2 class="cards__title font-medium text-xl text-white mb-3">Resumen de las Ordenes</h2>
+      <!-- <h2 class="cards__title font-medium text-xl text-white mb-3">Resumen de las Ordenes</h2> -->
 
-      <div class="cards rounded-2xl">
-        <!-- <app-card-stat [klassContainer]="'flex items-center justify-center flex-wrap gap-6'" [klassCard]="'lg:w-[20%] md:w-1/2 w-full flex flex-row px-6 py-6 rounded-3xl shadow-md bg-white cursor-pointer'"  [dataCard]="dataOrders"></app-card-stat> -->
+      <div class="cards-stat__container text-gray-600 body-font shadow-slate-300 mx-auto flex flex-wrap  items-center justify-center">
+
+        @for (item of items; track i; let i = $index) {
+          <div (click)="togglePanel($event, i)" class="card-stat cursor-pointer bg-white flex flex-row lg:w-[20%] md:w-1/2 px-6 py-6  shadow-md w-full">
+            <span [class]="item.backgroundIconClass" class="card-stat__icon-box w-11 h-11 mr-3 flex items-center justify-center bg-orange-100 ">
+              <i [class]="item.iconClass" class="card-stat__icon w-7 h-7 material-icons text-lg text-orange-700">{{item.icon}}</i>
+            </span>
+  
+            <div class="">
+              <h2 class="text-gray-500 title-font font-medium text-sm line-clamp-3"> {{item.label}} </h2>
+              <p  class="font-bold text-gray-700 text-2xl"> {{item.totalCount}} </p>
+            </div>
+  
+          </div>
+          <p-overlayPanel #panels>
+            <p-table [value]="item.overData" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th>Tienda</th>                     
+                      <th>Ordenes</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-order>
+                  <tr>
+                      <td>{{order.label}}</td>
+                      <td>{{ order.count }}</td>
+                     
+                  </tr>
+              </ng-template>
+
+              <ng-template pTemplate="footer">
+                <div class="flex items-center justify-end ml-3">
+
+                  <p class="card-footer__p pt-1 text-sm">Ordenes Totales<strong>30</strong></p>
+                </div>
+              </ng-template>
+              
+          </p-table>
+          </p-overlayPanel>
+        }
+
+
       </div>
 </div>
 
@@ -22,9 +62,14 @@
   
     <h2 class="cards__title font-medium text-xl text-slate-900 my-3">Resumen del Inventario</h2>
 
-    <div class="cards">
-      <!-- <app-card-stat [dataTable]="dataTable" [klassContainer]="'flex flex-wrap gap-6'" [klassCard]="'flex lg:w-[30%] w-full flex flex-row px-6 py-6 rounded-3xl shadow-md bg-white'" [dataCard]="datamyInventory"> </app-card-stat> -->
-    </div>
+    <!-- <div class="cards">
+       <app-card-stat 
+       [titleSection]="''" 
+       [klassContainer]="'flex flex-wrap gap-6'" 
+       [klassCard]="'flex lg:w-[30%] w-full flex flex-row px-6 py-6 rounded-3xl shadow-md bg-white'" 
+       [dataCard]="datamyInventory"> 
+      </app-card-stat>
+    </div> -->
   </div>
 
   <div class="container-bg my-6">

@@ -85,28 +85,14 @@
       </div>
     </div>
 
-    @switch (statusProducts().status)
-    
-    { 
-      @case ('success') {
-       @for (product of products(); track i; let i = $index) {
+    @switch (statusProducts().status) { @case ('success') { 
+      @for (product of products(); track i; let i = $index) {
 
-    <app-card-product 
-    [product]="product" 
-    [isSelected]="isSelectedEveryProduct[i]"
-    (onChangeValue)="toggleEveryProduct($event, i)"
-    [menuProduct]="menuProduct()"
-  
-    >
-
-    <div class="dropdownContainer">
-      <app-card-dropdown-product
-      [product]="product"
-      [dropdownStatus]="statusProductsExtraInfo[i]"
-      [dropdownInfo]="productsExtraInfo[i]"
-      (emitId)="toggleAccordeon(i, product.id)">
-      </app-card-dropdown-product>
-    </div>
+    <app-card-product [product]="product" [isSelected]="isSelectedEveryProduct[i]"
+      (onChangeValue)="toggleEveryProduct($event, i)" [menuProduct]="menuProduct()"
+      (emitID)="toggleAccordeon(i, product.id)"
+      [productVar]="productsVar()"
+      [statusProductVar]="statusProductVars()">
     </app-card-product>
     }
 
@@ -149,7 +135,8 @@
             alt="resultado de busqueda" loading="lazy" />
         </picture>
       </div>
-      <div class="empty-card__text mx-auto mt-4 bg-white my-6 py-6 flex items-center justify-center gap-1 flex-col shadow shadow-indigo-500/30 rounded-xl">
+      <div
+        class="empty-card__text mx-auto mt-4 bg-white my-6 py-6 flex items-center justify-center gap-1 flex-col shadow shadow-indigo-500/30 rounded-xl">
         <h3 class="empty-card__text-title text-center font-semibold">
           Sin resultados...
         </h3>
@@ -158,14 +145,19 @@
         </p>
       </div>
     </div>
-    } @case ('error') { 
-        <div class="error-card container bg-white my-6 py-6 flex items-center justify-center gap-1 flex-col shadow shadow-indigo-500/30 rounded-xl">
-              <img src="assets/img/svg/internal_error.svg" class="max-w-72 max-h-72 w-full h-full" alt="error">
+    } @case ('error') {
+    <div
+      class="error-card container bg-white my-6 py-6 flex items-center justify-center gap-1 flex-col shadow shadow-indigo-500/30 rounded-xl">
+      <img src="assets/img/svg/internal_error.svg" class="max-w-72 max-h-72 w-full h-full" alt="error" />
 
-              <h2 class="lg:text-xl text-lg font-semibold text-slate-600 text-center">{{statusInfoProducts()?.titleError}}</h2>
+      <h2 class="lg:text-xl text-lg font-semibold text-slate-600 text-center">
+        {{ statusInfoProducts()?.titleError }}
+      </h2>
 
-              <p class="text-base text-slate-700 text-center">{{statusInfoProducts()?.summaryError}}</p>
-        </div>
+      <p class="text-base text-slate-700 text-center">
+        {{ statusInfoProducts()?.summaryError }}
+      </p>
+    </div>
     } }
   </div>
 </div>

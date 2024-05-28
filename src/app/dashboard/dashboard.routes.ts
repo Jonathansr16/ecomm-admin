@@ -56,15 +56,20 @@ export const dashboardRoutes: Routes = [
       },
 
       {
-        path: 'claroshop',
-        loadChildren: () => import('@claroshop/claroshop.routes').then( (r) => r.claroRoutes)
+        path: 'all-orders',
+        title: 'todas las ordenes',
+        loadComponent: () => import('./pages/all-orders/all-orders.component')
       },
-
+   
+     {
+      path: 'integraciones',
+      loadChildren: () => import('@integrations/my-integrations.routes').then( (i) => i.integrationRoutes)
+     },
 
       {
         path: 'ayuda',
         title: 'ayuda',
-        loadChildren: () => import('@home/home-routing.module').then( (m) => m.HomeRoutingModule)
+        loadChildren: () => import('@ayuda/ayuda.routes').then( (ayuda) => ayuda.ayudaRoutes )
       },
 
       {

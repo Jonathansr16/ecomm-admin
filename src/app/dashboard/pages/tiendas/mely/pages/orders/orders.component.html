@@ -18,16 +18,8 @@
       </div>
 
       <div class="top-header__col">
-        <!-- <p-button
-            icon="pi pi-plus"
-            [style]="{ 'font-size': '14px', padding: '0.5em 0.6em' }"
-            label="Agregar producto"
-            severity="success"
-            
-          >
-          </p-button> -->
-        <span class="top-header__span text-white font-semibold"
-          >26 productos</span
+
+        <span class="top-header__span text-white font-semibold">{{totalOrders}} Ordenes</span
         >
       </div>
     </div>
@@ -35,7 +27,14 @@
 </div>
 
 <div class="orders-actions container mt-[-1.5em]">
-  <div class="order-actions__row w-full flex">
+  <app-card-stat
+    [titleSection]="'Acciones'"
+    [klassContainer]="'flex flex-wrap cursor-pointer'"
+    [klassCard]="'flex lg:w-[30%] w-full flex flex-row px-6 py-6 shadow shadow-indigo-500/20 bg-white'"
+    [dataCard]="dataMelyOptions"
+    >
+    </app-card-stat>
+  <!-- <div class="order-actions__row w-full flex">
     <div
       class="order-actions__col flex lg:max-w-[30%] w-full flex-row px-6 py-6 shadow shadow-indigo-500/20 bg-white"
     >
@@ -51,41 +50,43 @@
     >
       <h1>Concretadas</h1>
     </div>
-  </div>
+  </div> -->
 
   <div class="order-actions__row order-actions__row-wrapper flex w-full bg-slate-200" [@isActivo]="isActive">
     <div class="order-actions__row flex lg:max-w-[30%] w-full flex-row"></div>
-    <div class="order-actions__row flex lg:max-w-[30%] w-full flex-col">
-      <div
-        class="order-actions__col px-6 py-6 mt-4 mr-4 shadow shadow-indigo-500/20 bg-white rounded-md"
-      >
-        Envios full
-      </div>
+    <!-- <div class="order-actions__row flex lg:max-w-[30%] w-full flex-col ">
+    
 
-      <div
-        class="order-actions__col px-6 py-6 mt-4 mr-4 shadow shadow-indigo-500/20 bg-white rounded-md"
-      >
-        Envios normal
+      <div class="order-actions__col px-6 py-6 mt-4 mr-4 shadow shadow-indigo-500/20 bg-white rounded-md">
+        En proceso de entrega
+        <p class="text-sm text-slate-500">3 ventas</p>
+
       </div>
-    </div>
+    </div> -->
+    <div class="order-actions__row flex lg:max-w-[30%] w-full flex-row"></div>
 
     <div class="order-actions__row flex lg:max-w-[30%] w-full flex-col">
       <div
         class="order-actions__col px-6 py-6 mt-4 mr-4 shadow shadow-indigo-500/20 bg-white rounded-md"
       >
         Concretadas
+        <p class="text-sm text-slate-500">1,030 ventas</p>
       </div>
 
       <div
         class="order-actions__col px-6 py-6 mt-4 mr-4 shadow shadow-indigo-500/20 bg-white rounded-md"
       >
         No Concretadas
+        <p class="text-sm text-slate-500">30 ventas</p>
+
       </div>
 
       <div
         class="order-actions__col px-6 py-6 mt-4 mr-4 mb-4 shadow shadow-indigo-500/20 bg-white rounded-md"
       >
         En devolución
+        <p class="text-sm text-slate-500">2 ventas</p>
+
       </div>
     </div>
   </div>
@@ -102,26 +103,6 @@
       </i>
     </button>
   </div>
-
-  <!-- <app-card-stat
-    [titleSection]="'Acciones'"
-    [klassContainer]="'flex flex-wrap cursor-pointer'"
-    [klassCard]="'flex lg:w-[30%] w-full flex flex-row px-6 py-6 shadow shadow-indigo-500/20 bg-white'"
-    [dataCard]="dataMelyOptions"
-    >
-    </app-card-stat>
-
-    <div class="order-actions__wrapper bg-slate-300 flex flex-wrap" >
-   
-
-      <div class=" flex lg:w-[30%] w-full orders-actions__card px-6 py-6 shadow shadow-indigo-500/20 bg-white mt-1">
-        <h1 class="text-lg"></h1>
-      </div>
-    </div>
-
-    <div class="order-actions__toggle flex items-center justify-center mt-[-1em]">
-      <p-button [style]="{'height': '32px', 'border-radius': '5px', 'background-color': '#fff'}"  icon="pi pi-angle-down" [rounded]="true" [text]="true" [raised]="true" severity="danger " />
-    </div> -->
 </div>
 
 <div class="mt-8">

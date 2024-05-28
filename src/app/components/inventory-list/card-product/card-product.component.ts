@@ -10,6 +10,7 @@ import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
 import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardDropdownProductComponent } from '../card-dropdown-product/card-dropdown-product.component';
+import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
 
 @Component({
   selector: 'app-card-product',
@@ -22,37 +23,35 @@ import { CardDropdownProductComponent } from '../card-dropdown-product/card-drop
     ButtonModule,
     InputSwitchModule,
     SkeletonModule,
-    CardDropdownProductComponent
-    
+    CardDropdownProductComponent,
   ],
   templateUrl: './card-product.component.html',
   styleUrl: './card-product.component.scss',
 })
 export class CardProductComponent {
   product = input.required<ProductInventory>();
-
- dropdownInfo = input<ProductInventory>();
- statusDropdownInfo = input<StatusData>();
-
+  productVar = input<VariantProduct[]>();
+  statusProductVar = input<StatusData>();
   menuProduct = input.required<MenuItem[]>();
   isSelected = input<boolean>();
-
   onChangeValue = output<any>();
-  // emitIdProduct = output<any>();
-
-  // @Input() isSelected = false;
-
-  // isSelected: boolean = false;
+  emitID = output<any>();
+  isAccordionOpen: { [id: number]: boolean } = {};
+  prevent: { [id: number]: boolean } = {};
 
   toggleProductSelection(): void {
     this.onChangeValue.emit(this.product); // Emitir el evento con el nuevo estado
   }
 
-  //   emitId() {
-  //   if (!this.dropdownInfo || this.dropdownInfo()?.id !== this.product().id) {
-  //     this.emitIdProduct.emit(this.product().id);
-  //   }
-  // }
+  handlerVariations(productId: number) {
+    this.isAccordionOpen[productId] =!this.isAccordionOpen[productId];
 
-
+    if(this.prevent[productId]) {
+      return;
+    } else {
+      this.emitID.emit(productId);
+      this.prevent[productId] = true;
+   }
+  }
+ 
 }

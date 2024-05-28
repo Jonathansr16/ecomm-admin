@@ -8,6 +8,9 @@ export interface SidebarMenu {
     queryParams?: {
       [k: string]: any
     },
+    isBadge: boolean;
+    badgeClass?: string;
+    badegeCount?: number;
 
    
    command?(event: MenuItemCommandEvent): void;

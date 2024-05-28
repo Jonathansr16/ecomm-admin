@@ -11,6 +11,7 @@
       "@components/*": ["src/app/components/*"],
       "@home/*": ["src/app/dashboard/pages/home/*"],
       "@shared/*": ["src/app/shared/*"],
+      "@integrations/*": ["src/app/dashboard/pages/integrations/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

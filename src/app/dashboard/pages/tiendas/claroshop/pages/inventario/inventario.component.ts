@@ -125,7 +125,7 @@ export default class InventarioComponent {
         next: (resp) => {
           this.products = resp.products;
           this.paginationParams.page
-          this.statusProducts.status = 'success';
+          this.statusProducts.status =resp.products.length > 0 ? 'success' : 'empty';
           this.totalProducts= resp.totalItems
         },
         error: (msgErorr) => {
@@ -134,6 +134,7 @@ export default class InventarioComponent {
             summaryError: msgErorr.error.message
           };
 
+          this.products = [];
           this.statusProducts.status = 'error';
           this.totalProducts = 0;
           return EMPTY;
@@ -143,11 +144,9 @@ export default class InventarioComponent {
     );
   }
 
-  
-
   getProduct(product: DetailProductInterface) {
- console.log(product)
     this.statusProductsDetail[product.index] = { status: 'loading' };
+    console.log(product)
     const existingProduct = !this.productsDetail[product.index] || this.productsDetail[product.index].id !== product.idProduct ? true : false;
     if(existingProduct) {
 
@@ -166,6 +165,8 @@ export default class InventarioComponent {
       })
     }
   }
+
+
 
   changeTypeSearch(value: 'todo' | 'id' | 'title' | 'sku') {
     this.typeSearch = value;

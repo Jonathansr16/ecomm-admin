@@ -5,6 +5,8 @@ import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { ButtonModule } from 'primeng/button';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SkeletonModule } from 'primeng/skeleton';
+import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-card-dropdown-product',
@@ -13,23 +15,15 @@ import { SkeletonModule } from 'primeng/skeleton';
     CommonModule,
     SkeletonModule,
     InputSwitchModule,
-    ButtonModule
+    ButtonModule,
+    FormsModule
   ],
   templateUrl: './card-dropdown-product.component.html',
   styleUrl: './card-dropdown-product.component.scss',
 })
 export class CardDropdownProductComponent {
-  product = input.required<ProductInventory>();
-  dropdownInfo = input.required<ProductInventory>();
-  dropdownStatus = input.required<StatusData>();
-  isOpen = false;
 
-  emitId = output<any>();
-
-  toggleAccordeon() {
-    this.isOpen = !this.isOpen;
-      this.emitId.emit(this.product().id);
-    
-  }
+  productVars = input.required<VariantProduct[]>();
+  statusProductVars = input.required<StatusData>();
 
  }

@@ -6,6 +6,13 @@
     "logLevel": "debug"
   },
 
+  "/my/": {
+    "target": "https://api.mercadolibre.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+
   "/users": {
     "target": "https://api.mercadolibre.com",
     "secure": true,

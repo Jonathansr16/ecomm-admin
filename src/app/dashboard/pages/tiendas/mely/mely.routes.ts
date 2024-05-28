@@ -15,5 +15,10 @@ export const MelyRoutes: Routes = [
     {
         path: 'order-details/:id',
         loadComponent: () => import('@mely/pages/orders/details/details.component')
+    },
+
+    {
+        path: 'preguntas',
+        loadComponent: () => import('@mely/pages/asks/asks.component')
     }
 ];

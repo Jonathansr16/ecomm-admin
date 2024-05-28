@@ -1,3 +1,5 @@
+import { VariantProduct } from "./variant-product.interface";
+
 export interface ProductInventory {
     id: any;
     title: string;
@@ -12,8 +14,14 @@ export interface ProductInventory {
     status: 'active' | 'inactive';
     total_sales?: number;
     category?: any;
-    imagesProduct?: any;
+    imageProduct?: ProductImage;
     isDropdownInformation: boolean;
     channel: string;
-    
+    variations?: VariantProduct[];
+}
+
+export interface ProductImage {
+    id?: string;
+    url: string;
+    alt?: string;
 }

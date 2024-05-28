@@ -1,322 +1,113 @@
- <div class="dropDownContent product__container px-6 py-7 flex items-start">
-      <p-button icon="pi pi-chevron-down" (onClick)="toggleAccordeon()" [rounded]="true" [text]="true"
-      severity="danger">
-      </p-button>
+@switch (statusProductVars().status) {
 
-      
-      <div [class.is-open]="isOpen === true"
-      class="product-card__content grid grid-cols-1 lg:grid-cols-2 w-full ml-4">
-      @if(!isOpen) {
-      <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
-      
-        @if(product().store === 'mely') {
-
-          <div
-          class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px]"
-        >
-          <img
-            [ngStyle]="{
-              opacity: product().status === 'inactive' && '.7'
-            }"
-            [src]="product().imagesProduct || ''"
-            class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100"
-          />
-        </div>
-        }
-      
-        <div class="product-card__description flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
-          <div class="product-card__sku text-xs">
-            #{{ product().id }} | Sku: {{ product().sku }}
-          </div>
-          <a href="#" class="product-card__link-product">
-            <div [ngStyle]="{
-                color: product().status === 'inactive' && 'var(--surface-600)'
-              }" class="product-card__name text-sm font-semibold text-slate-800">
-              {{ product().title | slice : 0 : 61 }}
-            </div>
-          </a>
-
-          @if(product().store === 'claroshop') {
-          <div
-            class="product-card__store product-card__store-woocommerce text-xs font-bold rounded-md inline py-1 px-2 bg-red-100 text-red-700">
-            ClaroShop
-          </div>
-          } @else if(product().store === 'mely') {
-            <div
-            class="product-card__store product-card__store-woocommerce text-xs font-bold rounded-md inline py-1 px-2 bg-yellow-100 text-yellow-700"
-          >
-            Mercado Libre
-          </div>
-          }
-
-          
-          @if(product().units) {
-          <div class="product-card__quantity text-xs font-semibold">
-            {{ product().units }}
-            {{ product().units === 0 ? "unidad" : "unidades" }}
-          </div>
-          } @else if (product().units === null || product().status === 'active')
-          {
-          <span class="text-xs font-semibold text-green-600">
-            Hay Existencia
-          </span>
-          } @else if(product().units === 0 && product().status === 'inactive') {
-
-          <span class="text-xs font-semibold"> 0 Unidades</span>
-          } @else {
-          <span class="text-xs font-semibold"> 0 Unidades</span>
-
-          }
-        </div>
-      </div>
-
-      <div class="product-card__extra-info flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
-        <div class="product-card__extra-col flex flex-col items-center justify-center flex-wrap gap-y-2 lg:gap-y-1.5">
-          <span class="text-sm font-semibold">Canal</span>
-          @if (product().channel === 'mely') {
-              <img class="card-order__channel-img w-14 h-14 rounded-[50%] p-1" src="assets/img/mely_logo.webp" alt="mercado libre">
-            }  @else if (product().channel === 'amazon') {
-                <img class="card-order__channel w-14 h-14 rounded-[50%] border-[1px] p-1 border-slate-200" src="assets/img/amazon_logo.webp" alt="Amazon">
-               } @else if (product().channel === 'claroshop') {
-                  <img class="card-order__channel w-14 h-14 rounded-[50%] p-1" src="assets/img/claroshop_logo-2.png" alt="Claroshop">
-               } @else {
-                  <img class="card-order__channel w-14 h-14 rounded-[50%] border-[1px] p-1 border-slate-200" src="assets/img/woocommerce__logo.png" alt="Woocommerce">
-              
-               }
-        </div>
-        <div class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
-          <span class="product-card__price text-sm font-semibold" [ngStyle]="{
-              color: product().status === 'inactive' && 'var(--surface-600)'
-            }">
-            {{ product().regular_price | currency }}
-          </span>
-
-          <span class="product-card__label text-xs"> precio regular </span>
-
-          <a href="#" class="product-card__a text-xs text-blue-700 font-semibold">
-            Modificar precio
-          </a>
-        </div>
-
-        <div class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
-          <span class="product-card__sale text-sm font-semibold" [ngStyle]="{
-              color: product().status === 'inactive' && 'var(--surface-600)'
-            }">
-            {{ product().sale_price || product().regular_price | currency }}
-          </span>
-
-          <span class="product-card__label text-xs">
-            precio al publico
-          </span>
-        </div>
-
-        <div class="product-card__extra-col flex flex-col flex-nowrap gap-y-2 lg:gap-y-1.5">
-          <span class="product-card__isActive-product text-sm font-semibold" [ngStyle]="{
-              color: product().status === 'inactive' && 'var(--surface-600)'
-            }">
-            {{ product().status === "active" ? "Activo" : "Inactivo" }}
-          </span>
-          <p-inputSwitch [name]="product().sku" inputId="inputSwitchProduct {{ product().id }}" [trueValue]="
-              product().units === 0 ||
-              product().units === null ||
-              product().status === 'inactive'
-            " [disabled]="true" [readonly]="true"></p-inputSwitch>
-        </div>
-      </div>
-
-      @if(!isOpen && product().store === 'mely') {
-        hola desde meluy
-      }
-      } @else { 
+  @case('loading') { 
+    <div class="product-card__var px-6 py-7 lg:ml-[13em]">
+      <div class="product-card__var-row grid grid-cols-1 lg:grid-cols-2 w-full ml-4"> 
         
-        @switch (dropdownStatus().status) {
-          @case('loading') {
-            <div
-              class="skeleton__card flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4"
-            >
-              <div class="skeleton__col skeleton__col-product flex mb-3">
-                <p-skeleton size="4rem" styleClass="mr-2"></p-skeleton>
-                <div>
-                  <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
-                  <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
-                  <p-skeleton width="5rem"></p-skeleton>
-                </div>
-              </div>
-            </div>
-            <div class="skeleton__col skeleton__col-details flex mb-3">
-              <p-skeleton
-                width="30rem"
-                height="6rem"
-                styleClass="mr-2"
-              ></p-skeleton>
-            </div>
-        } 
-        @case('success') {
-          <div
-            class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4"
-          >
-            <div
-              class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px]"
-            >
-              <img
-                [ngStyle]="{
-                  opacity: dropdownInfo().status === 'inactive' && '.7'
-                }"
-                [src]="dropdownInfo().imagesProduct![0].src || ''"
-                class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100"
-              />
-            </div>
+        <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
+          <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px]">
+            <p-skeleton size="2rem" styleClass="mr-2" />
 
-            <div
-              class="product-card__info flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0"
-            >
-              <div class="product-card__info-sku text-xs">
-                #{{ dropdownInfo().id }} | Sku:
-                {{ dropdownInfo().sku }}
-              </div>
-
-              <a href="#" class="product-card__info-link-product">
-                <div
-                  [ngStyle]="{
-                    color:
-                      dropdownInfo().status === 'inactive' &&
-                      'var(--surface-600)'
-                  }"
-                  class="product-card__name text-sm font-bold"
-                >
-                  {{ dropdownInfo().title | slice : 0 : 61 }}
-                </div>
-              </a>
-
-              <div
-                class="product-card__info-store product-card__store-woocommerce text-xs font-bold rounded-md inline py-1 px-2 bg-red-100 text-red-700"
-              >
-                ClaroShop
-              </div>
-
-              @if(dropdownInfo().units) {
-              <div class="product-card__info-quantity text-xs font-semibold">
-                {{ dropdownInfo().units }}
-                {{ dropdownInfo().units === 0 ? "unidad" : "unidades" }}
-              </div>
-              } @else if (dropdownInfo().units === null ||
-              dropdownInfo().status === 'active') {
-              <span class="text-xs font-semibold text-green-600">
-                Hay Existencia
-              </span>
-              } @else if(dropdownInfo().units === 0 &&
-              dropdownInfo().status === 'inactive') {
-
-              <span class="text-xs font-semibold"> 0 Unidades</span>
-              } @else {
-              <span class="text-xs font-semibold"> 0 Unidades</span>
-
-              }
-            </div>
-          </div>
-
-          <div
-            class="product-card__extra-info flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4"
-          >
-
-          <div class="product-card__extra-col flex flex-col items-center justify-center flex-wrap gap-y-2 lg:gap-y-1.5">
-            <span class="text-sm font-semibold">Canal</span>
-            @if (product().channel === 'mely') {
-                <img class="card-order__channel-img w-14 h-14 rounded-[50%] p-1" src="assets/img/mely_logo.webp" alt="mercado libre">
-              }  @else if (product().channel === 'amazon') {
-                  <img class="card-order__channel w-14 h-14 rounded-[50%] border-[1px] p-1 border-slate-200" src="assets/img/amazon_logo.webp" alt="Amazon">
-                 } @else if (product().channel === 'claroshop') {
-                    <img class="card-order__channel w-14 h-14 rounded-[50%] p-1" src="assets/img/claroshop_logo-2.png" alt="Claroshop">
-                 } @else {
-                    <img class="card-order__channel w-14 h-14 rounded-[50%] border-[1px] p-1 border-slate-200" src="assets/img/woocommerce__logo" alt="Woocommerce">
-                
-                 }
-          </div>
-          
-            <div
-              class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5"
-            >
-              <span
-                class="product-card__price text-sm font-semibold"
-                [ngStyle]="{
-                  color:
-                    dropdownInfo().status === 'inactive' &&
-                    'var(--surface-600)'
-                }"
-              >
-                {{ dropdownInfo().regular_price | currency }}
-              </span>
-
-              <span class="product-card__label text-xs"> precio regular </span>
-
-              <a
-                href="#"
-                class="product-card__a text-xs text-blue-700 font-semibold"
-              >
-                Modificar precio
-              </a>
-            </div>
-
-            <div
-              class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5"
-            >
-              <span
-                class="product-card__sale text-sm font-semibold"
-                [ngStyle]="{
-                  color:
-                    dropdownInfo().status === 'inactive' &&
-                    'var(--surface-600)'
-                }"
-              >
-                {{
-                  dropdownInfo().sale_price ||
-                    dropdownInfo().regular_price | currency
-                }}
-              </span>
-
-              <span class="product-card__label text-xs">
-                precio al publico
-              </span>
-            </div>
-
-            <div
-              class="product-card__extra-col flex flex-col flex-nowrap gap-y-2 lg:gap-y-1.5"
-            >
-              <span
-                class="product-card__isActive-product text-sm font-semibold"
-                [ngStyle]="{
-                  color:
-                    dropdownInfo().status === 'inactive' &&
-                    'var(--surface-600)'
-                }"
-              >
-                {{
-                  dropdownInfo().status === "active"
-                    ? "Activo"
-                    : "Inactivo"
-                }}
-              </span>
-              <p-inputSwitch
-                [name]="dropdownInfo().sku"
-                inputId="inputSwitchProduct {{ dropdownInfo().id }}"
-                [trueValue]="
-                  dropdownInfo().units === 0 ||
-                  dropdownInfo().units === null ||
-                  dropdownInfo().status === 'inactive'
-                "
-                [disabled]="true"
-                [readonly]="true"
-              ></p-inputSwitch>
-            </div>
-          </div>
-
-        }
-
-      }
-      
         
-    }
-    </div>
+          </div>
 
+          <div class="product-card__info flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+            <p-skeleton width="10rem" styleClass="mb-2" />
+
+          </div>
+
+        </div>
+
+        <div class="product-card__extra-info flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
+          <div class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+            <p-skeleton width="10rem" height="4rem" />
+
+          </div>
+        </div>
+
+      </div>
     </div>
+  } @case('success') {
+    <div class="product-card__var px-6 py-7 lg:ml-[13em]" >
+  @for (variante of productVars(); track $index) {
+    <div class="product-card__var-row grid grid-cols-1 lg:grid-cols-2 w-full ml-4 border-t-[1px] border-slate-200 py-4"  [ngStyle]="{
+      'background-color':
+        variante.status === 'inactive'
+          ? 'var(--surface-200)'
+          : 'var(--surface-card)'
+    }">
+    
+     <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
+       <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[120px] h-[120px] lg:w-[80px] lg:h-[80px]">
+         @if (variante.imgProduct) {
+         <img [ngStyle]="{ opacity: variante!.status === 'inactive' && '.7' }"
+           [src]="variante.imgProduct!.url" [alt]="variante!.imgProduct.alt || ''"
+           class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
+         }
+       </div>
+
+       <div class="product-card__col flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
+         <div class="product-card__info-sku text-xs">
+          Variante: {{variante.title}}
+         </div>
+
+         <div class="product-card__info-sku text-xs">
+           Sku: {{variante.sku}}
+          </div>
+
+          <div class="product-card__info-sku text-xs">
+           unidades: {{variante.units}}
+
+          </div>
+     
+      
+       </div>
+     </div>
+
+     <div class="product-card__extra-info flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
        
+       <div class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+         <span class="product-card__price text-sm font-semibold" [ngStyle]="{
+             color: variante.status === 'inactive' && 'var(--surface-600)'
+           }">
+           {{ variante.regular_price | currency }}
+         </span>
+
+         <span class="product-card__label text-xs"> precio regular </span>
+
+         <a href="#" class="product-card__a text-xs text-blue-700 font-semibold">
+           Modificar precio
+         </a>
+       </div>
+
+       <div class="product-card__extra-col flex flex-col flex-wrap gap-y-2 lg:gap-y-1.5">
+         <span class="product-card__sale text-sm font-semibold" [ngStyle]="{
+             color: variante.status === 'inactive' && 'var(--surface-600)'
+           }">
+           {{ variante.sale_price || variante.regular_price | currency }}
+         </span>
+
+         <span class="product-card__label text-xs"> precio al publico </span>
+       </div>
+       <div class="product-card__extra-col flex flex-col flex-nowrap gap-y-2 lg:gap-y-1.5">
+         <span class="product-card__isActive-product text-sm font-semibold" [ngStyle]="{
+             color: variante.status === 'inactive' && 'var(--surface-600)'
+           }">
+           {{ variante.status === "active" ? "Activo" : "Inactivo" }}
+         </span>
+         <p-inputSwitch [name]="variante.sku" inputId="inputSwitchProduct {{ variante.id }}"
+           [ngModel]="variante.status === 'active'" [disabled]="true" [readonly]="true"></p-inputSwitch>
+       </div>
+     </div>
+    </div>
+  } 
+     </div>
+  } @case('empty') {
+
+
+  } @case('error') {
+
+  }
+ } 

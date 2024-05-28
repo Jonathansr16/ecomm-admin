@@ -11,6 +11,9 @@ import { MelyService } from '@mely/mely.service';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
+import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { PositionVariante } from 'src/app/core/interface/position-variante.interface';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -52,9 +55,13 @@ export default class InventoryComponent {
 
   statusData: StatusData = { status: 'loading' };
   StatusExtraInfo?: StatusInfoData;
+
+
+  statusProductVar: StatusData = {status: 'loading'};
+  productVar: VariantProduct[] = [];
+
   melyProducts: ProductInventory[] = [];
   itemsWithIds: string[] = [];
-
 
   //parametros iniciales para la paginación
   paginationParams: PaginationParams = {
@@ -63,12 +70,11 @@ export default class InventoryComponent {
     first: 0,
   };
 
-  totalProducts: number =0;
+  totalProducts = 0;
   // ordersBy:
-  //  'total_sold_quantity_asc' | 'total_sold_quantity_desc' 
+  //  'total_sold_quantity_asc' | 'total_sold_quantity_desc'
   //  | 'available_quantity_asc' | 'available_quantity_desc' |
   //  "last_updated_desc"| "last_updated_asc" = 'total_sold_quantity_asc';
-
 
   ordersBy = 'total_sold_quantity_desc';
 
@@ -95,50 +101,72 @@ export default class InventoryComponent {
   private readonly activedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+
   ngOnInit(): void {
-    this.activedRoute.queryParamMap.subscribe( (params: ParamMap) => {
+    this.activedRoute.queryParamMap.subscribe((params: ParamMap) => {
       const orders = params.get('orders');
       const limit = params.get('limit');
       const offset = params.get('offset');
       this.paginationParams.rows = limit !== null ? +limit : 10;
       this.paginationParams.page = offset !== null ? +offset : 0;
       this.ordersBy = orders !== null ? orders : 'total_sold_quantity_desc';
-      this.getProductsByUser()
+      this.getProductsByUser();
     });
-
   }
-
 
   getProductsByUser() {
-
-    this.melyService.getProductsByUserId(this.ordersBy, this.paginationParams.rows, this.paginationParams.page).subscribe(
-      { 
-        next: (resp) => 
-          {
-           this.getProductsIds(resp.products);
-           this.totalProducts = resp.totalproducts;
-         },
-         error: (err) => 
-          {
-           console.log(err)
-          }
-    }
-    )
+    this.melyService
+      .getProductsByUserId(
+        this.ordersBy,
+        this.paginationParams.rows,
+        this.paginationParams.page
+      )
+      .subscribe({
+        next: (resp) => {
+          this.getProductsIds(resp.products);
+          this.totalProducts = resp.totalproducts;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
-
 
   getProductsIds(productsId: string[]) {
     this.statusData.status = 'loading';
 
-  this.melyService.getProductsByids(productsId).subscribe( {
-    next: (resp) => {
-     this.statusData.status = resp.length > 0 ? 'success' : 'empty';
-      this.melyProducts = resp;
-    }, error: (err) => {
-      console.log(err)
-    }
-  })
+    this.melyService.getProductsByids(productsId).subscribe({
+      next: (resp) => {
+        this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+        this.melyProducts = resp;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
+
+  getVariant(product: PositionVariante) {
+
+this.statusProductVar.status = 'loading';
+         this.melyService.getProductByVariant(product.idProduct).subscribe({
+        next: (resp: any) => {
+          this.statusProductVar.status = 'success'
+         
+          this.productVar = resp;
+        },
+
+        error: (err) => {
+       
+          this.productVar = [];
+          console.log(err);
+        },
+      });
+    
+  
+
+  }
+
 
   changedPage(event: any) {
     this.paginationParams.page = event.first;
@@ -154,3 +182,4 @@ export default class InventoryComponent {
     });
   }
 }
+

@@ -18,6 +18,8 @@ import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardProductComponent } from './card-product/card-product.component';
 import { StatusInfoData } from 'src/app/core/interface/status-data-info.interface';
 import { CardDropdownProductComponent } from './card-dropdown-product/card-dropdown-product.component';
+import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { PositionVariante } from 'src/app/core/interface/position-variante.interface';
 
 @Component({
   selector: 'app-inventory-list',
@@ -43,12 +45,12 @@ export class InventoryListComponent {
   statusProducts = input.required<StatusData>();
   statusInfoProducts = input<StatusInfoData>();
   products = input.required<ProductInventory[]>();
-  isOpen: boolean[] = [];
   totalRecords = input.required<number>();
 
   //multiple
-  @Input() statusProductsExtraInfo: StatusData[] = [];
-  @Input() productsExtraInfo: ProductInventory[] = [];
+  statusProductVars = input<StatusData>();
+  productsVar = input<VariantProduct[]>();
+  emitProduct = output<PositionVariante>();
 
   menuSearch = input<SearchMenuFilter[]>();
   // totalRecords = input.required<number>();
@@ -62,7 +64,6 @@ export class InventoryListComponent {
   searchValue = output<string>();
   changeLabelValue = output<'todo' | 'title' | 'id' | 'sku'>();
   changedPagination = output<PaginationParams>();
-  emitProduct = output<any>();
 
   perPageOptions: number[] = [10, 20, 30, 50];
 
@@ -230,22 +231,12 @@ export class InventoryListComponent {
     this.changedPagination.emit(event);
   }
 
-  toggleAccordeon(index: number, idProduct: number) {
-    // this.isOpen[index] = !this.isOpen[index];
+  toggleAccordeon(index: number, idProduct: string) {
+    this.emitProduct.emit({ index, idProduct });
 
-    if (!this.productsExtraInfo![index]) {
-      this.emitProduct.emit({ index, idProduct });
-    }
   }
 
-  // emitProducto(i: number, id: any) {
-  //   if(this.productsExtraInfo[i] !== this.products()[i]) {
-  //     this.productsExtraInfo[i] = this.pro
-  //   } else {
-  //     this.emitProduct.emit(id);
-  //     this.statusProductsExtraInfo[i].status = 'loading'
-  //   }
-  // }
+
 }
 
 interface EmitDetailProduct {

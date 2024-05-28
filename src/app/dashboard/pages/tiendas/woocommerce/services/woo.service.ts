@@ -113,12 +113,16 @@ export class WooService {
       sale_price: parseFloat(producto.regular_price),
       units: producto.stock_quantity,
       category: producto.categories,
-      imagesProduct: producto.images,
+      imageProduct: {
+        id: producto.images[0].id.toString(),
+        url: producto.images[0].src,
+        alt: producto.images[0].alt,
+      },
       status:
         producto.stock_quantity > 0 || producto.stock_status === 'instock'
           ? 'active'
           : 'inactive',
-      isDropdownInformation: false,
+      isDropdownInformation: producto.variations.length > 0 ? true : false,
       channel: 'woocommerce',
     }
   }
@@ -235,9 +239,10 @@ export class WooService {
       status: orderResponse.status === 'pending' ? 'En Proceso' : 'Concretado',
       date_created: orderResponse.date_created,
       authorization_date: orderResponse.date_completed,
-      fulfillment: false,
+      isFulfillment: false,
       total_order: parseFloat(orderResponse.total),
       products: orderResponse.line_items.map((productOrder) => ({
+        id: productOrder.id.toString(),
         product: productOrder.name,
         sku: productOrder.sku,
         total_product: parseFloat(productOrder.total),

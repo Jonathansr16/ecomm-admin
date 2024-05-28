@@ -1,0 +1,94 @@
+<div class="questions container mt-8">
+    
+    <div class="questions__actions questions__row bg-white px-3 py-4 flex items-center justify-between gap-4 mb-4">
+        <div class="questions__cols">
+            <p-button [style]="{ 'font-size': '14px'}" class="youtube p-0" aria-label="Youtube">
+                <i class="pi pi-calendar-minus"></i>
+                <span class="px-3">Ultimo 15 días</span>
+                <i class="pi pi-chevron-down text-sm"></i>
+
+            </p-button>
+        
+        </div>
+        <div class="questions__cols flex items-center justify-between gap-1">
+            
+            <div class="questions__col border-r-[1px] border-r-slate-300 pr-4">
+               <p class="text-sm text-slate-500">64 preguntas</p>
+            </div>
+            <div class="questions__col">
+                <p-toast />
+                <p-menu #menu [model]="items" [popup]="true" />
+                <p-button [style]="{ 'font-size': '14px' }" (onClick)="menu.toggle($event)" icon="pi pi-sliders-v" [rounded]="true" [text]="true" severity="help" />    
+            </div>
+           
+        </div>
+
+    </div>
+
+    @for ( item of questions; track i; let i = $index) {
+
+        <div class="question__card mb-4">
+    
+            <div class="accordeon__header flex items-center justify-between gap-4 bg-white px-4 py-6">
+    
+                <div class="accordeon__col flex items-center gap-4">
+                   
+                    <div class="question__product-col product-card__picture mx-auto w-[180px] h-[180px] lg:w-[65px] lg:h-[65px]">
+                        <img [src]="item.question_item.img.url" alt="" class="question-product__img">
+                    </div>
+    
+                    <div class="question__product-col w-72">
+                        <span class="text-sm font-normal text-slate-700">sku: {{item.question_item.sku}}</span>
+                        <p class="text-sm font-normal text-slate-700">{{item.question_item.title}}</p>
+                    </div>
+    
+                </div>
+
+                <div class="accordeon__col">
+                    <span class="font-medium text-sm text-slate-700">{{item.question_item.price | currency}} x unidad</span>
+                </div>
+                <div class="accordeon__col">
+                <i class="pi pi-ellipsis-v cursor-pointer"></i>
+    
+                </div>
+            </div>
+    
+            <div class="accordeon__body cursor-pointer" (click)="toggleAccordeon(i)">
+                <div class="accordeon__question-items rounded-b-[6px] shadow-sm">
+                    <div class="accordeon__question-item px-4 py-6 flex items-center justify-between" >
+                      
+                        @if (activeAccordeon !== i) {
+
+                            <div class="accordeon__question-text">
+                                <p class="text-sm text-slate-700"> {{item.text | slice: 0:140}} <span *ngIf="item.text.length > 140" class="more">...</span></p>
+                                <p class="text-sm text-slate-500">{{item.answer.text | slice: 0:70}} <span *ngIf="item.answer.text.length > 70" class="more">...</span></p>
+                            </div>
+                        } @else {
+
+                            <div class="accordeon__question-text px-4 py-8">
+                                hola
+                            </div>
+                        }
+
+
+                        <div class="accordeon__question-toggle">
+                            <p-button (onClick)="isActive = !isActive" icon="pi pi pi-chevron-down" [rounded]="true" [text]="true" severity="info" />
+                        </div>
+                    </div>
+
+                </div>
+    
+            
+            </div>
+        </div>
+    }
+
+
+   <p-paginator 
+    (onPageChange)="onPageChange($event)" 
+    [first]="paginationParams.first"
+    [rows]="paginationParams.rows" 
+    [totalRecords]="120" 
+    [rowsPerPageOptions]="[10, 20, 30]" />
+    
+</div>

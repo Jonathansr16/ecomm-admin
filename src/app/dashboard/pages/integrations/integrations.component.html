@@ -1,0 +1,27 @@
+
+<div class="container mt-4">
+    <h1 class="text-3xl font-semibold text-slate-700">Integracion de tiendas</h1>
+
+    <div class="integration-info mt-4 bg-purple-100 rounded-lg shadow shadow-purple-200/50">
+        <p class=" text-sm text-purple-700 py-4 px-4">Hola 👋, Empieza a integrar todas tus tiendas y descubre lo facil
+            que es administrar cada una de ella desde un mismo sitio. <strong>Recuerda que:</strong> Si no sabes o tienes dudas
+            de como integrar cada una de tus tiendas puedes consultar la sección <strong>Ayuda</strong>.
+        </p>
+    </div>
+
+    <div class="integrations-channels flex items-center justify-between gap-4 mt-8">
+      @for (channel of channelData; track $index) {
+
+          <div class="integrations-card bg-white p-8 rounded-lg">
+              <h2 class="text-2xl text-slate-700 font-medium text-center">{{channel.label}}</h2>
+  
+              <img [src]="channel.img.url" [alt]="channel.img.alt" class="max-w-20 max-h-20 w-full h-full object-contain mt-4 mx-auto">
+  
+              <div class="integrations-card__footer flex items-center mt-4 gap-4">
+                  <p-button [style]="{ 'font-size': '14px', 'font-weight': '500', 'padding': '8px 12px' }" label="integrar" />
+                  <p-button [style]="{ 'font-size': '14px', 'font-weight': '500', 'padding': '8px 12px' }" label="Desvincular" severity="danger" />
+              </div>
+          </div>
+      }
+    </div>
+</div>

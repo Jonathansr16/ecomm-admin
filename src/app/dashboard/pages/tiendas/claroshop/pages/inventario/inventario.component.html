@@ -31,16 +31,16 @@
   </div>
 </div>
 
+<!-- [productsExtraInfo]="productsDetail" -->
+<!-- (emitProduct)="getProduct($event)" -->
 <app-inventory-list
 [statusProducts]="statusProducts"
 [products]="products"
 [totalRecords]="totalProducts"
-[statusProductsExtraInfo]="statusProductsDetail"
-[productsExtraInfo]="productsDetail"
 [menuProduct]="MenuProduct"
  (changeLabelValue)="changeTypeSearch($event)"
  (searchValue)="getProductsBySearch($event)"
- (emitProduct)="getProduct($event)"
+
  (changedPagination)="paginationChanged($event)"
 >
 </app-inventory-list>

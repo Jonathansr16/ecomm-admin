@@ -1,37 +1,40 @@
-<section class="sidebar" [class.hide-sidebar]="sidebarCollapse()">
+<div class="sidebar-wrapper">
 
-  <div class="sidebar-close">
-    <button
-    (click)="toggleSidebar()"
-    severity="danger"
-    class="sidebar-close__btn p-ripple p-element p-button p-component p-button-icon-only p-button-danger p-button-rounded p-button-text"
-    type="button">
-    <i class="order__i pi pi-times"></i>
-  </button>
-  </div>
-
-  <div class="sidebar-head">
-    <div class="sidebar-head__user">
-      <img src="assets/img/profile-example.webp" class="sidebar-head__img" loading="lazy" alt="profile" />
+  <section class="sidebar" [class.hide-sidebar]="sidebarCollapse()">
+  
+    <div class="sidebar-close">
+      <button
+      (click)="toggleSidebar()"
+      severity="danger"
+      class="sidebar-close__btn p-ripple p-element p-button p-component p-button-icon-only p-button-danger p-button-rounded p-button-text"
+      type="button">
+      <i class="order__i pi pi-times"></i>
+    </button>
     </div>
-
-    <div class="sidebar-head__details">
-      <p class="sidebar-head__title">Web developer</p>
-      <p class="sidebar-head__name">Jong SanR.</p>
-    </div>
-  </div>
-
-  <div class=" sidebar__contain">
-    <div class="sidebar__content">
-      <div class="sidebar-toggle">
-        <i #arrow (click)="toggleSidebar()" class="material-icons sidebar-toggle__i">chevron_left</i>
+  
+    <div class="sidebar-head">
+      <div class="sidebar-head__user">
+        <img src="assets/img/profile-example.webp" class="sidebar-head__img" loading="lazy" alt="profile" />
       </div>
-
-
-      <app-sidebar-menu [titleSection]="'Main'" [menuData]="menuDataMain" ></app-sidebar-menu>
-
-      <app-sidebar-menu [titleSection]="'Ayuda'" [menuData]="menuDataHelp"></app-sidebar-menu>
- 
+  
+      <div class="sidebar-head__details">
+        <p class="sidebar-head__title">Web developer</p>
+        <p class="sidebar-head__name">Jong SanR.</p>
+      </div>
     </div>
-  </div>
-</section>
+  
+    <div class=" sidebar__contain">
+      <div class="sidebar__content">
+        <div class="sidebar-toggle z-10">
+          <i #arrow (click)="toggleSidebar()" class="material-icons sidebar-toggle__i" [ngStyle]="{'transform': sidebarCollapse() ?  'rotate(180deg)' : ''}">chevron_left</i>
+        </div>
+  
+  
+        <app-sidebar-menu [titleSection]="'Main'" [menuData]="menuDataMain" ></app-sidebar-menu>
+  
+        <app-sidebar-menu [titleSection]="'Ayuda'" [menuData]="menuDataHelp"></app-sidebar-menu>
+   
+      </div>
+    </div>
+  </section>
+</div>

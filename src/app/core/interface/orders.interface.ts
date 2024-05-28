@@ -5,7 +5,7 @@ export interface Orders {
     status:  'Pendiente' | 'En Proceso' | 'Concretado' | 'En Devolucion' | 'No Concretada';
     date_created: Date;
     authorization_date: Date;
-    fulfillment: boolean;
+    isFulfillment: boolean;
     total_order: number;
     messeger_service?: string;
     tracking_guide?: string;
@@ -14,6 +14,7 @@ export interface Orders {
 }
 
 export interface ProductOrder {
+    id: string;
     product: string;
     sku: string;
     total_product: number;

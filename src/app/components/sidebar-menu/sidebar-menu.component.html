@@ -9,6 +9,9 @@
             <div class="sidebar-item__box">
               <i class="material-icons-outlined sidebar__icon">{{ menu.iconLeft }}</i>
               <span class="sidebar__label">{{ menu.label }}</span>
+              @if (menu.isBadge && menu.badegeCount) {
+                <app-badge [badgeNumber]="menu.badegeCount" [badgeClass]="menu.badgeClass"></app-badge>
+              }
             </div>
           </a>
         } @else {
@@ -16,6 +19,10 @@
             <div class="sidebar-item__box">
               <i class="material-icons-outlined sidebar__icon">{{ menu.iconLeft }}</i>
               <span class="sidebar__label">{{ menu.label }}</span>
+              @if (menu.isBadge) {
+                <app-badge [badgeNumber]="menu.badegeCount ? menu.badegeCount : 0" [badgeClass]="menu.badgeClass"></app-badge>
+              }
+           
             </div>
             <i class="material-icons-outlined sidebar__icon sidebar-item__icon-arrow" [class.animateArrow]="activeMenu === i">{{menu.iconRight}}</i>
           </button>
@@ -24,9 +31,17 @@
               <li class="dropdown-item sidebar-item">
                 <button (click)="toggleSubMenu(j)" type="button" class="sidebar-item__btn dropdown-toggle">
                   <div class="sidebar-item__box">
-                    <i class="material-icons-outlined sidebar__icon">{{ submenu.iconLeft }}</i>
-                    <span class="dropdown__label">{{ submenu.label }}</span>
+
+                    <!-- <i class="material-icons-outlined sidebar__icon">{{ submenu.iconLeft }}</i> -->
+                    <!-- <img [src]="submenu.iconLeft" alt="" class="max-w-7 max-h-7 w-full h-full"> -->
+                    <span class="dropdown__label">{{ submenu.label }}
+                    </span>
+                    @if (submenu.isBadge && submenu.badegeCount) {
+                      <app-badge [badgeNumber]="submenu.badegeCount ? submenu.badegeCount : 0" [badgeClass]="submenu.badgeClass"></app-badge>
+                    }
+                  
                   </div>
+              
                   <i class="material-icons-outlined sidebar__icon dropdown__icon-arrow" [class.animateArrow]="activeSubMenu === j">{{ submenu.iconRight }}</i>
                 </button>
                 <ul class="dropdown-submenu" [class.show-submenu]="activeSubMenu === j">
@@ -34,8 +49,12 @@
                     <li class="dropdown-subitem sidebar-item">
                       <a class="dropdown-subitem__a sidebar-item__a" [routerLink]="subitem.routerLink" routerLinkActive="isActive" [queryParams]="subitem?.queryParams">
                         <div class="sidebar-item__box">
-                          <i class="material-icons-outlined sidebar__icon">{{ submenu.iconLeft }}</i>
-                          <span class="dropdown__label">{{ subitem.label }}</span>
+                          <!-- <i class="material-icons-outlined sidebar__icon">{{ subitem.iconLeft }}</i> -->
+                          <span class="dropdown__label">{{ subitem.label }}
+                          </span>
+                          @if (subitem.isBadge && subitem.badegeCount) {
+                            <app-badge [badgeNumber]="subitem.badegeCount ? subitem.badegeCount : 0 " [badgeClass]="subitem.badgeClass"></app-badge>
+                          }
                         </div>
                       </a>
                     </li>
