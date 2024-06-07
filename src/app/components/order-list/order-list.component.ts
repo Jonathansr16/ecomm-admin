@@ -68,6 +68,7 @@ export class OrderListComponent {
     page: 1,
     rows: 10,
     first: 1,
+    totalRecords: 0
   };
 
   totalOrders = input.required<number>();

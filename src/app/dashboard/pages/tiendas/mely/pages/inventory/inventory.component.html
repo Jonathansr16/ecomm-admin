@@ -10,7 +10,7 @@
       <div class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2">
         <div class="top-header__col">
           <h1 class="top-header__h1 text-3xl font-bold text text-white">Inventario</h1>
-          <span class="top-header__span text-white">26 productos</span>
+          <span class="top-header__span text-white">26 {{paginationParams.totalRecords}}</span>
         </div>
   
         <div class="top-header__col">
@@ -28,9 +28,9 @@
   </div>
 
 <app-inventory-list
-[statusProducts]="statusData"
+  [statusProducts]="statusData"
   [products]="melyProducts"
-  [totalRecords]="totalProducts"
+  [totalRecords]="paginationParams.totalRecords"
   [statusInfoProducts]="StatusExtraInfo"
   [menuProduct]="menuProduct"
   (changedPagination)="changedPage($event)"

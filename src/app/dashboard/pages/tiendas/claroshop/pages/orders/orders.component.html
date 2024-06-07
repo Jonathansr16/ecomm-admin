@@ -27,7 +27,7 @@
           >
           </p-button> -->
         <span class="top-header__span text-white font-semibold">
-          26 productos
+          26 {{paginationParams.totalRecords}}
         </span>
       </div>
     </div>
@@ -51,7 +51,7 @@
     [statusData]="statusData"
     [orderOption]="menuOrder"
     [dataOrders]="orders"
-    [totalOrders]="totalOrders"
+    [totalOrders]="paginationParams.totalRecords"
     (emitId)="getId($event)"
     (changePagination)="paginationChanged($event)"
   >

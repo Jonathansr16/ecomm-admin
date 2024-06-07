@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { OrderDetailsComponent } from '@components/order-details/order-details.component';
 import { MelyService } from '@mely/mely.service';
 import { OrderDetails } from 'src/app/core/interface/order-details.interface';
@@ -22,6 +22,7 @@ import { StatusData } from 'src/app/core/interface/status-data.interface';
   styleUrl: './details.component.scss',
 })
 export default class DetailsComponent { 
+  @Input('id') productId!: string;
 
   statusOrderDetails:  StatusData = {status: 'loading'};
   details!: OrderDetails;

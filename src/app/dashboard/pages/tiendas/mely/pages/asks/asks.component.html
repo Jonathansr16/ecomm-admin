@@ -1,14 +1,43 @@
+<div class="top-header">
+    <div class="top-header__content container">
+      <div class="top-header__row top-header__row-breadcrumb">
+        <app-breadcrumb
+          [breadcrumbHomeItem]="breadcrumbHome"
+          [breadcrumbItems]="breadcrumbItems"
+        >
+        </app-breadcrumb>
+      </div>
+  
+      <div
+        class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2"
+      >
+        <div class="top-header__col">
+          <h1 class="top-header__h1 text-3xl font-semibold text text-white">
+            Preguntas
+          </h1>
+        </div>
+  
+        <div class="top-header__col">
+  
+          <span class="top-header__span text-white font-semibold">65 Preguntas</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
 <div class="questions container mt-8">
     
     <div class="questions__actions questions__row bg-white px-3 py-4 flex items-center justify-between gap-4 mb-4">
         <div class="questions__cols">
-            <p-button [style]="{ 'font-size': '14px'}" class="youtube p-0" aria-label="Youtube">
+            <p-button (onClick)="menuTopbar.toggle($event)" [style]="{ 'font-size': '14px'}" class="youtube p-0" aria-label="Youtube">
                 <i class="pi pi-calendar-minus"></i>
-                <span class="px-3">Ultimo 15 días</span>
+                <span class="px-3">{{topbarLabel}}</span>
                 <i class="pi pi-chevron-down text-sm"></i>
 
             </p-button>
-        
+            <p-menu #menuTopbar [model]="topbarMenu" [popup]="true" />
+
         </div>
         <div class="questions__cols flex items-center justify-between gap-1">
             
@@ -25,70 +54,142 @@
 
     </div>
 
-    @for ( item of questions; track i; let i = $index) {
+    @switch (statusQuestion.status) {
 
-        <div class="question__card mb-4">
-    
-            <div class="accordeon__header flex items-center justify-between gap-4 bg-white px-4 py-6">
-    
-                <div class="accordeon__col flex items-center gap-4">
-                   
-                    <div class="question__product-col product-card__picture mx-auto w-[180px] h-[180px] lg:w-[65px] lg:h-[65px]">
-                        <img [src]="item.question_item.img.url" alt="" class="question-product__img">
-                    </div>
-    
-                    <div class="question__product-col w-72">
-                        <span class="text-sm font-normal text-slate-700">sku: {{item.question_item.sku}}</span>
-                        <p class="text-sm font-normal text-slate-700">{{item.question_item.title}}</p>
-                    </div>
-    
-                </div>
+        @case('loading') {
 
-                <div class="accordeon__col">
-                    <span class="font-medium text-sm text-slate-700">{{item.question_item.price | currency}} x unidad</span>
-                </div>
-                <div class="accordeon__col">
-                <i class="pi pi-ellipsis-v cursor-pointer"></i>
+            @for (_ of [1, 2]; track $index) {
+
+                <div class="skeleton-card mb-8">
+                    <div class="skeleton-card__row items-center justify-between gap-4 bg-white px-4 py-6 border-b-[1px] border-slate-100">
     
-                </div>
-            </div>
+                        <div class="skeleton-card__col">
+                            <p-skeleton width="100%" height="5em" styleClass="mb-2" />
     
-            <div class="accordeon__body cursor-pointer" (click)="toggleAccordeon(i)">
-                <div class="accordeon__question-items rounded-b-[6px] shadow-sm">
-                    <div class="accordeon__question-item px-4 py-6 flex items-center justify-between" >
-                      
-                        @if (activeAccordeon !== i) {
-
-                            <div class="accordeon__question-text">
-                                <p class="text-sm text-slate-700"> {{item.text | slice: 0:140}} <span *ngIf="item.text.length > 140" class="more">...</span></p>
-                                <p class="text-sm text-slate-500">{{item.answer.text | slice: 0:70}} <span *ngIf="item.answer.text.length > 70" class="more">...</span></p>
-                            </div>
-                        } @else {
-
-                            <div class="accordeon__question-text px-4 py-8">
-                                hola
-                            </div>
-                        }
-
-
-                        <div class="accordeon__question-toggle">
-                            <p-button (onClick)="isActive = !isActive" icon="pi pi pi-chevron-down" [rounded]="true" [text]="true" severity="info" />
+                        </div>
+    
+                        <div class="skeleton-card__col">
+                            <p-skeleton width="100%" height="10em" styleClass="mb-2 mt-8" />
                         </div>
                     </div>
-
                 </div>
-    
+
+                <div class="skeleton-pagination mb-8">
+                    <div class="skeleton-card__row items-center justify-between gap-4 bg-white px-4 py-6 border-b-[1px] border-slate-100">
+                        <p-skeleton width="100%" height="2em" styleClass="mb-2" />
+
+                    </div>
+                </div>
+            }
+        }
+
+        @case ('success') {
+            <div class="questions-card">
+
+                @for ( item of questions; track i; let i = $index) {
             
+                    <div class="question__card mb-4">
+                
+                        <div class="accordeon__header flex items-center justify-between gap-4 bg-white px-4 py-6 border-b-[1px] border-slate-100">
+                
+                            <div class="accordeon__col flex items-center gap-4">
+                               
+                                <div class="question__product-col product-card__picture mx-auto w-[180px] h-[180px] lg:w-[65px] lg:h-[65px] lg:flex item-center hidden">
+                                    <img [src]="item.question_item.img.url" alt="" class="question-product__img">
+                                </div>
+                
+                                <div class="question__product-col w-72">
+                                    <span class="text-sm font-normal text-slate-700">sku: {{item.question_item.sku}}</span>
+                                    <p class="text-sm font-normal text-slate-700">{{item.question_item.title}}</p>
+                                </div>
+                
+                            </div>
+            
+                            <div class="accordeon__col lg:flex hidden">
+                                <span class="font-medium text-sm text-slate-700">{{item.question_item.price | currency}} x unidad</span>
+                            </div>
+                            <div class="accordeon__col">
+                            <i class="pi pi-ellipsis-v cursor-pointer"></i>
+                
+                            </div>
+                        </div>
+                
+                        <div class="accordeon__body " [ngStyle]="{'background-color': isOpen[i] ? '#fff' : ''}">
+                            <div class="accordeon__question-items rounded-b-[6px] shadow shadow-indigo-500/20 flex items-start justify-between">
+                                <div class="accordeon__question-item px-4 py-6 flex items-center justify-between w-full" >
+                                  
+                                    @if (isOpen[i]) {
+                                        <div class="accordeon__question-text px-4 py-6 w-full">
+                                            <p [style]="{'font-weight': !item.answer ? '500' : ''}" class="text-sm">{{item.text}}</p>
+            
+                                         
+                                             @if(item.answer?.text) {
+                                                 <div class="accordeon-question-response flex items-start ml-6 mt-2">
+                                                    <span class="border-transparent divide-response"></span>
+            
+                                                    <p class="text-sm text-slate-500">{{item.answer?.text}}</p>
+                                                </div>
+                                             } @else {
+                                                <div class="mt-4 mx-auto flex flex-col gap-1">
+                                                        <textarea 
+                                                        class="accordeon-question__textarea w-full lg:w-5/6 h-24" 
+                                                 
+                                                        [autoResize]="false"
+                                                            pInputTextarea>
+                                                        </textarea>
+            
+                                                 <p-button [style]="{'margin-top': '1em', 'padding': '8px 40px', 'font-size': '14px', 'font-weight': '500'}" label="Responder" />
+            
+                                                </div>
+                                             }
+                                         
+                                        </div>
+                                     
+                                    } @else {
+            
+                                        <div class="accordeon__question-text">
+                                            <p  [style]="{'font-weight': !item.answer ? '500' : ''}"  class="text-sm text-slate-700"> {{item.text | slice: 0:140}} <span *ngIf="item.text.length > 140" class="more">...</span></p>
+                                           @if(item.answer) {
+                                               <p class="text-sm text-slate-500">{{item.answer.text | slice: 0:70}} <span *ngIf="item.answer.text.length > 70" class="more">...</span></p>
+                                           }
+                                        </div>
+                                    }
+            
+                                </div>
+                                <div class="accordeon__question-toggle flex items-center justify-center m-6">
+                                    <p-button  (onClick)="isOpen[i] = !isOpen[i]" [rounded]="true" [text]="true"severity="info" [style]="{'width': '2.5rem', 'height': '2.5rem', 'padding': '0.5rem 0', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}">
+                                        <i class="pi pi-chevron-down text-sm" [class.animate-arrow]="isOpen[i]"></i>
+                    
+                                    </p-button>
+                                </div>
+            
+                            </div>
+                
+                        
+                        </div>
+                    </div>
+                }
+            
+            
+               <p-paginator 
+                (onPageChange)="onPageChange($event)" 
+                [first]="paginationParams.first"
+                [rows]="paginationParams.rows" 
+                [totalRecords]="120" 
+                [rowsPerPageOptions]="[10, 20, 30]" />
+                
             </div>
-        </div>
+        }
+
+        @case ('empty') {
+
+        }
+
+        @case('error') {
+
+        }
     }
 
+  
 
-   <p-paginator 
-    (onPageChange)="onPageChange($event)" 
-    [first]="paginationParams.first"
-    [rows]="paginationParams.rows" 
-    [totalRecords]="120" 
-    [rowsPerPageOptions]="[10, 20, 30]" />
-    
 </div>

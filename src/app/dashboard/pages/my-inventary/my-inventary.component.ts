@@ -10,4 +10,4 @@ import { Component } from '@angular/core';
   templateUrl: './my-inventary.component.html',
   styleUrl: './my-inventary.component.scss',
 })
-export class MyInventaryComponent { }
+export default class MyInventaryComponent { }

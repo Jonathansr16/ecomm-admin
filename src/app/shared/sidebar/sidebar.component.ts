@@ -90,7 +90,7 @@ export class SidebarComponent implements OnDestroy {
 
             {
               iconLeft: 'local_mall',
-              label: 'Pedidos',
+              label: 'Ordenes',
               type: 'link',
               routerLink: '/dashboard/mely/ordenes',
               queryParams: {
@@ -141,7 +141,7 @@ export class SidebarComponent implements OnDestroy {
             {
               iconLeft: 'storefront',
               type: 'link',
-              label: 'Pedidos',
+              label: 'Ordenes',
               isBadge: true,
               badgeClass: ''
             }
@@ -235,7 +235,7 @@ export class SidebarComponent implements OnDestroy {
       iconLeft: 'list_alt',
       label: 'Mi Inventario',
       type: 'link',
-      routerLink: '',
+      routerLink: '/dashboard/mi-inventario',
       isBadge: false
     },
 

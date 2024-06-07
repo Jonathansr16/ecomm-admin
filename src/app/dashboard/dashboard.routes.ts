@@ -12,6 +12,7 @@ export const dashboardRoutes: Routes = [
   {
     path: '', 
     loadComponent: () => import('./dashboard.component'),
+
     children: [
       {
         path: 'home',
@@ -19,6 +20,11 @@ export const dashboardRoutes: Routes = [
         loadComponent: () => import('./pages/home/home.component'),
       },
 
+      {
+        path:'mi-inventario',
+        title: 'mi inventario',
+        loadComponent: () => import('./pages/my-inventary/my-inventary.component')
+      },
 
       {
         path: 'claroshop',
@@ -78,6 +84,19 @@ export const dashboardRoutes: Routes = [
         pathMatch: 'full'
       }
     ]
-   }
+   },
+
+   {
+    path: 'woocommerce/editor-masivo',
+    title: 'Editor masivo',
+    loadComponent: () => import('@woocommerce/pages/woo-massive-editor/woo-massive-editor.component'),
+    providers: [
+      WooService,
+      provideHttpClient(
+        withInterceptors([KeyInterceptor])
+      )
+    ] 
+  }
+
 ];
 

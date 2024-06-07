@@ -12,6 +12,11 @@ import { PaginationParams } from 'src/app/core/interface/pagination-params.inter
 import { AccordionModule } from 'primeng/accordion';
 import { AUTO_STYLE, animate, state, style, transition, trigger } from '@angular/animations';
 import { PaginatorModule } from 'primeng/paginator';
+import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
+import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { StatusData } from 'src/app/core/interface/status-data.interface';
+import { SkeletonModule } from 'primeng/skeleton';
 
 const DEFAULT_DURATION = 0.35;
 
@@ -25,7 +30,10 @@ const DEFAULT_DURATION = 0.35;
     MenuModule,
     ToastModule,
     AccordionModule,
-    PaginatorModule
+    PaginatorModule,
+    BreadcrumbComponent,
+    InputTextareaModule,
+    SkeletonModule
   ],
   templateUrl: './asks.component.html',
   styleUrl: './asks.component.scss',
@@ -48,13 +56,39 @@ const DEFAULT_DURATION = 0.35;
   ]
 })
 export default class AsksComponent {
+
+  breadcrumbHome: BreadcrumbItem = {
+    icon: 'list_alt',
+    label: 'Preguntas',
+    separator: true,
+  };
+
+  breadcrumbItems: BreadcrumbItem[] = [
+    {
+      icon: 'storefront',
+      label: 'Tiendas',
+      separator: true,
+    },
+
+    {
+      icon: 'store',
+      label: 'Mercado libre',
+      separator: false,
+    },
+
+    {
+      icon: 'list_alt',
+      label: 'Preguntas',
+    },
+  ];
+
   paginationParams: PaginationParams = {
     page: 0,
     rows: 10,
     first: 0,
+    totalRecords: 0
   };
 
-  totalAsk = 0;
   idsProducts: string[] = [];
 
 
@@ -71,6 +105,7 @@ export default class AsksComponent {
   router = inject(Router);
   melyService = inject(MelyService);
 
+  statusQuestion: StatusData = {status: 'loading'};
   questions: MelyAskResult[] = [];
 
   items: MenuItem[] = [
@@ -92,12 +127,35 @@ export default class AsksComponent {
     }
   ];
 
+  topbarLabel: string = 'Óbtener datos desde';
+
+  topbarMenu: MenuItem[] = [
+
+    {
+      label: 'Obtener desde:',
+      items: [
+        {
+          label: 'Último 15 días',
+          command: (e) => {
+            this.topbarLabel = 'Último 15 días';
+          }
+        },
+
+        {
+          label: 'Último 30 días',
+          command: (e) => this.topbarLabel = 'Último 30 días'
+        }
+      ]
+    }
+  ];
+
+
+  textAreaValue = '';
+
   activeAccordeon: number = -1;
 isActive = false;
-  // combine$ = combineLatest([
-  //   this.melyService.getAsk(this.sort.fields, this.sort.types, this.paginationParams.rows, this.paginationParams.first),
-  //   this.melyService.getProductAsk()
-  // ])
+
+isOpen: boolean[] = [];
 
   ngOnInit(): void {
 
@@ -125,12 +183,14 @@ isActive = false;
 
 
 getQuestion() {
+  this.statusQuestion.status = 'loading';
     this.melyService.getAsk(this.sort.fields, this.sort.types, this.paginationParams.rows, this.paginationParams.first)
     .pipe(
       switchMap(response => {
-        this.melyService.idProductByQuestion = new Set(response.questions.map(q => q.item_id));
-        return forkJoin({
-          ask: [response.questions],
+        this.melyService.idProductByQuestion = new Set(response.ask.questions.map(q => q.item_id));
+        this.paginationParams.totalRecords = response.totalAsk
+        return combineLatest({
+          ask: [response.ask.questions],
           products: this.melyService.getProductAsk()
         });
       })
@@ -138,25 +198,19 @@ getQuestion() {
     .subscribe({
       next: (resp) => {
         this.melyService.productByQuestion = resp.products;
-        this.questions = resp.ask.map(question => this.melyService.transformQuestion(question));
-        console.log(this.questions)
+        this.questions = resp.ask.map( (question: any) => this.melyService.transformQuestion(question));
+         this.statusQuestion.status = resp.ask.length > 0 ? 'success' : 'empty';
+
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.log(err);
+        this.statusQuestion.status = 'error';
+        this.questions = [];
+      }
     });
 }
     
-    
-toggleAccordeon(index: number) {
-  if(this.activeAccordeon === index) {
-    this.activeAccordeon = -1;
-    console.log('abierto')
-  
-  } else {
 
-    this.activeAccordeon = index;
-    console.log('cerrado')
-  }
-}
 
 
 onPageChange(event: any) {

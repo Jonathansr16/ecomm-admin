@@ -1,7 +1,7 @@
-import { inject } from '@angular/core';
+import { WritableSignal, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { WooProducto } from '@woocommerce/models/wc-new-product.model';
 import { environment } from 'src/environments/environment.development';
@@ -16,12 +16,17 @@ import {
   WooProductResult,
 } from '@woocommerce/interface/woo-producto.interface';
 import { WooOrders } from '@woocommerce/interface/woo-order.interface';
+import { WooProductVariation } from '@woocommerce/interface/woo-product-variation.interface';
+import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { UpdateStatusProduct } from '@woocommerce/interface/update-product-status.interface';
 
 export class WooService {
   private readonly url = environment.wcommerce.apiBase;
   // private cachedDataPage: { [key: string]: any[] } = {};
   totalItems: number = 0;
   totalOrders: number = 0;
+  // productsByBatch: ProductInventory[] = []
+  private productsSignal: WritableSignal<ProductInventory[]> = signal([]);
 
   private readonly http = inject(HttpClient);
 
@@ -71,14 +76,19 @@ export class WooService {
   //       );
   //   }
   // }
-//* OBTIENE LOS PRODUCTOS
-  getProducts(page: number, per_page: number): 
-  Observable<{ products: ProductInventory[]; totalProducts: number }> {
+
+
+  //* OBTIENE LOS PRODUCTOS
+  getProducts(
+    page: number,
+    per_page: number
+  ): Observable<{ products: ProductInventory[]; totalProducts: number }> {
     let params = new HttpParams()
       .append('page', page.toString())
       .append('per_page', per_page.toString());
 
-    return this.http.get<WooProduct[]>(`${this.url}/products`, {
+    return this.http
+      .get<WooProduct[]>(`${this.url}/products`, {
         params,
         observe: 'response',
       })
@@ -88,7 +98,9 @@ export class WooService {
           const totalRecords = response.headers.get('X-WP-Total'); // Cantidad de registros
           this.totalItems = totalRecords ? +totalRecords : 0;
           return {
-            products: products ? products.map( (item) => this.transformDataProduct(item)) : [],
+            products: products
+              ? products.map((item) => this.transformDataProduct(item))
+              : [],
             totalProducts: this.totalItems,
           };
         }),
@@ -98,33 +110,6 @@ export class WooService {
           return of({ products: [], totalProducts: 0 }); // Manejar el error devolviendo un objeto vacío
         })
       );
-  }
-
-  transformDataProduct(producto: WooProduct): ProductInventory {
-
-    return {
-      id: producto.id,
-      title: producto.name,
-      description: producto.description,
-      short_description: producto.short_description,
-      sku: producto.sku,
-      store: 'woocommerce',
-      regular_price: parseFloat(producto.price),
-      sale_price: parseFloat(producto.regular_price),
-      units: producto.stock_quantity,
-      category: producto.categories,
-      imageProduct: {
-        id: producto.images[0].id.toString(),
-        url: producto.images[0].src,
-        alt: producto.images[0].alt,
-      },
-      status:
-        producto.stock_quantity > 0 || producto.stock_status === 'instock'
-          ? 'active'
-          : 'inactive',
-      isDropdownInformation: producto.variations.length > 0 ? true : false,
-      channel: 'woocommerce',
-    }
   }
 
   //* OBTIENE PRODUCTOS RELACIONADOS CON LA BUSQUEDA
@@ -173,7 +158,9 @@ export class WooService {
             }
           });
           return {
-            products: filteredProducts.map( (product) => this.transformDataProduct(product)),
+            products: filteredProducts.map((product) =>
+              this.transformDataProduct(product)
+            ),
             totalProducts: filteredProducts.length,
           };
         })
@@ -183,11 +170,20 @@ export class WooService {
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
   getProduct(id: number): Observable<WooProductResult> {
     return this.http.get<WooProduct>(`${this.url}/products/${id}`).pipe(
-  
-      map( (product) => this.transformDataProduct(product)),
+      map((product) => this.transformDataProduct(product)),
 
       catchError(this.hanlerError<any>('getProduct', {}))
     );
+  }
+
+  getProductVariation(idProduct: string): Observable<VariantProduct[]> {
+    return this.http
+      .get<WooProductVariation[]>(
+        `${this.url}/products/${idProduct}/variations`
+      )
+      .pipe(
+        map((resp) => resp.map((item) => this.transformProductVariation(item)))
+      );
   }
 
   //* OBTIENE TODAS LAS CATEGORIAS CREADAS
@@ -232,25 +228,6 @@ export class WooService {
       );
   }
 
-  private transformOrder(orderResponse: WooOrders): Orders {
-    return {
-      id: orderResponse.id.toString(),
-      noOrder: orderResponse.id.toString(),
-      status: orderResponse.status === 'pending' ? 'En Proceso' : 'Concretado',
-      date_created: orderResponse.date_created,
-      authorization_date: orderResponse.date_completed,
-      isFulfillment: false,
-      total_order: parseFloat(orderResponse.total),
-      products: orderResponse.line_items.map((productOrder) => ({
-        id: productOrder.id.toString(),
-        product: productOrder.name,
-        sku: productOrder.sku,
-        total_product: parseFloat(productOrder.total),
-        image: productOrder.image,
-      })),
-    };
-  }
-
   //* OBTIENE LA CANTIDAD DE ORDENES
   getOrdersCount(
     status: 'pending' | 'processing' | 'completed' | 'cancelled'
@@ -280,7 +257,7 @@ export class WooService {
   }
 
   //* ACTUALIZA UN PRODUCTO ESPECIFICO
-  setProduct(
+  updateProduct(
     idProduct: number,
     producto: WooProducto
   ): Observable<WooProducto> {
@@ -293,18 +270,140 @@ export class WooService {
       .pipe(catchError(this.hanlerError<any>('setProduct', {})));
   }
 
-  //*ACTUALIZA UN CAMPO ESPECIFICO
-  setFielUpdate(idProduct: any, field: string): Observable<WooProducto> {
+  //* ACTUALIZA UN CAMPO ESPECIFICO
+  updateFieldProduct(idProduct: any, field: string): Observable<WooProducto> {
     return this.http
       .put<WooProducto>(`${this.url}/products/${idProduct}`, field)
       .pipe(catchError(this.hanlerError<any>('setFieldUpdate', {})));
   }
 
-  //*ELIMINA UN PRODUCTO DEL INVENTARIO
+  //* ELIMINA UN PRODUCTO DEL INVENTARIO
   deleteProduct(idProduct: number): Observable<number> {
     return this.http
       .delete<number>(`${this.url}/products/${idProduct}`)
       .pipe(catchError(this.hanlerError<any>('deleteProduct', {})));
+  }
+
+  //* ACCIONES POR LOTE
+
+  updateProducts(products: WooProducto[]): Observable<WooProduct[]> {
+
+    const data = {
+      update: products
+    }
+
+    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data)
+  }
+
+  updateProductStatus(products: UpdateStatusProduct[]): Observable<WooProduct[]> {
+    const data = {
+     update: products
+    }
+    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data)
+  }
+
+  deleteProductsByBranch(products: number[]): Observable<WooProduct[]> {
+    const data = {
+      delete: products
+     }
+     return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data)
+  }
+ 
+  setMassiveProducts(products: ProductInventory[]) {
+    this.productsSignal.set(products);
+
+  }
+
+ getMassiveProducts(): WritableSignal<ProductInventory[]> {
+  return this.productsSignal;
+
+ }
+
+ saveData(data: ProductInventory[]) {
+  localStorage.setItem('data', JSON.stringify( data))
+ }
+
+ loadData(): ProductInventory[] {
+  const data = localStorage.getItem('data');
+  const products = data ? JSON.parse(data) : [];
+  this.productsSignal.set(products);
+  return products;
+}
+
+removeData() {
+
+    localStorage.removeItem('data')
+  
+}
+
+  //*TRANSFORM DATA
+  transformDataProduct(producto: WooProduct): ProductInventory {
+    image: producto.images[0];
+
+    return {
+      id: producto.id,
+      title: producto.name,
+      description: producto.description,
+      short_description: producto.short_description,
+      sku: producto.sku,
+      store: 'woocommerce',
+      regular_price: parseFloat(producto.price),
+      sale_price: parseFloat(producto.regular_price),
+      units: producto.stock_quantity,
+      category: producto.categories,
+      imageProduct: producto.images[0]
+        ? {
+            id: producto.images[0].id.toString(),
+            url: producto.images[0].src,
+            alt: producto.images[0].alt,
+          }
+        : undefined,
+      status: producto.status === 'publish' && producto.stock_status === 'instock' ? 'active' : 'inactive',
+
+      stock_status: producto.stock_status === 'instock' ? 'instock' : 'outofstock',
+      isDropdownInformation: producto.variations.length > 0 ? true : false,
+      channel: 'woocommerce',
+    };
+  }
+
+  transformOrder(orderResponse: WooOrders): Orders {
+    return {
+      id: orderResponse.id.toString(),
+      noOrder: orderResponse.id.toString(),
+      status: orderResponse.status === 'pending' ? 'En Proceso' : 'Concretado',
+      date_created: orderResponse.date_created,
+      authorization_date: orderResponse.date_completed,
+      isFulfillment: false,
+      total_order: parseFloat(orderResponse.total),
+      products: orderResponse.line_items.map((productOrder) => ({
+        id: productOrder.id.toString(),
+        product: productOrder.name,
+        sku: productOrder.sku,
+        total_product: parseFloat(productOrder.total),
+        image: productOrder.image,
+      })),
+    };
+  }
+
+  transformProductVariation(product: WooProductVariation): VariantProduct {
+    return {
+      id: product.id,
+      title: product.name,
+      sku: product.sku,
+      units: product.stock_quantity || 0,
+      regular_price: parseFloat(product.regular_price),
+      sale_price: parseFloat(product.sale_price),
+      imgProduct: {
+        id: product.image.id.toString(),
+        url: product.image.src,
+        alt: product.image.alt,
+      },
+
+      status:
+        product.stock_quantity || product.stock_status === 'instock'
+          ? 'active'
+          : 'inactive',
+    };
   }
 
   private hanlerError<T>(operation = 'operacion', result?: T) {
@@ -315,3 +414,4 @@ export class WooService {
     };
   }
 }
+

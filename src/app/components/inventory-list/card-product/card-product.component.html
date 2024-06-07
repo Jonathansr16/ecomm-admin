@@ -37,17 +37,17 @@
 
       <div class="product-card__content grid grid-cols-1 lg:grid-cols-2 w-full ml-4">
         <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
+          @if (product().imageProduct) {
           <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px]">
-            @if (product().imageProduct) {
-            <img [ngStyle]="{ opacity: product().status === 'inactive' && '.7' }" *ngIf="product().imageProduct"
-              [src]="product().imageProduct!.url" [alt]="product().imageProduct?.alt || ''"
+            <img [ngStyle]="{ opacity: product().status === 'inactive' && '.7' }"
+              [src]="product().imageProduct?.url" [alt]="product().imageProduct?.alt || ''"
               class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
+            </div>
             }
-          </div>
 
           <div class="product-card__info flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
             <div class="product-card__info-sku text-xs">
-              #{{ product().id }} | Sku: {{ product().sku }}
+              #{{ product().id }} | Sku: {{ product().sku || 'Sin definir'}}
             </div>
 
             <a href="#" class="product-card__info-link-product">
@@ -83,15 +83,14 @@
               {{ product().units }}
               {{ product().units === 0 ? "unidad" : "unidades" }}
             </div>
-            } @else if (product().units === null || product().status ===
-            'active') {
+            } @else if (product().units || product().status ===
+            'active' || product().stock_status === 'instock') {
             <span class="text-xs font-semibold text-green-600">
               Hay Existencia
             </span>
-            } @else if(product().units === 0 && product().status === 'inactive')
-            {
+            } @else if(!product().units && product().status === 'inactive' && product().stock_status === 'outofstock') {
 
-            <span class="text-xs font-semibold"> 0 Unidades</span>
+            <span class="text-xs font-semibold"> {{product().units || 'Sin stock'}}</span>
             } @else {
             <span class="text-xs font-semibold"> 0 Unidades</span>
 
@@ -133,7 +132,9 @@
             <span class="product-card__price text-sm font-semibold" [ngStyle]="{
                 color: product().status === 'inactive' && 'var(--surface-600)'
               }">
-              {{ product().regular_price | currency }}
+           
+          {{ (product().regular_price || 0) | currency }}
+
             </span>
 
             <span class="product-card__label text-xs"> precio regular </span>
@@ -147,7 +148,8 @@
             <span class="product-card__sale text-sm font-semibold" [ngStyle]="{
                 color: product().status === 'inactive' && 'var(--surface-600)'
               }">
-              {{ product().sale_price || product().regular_price | currency }}
+              {{ product().sale_price || product().regular_price || 0 | currency}}
+              
             </span>
 
             <span class="product-card__label text-xs"> precio al publico </span>

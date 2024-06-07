@@ -13,7 +13,7 @@ import { Orders } from 'src/app/core/interface/orders.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
 import { ButtonModule } from 'primeng/button';
 import { AUTO_STYLE, animate, state, style, transition, trigger } from '@angular/animations';
-import { combineLatest } from 'rxjs';
+import { combineLatest, concatMap } from 'rxjs';
 
 const DEFAULT_DURATION = 0.35;
 
@@ -43,8 +43,10 @@ const DEFAULT_DURATION = 0.35;
       ),
       transition('false => true', animate(DEFAULT_DURATION + 's ease')),
       transition('true => false', animate(DEFAULT_DURATION + 's ease')),
-    ]),
+    ]),  
   ],
+
+  
 })
 export default class OrderComponent {
 
@@ -65,41 +67,16 @@ export default class OrderComponent {
 
     {
       icon: 'store',
-      label: 'Woocommerce',
+      label: 'Mercado libre',
       separator: false,
     },
 
     {
       icon: 'list_alt',
-      label: 'Inventario',
+      label: 'Ordenes',
     },
   ];
 
-  datamyInventory: dataStat[] = [
-    {
-      label: 'Ordenes Pendientes',
-      quantity: 230,
-      urlImage: '/assets/img/order_pending.png'
-      // iconClass: ['pi', 'pi-box', 'text-lg', 'text-green-700'],
-      // backgroundIconClass: 'bg-green-100'
-    },
-
-    {
-      label: 'Ordenes En transito',
-      quantity: 35,
-      urlImage: '/assets/img/order_proccesing.png'
-
-    },
-
-    {
-      label: 'Ordenes Concretadas',
-      quantity: 40,
-      urlImage: '/assets/img/order_completed.png'
-
-    },
-
-
-  ];
 
   ordersOption: MenuItem[] = [
     {
@@ -149,6 +126,63 @@ export default class OrderComponent {
     }
   ];
 
+  orderByStatus = [
+
+  {
+    label: 'Ordenes pendientes',
+    quantity: 34,
+    urlImage: '/assets/img/order_pending.png',
+    typeOrders: [
+
+    ]
+  },
+
+  {
+    label: 'En proceso de entrega',
+    quantity: 50,
+    urlImage: '/assets/img/order_proccesing.png',
+    typeOrders: [
+      
+      {
+        label: 'En camino full',
+        quantity: 15
+      },
+
+      {
+        label: 'En camino',
+        quantity: 20
+      }
+    ]
+  },
+
+  {
+    label: 'Ordenes concretadas',
+    quantity: 1540,
+    urlImage: '/assets/img/order_completed.png',
+    typeOrders: [
+      
+      {
+        label: 'concretadas',
+        quantity: 1000
+      },
+
+      {
+        label: 'No concretadas',
+        quantity: 120
+      },
+
+      {
+        label: 'En devolución',
+        quantity: 30
+      }
+    ]
+  }
+
+  ]
+  
+
+  isOpen: boolean[] = [];
+isOpenCard: boolean[ ] = []
   tags1 = ['not_delivered', 'not_paid'];
 
   //* Cantidad de pedidos
@@ -173,20 +207,6 @@ export default class OrderComponent {
       return: true
     };
 
-  dataActionsOrder = [
-    {
-      label: 'Concretadas',
-      units: 1030,
-      command: () => this.getOrdersByStatus('cancelled')
-    },
-
-    {
-      label: 'No Concretadas',
-      units: 30,
-      command: () => this.getOrdersByStatus('paid')
-    }
-  ]
-
   isActive = false;
 
   router = inject(Router);
@@ -196,91 +216,80 @@ export default class OrderComponent {
   melyOrders: Orders[] = [];
   statusOrders: StatusData = { status: 'loading' };
   paginationParams: PaginationParams = {
-    page: 1,
+    page: 0,
     rows: 10,
     first: 0,
+    totalRecords: 0
   };
 
-  totalOrders: number = 0;
   sort: string = "date_desc";
   idProducts: string[] = [];
-  combine$= combineLatest([
+  combine$ = combineLatest([
     this.melyService.getOrders(this.paginationParams.rows, this.paginationParams.first, this.sort),
     this.melyService.getProductByIdOrder()
-  ]) 
+  ])
 
 
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+  
     this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
 
       const limit = params.get('limit');
       const offset = params.get('offset');
       const order_type = params.get('sort');
       this.paginationParams.rows = limit !== null ? +limit : 10;
-      this.paginationParams.page = offset !== null ? +offset : 0
+      this.paginationParams.first = offset !== null ? +offset : 0;
       this.sort = order_type !== null ? order_type : 'date_desc';
       this.getOrders();
-      
     })
   }
 
   getOrders(): void {
     this.statusOrders.status = 'loading';
-    this.melyService.getOrders(this.paginationParams.rows, this.paginationParams.page, this.sort).subscribe({
-      next: (resp) => {
-        this.melyOrders = resp.orders;
-        this.totalOrders = resp.totalOrders;
-        this.statusOrders.status = resp.orders.length > 0 ? 'success' : 'empty';
-      this.getProductById()
-        // resp.orders.forEach( item => {
-        //   this.productId = item.id
-        // })
-      },
 
-      error: (err) => {
-        this.melyOrders = [];
-        this.totalOrders = 0;
-        this.statusOrders.status = 'error';
-        console.log(err)
+    this.melyService.getOrders(this.paginationParams.rows, this.paginationParams.first, this.sort).pipe(
+      concatMap(response => {
+        this.melyService.idProductByOrder = new Set(response.orders.results.map( item => item.order_items[0].item.id));
+        this.paginationParams.totalRecords = response.totalOrders
+        return combineLatest({
+          orders: [response.orders.results],
+          products: this.melyService.getProductByIdOrder()
+        })
+      })
+    ).subscribe({
+      next: (resp) => {
+        this.melyService.productByOrder = resp.products;
+        this.melyOrders = resp.orders.map(order => this.melyService.transformOrder(order));
+        this.statusOrders.status = this.melyOrders.length > 0 ? 'success' : 'empty';
+        
+        
       }
     })
   }
 
-  getOrdersByStatus(status: string) {
+  getOrdersByStatus(status: string, tags: string[]) {
     this.statusOrders.status = 'loading';
-    this.melyService.getOrdersByStatus(status, this.sort, this.tags1, this.paginationParams.rows, this.paginationParams.first).subscribe({
+    this.melyService.getOrdersByStatus(status, this.sort, tags, this.paginationParams.rows, this.paginationParams.first)
+    
+    
+    .subscribe({
       next: (resp) => {
         console.log(resp)
         this.melyOrders = resp.orders;
-        this.totalOrders = resp.totalOrders;
+        this.paginationParams.totalRecords = resp.totalOrders;
         this.statusOrders.status = resp.orders.length > 0 ? 'success' : 'empty';
       },
       error: (err) => {
         this.statusOrders.status = 'error';
-        this.totalOrders = 0;
+        this.paginationParams.totalRecords = 0;
         this.melyOrders = [];
 
       }
     })
   }
 
-  getProductById() {
-    this.melyService.getProductByIdOrder().subscribe(
-      {
-        next: (resp) => {
-          //  console.log(resp)
-        },
 
-        error: (err) => {
-          console.log(err)
-        }
-      }
-
-    )
-  }
 
 
   changedPage(event: any) {
@@ -289,8 +298,8 @@ export default class OrderComponent {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
-        offset: event.first,
         limit: event.rows,
+        offset: event.first,
       },
 
       queryParamsHandling: 'merge',

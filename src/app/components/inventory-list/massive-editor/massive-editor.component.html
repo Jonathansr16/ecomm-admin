@@ -1,0 +1,347 @@
+<div class="massive-editor massive-editor__unstyledContainer">
+  <div class="massive-editor__container mx-auto mt-4">
+    <div
+      class="massive-editor__topbar flex items-center justify-between mb-4 mx-6"
+    >
+      <div class="massive-editor__topbar-col flex items-center gap-4">
+        <p-button
+          icon="pi pi-sliders-v"
+          [rounded]="true"
+          [text]="true"
+          severity="primary"
+        />
+        <p-inputGroup>
+          <input
+            [style]="{ padding: '6px', 'font-size': '14px' }"
+            type="text"
+            pInputText
+            placeholder="Keyword"
+          />
+          <button
+            [style]="{ padding: '6px', 'font-size': '14px' }"
+            type="button"
+            pButton
+            icon="pi pi-search"
+            class="p-button-primary"
+          ></button>
+        </p-inputGroup>
+      </div>
+      <div class="massive-editor__topbar-col flex items-center gap-4">
+        <div class="massive-editor__action text-sm text-slate-500">
+          {{ data.length }} publicaciones
+        </div>
+        <div class="massive-editor__action">
+          <p-button
+           (onClick)="updateData()"
+            [style]="{
+              padding: '8px 16px',
+              'font-size': '14px',
+              'font-weight': '500'
+            }"
+            label="Actualizar"
+            severity="primary"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="massive-editor__table">
+      <div class="massive-editor__header">
+        <div
+          class="massive-editor__row flex flex-row flex-nowrap justify-between bg-slate-200"
+        >
+          @for (label of headersData; track $index) {
+          <div
+            class="massive-editor__header-label massive-editor__col max-w-[14%] w-full p-4 text-left font-medium border-l-[1px] border-l-slate-500/20 text-sm"
+          >
+            {{ label.label }}
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="massive-editor__body bg-white">
+        <form
+          autocomplete="off"
+          [formGroup]="formTable"
+          (ngSubmit)="updateData()">
+          <ng-container formArrayName="rows">
+            @for (control of formArr.controls; let rowIndex = $index; track rowIndex) {
+            <div class="massive-editor__row flex justify-between" [formGroupName]="rowIndex">
+              <div
+                (click)="handlerSelection(rowIndex, 0)"
+                (dblclick)="handlerClickedSelection(rowIndex, 0)"
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 cursor-cell"
+                [ngStyle]="{
+                  border: isSelectedCell(rowIndex, 0) ? '1px solid #3483fa' : ''
+                }"
+              >
+                <div 
+                  class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[100px] h-[100px] lg:w-[80px] lg:h-[80px]"
+                >
+                  <img
+                    [ngStyle]="{
+                      opacity:  data[rowIndex].status === 'inactive' && '.7'
+                    }"
+                    [src]=" data[rowIndex].imageProduct?.url"
+                    [alt]=" data[rowIndex].imageProduct?.alt || ''"
+                    class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100"
+                  />
+                </div>
+              </div>
+
+              <div
+                (click)="handlerSelection(rowIndex, 1)"
+                (dblclick)="handlerClickedSelection(rowIndex, 1)"
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex flex-col items-center p-4 text-sm cursor-cell"
+                [ngStyle]="{
+                  border: isSelectedCell(rowIndex, 1) ? '1px solid #3483fa' : ''
+                }"
+              >
+              <input 
+              formControlName="title"
+              [style]="{ 'font-size': '14px' }"
+              type="text"
+              pInputText
+              [maxlength]="60"
+              [class.is-invalid]="isValidCell(rowIndex, 'title')"
+              [ngClass]="{ 'ng-invalid ng-dirty': isValidField('title') }"/>
+              
+
+              </div>
+
+              <div
+                (click)="handlerSelection(rowIndex, 2)"
+                (dblclick)="handlerClickedSelection(rowIndex, 2)"
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-cell"
+                [ngStyle]="{
+                  border: isSelectedCell(rowIndex, 2) ? '1px solid #3483fa' : ''
+                }"
+              >
+              <input 
+              formControlName="description"
+              [style]="{ 'font-size': '14px' }"
+              type="text"
+              pInputText
+              [maxlength]="60"
+              [class.is-invalid]="isValidCell(rowIndex,'description')"
+              [ngClass]="{ 'ng-invalid ng-dirty': isValidCell(rowIndex, 'description') }"/>
+              
+
+              </div>
+
+              <div
+                (click)="handlerSelection(rowIndex, 3)"
+                (dblclick)="handlerClickedSelection(rowIndex, 3)"
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-cell"
+                [ngStyle]="{
+                  border: isSelectedCell(rowIndex, 3) ? '1px solid #3483fa' : ''
+                }"
+              >
+              <input 
+              formControlName="sku"
+              [style]="{ 'font-size': '14px' }"
+              type="text"
+              pInputText
+              [maxlength]="60"
+              [ngClass]="{ 'ng-invalid ng-dirty': isValidCell(rowIndex, 'sku') }"/>
+            
+              </div>
+
+              <div
+                (click)="handlerSelection(rowIndex, 4)"
+                (dblclick)="handlerClickedSelection(rowIndex, 4)"
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-cell"
+                [ngStyle]="{
+                  border: isSelectedCell(rowIndex, 4) ? '1px solid #3483fa' : ''
+                }"
+              >
+              <input 
+              formControlName="regular_price"
+              [style]="{ 'font-size': '14px' }"
+              type="text"
+              pInputText
+              [maxlength]="60"
+              [class.is-invalid]="isValidCell(rowIndex, 'regular_price')"
+              [ngClass]="{ 'ng-invalid ng-dirty': isValidField('title') }"/>
+              
+
+              </div>
+
+              <div
+                (click)="handlerSelection(rowIndex, 5)"
+                (dblclick)="handlerClickedSelection(rowIndex, 5)"
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 cursor-cell"
+                [ngStyle]="{
+                  border: isSelectedCell(rowIndex, 5) ? '1px solid #3483fa' : ''
+                }"
+              >
+              <input 
+              formControlName="store"
+              [style]="{ 'font-size': '14px' }"
+              type="text"
+              pInputText
+              [maxlength]="60"
+              [class.is-invalid]="isValidField('title')"
+              [ngClass]="{ 'ng-invalid ng-dirty': isValidField('title') }"/>
+              
+
+              </div>
+
+              <div
+                class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-not-allowed"
+              >
+                <img
+                  src="/assets/img/Amazon_logo.png"
+                  alt="Amazon"
+                  class="w-10 h-10 rounded-[50%]"
+                  *ngIf=" data[rowIndex].channel === 'amazon'"
+                />
+                <img
+                  src="/assets/img/claroshop_logo-2.png"
+                  alt="claroshop"
+                  class="w-10 h-10 rounded-[50%]"
+                  *ngIf=" data[rowIndex].channel === 'claroshop'"
+                />
+                <img
+                  src="/assets/img/Mely_logo.svg"
+                  alt="Mercado libre"
+                  class="w-10 h-10 rounded-[50%]"
+                  *ngIf=" data[rowIndex].channel === 'mely'"
+                />
+                <img
+                  src="/assets/img/woocommerce__logo.png"
+                  alt="Woocommerce"
+                  class="w-10 h-10 rounded-[50%] mx-auto"
+                  *ngIf=" data[rowIndex].channel === 'woocommerce'"
+                />
+              </div>
+            </div>
+            }
+          </ng-container>
+        </form>
+      </div>
+
+      <!-- <div class="massive-editor__body bg-white" >
+
+          <form action="" autocomplete="off" [formGroup]="form"  (ngSubmit)="updateData()">
+        
+          @for (product of data; let rowIndex = $index; track rowIndex) {
+          <div class="massive-editor__row flex justify-between">
+            <div
+              (click)="handlerSelection(rowIndex, 0)"
+              (dblclick)="handlerClickedSelection(rowIndex, 0)"
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 cursor-cell"
+              [ngStyle]="{
+                border: isSelectedCell(rowIndex, 0) 
+                  ? '1px solid #3483fa'
+                  : ''
+              }"
+            >
+              <div
+                class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[100px] h-[100px] lg:w-[80px] lg:h-[80px]"
+              >
+                <img
+                  [ngStyle]="{ opacity: product.status === 'inactive' && '.7' }"
+                  [src]="product.imageProduct?.url"
+                  [alt]="product.imageProduct?.alt || ''"
+                  class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100"
+                />
+              </div>
+            </div>
+
+            <div
+              (click)="handlerSelection(rowIndex, 1)"
+              (dblclick)="handlerClickedSelection(rowIndex, 1)"
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex flex-col items-center p-4 text-sm cursor-cell"
+              [ngStyle]="{
+                border: isSelectedCell(rowIndex, 1)
+                  ? '1px solid #3483fa'
+                  : ''
+              }"
+            >
+            @if (isClickedCell(rowIndex, 1) && isSelectedCell(rowIndex, 1)) {
+              <div class="massive-editor__input-text">
+                <input [style]="{'font-size': '14px'}" type="text" pInputText [(ngModel)]="product.title"  [maxlength]="60" [class.is-invalid]="isValidField('title')" [ngClass]="{'ng-invalid ng-dirty': isValidField('title')}"/>
+              </div>
+            } @else {
+              {{ product.title }}
+
+            }
+            </div>
+
+            <div
+              (click)="handlerSelection(rowIndex, 2)"
+              (dblclick)="handlerClickedSelection(rowIndex, 2)"
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-cell"
+              [ngStyle]="{
+                border: isSelectedCell(rowIndex, 2)
+                  ? '1px solid #3483fa'
+                  : ''
+              }"
+            >
+              {{ product.sku }}
+            </div>
+
+            <div
+              (click)="handlerSelection(rowIndex, 3)"
+              (dblclick)="handlerClickedSelection(rowIndex, 3)"
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-cell"
+              [ngStyle]="{
+                border: isSelectedCell(rowIndex, 3)
+                  ? '1px solid #3483fa'
+                  : ''
+              }"
+            >
+              {{ product.regular_price | currency }}
+            </div>
+
+            <div
+              (click)="handlerSelection(rowIndex, 4)"
+              (dblclick)="handlerClickedSelection(rowIndex, 4)"
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-cell"
+              [ngStyle]="{
+                border: isSelectedCell(rowIndex, 4)
+                  ? '1px solid #3483fa'
+                  : ''
+              }"
+            >
+              {{ product.sale_price | currency }}
+            </div>
+
+            <div
+              (click)="handlerSelection(rowIndex, 5)"
+              (dblclick)="handlerClickedSelection(rowIndex, 5)"
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 cursor-cell"
+              [ngStyle]="{
+                border: isSelectedCell(rowIndex, 5)
+                  ? '1px solid #3483fa'
+                  : ''
+              }"
+            >
+              @if (product.status === 'active') {
+              <span
+                class="block bg-green-100 text-green-700 px-16 py-2 rounded-md text-sm font-medium"
+                >Activo</span
+              >
+              } @else {
+              <span class="block bg-amber-100 text-amber-700">Inactivo</span>
+
+              }
+            </div>
+
+            <div
+              class="massive-editor__col max-w-[14%] w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-not-allowed"
+            >
+            <img src="/assets/img/Amazon_logo.png" alt="Amazon" class="w-10 h-10 rounded-[50%]" *ngIf="product.channel === 'amazon' ">
+            <img src="/assets/img/claroshop_logo-2.png" alt="claroshop" class="w-10 h-10 rounded-[50%]" *ngIf="product.channel === 'claroshop' ">
+            <img src="/assets/img/Mely_logo.svg" alt="Mercado libre" class="w-10 h-10 rounded-[50%]" *ngIf="product.channel === 'mely' ">
+            <img src="/assets/img/woocommerce__logo.png" alt="Woocommerce" class="w-10 h-10 rounded-[50%] mx-auto" *ngIf="product.channel === 'woocommerce' ">
+            </div>
+          </div>
+          }
+        </form>
+        </div> -->
+    </div>
+  </div>
+</div>

@@ -14,7 +14,7 @@
   
         <div class="top-header__col">
 
-          <span class="top-header__span text-white font-semibold">26 productos</span>
+          <span class="top-header__span text-white font-semibold">26 {{paginationParams.totalRecords}}</span>
 
         </div>
       </div>
@@ -36,7 +36,7 @@
     [statusData]="statusOrders"
     [dataOrders]="dataOrders"
     [orderOption]="menuOrder"
-    [totalOrders]="totalOrders"
+    [totalOrders]="paginationParams.totalRecords"
     (changePagination)="changedPage($event)">
     </app-order-list>
 

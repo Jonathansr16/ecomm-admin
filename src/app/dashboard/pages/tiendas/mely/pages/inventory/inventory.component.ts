@@ -68,9 +68,9 @@ export default class InventoryComponent {
     page: 0,
     rows: 10,
     first: 0,
+    totalRecords: 0
   };
 
-  totalProducts = 0;
   // ordersBy:
   //  'total_sold_quantity_asc' | 'total_sold_quantity_desc'
   //  | 'available_quantity_asc' | 'available_quantity_desc' |
@@ -124,10 +124,11 @@ export default class InventoryComponent {
       .subscribe({
         next: (resp) => {
           this.getProductsIds(resp.products);
-          this.totalProducts = resp.totalproducts;
+          this.paginationParams.totalRecords = resp.totalproducts;
         },
         error: (err) => {
           console.log(err);
+          this.paginationParams.totalRecords = 0;
         },
       });
   }

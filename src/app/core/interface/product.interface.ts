@@ -12,12 +12,14 @@ export interface ProductInventory {
     sale_price: number;
     units?: number;
     status: 'active' | 'inactive';
+    stock_status?: 'instock' | 'outofstock' | undefined;
     total_sales?: number;
     category?: any;
     imageProduct?: ProductImage;
     isDropdownInformation: boolean;
     channel: string;
     variations?: VariantProduct[];
+
 }
 
 export interface ProductImage {

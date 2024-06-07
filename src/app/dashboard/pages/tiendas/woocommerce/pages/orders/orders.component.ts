@@ -123,10 +123,10 @@ export default class OrdersComponent implements OnInit {
       rows: 10,
       first: 1,
       type: 'pending',
+      totalRecords: 0
     };
 
     
-  totalOrders!: number;
 
   //* Status para la data obtenida de la api
 
@@ -256,14 +256,13 @@ export default class OrdersComponent implements OnInit {
       .subscribe({
         next: (resp) => {
           this.dataOrders = resp.orders;
-          this.totalOrders= resp.orders.length;
           this.statusOrders.status = resp.orders.length ? 'success' : 'empty';
-          this.totalOrders = resp.totalOrders;
+          this.paginationParams.totalRecords = resp.totalOrders;
         console.log(resp)
         }, 
         error: (err) => {
           this.statusOrders.status = 'error';
-          this.totalOrders = 0;
+          this.paginationParams.totalRecords = 0;
         }
       });
     }

@@ -27,6 +27,12 @@ export const WoocommerceRoute: Routes = [
     loadComponent: () => import ('@woocommerce/pages/orders/orders.component')
   },
 
+  // {
+  //   path: 'editor-masivo',
+  //   title: '',
+  //   loadComponent: () => import('@woocommerce/pages/woo-massive-editor/woo-massive-editor.component')
+  // }
+
  
   
 ]

@@ -200,11 +200,11 @@
                         <p class="text-sm py-2">Tienes que despachar el paquetes cuanto antes, para no demorarte.</p>
 
                         } @else if(order().status === 'Pendiente' && order().isFulfillment) {
-                            <div class="flex items-center flex-wrap gap-2 rounded-sm bg-orange-100 text-orange-700 px-3 py-[6px] max-w-48">
+                            <div class="flex items-center flex-wrap gap-2 rounded-sm bg-amber-100 text-amber-700 px-3 py-[6px] max-w-48">
                                 <span class="text-xs font-semibold text-center">
-                                    {{ order().status }}
+                                  Procesando en bodega
                                 </span>
-                                <i class="card-order__i pi pi-stopwatch"></i>
+                                <i class="card-order__i pi pi-truck"></i>
                             </div>
                             <p class="text-sm py-2">Procesando en bodega</p>
 

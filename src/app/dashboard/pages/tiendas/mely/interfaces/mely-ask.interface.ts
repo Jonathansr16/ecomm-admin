@@ -9,7 +9,7 @@ export interface MelyAskResult {
     id:                   number;
     deleted_from_listing: boolean;
     hold:                 boolean;
-    answer:               Answer;
+    answer?:               Answer;
     from:                 From;
     question_item: MelyAskProduct;
 }

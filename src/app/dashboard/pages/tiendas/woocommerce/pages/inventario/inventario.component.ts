@@ -26,6 +26,12 @@ import { InventoryListComponent } from '@components/inventory-list/inventory-lis
 import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
 import { StatusData } from 'src/app/core/interface/status-data.interface';
+import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { PositionVariante } from 'src/app/core/interface/position-variante.interface';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { WooProducto } from '@woocommerce/models/wc-new-product.model';
+import { UpdateStatusProduct } from '@woocommerce/interface/update-product-status.interface';
 
 @Component({
   selector: 'app-inventario',
@@ -38,17 +44,15 @@ import { StatusData } from 'src/app/core/interface/status-data.interface';
     InputSwitchModule,
     ButtonModule,
     SplitButtonModule,
-    InventoryListComponent
+    InventoryListComponent,
+    ConfirmDialogModule,
+    ToastModule,
   ],
   styleUrls: ['./inventario.component.scss'],
-  providers: [
-    MessageService, ConfirmationService,
-
-  ],
-
+  providers: [MessageService, ConfirmationService],
 })
 export default class InventarioComponent implements OnInit, OnDestroy {
-
+  
   breadcrumHome: BreadcrumbItem = {
     icon: 'list_alt',
     label: 'Inventario',
@@ -77,16 +81,12 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   addProductItems: MenuItem[] = [
     {
       label: 'Individual',
-      command: () => {
-      
-      }
+      command: () => {},
     },
-    { label: 'Masiva' }
+    { label: 'Masiva' },
   ];
 
-
   menuProduct: MenuItem[] = [
-
     {
       label: 'Opciones:',
       items: [
@@ -96,15 +96,15 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
         {
           label: 'Pausar',
+        
         },
 
         {
-          label: 'Eliminar'
-        }
-      ]
-    }
+          label: 'Eliminar',
+        },
+      ],
+    },
   ];
-
 
   //Enlace al input search
   inputValue!: string;
@@ -113,17 +113,18 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     page: 1,
     rows: 10,
     first: 1,
+    totalRecords: 0,
   };
 
-  totalProducts: number= 0;
-
   typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
-  statusData: StatusData = {status: 'loading'};
+  statusData: StatusData = { status: 'loading' };
 
   //ARREGLO PARA CACHEAR LA DATA
   private readonly cachedDataRows: { [key: string]: WooProductResult[] } = {};
 
   product: WooProductResult | undefined;
+  variationsProduct: VariantProduct[] = [];
+  variationStatus: StatusData = { status: 'loading' };
   suscriptions$: Subscription[] = [];
   errorMessage!: string;
 
@@ -131,34 +132,32 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     pause: false,
     modify: false,
     eliminate: false,
-    massiveModification: false
-  }
+    massiveModification: false,
+  };
 
   // @ts-ignore
   formRegisterGroup: FormGroup;
 
   createFormProduct(): void {
     this.formRegisterGroup = this.formBuilder.group({
-      detailsProduct: generateProductForm()
-    })
+      detailsProduct: generateProductForm(),
+    });
   }
-
 
   private readonly wooService = inject(WooService);
   products: ProductInventory[] = [];
   private readonly activedRoute = inject(ActivatedRoute);
-  private readonly router = inject(Router);
+  private  router = inject(Router);
   private readonly confirmService = inject(ConfirmationService);
+  private readonly messageService = inject(MessageService);
   private readonly formBuilder = inject(FormBuilder);
 
   constructor() {
-    this.createFormProduct()
+    this.createFormProduct();
   }
 
   ngOnInit(): void {
-
     this.activedRoute.queryParamMap.subscribe((params: ParamMap) => {
-
       const page = params.get('page');
       const per_page = params.get('per_page');
 
@@ -168,12 +167,8 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       // Verificar si per_page es null o undefined antes de convertirlo a un número
       this.paginationParams.rows = per_page !== null ? +per_page : 10;
 
-  
       this.getProducts();
-
-
     });
-
   }
 
   ngOnDestroy(): void {
@@ -181,7 +176,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
   validField(field: string) {
-    return this.formRegisterGroup.get(`detailsProduct.${field}`)?.invalid && this.formRegisterGroup.get(`detailsProduct.${field}`)?.touched;
+    return (
+      this.formRegisterGroup.get(`detailsProduct.${field}`)?.invalid &&
+      this.formRegisterGroup.get(`detailsProduct.${field}`)?.touched
+    );
   }
 
   getValueField(field: string) {
@@ -192,30 +190,31 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     // Realiza una llamada a la API si no hay datos en caché
     this.statusData.status = 'loading';
     return this.suscriptions$.push(
-      this.wooService.getProducts(this.paginationParams.page, this.paginationParams.rows).subscribe({
-        next: (resp) => {
-          this.products = resp.products;
-          // this.cachedDataRows[per_page] = resp;
-          this.statusData.status = resp.totalProducts > 0 ? 'success' : 'empty' ;
-          this.totalProducts = resp.totalProducts;
-        },
-        error: (error: string) => {
-          this.errorMessage = error;
-          this.statusData.status = 'error';
-          this.products = [];
-          // this.cachedDataRows[page] = []; // Limpia la caché en caso de error
-          return EMPTY;
-        },
-      })
+      this.wooService
+        .getProducts(this.paginationParams.page, this.paginationParams.rows)
+        .subscribe({
+          next: (resp) => {
+            this.products = resp.products;
+            // this.cachedDataRows[per_page] = resp;
+            this.statusData.status =
+              resp.totalProducts > 0 ? 'success' : 'empty';
+            this.paginationParams.totalRecords = resp.totalProducts;
+          },
+          error: (error: string) => {
+            this.errorMessage = error;
+            this.statusData.status = 'error';
+            this.products = [];
+            this.paginationParams.totalRecords = 0;
+            // this.cachedDataRows[page] = []; // Limpia la caché en caso de error
+            return EMPTY;
+          },
+        })
     );
   }
-
-
 
   getSearchValue(value: string) {
     this.inputValue = value;
   }
-
 
   getProductsBySearch(value: string) {
     this.statusData.status = 'loading';
@@ -224,16 +223,17 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       this.wooService
         .getProductsBySearch(
           value,
-          this.paginationParams.page = 1,
-          this.paginationParams.rows = 10,
-          this.typeSearch,
+          (this.paginationParams.page = 1),
+          (this.paginationParams.rows = 10),
+          this.typeSearch
         )
         .subscribe({
           next: (data) => {
             this.products = data.products;
-            this.statusData.status = data.totalProducts > 0 ? 'success' : 'empty';
-          
-            console.log(data)
+            this.statusData.status =
+              data.totalProducts > 0 ? 'success' : 'empty';
+
+            console.log(data);
           },
           error: (err: string) => {
             this.statusData.status = 'error';
@@ -244,12 +244,26 @@ export default class InventarioComponent implements OnInit, OnDestroy {
           },
         })
     );
- 
+  }
+
+  getVarianProduct(product: PositionVariante) {
+    this.variationStatus.status = 'loading';
+
+    this.wooService.getProductVariation(product.idProduct).subscribe({
+      next: (resp) => {
+        this.variationsProduct = resp;
+        this.variationStatus.status = resp.length > 0 ? 'success' : 'empty';
+      },
+      error: (err) => {
+        this.variationsProduct = [];
+        this.variationStatus.status = 'error';
+        console.log(err);
+      },
+    });
   }
 
   paginationChanged(event: any) {
-
-    this.paginationParams.page = event.page +1;
+    this.paginationParams.page = event.page + 1;
     this.paginationParams.rows = event.rows;
     //Actualizar parámetros de la URL
     this.router.navigate([], {
@@ -259,21 +273,21 @@ export default class InventarioComponent implements OnInit, OnDestroy {
         rows: this.paginationParams.rows,
       },
       queryParamsHandling: 'merge',
-
     });
   }
 
-
   publishProduct() {
     if (this.formRegisterGroup.invalid) {
-      return Object.values(this.formRegisterGroup.controls).forEach(control => {
-        control.markAsTouched();
-      });
+      return Object.values(this.formRegisterGroup.controls).forEach(
+        (control) => {
+          control.markAsTouched();
+        }
+      );
     }
   }
 
   editProduct(idProduct: number | string) {
-    this.router.navigate( ['edit-product/', {idProduct}])
+    this.router.navigate(['edit-product/', { idProduct }]);
   }
 
   deleteProduct(product: any) {
@@ -285,14 +299,162 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
 
-  changeStatusProduct() {
-    this.confirmService.confirm({
-      message: '¿Estas seguro de pausar este producto?',
-      header: 'Confirmar',
+  //* ACCIONES POR LOTE
+  pauseProductByBatch(products: ProductInventory[]) {
+
+    let items: UpdateStatusProduct[] = [];
+
+    products.forEach( (item, i) => {
+
+      items[i] = {
+        id: item.id,
+        stock_status: 'outofstock',
+        status: 'draft'
+      }
+    });
+
+        this.confirmService.confirm({
+      target: event?.target as EventTarget,
+      message: '¿Estás seguro de pausar esta publicación?',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Si',
+      rejectLabel: 'Cancelar',
+      rejectButtonStyleClass: 'p-button-text',
+      accept: () => {
+        this.statusData.status = 'loading';
+
+        this.wooService.updateProductStatus(items).subscribe({
+          next: (resp) => {
+            this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Confirmación',
+              detail: '¡Producto pausado con exito!',
+              key: 'tc',
+            });
+            this.getProducts();
+          },
+
+          error: (err) => {
+            console.error(err);
+            this.statusData.status = 'error';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: '¡Se produjo error al actualizar!',
+              key: 'tc',
+            });
+          },
+        });
+      },
+    });
+
+  }
+
+  activateProductByBatch(products: ProductInventory[]) {
+    let items: UpdateStatusProduct[] = [];
+
+    products.forEach( (item, i) => {
+
+      items[i] = {
+        id: item.id,
+        stock_status: 'instock',
+        status: 'publish'
+      }
+    });
+
+        this.confirmService.confirm({
+      target: event?.target as EventTarget,
+      message: `Reactivar (${products.length}) productos, al reactivar tus productos, vuelven a estar visibles en tu tienda`,
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Si',
+      rejectLabel: 'Cancelar',
+      rejectButtonStyleClass: 'p-button-text',
+      accept: () => {
+        this.statusData.status = 'loading';
+
+        this.wooService.updateProductStatus(items).subscribe({
+          next: (resp) => {
+            this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Confirmación',
+              detail: '¡Producto reactivado con exito!',
+              key: 'tc',
+            });
+            this.getProducts();
+          },
+
+          error: (err) => {
+            console.error(err);
+            this.statusData.status = 'error';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: '¡Se produjo error al actualizar!',
+              key: 'tc',
+            });
+          },
+        });
+      },
     });
   }
 
+  deleteByBatch(products: ProductInventory[]) {
+
+    let items: number[] = [];
+
+    products.forEach( (item, i) => {
+
+      items[i] = item.id;
+    });
+
+    this.confirmService.confirm({
+      target: event?.target as EventTarget,
+      message: '¿Estás seguro de eliminar estas publicaciónes?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Si',
+      rejectLabel: 'Cancelar',
+      rejectButtonStyleClass: 'p-button-text',
+      accept: () => {
+        this.statusData.status = 'loading';
+
+        this.wooService.deleteProductsByBranch(items).subscribe({
+          next: (resp) => {
+            this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Confirmación',
+              detail: '¡Productos eliminado con exito!',
+              key: 'tc',
+            });
+            this.getProducts();
+          },
+
+          error: (err) => {
+            console.error(err);
+            this.statusData.status = 'error';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: '¡Se produjo error al eliminar productos!',
+              key: 'tc',
+            });
+          },
+        });
+      },
+    });
+ 
+  }
+
+gotoMassiveEditor(products: ProductInventory[]) {
+  // this.wooService.setMassiveProducts(products);
+  this.wooService.saveData(products);
+  this.router.navigate(['/dashboard/woocommerce/editor-masivo']);
+}
 
   changeTypeSearch(value: any) {
     this.typeSearch = value;
@@ -305,4 +467,3 @@ export interface PageEvent {
   rows: number;
   pageCount: number;
 }
-

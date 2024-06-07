@@ -2,3 +2,22 @@
   display: block;
 }
 
+.order-actions__row-wrapper {
+  position: relative;
+}
+
+.order-actions__row-wrapper.isOpened::before {
+
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 100%;
+  background-color: rgb(226 232 240);
+}
+
+// .shows-cards {
+//   background-color: red;
+// }

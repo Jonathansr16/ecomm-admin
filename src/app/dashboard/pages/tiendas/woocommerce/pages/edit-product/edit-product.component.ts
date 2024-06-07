@@ -89,13 +89,13 @@ export default class EditProductComponent {
           [Validators.required, this.validatorService.notWhitesSpaceValid],
         ],
         regular_price: [
-          '',
+          0,
           [Validators.required, this.validatorService.notWhitesSpaceValid],
         ],
-        sale_price: [''],
+        sale_price: [0],
         sku: ['', Validators.required],
 
-        stock_quantity: [''],
+        stock_quantity: [0],
         categories: this.formBuilder.array([this.wcProduct.categories]),
       },
       {
@@ -171,7 +171,7 @@ export default class EditProductComponent {
       const newValue = fieldControl.value;
       const data: any = { [field]: newValue };
 
-      this.wooService.setFielUpdate(this.productId, data).subscribe({
+      this.wooService.updateFieldProduct(this.productId, data).subscribe({
         next: (resp => {
 
         this.wcProduct[field] = resp[field];

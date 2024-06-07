@@ -21,24 +21,29 @@
         </div>
 
         <div class="inventory__toolbar-col flex item-center gap-2">
-          <p-button [style]="{ 'font-size': '14px' }" label="Pausar" [text]="true"
+          <p-button (onClick)="pauseProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Pausar" [text]="true"
             [disabled]="isBtnActive.pause === false" [severity]="isBtnActive.pause ? 'warning' : 'secondary'">
           </p-button>
-          <p-button [style]="{ 'font-size': '14px' }" label="Modificar" [text]="true"
+          <!-- <p-button [style]="{ 'font-size': '14px' }" label="Modificar" [text]="true"
             [disabled]="isBtnActive.modify === false" [severity]="isBtnActive.modify ? 'primary' : 'secondary'">
-          </p-button>
-          <p-button [style]="{ 'font-size': '14px' }" label="Eliminar" [text]="true"
+          </p-button> -->
+
+          <p-button (onClick)="reactivateProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Reactivar" [text]="true"
+          [disabled]="isBtnActive.reactivate === false" [severity]="isBtnActive.reactivate ? 'primary' : 'secondary'">
+        </p-button>
+
+          <p-button (onClick)="deleteProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Eliminar" [text]="true"
             [disabled]="isBtnActive.eliminate === false" [severity]="isBtnActive.eliminate ? 'danger' : 'secondary'">
           </p-button>
 
-          @if(isBtnActive.massiveModification) {
+        
 
-          <p-button [style]="{ 'font-size': '14px' }" label="Modificar de manera Masica" [text]="true"
+          <p-button (onClick)="modifyProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Modificar de manera Masica" [text]="true"
             [disabled]="!isBtnActive.massiveModification" [severity]="
               isBtnActive.massiveModification ? 'primary' : 'secondary'
             ">
           </p-button>
-          }
+          
         </div>
 
         <div class="inventory__toolbar-col flex items-center gap-1">

@@ -13,7 +13,7 @@ export const MelyRoutes: Routes = [
     },
 
     {
-        path: 'order-details/:id',
+        path: 'ordenes/order-details/:id',
         loadComponent: () => import('@mely/pages/orders/details/details.component')
     },
 

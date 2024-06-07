@@ -20,6 +20,7 @@ export interface ProductOrder {
     total_product: number;
     quantity?: number;
     image?: ProductOrderImages;
+    isFulfiment?: boolean;
 }
 
 export interface ProductOrderImages {

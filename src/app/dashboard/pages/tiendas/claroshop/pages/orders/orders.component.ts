@@ -102,9 +102,9 @@ export default class OrdersComponent {
     rows: 10,
     first: 0,
     type: 'pendientes',
+    totalRecords: 0
   };
 
-  totalOrders: number = 0;
 
   menuOrder: MenuItem[] = [
     {
@@ -242,12 +242,12 @@ export default class OrdersComponent {
       .subscribe({
         next: (resp) => {
           this.orders = resp.orders;
-          this.totalOrders = resp.totalOrders;
+          this.paginationParams.totalRecords = resp.totalOrders;
           this.statusData.status = resp.orders.length ? 'success' : 'empty';
         },
         error: (err) => {
           this.statusData.status = 'error';
-          this.totalOrders = 0;
+          this.paginationParams.totalRecords = 0;
           console.log(err);
         },
       });

@@ -61,9 +61,9 @@ export default class InventarioComponent {
     page: 1,
     rows: 10,
     first: 0,
+    totalRecords: 0
   };
 
-  totalProducts: number = 0;
 
   MenuProduct: MenuItem[] = [
 
@@ -126,7 +126,7 @@ export default class InventarioComponent {
           this.products = resp.products;
           this.paginationParams.page
           this.statusProducts.status =resp.products.length > 0 ? 'success' : 'empty';
-          this.totalProducts= resp.totalItems
+          this.paginationParams.totalRecords= resp.totalItems
         },
         error: (msgErorr) => {
           this.statusInfoProducts! = {
@@ -136,7 +136,7 @@ export default class InventarioComponent {
 
           this.products = [];
           this.statusProducts.status = 'error';
-          this.totalProducts = 0;
+          this.paginationParams.totalRecords = 0;
           return EMPTY;
 
         },

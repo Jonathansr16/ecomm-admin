@@ -1,17 +1,18 @@
+import { StockStatus } from './woo-product-variation.interface';
 export interface WooProductResult {
   id: number;
   name: string;
   description: string;
   short_description: string;
   sku: string;
-  regular_price: string;
-  price: string;
+  regular_price: number;
+  price: number;
   categories: WooProductCategory[];
   images: WooProductImage[];
   stock_quantity: number;
-  stock_status: string;
-  status: string;
   total_sales: number;
+  status: 'draft' | 'pending' | 'private' | 'publish';
+  stock_status: 'instock' | 'outofstock' | 'onbackorder';
 }
 
 export interface WooProduct {
@@ -24,7 +25,7 @@ export interface WooProduct {
   date_modified: Date;
   date_modified_gmt: Date;
   type: string;
-  status: string;
+  status: 'draft' | 'pending' | 'private' | 'publish';
   featured: boolean;
   catalog_visibility: string;
   description: string;
@@ -80,7 +81,7 @@ export interface WooProduct {
   price_html: string;
   related_ids: number[];
   meta_data: WooProductMetaData[];
-  stock_status: string;
+  stock_status: 'instock' | 'outofstock' | 'onbackorder';
   has_options: boolean;
   post_password: string;
   yoast_head: string;

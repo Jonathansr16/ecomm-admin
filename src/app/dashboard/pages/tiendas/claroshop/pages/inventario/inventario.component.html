@@ -15,7 +15,7 @@
         <h1 class="top-header__h1 text-3xl font-bold text text-white">
           Inventario
         </h1>
-        <span class="top-header__span text-white">26 productos</span>
+        <span class="top-header__span text-white">26 {{paginationParams.totalRecords}}</span>
       </div>
 
       <div class="top-header__col">
@@ -36,7 +36,7 @@
 <app-inventory-list
 [statusProducts]="statusProducts"
 [products]="products"
-[totalRecords]="totalProducts"
+[totalRecords]="paginationParams.totalRecords"
 [menuProduct]="MenuProduct"
  (changeLabelValue)="changeTypeSearch($event)"
  (searchValue)="getProductsBySearch($event)"

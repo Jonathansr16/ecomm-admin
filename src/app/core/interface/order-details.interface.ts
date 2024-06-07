@@ -11,6 +11,7 @@ export interface OrderDetails {
     tracking_guide?: string;
     channel: string;
     messenger_service: string;
+    billing?: Billing
 }
 
 export interface Shipping {
@@ -20,6 +21,7 @@ export interface Shipping {
     city: string;
     country: string;
     phone?: string;
+    references?: string;
 }
 
 export interface ProductOrder {
@@ -28,5 +30,9 @@ export interface ProductOrder {
     quantity?: number;
     image?: string;
     total: string;
+
+}
+
+export interface Billing {
 
 }

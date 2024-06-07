@@ -3,6 +3,7 @@ export interface PaginationParams {
     rows: number,
     first: number;
     type?: any;
+    totalRecords: number;
    
 }
 

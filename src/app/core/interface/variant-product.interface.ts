@@ -1,5 +1,5 @@
 export interface VariantProduct {
-    id: string;
+    id: any;
     title: string;
     sku: string;
     units: number;
@@ -10,7 +10,7 @@ export interface VariantProduct {
 }
 
 interface ImageVar {
-    id?: string;
+    id?: any;
     url: string;
     alt?: string;
 }
