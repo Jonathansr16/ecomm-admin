@@ -2,7 +2,6 @@ import { Component, ElementRef, QueryList, Renderer2, ViewChildren, inject } fro
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { WooProducto } from '@woocommerce/models/wc-new-product.model';
-import { WooService } from '@woocommerce/services/woo.service';
 
 import {  MessageService } from 'primeng/api';
 
@@ -12,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TooltipModule } from 'primeng/tooltip';
 import { CommonModule } from '@angular/common';
+import { WooProductService } from '@woocommerce/services/woo-product-service.service';
 
 @Component({
   selector: 'app-wc-new-product',
@@ -60,17 +60,17 @@ export default class WcNewProductComponent  {
   }
 
  private formBuilder = inject(FormBuilder);
- private wooService = inject(WooService);
- private validatorService = inject(ValidatorsService);
+ private readonly wooProductService = inject(WooProductService);
+ private readonly validatorService = inject(ValidatorsService);
  private messageService = inject(MessageService);
-private renderer2 = inject(Renderer2);
+private readonly renderer2 = inject(Renderer2);
 
   constructor( ) {
     this.createFormProduct();
   }
 
   getCategories() {
-    this.wooService.getCategorias().subscribe( {
+    this.wooProductService.getCategorias().subscribe( {
       next: (resp) => {
         this.arrayCategories = resp;
       },
@@ -165,7 +165,7 @@ private renderer2 = inject(Renderer2);
 
 
 
-    this.wooService.createProduct(this.producto).subscribe({
+    this.wooProductService.createProduct(this.producto).subscribe({
       next: (resp) => {
         this.showLoader = false;
         this.messageService.add({ key: 'tc', severity: 'success', summary: 'Exito', detail: 'Producto registrado con exito!' });

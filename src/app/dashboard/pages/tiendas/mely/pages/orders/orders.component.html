@@ -19,7 +19,7 @@
 
       <div class="top-header__col">
         <span class="top-header__span text-white font-semibold"
-          >{{ paginationParams.totalRecords }} Ordenes</span
+          >{{ melyPagOrders().totalRecords }} Ordenes</span
         >
       </div>
     </div>
@@ -120,9 +120,9 @@
 
 <div class="mt-8">
   <app-order-list
-    [dataOrders]="melyOrders"
-    [statusData]="statusOrders"
-    [totalOrders]="paginationParams.totalRecords"
+    [stateOrders]="melyOrders()"
+    [stateOrdersError]="errorOrdersInfo"
+    [totalOrders]="melyPagOrders().totalRecords"
     [orderOption]="ordersOption"
     (emitId)="getProductId($event)"
     (changePagination)="changedPage($event)"

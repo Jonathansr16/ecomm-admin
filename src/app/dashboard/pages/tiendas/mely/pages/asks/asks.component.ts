@@ -200,6 +200,7 @@ getQuestion() {
         this.melyService.productByQuestion = resp.products;
         this.questions = resp.ask.map( (question: any) => this.melyService.transformQuestion(question));
          this.statusQuestion.status = resp.ask.length > 0 ? 'success' : 'empty';
+         console.log(resp)
 
       },
       error: (err) => {
@@ -225,5 +226,9 @@ onPageChange(event: any) {
 
     queryParamsHandling: 'merge',
   });
+}
+
+gg(i: number) {
+  console.log(this.isOpen[i])
 }
 }

@@ -1,6 +1,6 @@
 import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { CommonModule } from '@angular/common';
-import { Component, Input, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -14,16 +14,17 @@ import { ToastModule } from 'primeng/toast';
 import { PaginatorModule } from 'primeng/paginator';
 import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
 import { SkeletonModule } from 'primeng/skeleton';
-import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardProductComponent } from './card-product/card-product.component';
-import { StatusInfoData } from 'src/app/core/interface/status-data-info.interface';
 import { CardDropdownProductComponent } from './card-dropdown-product/card-dropdown-product.component';
-import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
 import { PositionVariante } from 'src/app/core/interface/position-variante.interface';
+import { StateProducts } from 'src/app/core/interface/state-products.interface';
+import { StateVariation } from 'src/app/core/interface/state-variations.interface';
+import { ErrorInfoData } from 'src/app/core/interface/status-data-info.interface';
 
 @Component({
   selector: 'app-inventory-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ButtonModule,
@@ -42,46 +43,42 @@ import { PositionVariante } from 'src/app/core/interface/position-variante.inter
   styleUrl: './inventory-list.component.scss',
 })
 export class InventoryListComponent {
-  statusProducts = input.required<StatusData>();
-  statusInfoProducts = input<StatusInfoData>();
-  products = input.required<ProductInventory[]>();
-  totalRecords = input.required<number>();
 
-  //multiple
-  statusProductVars = input<StatusData>();
-  productsVar = input<VariantProduct[]>();
-  menuSearch = input<SearchMenuFilter[]>();
-  // totalRecords = input.required<number>();
+  stateError = input<ErrorInfoData>();
+  stateDataProducts  = input.required<StateProducts>();
+  totalRecords       = input.required<number>();
+  stateVariations    = input<StateVariation>();
+  menuSearch         = input<SearchMenuFilter[]>();
+  menuProduct        = input.required<MenuItem[]>();
+
+  emitProduct       = output<PositionVariante>();
+  searchValue       = output<string>();
+  changeLabelValue  = output<'todo' | 'title' | 'id' | 'sku'>();
+  changedPagination = output<PaginationParams>();
+
+  pauseProductsByBatch      = output<ProductInventory[]>();
+  reactivateProductsByBatch = output<ProductInventory[]>();
+  modifyProductsByBatch     = output<ProductInventory[]>();
+  deleteProductsByBatch     = output<ProductInventory[]>();
+
+  perPageOptions: number[] = [10, 20, 30, 50];
   paginationParams: PaginationParams = {
     page: 1,
     rows: 10,
     first: 1,
     totalRecords: 0
   };
-  menuProduct = input.required<MenuItem[]>();
-
-  emitProduct = output<PositionVariante>();
-  searchValue = output<string>();
-  changeLabelValue = output<'todo' | 'title' | 'id' | 'sku'>();
-  changedPagination = output<PaginationParams>();
-
-  pauseProductsByBatch = output<any>();
-  reactivateProductsByBatch = output<any>();
-  modifyProductsByBatch = output<any>();
-  deleteProductsByBatch = output<any>();
-
-
-  perPageOptions: number[] = [10, 20, 30, 50];
-
   menu: MenuItem[] = [];
 
 
-  isBtnActive: StatusBtn = {
+  #isBtnActive = signal<StatusBtn>({
     pause: false,
     eliminate: false,
     reactivate: false,
     massiveModification: false,
-  };
+  });
+
+  isButtonActive = computed( () => this.#isBtnActive())
 
   menuToolbar: MenuItem[] = [
     {
@@ -144,40 +141,41 @@ export class InventoryListComponent {
   // Índice de acordeon abierto, inicialmente cerrado
   selectedIndex: number = -1;
 
-  
+
   updateProductByBranch: string | number[] = [];
+
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    this.isButtonActive();
   }
 
   toggleSelectAllProducts(): void {
     // Si se selecciona la opción masiva, seleccionar todos los productos
     if (this.isSelectAllProduct) {
       // Si se selecciona la opción masiva, seleccionar todos los productos
-      this.selectedProduct = this.products().slice();
-      this.isSelectedEveryProduct = this.products().map(() => true);
+      // this.selectedProduct = this.products().slice();
+      this.selectedProduct = this.stateDataProducts().products.slice()
+      this.isSelectedEveryProduct = this.stateDataProducts().products.map(() => true);
 
-      this.isBtnActive.massiveModification = true;
-      this.isBtnActive.pause = this.selectedProduct.every(value => value.status !== 'inactive');
-      this.isBtnActive.reactivate = this.selectedProduct.every(value => value.status === 'inactive' && value.units )
-      this.isBtnActive.eliminate = true;
+      this.#isBtnActive().massiveModification = true;
+      this.#isBtnActive().pause = this.selectedProduct.every(value => value.status !== 'inactive');
+      this.#isBtnActive().reactivate = this.selectedProduct.every(value => value.status === 'inactive' && value.units )
+      this.#isBtnActive().eliminate = true;
     } else {
       // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
       this.selectedProduct = [];
-    this.isBtnActive = {
+    this.#isBtnActive.set({
       pause: false,
       reactivate: false,
       eliminate: false,
       massiveModification: false,
-    }
-      this.isSelectedEveryProduct = this.products().map(() => false);
+    })
+      this.isSelectedEveryProduct = this.stateDataProducts().products.map(() => false);
     }
   }
 
   toggleEveryProduct(product: ProductInventory, i: number): void {
-
-  
 
     const index = this.selectedProduct.findIndex(
       (selected) => selected.id === product.id
@@ -195,7 +193,7 @@ export class InventoryListComponent {
     }
 
     // Verificamos si todos los productos están seleccionados
-    const allSelected = this.products().every((prod) =>
+    const allSelected = this.stateDataProducts().products.every((prod) =>
       this.selectedProduct.some((selected) => selected.id === prod.id)
     );
 
@@ -207,22 +205,21 @@ export class InventoryListComponent {
       this.isSelectAllProduct = false;
     }
 
-    this.isBtnActive.massiveModification = this.selectedProduct.length > 1 ? true : false;
-    this.isBtnActive.eliminate = this.selectedProduct.length > 0;
-    this.isBtnActive.pause= this.selectedProduct.every(value => value.status !== 'inactive') && this.selectedProduct.length > 0;
-    this.isBtnActive.reactivate = this.selectedProduct.every(value => 
+    this.#isBtnActive().massiveModification = this.selectedProduct.length > 1 ? true : false;
+    this.#isBtnActive().eliminate = this.selectedProduct.length > 0;
+    this.#isBtnActive().pause= this.selectedProduct.every(value => value.status !== 'inactive') && this.selectedProduct.length > 0;
+    this.#isBtnActive().reactivate = this.selectedProduct.every(value =>
       value.status === 'inactive' &&
       (
-        (value.units && value.units > 0) || 
+        (value.units && value.units > 0) ||
         (value.stock_status === 'instock')
       )
     ) && this.selectedProduct.length > 0;
-    
-    this.isBtnActive.modify = this.selectedProduct.length === 1 ? true : false;
-    
+
+    this.#isBtnActive().modify = this.selectedProduct.length === 1 ? true : false;
+
 
   }
-
 
   PauseProduct() {
 

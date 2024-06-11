@@ -1,4 +1,4 @@
-export interface StatusInfoData {
+export interface ErrorInfoData {
 titleError: string;
 summaryError: string;
 }

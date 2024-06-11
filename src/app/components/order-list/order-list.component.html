@@ -105,8 +105,8 @@
       </div>
     </div>
 
-    @switch (statusData().status ) { @case('success') { @for (order of
-    dataOrders(); track order.id; let i = $index) {
+    @switch (stateOrders().status ) { @case('success') { @for (order of
+    stateOrders().orders; track order.id; let i = $index) {
 
     <app-card-order
       [order]="order"

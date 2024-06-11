@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { ClaroService } from '@claroshop/services/claroservice.service';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { OrderDetailsComponent } from '@components/order-details/order-details.component';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { OrderDetails } from 'src/app/core/interface/order-details.interface';
 import { StatusData } from '../../../../../../../core/interface/status-data.interface';
+import { ClaroOrdersService } from '@claroshop/services/claro-orders.service';
 
 @Component({
   selector: 'app-details-order',
@@ -23,7 +23,7 @@ import { StatusData } from '../../../../../../../core/interface/status-data.inte
 export default class DetailsOrderComponent {
 
   @Input('id') productId!: number;
-  claroService = inject(ClaroService);
+  claroService = inject(ClaroOrdersService);
   statusOrder : StatusData = {status: 'loading'}
   order!: OrderDetails;
 

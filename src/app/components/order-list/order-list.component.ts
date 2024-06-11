@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
   input,
   output,
 } from '@angular/core';
@@ -17,10 +15,13 @@ import { MenuModule } from 'primeng/menu';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Orders } from 'src/app/core/interface/orders.interface';
+import { StateOrders } from 'src/app/core/interface/state-orders.interface';
+import { ErrorInfoData } from 'src/app/core/interface/status-data-info.interface';
 
 @Component({
   selector: 'app-order-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     CheckboxModule,
@@ -35,8 +36,9 @@ import { Orders } from 'src/app/core/interface/orders.interface';
   styleUrl: './order-list.component.scss',
 })
 export class OrderListComponent {
-  statusData = input.required<StatusData>();
-  dataOrders = input.required<Orders[]>();
+
+  stateOrders = input.required<StateOrders>();
+  stateOrdersError = input<ErrorInfoData>()
   menuToolbar = input<MenuItem[]>();
   orderOption = input.required<MenuItem[]>();
 
@@ -44,8 +46,8 @@ export class OrderListComponent {
   searchedData = output<string>();
   changeValueLabel = output<'todo' | 'id' | 'title' | 'sku'>();
   changePagination = output<PaginationParams>();
-  perPageOptions: number[] = [10, 20, 30, 50];
   emitId = output<string>();
+  perPageOptions: number[] = [10, 20, 30, 50];
 
   //Selecciona y Deselecciona cada checkbox del arreglo
   isSelectedEveryOrder: boolean[] = [];
@@ -77,8 +79,8 @@ export class OrderListComponent {
     // Si se selecciona la opción masiva, seleccionar todos los productos
     if (this.isSelectAllOrder) {
       // Si se selecciona la opción masiva, seleccionar todos los productos
-      this.selectedOrder = this.dataOrders()?.slice();
-      this.isSelectedEveryOrder = this.dataOrders()?.map(() => true) || [];
+      this.selectedOrder = this.stateOrders().orders?.slice();
+      this.isSelectedEveryOrder = this.stateOrders().orders?.map(() => true) || [];
     } else {
       // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
       this.selectedOrder = [];
@@ -102,7 +104,7 @@ export class OrderListComponent {
     }
 
     // Verificar si todos los elementos de la parte inferior están seleccionados
-    const allSelected = this.dataOrders().every((order) =>
+    const allSelected = this.stateOrders().orders.every((order) =>
       this.selectedOrder.some((selectedOrder) => selectedOrder.id === order.id)
     );
 
@@ -110,10 +112,6 @@ export class OrderListComponent {
     this.isSelectAllOrder = allSelected;
 
     // Si se deselecciona un elemento de la parte superior, quitar el check de la opción masiva
-    // if (!this.isSelectAllOrder) {
-    //   this.isSelectAllOrder = false;
-    // }
-
     if (!this.isSelectedEveryOrder[i] && this.isSelectAllOrder) {
       this.isSelectAllOrder = false;
     }

@@ -1,30 +1,44 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import {
+  ActivatedRoute,
+  ParamMap,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { CardStatComponent } from '@components/card-stat/card-stat.component';
-import { WooService } from '@woocommerce/services/woo.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
 import { OrderListComponent } from '@components/order-list/order-list.component';
-import { StatusData } from 'src/app/core/interface/status-data.interface';
-import { Orders } from 'src/app/core/interface/orders.interface';
 import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { WooOrdersService } from '@woocommerce/services/woo-orders.service';
+import { StateOrders } from 'src/app/core/interface/state-orders.interface';
+import { StateTypeOrder } from 'src/app/core/interface/state-type-order.interface';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterOutlet,
     RouterLink,
     CardStatComponent,
     BreadcrumbComponent,
-    OrderListComponent, 
+    OrderListComponent,
 
     ButtonModule,
     TabViewModule,
@@ -33,15 +47,13 @@ import { PaginationParams } from 'src/app/core/interface/pagination-params.inter
   providers: [MessageService],
 })
 export default class OrdersComponent implements OnInit {
+
   filteredOrders: any[] = [];
   searchTerm: string = '';
   noResults: boolean = false;
   options: MenuItem[] = [];
   titleError: string = '';
   detailsError: string = '';
-  statusOrders: StatusData = {status: 'loading'};
-  dataOrders: Orders[] = [];
-
 
   BreadcrumbHome: BreadcrumbItem = {
     icon: 'list_alt',
@@ -73,7 +85,7 @@ export default class OrdersComponent implements OnInit {
       label: 'Ordenes Pendientes',
       quantity: 230,
       urlImage: '/assets/img/order_pending.png',
-      command: ()=> this.getOrderstByStatus('pending')
+      command: () => this.getOrderstByStatus('pending'),
       // iconClass: ['pi', 'pi-box', 'text-lg', 'text-green-700'],
       // backgroundIconClass: 'bg-green-100'
     },
@@ -82,23 +94,18 @@ export default class OrdersComponent implements OnInit {
       label: 'Ordenes En transito',
       quantity: 35,
       urlImage: '/assets/img/order_proccesing.png',
-      command: ()=> this.getOrderstByStatus('completed')
-
+      command: () => this.getOrderstByStatus('completed'),
     },
 
     {
       label: 'Ordenes Concretadas',
       quantity: 40,
       urlImage: '/assets/img/order_completed.png',
-      command: ()=> this.getOrderstByStatus('failed')
-
-    }, 
-
-   
+      command: () => this.getOrderstByStatus('failed'),
+    },
   ];
 
   menuOrder: MenuItem[] = [
-
     {
       label: 'Opciones:',
       items: [
@@ -111,176 +118,181 @@ export default class OrdersComponent implements OnInit {
         },
 
         {
-          label: 'Adjuntar factura'
-        }
-      ]
-    }
+          label: 'Adjuntar factura',
+        },
+      ],
+    },
   ];
 
-    //* parametros iniciales para la paginación
-    paginationParams: PaginationParams = {
-      page: 1,
-      rows: 10,
-      first: 1,
-      type: 'pending',
-      totalRecords: 0
-    };
+  #stateWooTypeOrder = signal<StateTypeOrder>({
+    pendingOrders: {
+      status: 'loading',
+      quantity: 0,
+    },
 
-    
+    completedOrders: {
+      status: 'loading',
+      quantity: 0,
+    },
 
-  //* Status para la data obtenida de la api
+    unsoldOrders: {
+      status: 'loading',
+      quantity: 0,
+    },
+  });
 
-  //* Cantidad de pedidos
-  pendingOrdersCount: number = 0;
-  processingOrdersCount: number = 0;
-  completedOrdersCount: number = 0;
-  cancelledOrdersCount: number = 0;
+  #stateWooOrders = signal<StateOrders>({
+    status: 'loading',
+    orders: [],
+  });
 
-  //* Status de la cada orden
-  status: {
-    pending: boolean;
-    shipped: boolean;
-    completed: boolean;
-    failed: boolean;
-  } = {
-    pending: true,
-    shipped: true,
-    completed: true,
-    failed: true,
-  };
+  #stateWooPagOrders = signal<PaginationParams>({
+    page: 1,
+    rows: 10,
+    first: 1,
+    type: 'pending',
+    totalRecords: 0,
+  });
 
-  wooService = inject(WooService);
-  activedRouter = inject(ActivatedRoute);
-  router = inject(Router);
+  public wooTypeOrder = computed(() => this.#stateWooTypeOrder());
+  public wooOrders = computed(() => this.#stateWooOrders());
+  public wooPagOrders = computed(() => this.#stateWooPagOrders());
+
+  private readonly wooOrderService = inject(WooOrdersService);
+  private readonly activedRouter = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   getNumberPendingOrders() {
-    this.wooService.getOrdersCount('processing').subscribe({
+    this.wooOrderService.getOrdersCount('processing').subscribe({
       next: (resp) => {
-        this.pendingOrdersCount = resp.totalCount;
-        this.status.pending = false;
-        console.log(
-          `Cantidad De Ordenes en pendientes de pago: ${this.pendingOrdersCount}`
-        );
+        this.#stateWooTypeOrder().pendingOrders = {
+          status: resp ? 'success' : 'empty',
+          quantity: resp.totalCount,
+        };
       },
       error: (resp) => {
-        this.status.pending = false;
-      },
-    });
-  }
-
-  getNumberProcessOrders() {
-    this.wooService.getOrdersCount('processing').subscribe({
-      next: (resp) => {
-        this.processingOrdersCount = resp.totalCount;
-        this.status.shipped = false;
-        console.log(
-          `Cantidad De Ordenes en proceso: ${this.processingOrdersCount}`
-        );
-      },
-      error: (errorMessage) => {
-        this.status.shipped = false;
+        this.#stateWooTypeOrder().pendingOrders = {
+          status: 'error',
+          quantity: 0,
+        };
       },
     });
   }
 
   getNumberCompletedOrders() {
-    this.wooService.getOrdersCount('completed').subscribe({
+    this.wooOrderService.getOrdersCount('completed').subscribe({
       next: (resp) => {
-        this.completedOrdersCount = resp.totalCount;
-        this.status.completed = false;
-        console.log(
-          `Cantidad De Ordenes completadas: ${this.completedOrdersCount}`
-        );
+        this.#stateWooTypeOrder().completedOrders = {
+          status: resp ? 'success' : 'empty',
+          quantity: resp.totalCount,
+        };
       },
       error: (errorMessage) => {
-        this.status.completed = false;
+        this.#stateWooTypeOrder().completedOrders = {
+          status: 'error',
+          quantity: 0,
+        };
       },
     });
   }
 
   getNumberCancelledOrders() {
-    this.wooService.getOrdersCount('cancelled').subscribe({
+    this.wooOrderService.getOrdersCount('cancelled').subscribe({
       next: (resp) => {
-        this.cancelledOrdersCount = resp.totalCount;
-        this.status.failed = false;
+        this.#stateWooTypeOrder().unsoldOrders = {
+          status: resp ? 'success' : 'empty',
+          quantity: resp ? resp.totalCount : 0,
+        };
       },
       error: (errorMessage) => {
-        this.status.failed = false;
+        this.#stateWooTypeOrder().unsoldOrders = {
+          status: 'error',
+          quantity: 0,
+        };
       },
     });
   }
 
   ngOnInit(): void {
-    //  this.getOrders();
     this.getNumberPendingOrders();
-    this.getNumberProcessOrders();
     this.getNumberCompletedOrders();
     this.getNumberCancelledOrders();
 
-    this.activedRouter.queryParamMap.subscribe( (params: ParamMap) => {
-
-
+    this.activedRouter.queryParamMap.subscribe((params: ParamMap) => {
       const type = params.get('status');
       const page = params.get('page');
       const per_page = params.get('per_page');
-   this.paginationParams.type = type !== null ? type : this.paginationParams.type
-      this.paginationParams.page = page !== null ? +page : 1;
+      this.#stateWooPagOrders().type =
+        type !== null ? type : this.#stateWooPagOrders().type;
+      this.#stateWooPagOrders().page = page !== null ? +page : 1;
       // Verificar si per_pageParam es null o undefined antes de convertirlo a un número
-      this.paginationParams.rows = per_page !== null ? +per_page: 10;
-   
-        this.getOrderstByStatus(this.paginationParams.type)
-     })
+      this.#stateWooPagOrders().rows = per_page !== null ? +per_page : 10;
+
+      this.getOrderstByStatus(this.#stateWooPagOrders().type);
+    });
+
+    this.wooTypeOrder();
+    this.wooOrders();
+    this.wooPagOrders();
   }
 
-  getOrderstByStatus(status: 'pending' | 'completed' | 'canceled' | 'failed',) {
-  
+  getOrderstByStatus(status: 'pending' | 'completed' | 'canceled' | 'failed') {
+    this.#stateWooPagOrders().type = status;
 
-    this.paginationParams.type = status;
-  
     this.router.navigate([], {
       relativeTo: this.activedRouter,
       queryParams: {
         status: status,
-        page: this.paginationParams.page,
-        per_page: this.paginationParams.rows
+        page: this.#stateWooPagOrders().page,
+        per_page: this.#stateWooPagOrders().rows,
       },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     // Llamar al servicio después de la navegación
-     this.getOrders(this.paginationParams.type)
-    }
-  
-    getOrders(status: 'pending' | 'completed' | 'canceled' | 'failed') {
-     this.statusOrders.status = 'loading';
-      this.wooService.getOrderByStatus(status, this.paginationParams.page, this.paginationParams.rows)
+    this.getOrders(this.#stateWooPagOrders().type);
+  }
+
+  getOrders(status: 'pending' | 'completed' | 'canceled' | 'failed') {
+    this.wooOrderService
+      .getOrderByStatus(
+        status,
+        this.#stateWooPagOrders().page,
+        this.#stateWooPagOrders().rows
+      )
       .subscribe({
         next: (resp) => {
-          this.dataOrders = resp.orders;
-          this.statusOrders.status = resp.orders.length ? 'success' : 'empty';
-          this.paginationParams.totalRecords = resp.totalOrders;
-        console.log(resp)
-        }, 
-        error: (err) => {
-          this.statusOrders.status = 'error';
-          this.paginationParams.totalRecords = 0;
-        }
-      });
-    }
+         
+          this.#stateWooOrders.set({
+            status: resp ? 'success' : 'empty',
+            orders: resp ? resp.orders : []
+          });
 
-    changedPage(event: any) {
-      this.paginationParams.page = event.first +1;
-      this.paginationParams.rows = event.rows;
-      
-      this.router.navigate([], {
-        relativeTo: this.activedRouter,
-        queryParams: {
-          status: this.paginationParams.type,
-          page: this.paginationParams.page,
-          per_page: this.paginationParams.rows,
+          this.#stateWooPagOrders().totalRecords = resp.totalOrders;
         },
-  
-        queryParamsHandling: 'merge',
-      });
-    }
+        error: (err) => {
+          this.#stateWooOrders.set({
+            status: 'error',
+            orders: []
+           });
 
+           this.#stateWooPagOrders().totalRecords = 0;
+        },
+      });
+  }
+
+  changedPage(event: any) {
+    this.#stateWooPagOrders().page = event.first + 1;
+    this.#stateWooPagOrders().rows = event.rows;
+
+    this.router.navigate([], {
+      relativeTo: this.activedRouter,
+      queryParams: {
+        status: this.#stateWooPagOrders().type,
+        page: this.#stateWooPagOrders().page,
+        per_page: this.#stateWooPagOrders().rows,
+      },
+
+      queryParamsHandling: 'merge',
+    });
+  }
 }

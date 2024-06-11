@@ -9,12 +9,12 @@
   
       <div class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2">
         <div class="top-header__col">
-          <h1 class="top-header__h1 text-3xl font-semibold text text-white">Ordenes {{paginationParams.type}}</h1>
+          <h1 class="top-header__h1 text-3xl font-semibold text text-white">Ordenes {{wooPagOrders().type}}</h1>
         </div>
   
         <div class="top-header__col">
 
-          <span class="top-header__span text-white font-semibold">26 {{paginationParams.totalRecords}}</span>
+          <span class="top-header__span text-white font-semibold">26 {{wooPagOrders().totalRecords}}</span>
 
         </div>
       </div>
@@ -33,10 +33,9 @@
 <div class="mt-8">
 
     <app-order-list
-    [statusData]="statusOrders"
-    [dataOrders]="dataOrders"
+    [stateOrders]="wooOrders()"
     [orderOption]="menuOrder"
-    [totalOrders]="paginationParams.totalRecords"
+    [totalOrders]="wooPagOrders().totalRecords"
     (changePagination)="changedPage($event)">
     </app-order-list>
 

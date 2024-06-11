@@ -1,82 +1,41 @@
-import { WritableSignal, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-
-import { WooProducto } from '@woocommerce/models/wc-new-product.model';
-import { environment } from 'src/environments/environment.development';
-import { ProductInventory } from 'src/app/core/interface/product.interface';
-import { Orders } from 'src/app/core/interface/orders.interface';
-
-import * as CryptoJS from 'crypto-js';
+import { WritableSignal, inject, signal } from '@angular/core';
+import { UpdateStatusProduct } from '@woocommerce/interface/update-product-status.interface';
+import { WooProductVariation } from '@woocommerce/interface/woo-product-variation.interface';
 import {
   WooProduct,
   WooProductCategory,
-  WooProductImage,
   WooProductResult,
 } from '@woocommerce/interface/woo-producto.interface';
-import { WooOrders } from '@woocommerce/interface/woo-order.interface';
-import { WooProductVariation } from '@woocommerce/interface/woo-product-variation.interface';
+import { WooProducto } from '@woocommerce/models/wc-new-product.model';
+import { Observable, catchError, map, of } from 'rxjs';
+import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
-import { UpdateStatusProduct } from '@woocommerce/interface/update-product-status.interface';
+import { environment } from 'src/environments/environment.development';
 
-export class WooService {
-  private readonly url = environment.wcommerce.apiBase;
-  // private cachedDataPage: { [key: string]: any[] } = {};
+export class WooProductService {
   totalItems: number = 0;
-  totalOrders: number = 0;
-  // productsByBatch: ProductInventory[] = []
   private productsSignal: WritableSignal<ProductInventory[]> = signal([]);
-
+  private readonly url = environment.wcommerce.apiBase;
   private readonly http = inject(HttpClient);
 
-  //* OBTIENE TODOS LOS PRODUCTOS
-  // getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalRecords: number }> {
-  //   const cacheKey = `${page}-${per_page}`;
-  //   const cachedData = this.cachedDataPage[cacheKey];
+  #stateproduct = signal<StatusSignalProducts>({
+    status: 'loading',
+    products: []
+  })
 
-  //   let params = new HttpParams()
-  //     .append('page', page.toString())
-  //     .append('per_page', per_page.toString());
+  
 
-  //   if (cachedData) {
-  //     return of(
-  //       {
-  //         products: cachedData,
-  //         totalRecords: this.totalItems
-  //       }
+  // private cachedDataPage: { [key: string]: any[] } = {};
 
-  //       );
-
-  //   } else {
-  //     return this.http.get<ProductResponse[]>(`${this.url}/products`, { params, observe: 'response' })
-  //       .pipe(
-  //         map((response: HttpResponse<ProductResponse[]>) => {
-  //           const products = response.body; // Datos de los productos
-  //           const totalRecords = response.headers.get('X-WP-Total'); // Cantidad de registros
-  //           this.totalItems = totalRecords ? +totalRecords : 0;
-  //           return {
-  //             products: products ? this.transformDataProduct(products) : [],
-  //             totalRecords: this.totalItems
-  //           };
-
-  //         }),
-  //         tap(data => {
-  //           this.cachedDataPage[cacheKey] = data.products;
-
-  //           // Limpiar caché si se excede un límite de almacenamiento, por ejemplo, 100 páginas
-  //           if (Object.keys(this.cachedDataPage).length > 20) {
-  //             delete this.cachedDataPage[Object.keys(this.cachedDataPage)[0]];
-  //           }
-  //         }),
-  //         catchError(error => {
-  //           console.error('Error al obtener productos', error);
-  //           return of({ products: [], totalRecords: 0 }); // Manejar el error devolviendo un objeto vacío
-  //         })
-  //       );
-  //   }
-  // }
-
+  //* OBTIENE TODAS LAS CATEGORIAS CREADAS
+  getCategorias(): Observable<WooProductCategory[]> {
+    return this.http
+      .get<WooProductCategory[]>(`${this.url}/categories`)
+      .pipe(
+        catchError(this.hanlerError<WooProductCategory[]>('getCategorias', []))
+      );
+  }
 
   //* OBTIENE LOS PRODUCTOS
   getProducts(
@@ -176,6 +135,7 @@ export class WooService {
     );
   }
 
+  //* OBTIENE LAS VARIACIONES DEL PRODUCTO
   getProductVariation(idProduct: string): Observable<VariantProduct[]> {
     return this.http
       .get<WooProductVariation[]>(
@@ -184,60 +144,6 @@ export class WooService {
       .pipe(
         map((resp) => resp.map((item) => this.transformProductVariation(item)))
       );
-  }
-
-  //* OBTIENE TODAS LAS CATEGORIAS CREADAS
-  getCategorias(): Observable<WooProductCategory[]> {
-    return this.http
-      .get<WooProductCategory[]>(`${this.url}/categories`)
-      .pipe(
-        catchError(this.hanlerError<WooProductCategory[]>('getCategorias', []))
-      );
-  }
-
-  //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
-  getOrderByStatus(
-    status: 'pending' | 'completed' | 'canceled' | 'failed',
-    page: number,
-    per_page: number
-  ): Observable<{ orders: Orders[]; totalOrders: number }> {
-    const params = new HttpParams()
-      .append('status', status.toString())
-      .append('page', page.toString())
-      .append('per_page', per_page.toString());
-
-    return this.http
-      .get<WooOrders[]>(`${this.url}/orders`, { params, observe: 'response' })
-      .pipe(
-        map((response: HttpResponse<WooOrders[]>) => {
-          const ordersResponse = response.body; //datos de las ordenes
-          const totalOrders = response.headers.get('X-WP-Total');
-          this.totalOrders = totalOrders ? parseInt(totalOrders) : 0;
-          if (ordersResponse !== null) {
-            return {
-              orders: ordersResponse.map((orderResponse) =>
-                this.transformOrder(orderResponse)
-              ),
-              totalOrders: this.totalOrders,
-            };
-          } else {
-            this.totalOrders = 0;
-            throw new Error('La respuesta del servidor es nula');
-          }
-        })
-      );
-  }
-
-  //* OBTIENE LA CANTIDAD DE ORDENES
-  getOrdersCount(
-    status: 'pending' | 'processing' | 'completed' | 'cancelled'
-  ): Observable<{ totalCount: number }> {
-    return this.http.get<any>(`${this.url}/orders?status=${status}`).pipe(
-      map((resp) => {
-        return { totalCount: resp.length };
-      }),
-      catchError(this.hanlerError<any>('getOrderCount', []))
-    );
   }
 
   //* CREAR UN NUEVO PRODUCTO
@@ -284,59 +190,65 @@ export class WooService {
       .pipe(catchError(this.hanlerError<any>('deleteProduct', {})));
   }
 
-  //* ACCIONES POR LOTE
+  //? < ============ ACCIONES POR LOTE ============ >
 
-  updateProducts(products: WooProducto[]): Observable<WooProduct[]> {
-
-    const data = {
-      update: products
-    }
-
-    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data)
+  saveData(data: ProductInventory[]) {
+    localStorage.setItem('data', JSON.stringify(data))
   }
 
-  updateProductStatus(products: UpdateStatusProduct[]): Observable<WooProduct[]> {
-    const data = {
-     update: products
-    }
-    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data)
+  loadData(): ProductInventory[] {
+    const data = localStorage.getItem('data');
+    const products = data ? JSON.parse(data) : [];
+    this.productsSignal.set(products);
+    return products;
   }
 
-  deleteProductsByBranch(products: number[]): Observable<WooProduct[]> {
-    const data = {
-      delete: products
-     }
-     return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data)
-  }
- 
   setMassiveProducts(products: ProductInventory[]) {
     this.productsSignal.set(products);
 
   }
 
- getMassiveProducts(): WritableSignal<ProductInventory[]> {
-  return this.productsSignal;
+  getMassiveProducts(): WritableSignal<ProductInventory[]> {
+    return this.productsSignal;
+  }
 
- }
+  deleteData() {
 
- saveData(data: ProductInventory[]) {
-  localStorage.setItem('data', JSON.stringify( data))
- }
+    if (localStorage.getItem('data')) {
+      localStorage.removeItem('data')
+    }
+  }
 
- loadData(): ProductInventory[] {
-  const data = localStorage.getItem('data');
-  const products = data ? JSON.parse(data) : [];
-  this.productsSignal.set(products);
-  return products;
-}
+  //* ACTUALIZA POR LOTE DE PRODUCTOS
+  updateProducts(products: WooProducto[]): Observable<WooProduct[]> {
+    const data = {
+      update: products,
+    };
 
-removeData() {
+    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data);
+  }
 
-    localStorage.removeItem('data')
-  
-}
+  //* ACTUALIZA POR LOTE EL ESTATUS DE LA PUBLICACIÓN
+  updateProductStatus(
+    products: UpdateStatusProduct[]
+  ): Observable<WooProduct[]> {
+    const data = {
+      update: products,
+    };
+    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data);
+  }
 
-  //*TRANSFORM DATA
+  //* ELIMINA POR LOTE DE PRODUCTOS
+  deleteProductsByBranch(products: number[]): Observable<WooProduct[]> {
+    const data = {
+      delete: products,
+    };
+    return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data);
+  }
+
+  //? <-- TRANSFORM DATA -->
+
+  //* TRANSFORMA LA DATA DE CADA PRODUCTO
   transformDataProduct(producto: WooProduct): ProductInventory {
     image: producto.images[0];
 
@@ -353,38 +265,24 @@ removeData() {
       category: producto.categories,
       imageProduct: producto.images[0]
         ? {
-            id: producto.images[0].id.toString(),
-            url: producto.images[0].src,
-            alt: producto.images[0].alt,
-          }
+          id: producto.images[0].id.toString(),
+          url: producto.images[0].src,
+          alt: producto.images[0].alt,
+        }
         : undefined,
-      status: producto.status === 'publish' && producto.stock_status === 'instock' ? 'active' : 'inactive',
+      status:
+        producto.status === 'publish' && producto.stock_status === 'instock'
+          ? 'active'
+          : 'inactive',
 
-      stock_status: producto.stock_status === 'instock' ? 'instock' : 'outofstock',
+      stock_status:
+        producto.stock_status === 'instock' ? 'instock' : 'outofstock',
       isDropdownInformation: producto.variations.length > 0 ? true : false,
       channel: 'woocommerce',
     };
   }
 
-  transformOrder(orderResponse: WooOrders): Orders {
-    return {
-      id: orderResponse.id.toString(),
-      noOrder: orderResponse.id.toString(),
-      status: orderResponse.status === 'pending' ? 'En Proceso' : 'Concretado',
-      date_created: orderResponse.date_created,
-      authorization_date: orderResponse.date_completed,
-      isFulfillment: false,
-      total_order: parseFloat(orderResponse.total),
-      products: orderResponse.line_items.map((productOrder) => ({
-        id: productOrder.id.toString(),
-        product: productOrder.name,
-        sku: productOrder.sku,
-        total_product: parseFloat(productOrder.total),
-        image: productOrder.image,
-      })),
-    };
-  }
-
+  //* TRANSFORMA LA DATA DE LAS VARIACIONES DE UN PRODUCTO
   transformProductVariation(product: WooProductVariation): VariantProduct {
     return {
       id: product.id,
@@ -413,5 +311,56 @@ removeData() {
       return of(result as T);
     };
   }
+
+  // getProducts(page: number, per_page: number): Observable<{ products: ProductInventory[], totalRecords: number }> {
+  //   const cacheKey = `${page}-${per_page}`;
+  //   const cachedData = this.cachedDataPage[cacheKey];
+
+  //   let params = new HttpParams()
+  //     .append('page', page.toString())
+  //     .append('per_page', per_page.toString());
+
+  //   if (cachedData) {
+  //     return of(
+  //       {
+  //         products: cachedData,
+  //         totalRecords: this.totalItems
+  //       }
+
+  //       );
+
+  //   } else {
+  //     return this.http.get<ProductResponse[]>(`${this.url}/products`, { params, observe: 'response' })
+  //       .pipe(
+  //         map((response: HttpResponse<ProductResponse[]>) => {
+  //           const products = response.body; // Datos de los productos
+  //           const totalRecords = response.headers.get('X-WP-Total'); // Cantidad de registros
+  //           this.totalItems = totalRecords ? +totalRecords : 0;
+  //           return {
+  //             products: products ? this.transformDataProduct(products) : [],
+  //             totalRecords: this.totalItems
+  //           };
+
+  //         }),
+  //         tap(data => {
+  //           this.cachedDataPage[cacheKey] = data.products;
+
+  //           // Limpiar caché si se excede un límite de almacenamiento, por ejemplo, 100 páginas
+  //           if (Object.keys(this.cachedDataPage).length > 20) {
+  //             delete this.cachedDataPage[Object.keys(this.cachedDataPage)[0]];
+  //           }
+  //         }),
+  //         catchError(error => {
+  //           console.error('Error al obtener productos', error);
+  //           return of({ products: [], totalRecords: 0 }); // Manejar el error devolviendo un objeto vacío
+  //         })
+  //       );
+  //   }
+  // }
 }
 
+
+interface StatusSignalProducts {
+  status: 'loading' | 'success' | 'empty' | 'error';
+  products: ProductInventory[]
+}

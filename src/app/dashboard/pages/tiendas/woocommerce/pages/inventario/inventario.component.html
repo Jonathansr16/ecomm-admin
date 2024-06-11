@@ -30,16 +30,14 @@
 
 
 <app-inventory-list 
-[statusProducts]="statusData"
-[products]="products" 
-[totalRecords]="paginationParams.totalRecords"
+[stateDataProducts]="wooProducts()"
+[totalRecords]="wooPagProducts().totalRecords"
 [menuProduct]="menuProduct"
 (changedLabelValue)="changeTypeSearch($event)" 
 (searchValue)="getProductsBySearch($event)"
 (changedPagination)="paginationChanged($event)"
 (emitProduct)="getVarianProduct($event)"
-[statusProductVars]="variationStatus"
-[productsVar]="variationsProduct"
+[stateVariations]="wooVariations()"
 (pauseProductsByBatch)="pauseProductByBatch($event)"
 (reactivateProductsByBatch)="activateProductByBatch($event)"
 (deleteProductsByBatch)="deleteByBatch($event)"

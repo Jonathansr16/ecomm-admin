@@ -4,7 +4,7 @@
       <div [style]="{ 'background-color': 'var(--surface-card)' }"
         class="inventory__toolbar-row container p-3 flex items-center justify-between flex-wrap gap-2 mt-8">
         <div class="inventory__toolbar-col flex item-center gap-2">
-          <p-checkbox [disabled]="products().length === 0" [binary]="true" inputId="binary"
+          <p-checkbox [disabled]="!stateDataProducts().products.length" [binary]="true" inputId="binary"
             [(ngModel)]="isSelectAllProduct" (onChange)="toggleSelectAllProducts()">
           </p-checkbox>
 
@@ -21,27 +21,22 @@
         </div>
 
         <div class="inventory__toolbar-col flex item-center gap-2">
+         
           <p-button (onClick)="pauseProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Pausar" [text]="true"
-            [disabled]="isBtnActive.pause === false" [severity]="isBtnActive.pause ? 'warning' : 'secondary'">
+            [disabled]="isButtonActive().pause === false" [severity]="isButtonActive().pause ? 'warning' : 'secondary'">
           </p-button>
-          <!-- <p-button [style]="{ 'font-size': '14px' }" label="Modificar" [text]="true"
-            [disabled]="isBtnActive.modify === false" [severity]="isBtnActive.modify ? 'primary' : 'secondary'">
-          </p-button> -->
-
+        
           <p-button (onClick)="reactivateProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Reactivar" [text]="true"
-          [disabled]="isBtnActive.reactivate === false" [severity]="isBtnActive.reactivate ? 'primary' : 'secondary'">
+          [disabled]="isButtonActive().reactivate === false" [severity]="isButtonActive().reactivate ? 'primary' : 'secondary'">
         </p-button>
 
           <p-button (onClick)="deleteProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Eliminar" [text]="true"
-            [disabled]="isBtnActive.eliminate === false" [severity]="isBtnActive.eliminate ? 'danger' : 'secondary'">
+            [disabled]="isButtonActive().eliminate === false" [severity]="isButtonActive().eliminate ? 'danger' : 'secondary'">
           </p-button>
 
-        
-
           <p-button (onClick)="modifyProductsByBatch.emit(selectedProduct)" [style]="{ 'font-size': '14px' }" label="Modificar de manera Masica" [text]="true"
-            [disabled]="!isBtnActive.massiveModification" [severity]="
-              isBtnActive.massiveModification ? 'primary' : 'secondary'
-            ">
+            [disabled]="!isButtonActive().massiveModification" [severity]="
+              isButtonActive().massiveModification ? 'primary' : 'secondary'">
           </p-button>
           
         </div>
@@ -90,14 +85,15 @@
       </div>
     </div>
 
-    @switch (statusProducts().status) { @case ('success') { 
-      @for (product of products(); track i; let i = $index) {
+    @switch (stateDataProducts().status) { 
+      @case ('success') { 
+        
+      @for (product of stateDataProducts().products; track i; let i = $index) {
 
     <app-card-product [product]="product" [isSelected]="isSelectedEveryProduct[i]"
       (onChangeValue)="toggleEveryProduct($event, i)" [menuProduct]="menuProduct()"
       (emitID)="toggleAccordeon(i, product.id)"
-      [productVar]="productsVar()"
-      [statusProductVar]="statusProductVars()">
+       [getVariationData]="stateVariations()">
     </app-card-product>
     }
 
@@ -156,11 +152,11 @@
       <img src="assets/img/svg/internal_error.svg" class="max-w-72 max-h-72 w-full h-full" alt="error" />
 
       <h2 class="lg:text-xl text-lg font-semibold text-slate-600 text-center">
-        {{ statusInfoProducts()?.titleError }}
+        {{ stateError()?.titleError }}
       </h2>
 
       <p class="text-base text-slate-700 text-center">
-        {{ statusInfoProducts()?.summaryError }}
+        {{ stateError()?.summaryError }}
       </p>
     </div>
     } }

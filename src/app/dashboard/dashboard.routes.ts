@@ -1,11 +1,13 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {  Routes } from '@angular/router';
 import { DataTimeInterceptor } from '@claroshop/interceptors/date-time.interceptor';
-import { ClaroService } from '@claroshop/services/claroservice.service';
+import { ClaroOrdersService } from '@claroshop/services/claro-orders.service';
+import { ClaroProductsService } from '@claroshop/services/claro-products.service';
 import { injectTokenInterceptor } from '@mely/interceptors/injectToken.interceptor';
 import { MelyService } from '@mely/mely.service';
 import { KeyInterceptor } from '@woocommerce/interceptors/key.interceptor';
-import { WooService } from '@woocommerce/services/woo.service';
+import { WooOrdersService } from '@woocommerce/services/woo-orders.service';
+import { WooProductService } from '@woocommerce/services/woo-product-service.service';
 
 export const dashboardRoutes: Routes = [
 
@@ -31,7 +33,8 @@ export const dashboardRoutes: Routes = [
         loadChildren: () => import('@claroshop/claroshop.routes').then( (r) => r.claroRoutes),
 
         providers: [
-          ClaroService,
+          ClaroOrdersService,
+          ClaroProductsService,
           provideHttpClient(
             withInterceptors([DataTimeInterceptor])
           )
@@ -54,7 +57,8 @@ export const dashboardRoutes: Routes = [
         loadChildren: () => import('@woocommerce/woo.routes').then( (r) => r.WoocommerceRoute),
         
           providers: [
-            WooService,
+            WooProductService,
+            WooOrdersService,
             provideHttpClient(
               withInterceptors([KeyInterceptor])
             )
@@ -91,7 +95,7 @@ export const dashboardRoutes: Routes = [
     title: 'Editor masivo',
     loadComponent: () => import('@woocommerce/pages/woo-massive-editor/woo-massive-editor.component'),
     providers: [
-      WooService,
+      WooProductService,
       provideHttpClient(
         withInterceptors([KeyInterceptor])
       )

@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, SimpleChanges, inject } from '@angular/core';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
-import { WooService } from '@woocommerce/services/woo.service';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { MassiveEditorComponent } from '@components/inventory-list/massive-editor/massive-editor.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { WooProductService } from '@woocommerce/services/woo-product-service.service';
 
 @Component({
   selector: 'app-woo-massive-edition',
@@ -20,14 +20,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   ],
   templateUrl: './woo-massive-editor.component.html',
   styleUrl: './woo-massive-editor.component.scss',
-    providers: [WooService]
+    providers: [WooProductService]
 })
 export default class WooMassiveEditionComponent { 
 
   products: ProductInventory[] = [];
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
-  wooService = inject(WooService);
+  wooProductService = inject(WooProductService);
   breadcrumHome: BreadcrumbItem = {
     icon: 'list_alt',
     label: 'Editor masivo',
@@ -87,7 +87,7 @@ export default class WooMassiveEditionComponent {
     // if (navigation && navigation.extras.state) {
     //   this.products = navigation.extras.state['data'];
     // }
-    this.products= this.wooService.loadData()
+    this.products= this.wooProductService.loadData()
 
   }
 
@@ -95,7 +95,7 @@ export default class WooMassiveEditionComponent {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    this.wooService.removeData()
+    this.wooProductService.deleteData()
   }
 
 }

@@ -13,7 +13,7 @@
     >
       <div class="top-header__col">
         <h1 class="top-header__h1 text-3xl font-semibold text text-white">
-          Ordenes {{ paginationParams.type }}
+          Ordenes {{ claroPagOrder().type }}
         </h1>
       </div>
 
@@ -27,7 +27,7 @@
           >
           </p-button> -->
         <span class="top-header__span text-white font-semibold">
-          26 {{paginationParams.totalRecords}}
+          26 {{claroPagOrder().totalRecords}}
         </span>
       </div>
     </div>
@@ -48,10 +48,9 @@
 
 <div class="mt-8">
   <app-order-list
-    [statusData]="statusData"
     [orderOption]="menuOrder"
-    [dataOrders]="orders"
-    [totalOrders]="paginationParams.totalRecords"
+    [stateOrders]="claroOrders()"
+    [totalOrders]="claroPagOrder().totalRecords"
     (emitId)="getId($event)"
     (changePagination)="paginationChanged($event)"
   >

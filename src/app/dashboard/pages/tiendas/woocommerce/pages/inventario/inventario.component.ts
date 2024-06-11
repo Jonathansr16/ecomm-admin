@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { EMPTY, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -17,27 +25,24 @@ import { ButtonModule } from 'primeng/button';
 import { SplitButtonModule } from 'primeng/splitbutton';
 
 //? SERVICES
-import { WooService } from '@woocommerce/services/woo.service';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { generateProductForm } from 'src/app/core/form/generateProductForm';
-import { StatusBtn } from 'src/app/core/interface/statusBtn.interface';
-
 import { InventoryListComponent } from '@components/inventory-list/inventory-list.component';
 import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
-import { StatusData } from 'src/app/core/interface/status-data.interface';
-import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
 import { PositionVariante } from 'src/app/core/interface/position-variante.interface';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
-import { WooProducto } from '@woocommerce/models/wc-new-product.model';
 import { UpdateStatusProduct } from '@woocommerce/interface/update-product-status.interface';
+import { WooProductService } from '@woocommerce/services/woo-product-service.service';
+import { StateProducts } from 'src/app/core/interface/state-products.interface';
+import { StateVariation } from 'src/app/core/interface/state-variations.interface';
 
 @Component({
   selector: 'app-inventario',
   templateUrl: './inventario.component.html',
   standalone: true,
-
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     BreadcrumbComponent,
@@ -52,14 +57,13 @@ import { UpdateStatusProduct } from '@woocommerce/interface/update-product-statu
   providers: [MessageService, ConfirmationService],
 })
 export default class InventarioComponent implements OnInit, OnDestroy {
-  
-  breadcrumHome: BreadcrumbItem = {
+  readonly breadcrumHome: BreadcrumbItem = {
     icon: 'list_alt',
     label: 'Inventario',
     separator: true,
   };
 
-  breadcrumbItems: BreadcrumbItem[] = [
+  readonly breadcrumbItems: BreadcrumbItem[] = [
     {
       icon: 'storefront',
       label: 'Tiendas',
@@ -96,7 +100,6 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
         {
           label: 'Pausar',
-        
         },
 
         {
@@ -109,31 +112,17 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   //Enlace al input search
   inputValue!: string;
   //parametros iniciales para la paginación
-  paginationParams: PaginationParams = {
-    page: 1,
-    rows: 10,
-    first: 1,
-    totalRecords: 0,
-  };
 
   typeSearch: 'todo' | 'id' | 'title' | 'sku' = 'todo';
-  statusData: StatusData = { status: 'loading' };
 
   //ARREGLO PARA CACHEAR LA DATA
   private readonly cachedDataRows: { [key: string]: WooProductResult[] } = {};
 
-  product: WooProductResult | undefined;
-  variationsProduct: VariantProduct[] = [];
-  variationStatus: StatusData = { status: 'loading' };
+  // variationStatus: StatusData = { status: 'loading' };
+  // variationsProduct: VariantProduct[] = [];
+
   suscriptions$: Subscription[] = [];
   errorMessage!: string;
-
-  handlerOptionBtn: StatusBtn = {
-    pause: false,
-    modify: false,
-    eliminate: false,
-    massiveModification: false,
-  };
 
   // @ts-ignore
   formRegisterGroup: FormGroup;
@@ -144,10 +133,30 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     });
   }
 
-  private readonly wooService = inject(WooService);
-  products: ProductInventory[] = [];
+  #stateWooProducts = signal<StateProducts>({
+    status: 'loading',
+    products: [],
+  });
+
+  #stateWooVariations = signal<StateVariation>({
+    status: 'loading',
+    variations: [],
+  });
+
+  #stateWooPagProducts = signal<PaginationParams>({
+    page: 1,
+    rows: 10,
+    first: 1,
+    totalRecords: 0,
+  });
+
+  public wooProducts = computed(() => this.#stateWooProducts());
+  public wooPagProducts = computed(() => this.#stateWooPagProducts());
+  public wooVariations = computed(() => this.#stateWooVariations());
+
+  private readonly wooService = inject(WooProductService);
   private readonly activedRoute = inject(ActivatedRoute);
-  private  router = inject(Router);
+  private readonly router = inject(Router);
   private readonly confirmService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
   private readonly formBuilder = inject(FormBuilder);
@@ -162,13 +171,17 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       const per_page = params.get('per_page');
 
       // Verificar si page es null o undefined antes de convertirlo a un número
-      this.paginationParams.page = page !== null ? +page : 0;
+      this.#stateWooPagProducts().page = page !== null ? +page : 0;
 
       // Verificar si per_page es null o undefined antes de convertirlo a un número
-      this.paginationParams.rows = per_page !== null ? +per_page : 10;
+      this.#stateWooPagProducts().rows = per_page !== null ? +per_page : 10;
 
       this.getProducts();
     });
+
+    this.wooProducts();
+    this.wooVariations();
+    this.wooPagProducts();
   }
 
   ngOnDestroy(): void {
@@ -187,25 +200,29 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
   getProducts() {
-    // Realiza una llamada a la API si no hay datos en caché
-    this.statusData.status = 'loading';
     return this.suscriptions$.push(
       this.wooService
-        .getProducts(this.paginationParams.page, this.paginationParams.rows)
+        .getProducts(
+          this.#stateWooPagProducts().page,
+          this.#stateWooPagProducts().rows
+        )
         .subscribe({
           next: (resp) => {
-            this.products = resp.products;
-            // this.cachedDataRows[per_page] = resp;
-            this.statusData.status =
-              resp.totalProducts > 0 ? 'success' : 'empty';
-            this.paginationParams.totalRecords = resp.totalProducts;
+            this.#stateWooProducts.set({
+              status: resp.totalProducts > 0 ? 'success' : 'empty',
+              products: resp.products,
+            });
+
+            this.#stateWooPagProducts().totalRecords = resp.totalProducts;
           },
           error: (error: string) => {
             this.errorMessage = error;
-            this.statusData.status = 'error';
-            this.products = [];
-            this.paginationParams.totalRecords = 0;
-            // this.cachedDataRows[page] = []; // Limpia la caché en caso de error
+
+            this.#stateWooProducts.set({
+              status: 'error',
+              products: [],
+            });
+            this.#stateWooPagProducts().totalRecords = 0;
             return EMPTY;
           },
         })
@@ -217,27 +234,30 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
   getProductsBySearch(value: string) {
-    this.statusData.status = 'loading';
+    this.#stateWooProducts().status = 'loading';
 
     this.suscriptions$.push(
       this.wooService
         .getProductsBySearch(
           value,
-          (this.paginationParams.page = 1),
-          (this.paginationParams.rows = 10),
+          (this.#stateWooPagProducts().page = 1),
+          (this.#stateWooPagProducts().rows = 10),
           this.typeSearch
         )
         .subscribe({
           next: (data) => {
-            this.products = data.products;
-            this.statusData.status =
-              data.totalProducts > 0 ? 'success' : 'empty';
+            this.#stateWooProducts.set({
+              status: data.totalProducts > 0 ? 'success' : 'empty',
+              products: data.products,
+            });
 
             console.log(data);
           },
           error: (err: string) => {
-            this.statusData.status = 'error';
-            this.products = [];
+            this.#stateWooProducts.set({
+              status: 'error',
+              products: [],
+            });
             this.errorMessage = err;
 
             return EMPTY;
@@ -247,30 +267,32 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
   getVarianProduct(product: PositionVariante) {
-    this.variationStatus.status = 'loading';
-
     this.wooService.getProductVariation(product.idProduct).subscribe({
       next: (resp) => {
-        this.variationsProduct = resp;
-        this.variationStatus.status = resp.length > 0 ? 'success' : 'empty';
+        this.#stateWooVariations.set({
+          status: resp.length > 0 ? 'success' : 'empty',
+          variations: resp,
+        });
       },
       error: (err) => {
-        this.variationsProduct = [];
-        this.variationStatus.status = 'error';
+        this.#stateWooVariations.set({
+          status: 'error',
+          variations: [],
+        });
         console.log(err);
       },
     });
   }
 
   paginationChanged(event: any) {
-    this.paginationParams.page = event.page + 1;
-    this.paginationParams.rows = event.rows;
+    this.#stateWooPagProducts().page = event.page + 1;
+    this.#stateWooPagProducts().rows = event.rows;
     //Actualizar parámetros de la URL
     this.router.navigate([], {
       relativeTo: this.activedRoute,
       queryParams: {
-        page: this.paginationParams.page,
-        rows: this.paginationParams.rows,
+        page: this.#stateWooPagProducts().page,
+        rows: this.#stateWooPagProducts().rows,
       },
       queryParamsHandling: 'merge',
     });
@@ -298,22 +320,19 @@ export default class InventarioComponent implements OnInit, OnDestroy {
     });
   }
 
-
   //* ACCIONES POR LOTE
   pauseProductByBatch(products: ProductInventory[]) {
-
     let items: UpdateStatusProduct[] = [];
 
-    products.forEach( (item, i) => {
-
+    products.forEach((item, i) => {
       items[i] = {
         id: item.id,
         stock_status: 'outofstock',
-        status: 'draft'
-      }
+        status: 'draft',
+      };
     });
 
-        this.confirmService.confirm({
+    this.confirmService.confirm({
       target: event?.target as EventTarget,
       message: '¿Estás seguro de pausar esta publicación?',
       header: 'Confirmación',
@@ -322,11 +341,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       rejectLabel: 'Cancelar',
       rejectButtonStyleClass: 'p-button-text',
       accept: () => {
-        this.statusData.status = 'loading';
-
         this.wooService.updateProductStatus(items).subscribe({
           next: (resp) => {
-            this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+            this.#stateWooProducts().status =
+              resp.length > 0 ? 'success' : 'empty';
             this.messageService.add({
               severity: 'success',
               summary: 'Confirmación',
@@ -338,7 +356,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
           error: (err) => {
             console.error(err);
-            this.statusData.status = 'error';
+            this.#stateWooProducts.set({
+              status: 'error',
+              products: [],
+            });
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -349,22 +370,20 @@ export default class InventarioComponent implements OnInit, OnDestroy {
         });
       },
     });
-
   }
 
   activateProductByBatch(products: ProductInventory[]) {
     let items: UpdateStatusProduct[] = [];
 
-    products.forEach( (item, i) => {
-
+    products.forEach((item, i) => {
       items[i] = {
         id: item.id,
         stock_status: 'instock',
-        status: 'publish'
-      }
+        status: 'publish',
+      };
     });
 
-        this.confirmService.confirm({
+    this.confirmService.confirm({
       target: event?.target as EventTarget,
       message: `Reactivar (${products.length}) productos, al reactivar tus productos, vuelven a estar visibles en tu tienda`,
       header: 'Confirmación',
@@ -373,11 +392,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       rejectLabel: 'Cancelar',
       rejectButtonStyleClass: 'p-button-text',
       accept: () => {
-        this.statusData.status = 'loading';
-
         this.wooService.updateProductStatus(items).subscribe({
           next: (resp) => {
-            this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+            this.#stateWooProducts().status =
+              resp.length > 0 ? 'success' : 'empty';
             this.messageService.add({
               severity: 'success',
               summary: 'Confirmación',
@@ -389,7 +407,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
           error: (err) => {
             console.error(err);
-            this.statusData.status = 'error';
+            this.#stateWooProducts.set({
+              status: 'error',
+              products: [],
+            });
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -403,11 +424,9 @@ export default class InventarioComponent implements OnInit, OnDestroy {
   }
 
   deleteByBatch(products: ProductInventory[]) {
-
     let items: number[] = [];
 
-    products.forEach( (item, i) => {
-
+    products.forEach((item, i) => {
       items[i] = item.id;
     });
 
@@ -420,11 +439,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
       rejectLabel: 'Cancelar',
       rejectButtonStyleClass: 'p-button-text',
       accept: () => {
-        this.statusData.status = 'loading';
-
         this.wooService.deleteProductsByBranch(items).subscribe({
           next: (resp) => {
-            this.statusData.status = resp.length > 0 ? 'success' : 'empty';
+            this.#stateWooProducts().status =
+              resp.length > 0 ? 'success' : 'empty';
             this.messageService.add({
               severity: 'success',
               summary: 'Confirmación',
@@ -436,7 +454,10 @@ export default class InventarioComponent implements OnInit, OnDestroy {
 
           error: (err) => {
             console.error(err);
-            this.statusData.status = 'error';
+            this.#stateWooProducts.set({
+              status: 'error',
+              products: [],
+            });
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -447,14 +468,13 @@ export default class InventarioComponent implements OnInit, OnDestroy {
         });
       },
     });
- 
   }
 
-gotoMassiveEditor(products: ProductInventory[]) {
-  // this.wooService.setMassiveProducts(products);
-  this.wooService.saveData(products);
-  this.router.navigate(['/dashboard/woocommerce/editor-masivo']);
-}
+  gotoMassiveEditor(products: ProductInventory[]) {
+    // this.wooService.setMassiveProducts(products);
+    this.wooService.saveData(products);
+    this.router.navigate(['/dashboard/woocommerce/editor-masivo']);
+  }
 
   changeTypeSearch(value: any) {
     this.typeSearch = value;
@@ -466,4 +486,8 @@ export interface PageEvent {
   first: number;
   rows: number;
   pageCount: number;
+}
+
+interface StatusPublish {
+  status: 'loading' | 'success' | 'empty' | 'error';
 }

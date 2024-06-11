@@ -15,7 +15,9 @@
         <h1 class="top-header__h1 text-3xl font-bold text text-white">
           Inventario
         </h1>
-        <span class="top-header__span text-white">26 {{paginationParams.totalRecords}}</span>
+        <span class="top-header__span text-white"
+          >{{ claroPagination().totalRecords }} Productos</span
+        >
       </div>
 
       <div class="top-header__col">
@@ -31,16 +33,13 @@
   </div>
 </div>
 
-<!-- [productsExtraInfo]="productsDetail" -->
-<!-- (emitProduct)="getProduct($event)" -->
 <app-inventory-list
-[statusProducts]="statusProducts"
-[products]="products"
-[totalRecords]="paginationParams.totalRecords"
-[menuProduct]="MenuProduct"
- (changeLabelValue)="changeTypeSearch($event)"
- (searchValue)="getProductsBySearch($event)"
-
- (changedPagination)="paginationChanged($event)"
+  [stateDataProducts]="claroProducts()"
+  [stateError]="statusInfoProducts"
+  [totalRecords]="claroPagination().totalRecords"
+  [menuProduct]="MenuProduct"
+  (changeLabelValue)="changeTypeSearch($event)"
+  (searchValue)="getProductsBySearch($event)"
+  (changedPagination)="paginationChanged($event)"
 >
 </app-inventory-list>

@@ -1,5 +1,4 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
-import { WooService } from '@woocommerce/services/woo.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
@@ -15,6 +14,7 @@ import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { InputTextModule } from 'primeng/inputtext';
 import { ExpansionPanelComponent } from '@components/expansion-panel/expansion-panel.component';
+import { WooProductService } from '@woocommerce/services/woo-product-service.service';
 
 @Component({
   selector: 'app-product',
@@ -108,7 +108,7 @@ export default class EditProductComponent {
     )
   }
 
-  wooService = inject(WooService);
+  wooProductService = inject(WooProductService);
   validatorService = inject(ValidatorsService);
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService)
@@ -122,7 +122,7 @@ export default class EditProductComponent {
 
   ngOnInit(): void {
 
-    this.wooService.getProduct(this.productId).subscribe(data => {
+    this.wooProductService.getProduct(this.productId).subscribe(data => {
       this.wcProduct = {
         ...data
       };
@@ -171,7 +171,7 @@ export default class EditProductComponent {
       const newValue = fieldControl.value;
       const data: any = { [field]: newValue };
 
-      this.wooService.updateFieldProduct(this.productId, data).subscribe({
+      this.wooProductService.updateFieldProduct(this.productId, data).subscribe({
         next: (resp => {
 
         this.wcProduct[field] = resp[field];

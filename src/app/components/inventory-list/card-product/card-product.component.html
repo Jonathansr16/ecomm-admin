@@ -173,9 +173,7 @@
 
       <span class="separator mt-4 mx-8 border-t-[1px] block border-slate-200"></span>   
       
-      <app-card-dropdown-product 
-      [statusProductVars]="statusProductVar()!"
-      [productVars]="productVar()!">
+      <app-card-dropdown-product [variationData]="getVariationData() ?? {status: 'empty', variations: [] }">
 
       </app-card-dropdown-product>
       

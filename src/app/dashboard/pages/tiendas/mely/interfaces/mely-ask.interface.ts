@@ -3,13 +3,13 @@ export interface MelyAskResult {
     date_created:         Date;
     item_id:              string;
     seller_id:            number;
-    status:               QuestionStatus;
-    text:                 string;
+    question_status:      QuestionStatus;
+    question:             string;
     tags:                 any[];
     id:                   number;
     deleted_from_listing: boolean;
     hold:                 boolean;
-    answer?:               Answer;
+    answer?:               MelyAnswer;
     from:                 From;
     question_item: MelyAskProduct;
 }
@@ -19,7 +19,7 @@ export interface MelyAskProduct {
     title: string;
     sku: string;
     price: number;
-    status: string;
+    product_status: 'active' | 'inactive';
     img: MelyAskImg
     isFulfillment: boolean;
 }
@@ -33,7 +33,7 @@ export interface MelyAskImg {
 export interface MelyAsk {
     total:             number;
     limit:             number;
-    questions:         Question[];
+    questions:         MelyQuestion[];
     filters:           Filters;
     available_filters: AvailableFilter[];
     available_sorts:   string[];
@@ -51,18 +51,18 @@ export interface Filters {
     offset:      number;
     api_version: string;
     is_admin:    boolean;
-    sorts:       Sort[];
+    sorts:       MelySort[];
     caller:      number;
     seller:      number;
     client_id:   number;
 }
 
-export interface Sort {
+export interface MelySort {
     field: string;
     type:  string;
 }
 
-export interface Question {
+export interface MelyQuestion {
     date_created:         Date;
     item_id:              string;
     seller_id:            number;
@@ -72,11 +72,11 @@ export interface Question {
     id:                   number;
     deleted_from_listing: boolean;
     hold:                 boolean;
-    answer:               Answer;
+    answer:               MelyAnswer;
     from:                 From;
 }
 
-export interface Answer {
+export interface MelyAnswer {
     text:         string;
     status:       AnswerStatus;
     date_created: Date;
@@ -90,6 +90,6 @@ export interface From {
     id: number;
 }
 
-export enum QuestionStatus {
-    Answered = "ANSWERED",
+export interface QuestionStatus {
+    answered: "ANSWERED" | 'UNANSWERED',
 }

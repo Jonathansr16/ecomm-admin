@@ -7,6 +7,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { SkeletonModule } from 'primeng/skeleton';
 import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
 import { FormsModule } from '@angular/forms';
+import { StateVariation } from 'src/app/core/interface/state-variations.interface';
 
 @Component({
   selector: 'app-card-dropdown-product',
@@ -23,7 +24,6 @@ import { FormsModule } from '@angular/forms';
 })
 export class CardDropdownProductComponent {
 
-  productVars = input.required<VariantProduct[]>();
-  statusProductVars = input.required<StatusData>();
+  variationData = input.required<StateVariation>();
 
  }

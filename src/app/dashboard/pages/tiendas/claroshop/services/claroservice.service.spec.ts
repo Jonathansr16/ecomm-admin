@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ClaroService} from './claroservice.service';
+import { ClaroService} from './claro-order.service';
 
 describe('ClaroserviceService', () => {
   let service: ClaroService;

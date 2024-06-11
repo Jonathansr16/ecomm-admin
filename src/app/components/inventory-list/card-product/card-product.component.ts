@@ -11,6 +11,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardDropdownProductComponent } from '../card-dropdown-product/card-dropdown-product.component';
 import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { StateVariation } from 'src/app/core/interface/state-variations.interface';
 
 @Component({
   selector: 'app-card-product',
@@ -30,8 +31,8 @@ import { VariantProduct } from 'src/app/core/interface/variant-product.interface
 })
 export class CardProductComponent {
   product = input.required<ProductInventory>();
-  productVar = input<VariantProduct[]>();
-  statusProductVar = input<StatusData>();
+  getVariationData = input<StateVariation>();
+
   menuProduct = input.required<MenuItem[]>();
   isSelected = input<boolean>();
   onChangeValue = output<any>();

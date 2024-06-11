@@ -1,27 +1,34 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   ActivatedRoute,
   ParamMap,
-  Params,
   Router,
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
-import { ClaroService } from '@claroshop/services/claroservice.service';
 import { OrderListComponent } from '@components/order-list/order-list.component';
 import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
-import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { MenuItem } from 'primeng/api';
-import { Orders } from 'src/app/core/interface/orders.interface';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
 import { CardStatComponent } from '@components/card-stat/card-stat.component';
+import { StateOrders } from 'src/app/core/interface/state-orders.interface';
+import { StateTypeOrder } from 'src/app/core/interface/state-type-order.interface';
+import { ClaroOrdersService } from '@claroshop/services/claro-orders.service';
+import { ErrorInfoData } from 'src/app/core/interface/status-data-info.interface';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     RouterOutlet,
@@ -84,27 +91,7 @@ export default class OrdersComponent {
     },
   ];
 
-  //* Status para la data obtenida de la api
-  //* Cantidad de pedidos
-  pendingOrdersCount = signal(0);
-  shippedOrdersCount = signal(0);
-  completedOrdersCount = signal(0);
-  orders: Orders[] = [];
-  // Índice de acordeon abierto, inicialmente cerrado
-  selectedIndex: number = -1;
   idx: string = '304';
-  //* Status de la cada orden
-  statusData: StatusData = { status: 'loading' };
-  // estatusByOrderList: 'pendientes' | 'entregados' | 'embarcados' = 'pendientes';
-  //* parametros iniciales para la paginación
-  paginationParams: PaginationParams = {
-    page: 1,
-    rows: 10,
-    first: 0,
-    type: 'pendientes',
-    totalRecords: 0
-  };
-
 
   menuOrder: MenuItem[] = [
     {
@@ -133,60 +120,104 @@ export default class OrdersComponent {
     },
   ];
 
-  statusOfData: {
-    pending: boolean;
-    shipped: boolean;
-    completed: boolean;
-    failed: boolean;
-  } = {
-    pending: true,
-    shipped: true,
-    completed: true,
-    failed: true,
+  selectedIndex: number = -1;
+
+  #stateTypeOrder = signal<StateTypeOrder>({
+    pendingOrders: {
+      status: 'loading',
+      quantity: 0,
+    },
+
+    shippedOrders: {
+      status: 'loading',
+      quantity: 0,
+    },
+
+    completedOrders: {
+      status: 'loading',
+      quantity: 0,
+    },
+  });
+
+  #stateClaroOrders = signal<StateOrders>({
+    status: 'loading',
+    orders: [],
+  });
+
+  #stateClaroPagOrder = signal<PaginationParams>({
+    page: 1,
+    rows: 10,
+    first: 0,
+    type: 'pendientes',
+    totalRecords: 0,
+  });
+
+  errorOrdersInfo: ErrorInfoData = {
+    titleError: '',
+    summaryError: '',
   };
 
-  claroService = inject(ClaroService);
-  activedRoute = inject(ActivatedRoute);
-  router = inject(Router);
+  public claroTypeOrder = computed(() => this.#stateTypeOrder());
+  public claroOrders = computed(() => this.#stateClaroOrders());
+  public claroPagOrder = computed(() => this.#stateClaroPagOrder());
+
+  private readonly claroOrdersService = inject(ClaroOrdersService);
+  private readonly activedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   constructor() {}
 
   //* Obtiene la cantidad de ordenes pendientes
   getNumberPendingOrders() {
-    this.claroService.getOrdersCountByStatus('pendientes').subscribe({
+    this.claroOrdersService.getOrdersCountByStatus('pendientes').subscribe({
       next: (resp) => {
-        this.statusOfData.pending = false;
-        this.pendingOrdersCount.set(resp.totalOrders);
+        this.#stateTypeOrder().pendingOrders = {
+          status: resp ? 'success' : 'empty',
+          quantity: resp ? resp.totalOrders : 0,
+        };
       },
       error: (errorMessage) => {
-        this.statusOfData.pending = false;
+        this.#stateTypeOrder().pendingOrders = {
+          status: 'error',
+          quantity: 0,
+        };
       },
     });
   }
 
   //* Obtiene la cantidad de ordenes embarcados
   getNumberShippedOrders() {
-    this.claroService.getOrdersCountByStatus('embarcados').subscribe({
+    this.claroOrdersService.getOrdersCountByStatus('embarcados').subscribe({
       next: (resp) => {
-        this.statusOfData.shipped = false;
-        this.shippedOrdersCount.set(resp.totalOrders);
+        this.#stateTypeOrder().shippedOrders = {
+          status: resp ? 'success' : 'empty',
+          quantity: resp ? resp.totalOrders : 0,
+        };
       },
 
       error: (errorMessage) => {
-        this.statusOfData.shipped = false;
+        this.#stateTypeOrder().shippedOrders = {
+          status: 'error',
+          quantity: 0,
+        };
       },
     });
   }
 
   //* Obtiene la cantidad de ordenes Entregados
   getNumberCompletedOrders() {
-    this.claroService.getOrdersCountByStatus('entregados').subscribe({
+    this.claroOrdersService.getOrdersCountByStatus('entregados').subscribe({
       next: (resp) => {
-        this.statusOfData.completed = false;
-        this.completedOrdersCount.set(resp.totalOrders);
+        this.#stateTypeOrder().completedOrders = {
+          status: resp ? 'success' : 'empty',
+          quantity: resp ? resp.totalOrders : 0,
+        };
       },
       error: (errorMessage) => {
-        this.statusOfData.completed = false;
-        console.log(errorMessage);
+        this.#stateTypeOrder().completedOrders = {
+          status: 'error',
+          quantity: 0,
+        };
       },
     });
   }
@@ -205,25 +236,28 @@ export default class OrdersComponent {
       const type = params.get('action');
       const page = params.get('page');
       const limit = params.get('limit');
-      this.paginationParams.type =
-        type !== null ? type : this.paginationParams.type;
-      this.paginationParams.page = page !== null ? +page : 0;
+      this.#stateClaroPagOrder().type =
+        type !== null ? type : this.#stateClaroPagOrder().type;
+      this.#stateClaroPagOrder().page = page !== null ? +page : 0;
       // Verificar si limitParam es null o undefined antes de convertirlo a un número
-      this.paginationParams.rows = limit !== null ? +limit : 10;
+      this.#stateClaroPagOrder().rows = limit !== null ? +limit : 10;
 
-      this.getOrderstByStatus(this.paginationParams.type);
+      this.getOrderstByStatus(this.#stateClaroPagOrder().type);
     });
+
+    this.claroTypeOrder(), this.claroOrders();
+    this.claroPagOrder();
   }
 
   getOrderstByStatus(status: 'pendientes' | 'embarcados' | 'entregados') {
-    this.paginationParams.type = status;
+    this.#stateClaroPagOrder().type = status;
 
     this.router.navigate([], {
       relativeTo: this.activedRoute,
       queryParams: {
         action: status,
-        page: this.paginationParams.page,
-        limit: this.paginationParams.rows,
+        page: this.#stateClaroPagOrder().page,
+        limit: this.#stateClaroPagOrder().rows,
       },
       queryParamsHandling: 'merge',
     });
@@ -232,23 +266,32 @@ export default class OrdersComponent {
   }
 
   getOrders(status: 'pendientes' | 'embarcados' | 'entregados') {
-    this.statusData.status = 'loading';
-    this.claroService
+    this.claroOrdersService
       .getOrderByStatus(
         status,
-        this.paginationParams.page = 1,
-        this.paginationParams.rows
+        (this.#stateClaroPagOrder().page = 1),
+        this.#stateClaroPagOrder().rows
       )
       .subscribe({
         next: (resp) => {
-          this.orders = resp.orders;
-          this.paginationParams.totalRecords = resp.totalOrders;
-          this.statusData.status = resp.orders.length ? 'success' : 'empty';
+          this.#stateClaroOrders.set({
+            status: resp.orders ? 'success' : 'error',
+            orders: resp.orders ? resp.orders : [],
+          });
+
+          this.#stateClaroPagOrder().totalRecords = resp.totalOrders;
         },
         error: (err) => {
-          this.statusData.status = 'error';
-          this.paginationParams.totalRecords = 0;
-          console.log(err);
+          this.errorOrdersInfo = {
+            titleError: 'Error',
+            summaryError: err,
+          };
+
+          this.#stateClaroOrders.set({
+            status: 'error',
+            orders: [],
+          });
+          this.#stateClaroPagOrder().totalRecords = 0;
         },
       });
   }
@@ -270,22 +313,21 @@ export default class OrdersComponent {
   }
 
   paginationChanged(event: any) {
-    this.paginationParams.page = event.page +1;
-    this.paginationParams.rows = event.rows;
+    this.#stateClaroPagOrder().page = event.page + 1;
+    this.#stateClaroPagOrder().rows = event.rows;
 
     //Actualizar parámetros de la URL
     this.router.navigate([], {
       relativeTo: this.activedRoute,
       queryParams: {
-        action: this.paginationParams.type,
-        page: this.paginationParams.page,
-        limit: this.paginationParams.rows,
+        action: this.#stateClaroPagOrder().type,
+        page: this.#stateClaroPagOrder().page,
+        limit: this.#stateClaroPagOrder().rows,
       },
       queryParamsHandling: 'merge',
     });
   }
 }
-
 
 /*
 {
