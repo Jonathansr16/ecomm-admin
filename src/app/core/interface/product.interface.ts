@@ -10,16 +10,15 @@ export interface ProductInventory {
     regular_price?: number;
     isFulfillment?: boolean;
     sale_price: number;
-    units?: number;
+    stock?: number;
     status: 'active' | 'inactive';
     stock_status?: 'instock' | 'outofstock' | undefined;
     total_sales?: number;
     category?: any;
-    imageProduct?: ProductImage;
+    img?: ProductImage;
     isDropdownInformation: boolean;
     channel: string;
     variations?: VariantProduct[];
-
 }
 
 export interface ProductImage {

@@ -3,17 +3,29 @@ import {
   OnInit,
   QueryList,
   ViewChildren,
+  inject,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
-import { CardStatComponent } from '@components/card-stat/card-stat.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
 import { homeAyuda } from 'src/app/core/interface/ayuda.model';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
 import { dataStat } from 'src/app/core/interface/stats.interface';
+
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TopProductsWoo } from './data/top-products';
+import {  TopBestSellingByChannel } from './data/products-inactive';
+import { ButtonModule } from 'primeng/button';
+import { PaginatorModule } from 'primeng/paginator';
+import { PaginationParams } from 'src/app/core/interface/pagination-params.interface';
+import { MetricsCardComponent } from '@components/metrics-card/metrics-card.component';
+import { MelyOrdersService } from '@mely/services/mely-orders.service';
+import { ClaroProductsService } from '@claroshop/services/claro-products.service';
+import { WooOrdersService } from '@woocommerce/services/woo-orders.service';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-home',
@@ -23,8 +35,12 @@ import { dataStat } from 'src/app/core/interface/stats.interface';
     InputTextModule,
     BreadcrumbComponent,
     OverlayPanelModule,
-    CardStatComponent,
     TableModule,
+    NgxChartsModule,
+    ButtonModule,
+    PaginatorModule,
+    MetricsCardComponent,
+    DropdownModule
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -33,10 +49,59 @@ export default class HomeComponent implements OnInit {
   dataAuth: any = {};
   ayuda: homeAyuda[] = [];
   visible: boolean = false;
+  topProduct = TopProductsWoo;
+
+  //*
+  inactivePagParams: PaginationParams = {
+    first: 1,
+    rows: 10,
+    page: 1,
+    totalRecords: 10,
+  };
+
+  cities: any[] = [
+    { name: 'Amazon', code: 'NY' },
+    { name: 'Claroshop', code: 'RM' },
+    { name: 'Mercado libre', code: 'LDN' },
+    { name: 'Walmar', code: 'IST' },
+    { name: 'Woocommerce', code: 'PRS' }
+  ];
+
+  selectedCity: any | undefined;
+  // channels = signal<TypeChannel[]>([
+  //   {
+  //     channel: 'Amazon',
+  //     code: 'Ama'
+  //   },
+
+  //   {
+  //     channel: 'Claroshop',
+  //     code: 'Cla'
+  //   },
+
+  //   {
+  //     channel: 'Mercado libre',
+  //     code: 'Mely'
+  //   }, 
+
+  //   {
+  //     channel: 'Walmart',
+  //     code: 'Wm'
+  //   },
+
+  //   {
+  //     channel: 'Woocommerce',
+  //     code: 'Woo'      
+  //   }
+  // ]);
+
+  // selectedChannel = signal<TypeChannel | undefined>(undefined);
+
+topProductSales = TopBestSellingByChannel;
+
+  perPageOptions: number[] = [10, 20, 30, 50];
 
   @ViewChildren(OverlayPanel) overlayPanels!: QueryList<OverlayPanel>;
-
-  // pane= ViewChildren<QueryList>('#panel');
 
   dataPendingOrder = {
     pendingOrdersAmazon: signal<number>(0),
@@ -63,30 +128,32 @@ export default class HomeComponent implements OnInit {
   datamyInventory: dataStat[] = [
     {
       label: 'Productos en almacen',
-      quantity: 230,
+      value: 230,
       iconClass: ['pi', 'pi-box', 'text-lg', 'text-green-700'],
       backgroundIconClass: 'bg-green-100',
+      status: 'error'
     },
 
     {
       label: 'En transito',
-      quantity: 35,
+      value: 35,
       icon: 'conveyor_belt',
       iconClass: ['material-icons', 'text-lg', 'text-orange-700'],
       backgroundIconClass: 'bg-orange-100',
+      status: 'success'
     },
 
     {
       label: 'Productos inactivos',
-      quantity: 40,
+      value: 40,
       icon: 'checked_bag_question',
       iconClass: ['material-icons', 'text-lg', 'text-amber-700'],
       backgroundIconClass: 'bg-amber-100',
+      status: 'empty'
     },
   ];
 
   activeAccordeon: number = -1;
-
   displayDialog: boolean[] = [];
 
   items: OrderData[] = [
@@ -165,8 +232,6 @@ export default class HomeComponent implements OnInit {
       backgroundIconClass: 'bg-orange-100',
       totalCount: 3,
       overData: [
-  
-
         {
           label: 'Mercado libre',
           count: 20,
@@ -176,8 +241,6 @@ export default class HomeComponent implements OnInit {
           label: 'Walmart',
           count: 6,
         },
-
-      
       ],
     },
 
@@ -202,10 +265,8 @@ export default class HomeComponent implements OnInit {
           label: 'Walmart',
           count: 6,
         },
-
-       
       ],
-    }
+    },
 
     // {
     //   label: 'Ordenes En Camino',
@@ -281,16 +342,15 @@ export default class HomeComponent implements OnInit {
     // },
   ];
 
-
+  melyService = inject(MelyOrdersService);
+  claroService = inject(ClaroProductsService);
+  wooService = inject(WooOrdersService);
 
   togglePanel(event: Event, index: number) {
     this.overlayPanels.toArray()[index].toggle(event);
   }
 
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   showDialog(index: number) {
     if (this.activeAccordeon === index) {
@@ -354,41 +414,9 @@ interface OrdersCountByChannel {
   walmartCount: number;
   wooCount: number;
 }
-/* 
 
-ordersStatusByChannel = [
-  statusPendingOrders: [
-    amazonStatus: 'loading',
-    claroStatus: 'loading',
-    melyStatus: 'loading',
-  ]
-]
 
-ordersByChannel = [
-
-  pendingOrders: [
-    amazonCount: 3,
-    claroCount: 4,
-   melyCount: 20,
-   walmarCount: 7,
-   wooCount: 5 
-  ],
-  progressOrders: [
-    amazonCount: 6,
-    claroCount: 1,
-    walmartCount: 3,
-    wooCount: 9
-  ],
-  completedOrders: [
-    amazonCount: 899,
-    claroCount: 600,
-   melyCount: 2256,
-   walmarCount: 230,
-   wooCount: 400 
-  ],
-  failedOrders: [
-
-  ]
-
-]
-*/
+interface TypeChannel {
+  channel: 'Amazon' | 'Claroshop' | 'Mercado libre' | 'Walmart' | 'Woocommerce' | 'Seleccione canal de venta',
+  code: 'Ama' | 'Cla' | 'Mely' | 'Wm' | 'Woo' | 'default';
+}

@@ -5,26 +5,26 @@ export const WoocommerceRoute: Routes = [
   {
     path: 'inventario',
     title: 'inventario',
-    loadComponent: () => import('@woocommerce/pages/inventario/inventario.component'),
+    loadComponent: () => import('@woocommerce/pages/woo-inventory/woo-inventory.component'),
  
   },
 
   {
     path: 'edit-product/:id',
     title: 'producto',
-    loadComponent: () => import('@woocommerce/pages/edit-product/edit-product.component')
+    loadComponent: () => import('@woocommerce/pages/woo-edit-product/woo-edit-product.component')
   },
 
   {
     path: 'nuevo-producto',
     title: 'nuevo-producto',
-    loadComponent: () => import('@woocommerce/pages/new-product/wc-new-product.component')
+    loadComponent: () => import('@woocommerce/pages/woo-new-product/woo-new-product.component')
   },
 
   {
     path: 'ordenes',
     title: 'Lista de Ordenes',
-    loadComponent: () => import ('@woocommerce/pages/orders/orders.component')
+    loadComponent: () => import ('@woocommerce/pages/woo-orders/woo-orders.component')
   },
 
   // {

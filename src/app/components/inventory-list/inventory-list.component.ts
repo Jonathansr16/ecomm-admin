@@ -44,22 +44,32 @@ import { ErrorInfoData } from 'src/app/core/interface/status-data-info.interface
 })
 export class InventoryListComponent {
 
-  stateError = input<ErrorInfoData>();
+  stateError         = input<ErrorInfoData>();
   stateDataProducts  = input.required<StateProducts>();
   totalRecords       = input.required<number>();
   stateVariations    = input<StateVariation>();
   menuSearch         = input<SearchMenuFilter[]>();
-  menuProduct        = input.required<MenuItem[]>();
 
-  emitProduct       = output<PositionVariante>();
-  searchValue       = output<string>();
-  changeLabelValue  = output<'todo' | 'title' | 'id' | 'sku'>();
-  changedPagination = output<PaginationParams>();
+  emitProduct        = output<PositionVariante>();
+  searchValue        = output<string>();
+  changeLabelValue   = output<'todo' | 'title' | 'id' | 'sku'>();
+  changedPagination  = output<PaginationParams>();
+  cancelSearched     = output<boolean>();
 
+
+  //* --- ACCIONES INDIVIDUALES --- *//
+  pauseProduct  = output<ProductInventory>();
+  editProduct   = output<ProductInventory>();
+  deleteProduct = output<ProductInventory>();
+//* --- *//
+
+  //* --- ACCIONES POR LOTE --- */
   pauseProductsByBatch      = output<ProductInventory[]>();
   reactivateProductsByBatch = output<ProductInventory[]>();
   modifyProductsByBatch     = output<ProductInventory[]>();
   deleteProductsByBatch     = output<ProductInventory[]>();
+//* ---- */
+
 
   perPageOptions: number[] = [10, 20, 30, 50];
   paginationParams: PaginationParams = {
@@ -160,7 +170,7 @@ export class InventoryListComponent {
 
       this.#isBtnActive().massiveModification = true;
       this.#isBtnActive().pause = this.selectedProduct.every(value => value.status !== 'inactive');
-      this.#isBtnActive().reactivate = this.selectedProduct.every(value => value.status === 'inactive' && value.units )
+      this.#isBtnActive().reactivate = this.selectedProduct.every(value => value.status === 'inactive' && value.stock )
       this.#isBtnActive().eliminate = true;
     } else {
       // Si se deselecciona la opción masiva, limpiar la lista de productos seleccionados
@@ -211,7 +221,7 @@ export class InventoryListComponent {
     this.#isBtnActive().reactivate = this.selectedProduct.every(value =>
       value.status === 'inactive' &&
       (
-        (value.units && value.units > 0) ||
+        (value.stock && value.stock > 0) ||
         (value.stock_status === 'instock')
       )
     ) && this.selectedProduct.length > 0;

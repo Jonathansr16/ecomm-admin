@@ -91,9 +91,13 @@
       @for (product of stateDataProducts().products; track i; let i = $index) {
 
     <app-card-product [product]="product" [isSelected]="isSelectedEveryProduct[i]"
-      (onChangeValue)="toggleEveryProduct($event, i)" [menuProduct]="menuProduct()"
+      (onChangeValue)="toggleEveryProduct($event, i)"
       (emitID)="toggleAccordeon(i, product.id)"
-       [getVariationData]="stateVariations()">
+       [getVariationData]="stateVariations()"
+       (pauseProduct)="pauseProduct.emit($event)"
+       (editProduct)="editProduct.emit($event)"
+       (deleteProduct)="deleteProduct.emit($event)"
+       >
     </app-card-product>
     }
 

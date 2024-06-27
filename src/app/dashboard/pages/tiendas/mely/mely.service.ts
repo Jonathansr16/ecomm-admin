@@ -83,7 +83,7 @@ export class MelyService {
         alt: product.title,
       },
       price: product.price,
-      product_status: product.status === 'active' ? 'active' : 'inactive',
+      status: product.status === 'active' ? 'active' : 'inactive',
     };
   }
 
@@ -93,7 +93,7 @@ export class MelyService {
       title: '',
       sku: '',
       price: 0,
-      product_status: 'active',
+      status: 'active',
       img: {
         id: '',
         url: '',
@@ -109,8 +109,8 @@ export class MelyService {
           title: item.title,
           sku: item.sku,
           price: item.price,
-          product_status:
-            item.product_status === 'active' ? 'active' : 'inactive',
+          status:
+            item.status === 'active' ? 'active' : 'inactive',
           img: item.img,
           isFulfillment: item.isFulfillment,
         };
@@ -121,7 +121,7 @@ export class MelyService {
       date_created: question.date_created,
       item_id: question.item_id.toString(),
       seller_id: question.seller_id,
-      question_status: question.status,
+      status: question.status,
       question: question.text,
       tags: question.tags,
       id: question.id,
@@ -129,7 +129,7 @@ export class MelyService {
       hold: question.hold,
       answer: question.answer,
       from: question.from,
-      question_item: product,
+      item: product,
     };
   }
 }

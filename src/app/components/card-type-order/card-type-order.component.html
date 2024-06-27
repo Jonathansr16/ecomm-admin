@@ -1,0 +1,42 @@
+<div class="type-order text-gray-600 body-font shadow-slate-300 mx-auto">
+
+  <div class="card-type-order__wrapper grid grid-cols-1 lg:grid-cols-3 items-center justify-between gap-4">
+
+    @for (type of typeOrderData(); track $index) {
+
+      <div class="card-type-order__item cursor-pointer flex flex-row px-6 py-6 rounded-3xl shadow shadow-indigo-500/20 bg-white" (click)="type.command">
+  
+        <div class="card-stat__image-box ">
+          <img class="w-10 h-10 object-cover object-center  mr-4" [src]="type.image.src" [alt]="type.image.alt" />
+        </div>
+  
+          
+        <div>
+          <h2 class="text-gray-500 title-font font-medium text-sm line-clamp-3">
+            {{ type.label }}
+          </h2>
+          @if (type.status === 'loading') {
+            <p-skeleton width="5rem" styleClass="mb-2" />
+  
+          } @else if(type.status === 'empty') {
+            <p class="font-bold text-gray-700 text-2xl">
+              0
+            </p>
+          } @else if(type.status === 'error') {
+            <p class="font-bold text-red-700 text-base">
+              Se produjo un error inesperado
+            </p>
+          } @else if(type.status === 'success') {
+            <p class="font-bold text-gray-700 text-2xl">
+              {{ type.value | number }}
+            </p>
+          }
+  
+      
+        </div>
+  
+      </div>
+    }
+
+  </div>
+</div>

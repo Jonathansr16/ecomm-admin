@@ -1,0 +1,221 @@
+<div class="top-header">
+    <div class="top-header__content container">
+      <div class="top-header__row top-header__row-breadcrumb">
+        <app-breadcrumb
+          [breadcrumbHomeItem]="breadcrumbHome"
+          [breadcrumbItems]="breadcrumbItems"
+        >
+        </app-breadcrumb>
+      </div>
+  
+      <div
+        class="top-header__row top-header__row-text flex flex-row items-start justify-between gap-y-2"
+      >
+        <div class="top-header__col">
+          <h1 class="top-header__h1 text-3xl font-semibold text text-white">
+            Preguntas
+          </h1>
+        </div>
+  
+        <div class="top-header__col">
+  
+          <span class="top-header__span text-white font-semibold">65 Preguntas</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="questions container mt-8">
+    
+    <div class="questions__actions questions__row bg-white px-3 py-4 flex items-center justify-between gap-4 mb-4">
+        <div class="questions__cols">
+            <p-button (onClick)="menuTopbar.toggle($event)" [style]="{ 'font-size': '14px'}" class="youtube p-0" aria-label="Youtube">
+                <i class="pi pi-calendar-minus"></i>
+                <span class="px-3">{{topbarLabel}}</span>
+                <i class="pi pi-chevron-down text-sm"></i>
+
+            </p-button>
+            <p-menu #menuTopbar [model]="topbarMenu" [popup]="true" />
+
+        </div>
+        <div class="questions__cols flex items-center justify-between gap-1">
+            
+            <div class="questions__col border-r-[1px] border-r-slate-300 pr-4">
+               <p class="text-sm text-slate-500">64 preguntas</p>
+            </div>
+            <div class="questions__col">
+                <p-toast />
+                <p-menu #menu [model]="items" [popup]="true" />
+                <p-button [style]="{ 'font-size': '14px' }" (onClick)="menu.toggle($event)" icon="pi pi-sliders-v" [rounded]="true" [text]="true" severity="help" />    
+            </div>
+           
+        </div>
+
+    </div>
+
+    @switch (statusQuestion.status) {
+
+        @case('loading') {
+
+            @for (_ of [1, 2]; track $index) {
+
+                <div class="skeleton-card mb-8">
+                    <div class="skeleton-card__row items-center justify-between gap-4 bg-white px-4 py-6 border-b-[1px] border-slate-100">
+    
+                        <div class="skeleton-card__col">
+                            <p-skeleton width="100%" height="5em" styleClass="mb-2" />
+    
+                        </div>
+    
+                        <div class="skeleton-card__col">
+                            <p-skeleton width="100%" height="10em" styleClass="mb-2 mt-8" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skeleton-pagination mb-8">
+                    <div class="skeleton-card__row items-center justify-between gap-4 bg-white px-4 py-6 border-b-[1px] border-slate-100">
+                        <p-skeleton width="100%" height="2em" styleClass="mb-2" />
+
+                    </div>
+                </div>
+            }
+        }
+
+        @case ('success') {
+            <div class="questions-card">
+
+                @for ( item of questions; track i; let i = $index) {
+            
+                    <div class="question__card mb-4">
+                
+                        <div class="accordeon__header flex items-center justify-between gap-4 bg-white px-4 py-6 border-b-[1px] border-slate-100">
+                
+                            <div class="accordeon__col flex items-center gap-4">
+                               
+                                <div class="question__product-col product-card__picture mx-auto w-[180px] h-[180px] lg:w-[65px] lg:h-[65px] lg:flex item-center hidden">
+                                    <img [src]="item.item.img.url" alt="" class="question-product__img">
+                                </div>
+                
+                                <div class="question__product-col w-72">
+                                    <span class="text-sm font-normal text-slate-700">sku: {{item.item.sku}}</span>
+                                    <p class="text-sm font-normal text-slate-700">{{item.item.title}}</p>
+                                </div>
+                
+                            </div>
+            
+                            <div class="accordeon__col lg:flex hidden">
+                                <span class="font-medium text-sm text-slate-700">{{item.item.price | currency}} x unidad</span>
+                            </div>
+                            <div class="accordeon__col">
+                            <i class="pi pi-ellipsis-v cursor-pointer"></i>
+                
+                            </div>
+                        </div>
+                
+                        <div class="accordeon__body " [ngStyle]="{'background-color': isOpen[i] ? '#fff' : ''}">
+                            <div class="accordeon__question-items rounded-b-[6px] shadow shadow-indigo-500/20 flex items-start justify-between">
+                                <div class="accordeon__question-item px-4 py-6 flex items-center justify-between w-full" >
+                                  
+                                    @if (isOpen[i]) {
+                                        <div class="accordeon__question-text px-4 py-6 w-full">
+                                            <div class="flex flex-row gap-1 items-center justify-start flex-nowrap">
+                                                <span *ngIf="!item.answer && item.status === 'UNANSWERED'" class="is-unanswered bg-blue-500 rounded-full w-2 h-2 block"></span>
+    
+                                                <p class="text-sm" >{{item.question}}</p>
+                
+                                            </div>
+                                            @if(item.status === 'ANSWERED'){
+                                                <div class="accordeon-question-response flex items-start ml-6 mt-2">
+                                                    <span class="border-transparent divide-response"></span>
+            
+                                                    <p class="text-sm text-slate-500">{{item.answer?.text}}</p>
+                                                </div>
+                                            } @else if(item.status === 'UNANSWERED'){
+                                                
+                                                <div class="mt-4 mx-auto flex flex-col gap-1">
+                                                    <textarea 
+                                                    class="accordeon-question__textarea w-full lg:w-5/6 h-24" 
+                                             
+                                                    [autoResize]="false"
+                                                        pInputTextarea>
+                                                    </textarea>
+        
+                                             <p-button [style]="{'margin-top': '1em', 'padding': '8px 40px', 'font-size': '14px', 'font-weight': '500'}" label="Responder" />
+        
+                                            </div>
+                                            } @else if(item.status === 'UNDER_REVIEW') {
+
+                                            } @else if(item.status === 'CLOSED_UNANSWERED') {
+                                                <p class="text-sm">
+                                                    El producto está cerrado y la pregun
+                                                </p>
+                                            } 
+                                            
+                                            @if (item.status === 'ANSWERED' && item.answer?.status === 'BANNED') {
+                                             <div class="accordeon-question-response flex items-start ml-6 mt-2 gap-2">
+                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class=" text-sm text-red-600 p-icon"><g clip-path="url(#pn_id_245)"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.11101 12.8203C4.26215 13.5895 5.61553 14 7 14C8.85652 14 10.637 13.2625 11.9497 11.9497C13.2625 10.637 14 8.85652 14 7C14 5.61553 13.5895 4.26215 12.8203 3.11101C12.0511 1.95987 10.9579 1.06266 9.67879 0.532846C8.3997 0.00303296 6.99224 -0.13559 5.63437 0.134506C4.2765 0.404603 3.02922 1.07129 2.05026 2.05026C1.07129 3.02922 0.404603 4.2765 0.134506 5.63437C-0.13559 6.99224 0.00303296 8.3997 0.532846 9.67879C1.06266 10.9579 1.95987 12.0511 3.11101 12.8203ZM3.75918 2.14976C4.71846 1.50879 5.84628 1.16667 7 1.16667C8.5471 1.16667 10.0308 1.78125 11.1248 2.87521C12.2188 3.96918 12.8333 5.45291 12.8333 7C12.8333 8.15373 12.4912 9.28154 11.8502 10.2408C11.2093 11.2001 10.2982 11.9478 9.23232 12.3893C8.16642 12.8308 6.99353 12.9463 5.86198 12.7212C4.73042 12.4962 3.69102 11.9406 2.87521 11.1248C2.05941 10.309 1.50384 9.26958 1.27876 8.13803C1.05367 7.00647 1.16919 5.83358 1.61071 4.76768C2.05222 3.70178 2.79989 2.79074 3.75918 2.14976ZM7.00002 4.8611C6.84594 4.85908 6.69873 4.79698 6.58977 4.68801C6.48081 4.57905 6.4187 4.43185 6.41669 4.27776V3.88888C6.41669 3.73417 6.47815 3.58579 6.58754 3.4764C6.69694 3.367 6.84531 3.30554 7.00002 3.30554C7.15473 3.30554 7.3031 3.367 7.4125 3.4764C7.52189 3.58579 7.58335 3.73417 7.58335 3.88888V4.27776C7.58134 4.43185 7.51923 4.57905 7.41027 4.68801C7.30131 4.79698 7.1541 4.85908 7.00002 4.8611ZM7.00002 10.6945C6.84594 10.6925 6.69873 10.6304 6.58977 10.5214C6.48081 10.4124 6.4187 10.2652 6.41669 10.1111V6.22225C6.41669 6.06754 6.47815 5.91917 6.58754 5.80977C6.69694 5.70037 6.84531 5.63892 7.00002 5.63892C7.15473 5.63892 7.3031 5.70037 7.4125 5.80977C7.52189 5.91917 7.58335 6.06754 7.58335 6.22225V10.1111C7.58134 10.2652 7.51923 10.4124 7.41027 10.5214C7.30131 10.6304 7.1541 10.6925 7.00002 10.6945Z" fill="currentColor"></path></g><defs><clipPath id="url(#pn_id_245)"><rect width="14" height="14" fill="white"></rect></clipPath></defs></svg>
+                                                 <p class="text-sm text-red-600">                    
+                                                    Baneado: La repuesta fue eliminada porque no cumplio con las politicas de mercado libre <a class="text-sm text-blue-500 font-medium" target="_blank" rel="noopener noreferrer" href="https://www.mercadolibre.com.mx/ayuda/1011">Políticas de Publicación</a>
+                                                 </p>
+                                             </div>
+                                            }
+                                         
+                                      
+                                        </div>
+                                     
+                                    } @else {
+            
+                                        <div class="accordeon__question-text">
+                                            <div class="accordeon__question-ask flex flex-row items-center justify-start gap-1">
+                                                <span *ngIf="!item.answer && item.status === 'UNANSWERED'" class="is-unanswered bg-blue-500 rounded-full w-2 h-2 block"></span>
+                                                <p  [style]="{'font-weight': !item.answer ? '500' : ''}"  class="text-sm text-slate-700">
+                                                     {{item.question | slice: 0:100}}
+                                                      <span *ngIf="item.question.length > 100 || !item.answer" class="more">...</span>
+                                                    </p>
+                                            </div>
+                                           @if(item.answer) {
+                                               <p class="text-sm text-slate-500">{{item.answer.text | slice: 0:70}} <span (click)="isOpen[i]= !isOpen[i]" *ngIf="item.answer.text.length > 70" class="read_more text-blue-500 font-semibold cursor-pointer">... Leer mas</span></p>
+                                           }
+                                        </div>
+                                    }
+            
+                                </div>
+                                <div class="accordeon__question-toggle flex items-center justify-center m-6">
+                                    <p-button  (onClick)="isOpen[i] = !isOpen[i]" [rounded]="true" [text]="true"severity="info" [style]="{'width': '2.5rem', 'height': '2.5rem', 'padding': '0.5rem 0', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}">
+                                        <i class="pi pi-chevron-down text-sm" [class.animate-arrow]="isOpen[i]"></i>
+                    
+                                    </p-button>
+                                </div>
+            
+                            </div>
+                
+                        
+                        </div>
+                    </div>
+                }
+            
+            
+               <p-paginator 
+                (onPageChange)="onPageChange($event)" 
+                [first]="paginationParams.first"
+                [rows]="paginationParams.rows" 
+                [totalRecords]="120" 
+                [rowsPerPageOptions]="[10, 20, 30]" />
+                
+            </div>
+        }
+
+        @case ('empty') {
+
+        }
+
+        @case('error') {
+
+        }
+    }
+
+  
+
+</div>

@@ -1,11 +1,13 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { WritableSignal, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { WooOrders } from '@woocommerce/interface/woo-order.interface';
 import { Observable, catchError, map, of } from 'rxjs';
 import { Orders } from 'src/app/core/interface/orders.interface';
-import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { environment } from 'src/environments/environment.development';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class WooOrdersService {
   private readonly url = environment.wcommerce.apiBase;
   private readonly http = inject(HttpClient);
@@ -14,7 +16,7 @@ export class WooOrdersService {
 
   //*OBTIENE LAS ORDERNES ESPECIFICAS SEGUN EL STATUS
   getOrderByStatus(
-    status: 'pending' | 'completed' | 'canceled' | 'failed',
+    status: 'pending' | 'processing' | 'on-hold' | 'completed' | 'cancelled' | 'refunded' | 'failed',
     page: number,
     per_page: number
   ): Observable<{ orders: Orders[]; totalOrders: number }> {
@@ -47,7 +49,7 @@ export class WooOrdersService {
 
   //* OBTIENE LA CANTIDAD DE ORDENES
   getOrdersCount(
-    status: 'pending' | 'processing' | 'completed' | 'cancelled'
+    status: 'pending' | 'processing' | 'on-hold' | 'completed' | 'cancelled' | 'refunded' | 'failed'
   ): Observable<{ totalCount: number }> {
     return this.http.get<any>(`${this.url}/orders?status=${status}`).pipe(
       map((resp) => {

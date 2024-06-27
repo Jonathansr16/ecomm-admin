@@ -8,11 +8,10 @@ import {
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
   input,
-  EventEmitter,
-  Output,
+  output,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
@@ -22,20 +21,21 @@ const DEFAULT_DURATION = 0.25;
   selector: 'app-expansion-panel',
   templateUrl: './expansion-panel.component.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, ButtonModule],
   styleUrls: ['./expansion-panel.component.scss'],
   animations: [
     trigger('isActivo', [
       state(
-        'opened',
+        'true',
         style({ height: AUTO_STYLE, visibility: 'visible', opacity: 1 })
       ),
       state(
-        'closed',
+        'false',
         style({ height: '0px', visibility: 'hidden', opacity: 0 })
       ),
-      transition('closed => opened', animate(DEFAULT_DURATION + 's ease')),
-      transition('opened => closed', animate(DEFAULT_DURATION + 's ease')),
+      transition('true => false', animate(DEFAULT_DURATION + 's ease')),
+      transition('false => true', animate(DEFAULT_DURATION + 's ease')),
     ]),
   ],
 })
@@ -43,26 +43,23 @@ export class ExpansionPanelComponent {
   label = input.required<string>();
   propertyProduct = input.required<string | number>();
   propertytoRequire = input.required<string>();
+  updateProduct = output<Object>();
+  // activeAccordeon = input.required<number>();
+  isValid = input.required<boolean>()
 
-  @Output() updateProduct = new EventEmitter<Object>();
-  @Input() activeAccordeon: number = -1;
-  @Input({ required: true }) isValid: boolean = false;
+  isOpened: boolean = false;
 
-  isActive: 'opened' | 'closed' = 'closed';
+  // togglePanel(index: number) {
+  //   if(this.activeAccordeon() === index) {
+  //     this.activeAccordeon() = -1;
+  //     this.isActive = 'opened'
+  //   } else {
+  //     this.isActive = 'closed'
+  //     this.activeAccordeon() = index;
+  //   }
+  // }
 
-
-  togglePanel(index: number) {
-    if(this.activeAccordeon === index) {
-      this.activeAccordeon = -1;
-      // this.isActive = this.isActive === 'opened' ? 'closed' : 'opened';
-      this.isActive = 'opened'
-    } else {
-      this.isActive = 'closed'
-      this.activeAccordeon = index;
-    }
-  }
-
-  updateProducts() {
-    this.updateProduct.emit();
-  }
+  // updateProducts() {
+  //   this.updateProduct.emit();
+  // }
 }

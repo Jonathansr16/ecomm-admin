@@ -2,11 +2,12 @@ export interface VariantProduct {
     id: any;
     title: string;
     sku: string;
-    units: number;
+    stock: number;
     regular_price: number;
     sale_price: number;
     imgProduct?: ImageVar;
     status: 'active' | 'inactive';
+    total_sales?: number;
 }
 
 interface ImageVar {

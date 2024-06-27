@@ -1,0 +1,451 @@
+<div class="top-header">
+  <div class="top-header__content container-bg">
+    <app-breadcrumb
+      [breadcrumbHomeItem]="breadcrumHome"
+      [breadcrumbItems]="breadcrumbItems"
+    ></app-breadcrumb>
+
+    <div class="wc-product__back flex items-stretch gap-4 mt-6">
+      <p-button
+        icon="pi pi-arrow-left"
+        [rounded]="false"
+     
+        [raised]="true"
+        severity="success">
+      </p-button>
+      <div class="wc-product__back-text">
+        <p class="text-white text-xs">Regresar a Inventario</p>
+        <h5 class="text-white font-semibold text-xl">Editar Producto</h5>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+@switch (wooProduct().status) {
+
+  @case ('loading') {
+    <div class="skeleton">
+      <div class="skeleton__section skeleton__section--title">
+        <div style="flex: 1" class="skeleton__details">
+          <p-skeleton width="100%" height="2rem" styleClass="mb-3"></p-skeleton>
+          <p-skeleton width="35%" height="2rem" styleClass="mb-3"></p-skeleton>
+          <p-skeleton width="15%" height="2rem"></p-skeleton>
+        </div>
+        <div class="skeleton__img">
+          <p-skeleton shape="circle" size="6rem" styleClass="mr-2"></p-skeleton>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2">
+            </p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2">
+            </p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2">
+            </p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2">
+            </p-skeleton>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton__card">
+        <div class="skeleton__titular">
+          <div style="flex: 1" class="skeleton__title">
+            <p-skeleton
+              width="30%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+            <p-skeleton
+              width="80%"
+              height="2rem"
+              styleClass="mb-2">
+            </p-skeleton>
+          </div>
+          <div class="skeleton__icon">
+            <p-skeleton
+              shape="circle"
+              size="3rem"
+              styleClass="mr-2">
+            </p-skeleton>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @case('success') {
+    <div class="container-bg">
+      <p-toast 
+      position="top-center" 
+      key="tc">
+    </p-toast>
+    <div class="data__sections flex justify-between gap-4 w-full">
+
+      <div class="data__left w-full lg:w-3/5">
+        <form action="#" class="wcform mx-auto" [formGroup]="formProduct">
+          
+       
+          <div class="wcform__container">
+        
+            <div class="section-product bg-white px-6 py-8 mb-10 rounded-lg">
+      
+              <div
+              class="section-product flex flex-row flex-wrap lg:flex-nowrap justify-between items-center gap-1">
+               
+              <div class="wcform__details">
+                  <span
+                    class="form__store font-semibold text-sm bg-indigo-100 text-indigo-700 inline-block rounded-md px-8 py-1">
+                    Woocommerce
+                  </span>
+                  <div class="wcform__detail ">
+                    <a class="wcform__a text-slate-700 font-semibold text-2xl" href="#">
+                      {{ wooProduct().data.name }}
+                    </a>
+                  </div>
+                  <div class="wcform__detail mb-2">
+                    <span class="wcform__span text-sm block" href="#">#1345805537</span>
+                  </div>
+                </div>
+  
+                <div class="wcform__image">
+                  <img
+                    [src]="wooProduct().data.images[0].src"
+                    class="form__img w-32 h-32 mix-blend-multiply"
+                    alt=""/>
+                </div>
+              </div>
+            </div>
+    
+            <div class="section-product bg-white px-6 py-8 rounded-lg">
+              <h3 class="text-2xl font-bold text-slate-500 py-3">
+                Datos basicos del producto 📓
+              </h3>
+    
+              <div class="section-product__content">
+                <app-expansion-panel
+                  [label]="'Titulo'"
+                  [isValid]="verifyField('name', wooProduct().data.name)"
+                  [propertyProduct]="wooProduct().data.name"
+                  [propertytoRequire]="'Incluye producto, marca, modelo y caraterísticas principales'"
+                
+                  (updateProduct)="updateField('name')">
+                  <div
+                    class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+                    <label
+                      class="form__label text-sm font-semibold text-slate-500"
+                      htmlFor="title">
+                      *Titulo del producto:
+                    </label>
+                    <input
+                      class="form__input w-full"
+                      pInputText
+                      id="title"
+                      placeholder="Ingrese un titulo para el producto"
+                      formControlName="name"
+                      #inputName
+                      [maxlength]="60"
+                      [style]="{ 'font-size': '14px', 'border-style': 'dashed' }"/>
+    
+                    @if (invalidField('name')) {
+                    <small class="p-error">El titulo es obligatorio</small>
+                    }
+                  </div>
+                </app-expansion-panel>
+    
+                <app-expansion-panel
+                  [isValid]="verifyField('description', wooProduct().data.description)"
+                  [label]="'Descripción del producto'"
+                  [propertyProduct]="wooProduct().data.description | slice : 0 : 300"
+                  [propertytoRequire]="'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'"
+                  (updateProduct)="updateField('description')">
+                  <div
+                  class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+                    <label class="form__label text-sm font-semibold text-slate-500" htmlFor="title">
+                      *Descripción del producto:
+                    </label>
+    
+                    <textarea
+                      class="wcform__textarea"
+                      id="description"
+                      placeholder="Descripción larga del producto"
+                      formControlName="description"
+                      rows="14"
+                      cols="30"
+                      [maxlength]="50000"
+                      pInputTextarea
+                      [autoResize]="true"
+                      [class.is-invalid]="verifyField">
+                    </textarea>
+                  </div>
+                </app-expansion-panel>
+    
+                <app-expansion-panel
+                  [isValid]="
+                    verifyField('short_description', wooProduct().data.short_description)
+                  "
+                  [label]="'Descripción corta del producto'"
+                  [propertyProduct]="wooProduct().data.short_description | slice : 0 : 300"
+                  [propertytoRequire]="
+                    'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
+                  "
+                
+                >
+                  <div
+                    class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+                  >
+                    <label class="form__label" htmlFor="title">
+                      *descripcion corta del producto:
+                    </label>
+    
+                    <textarea
+                      class="wcform__textarea"
+                      id="description"
+                      placeholder="Descripción larga del producto"
+                      formControlName="description"
+                      rows="14"
+                      cols="30"
+                      [maxlength]="50000"
+                      pInputTextarea
+                      [autoResize]="true"
+                      [class.is-invalid]="verifyField"
+                    >
+                    </textarea>
+                  </div>
+                </app-expansion-panel>
+              </div>
+            </div>
+    
+            <div class="section-product bg-white px-6 py-8 rounded-lg">
+    
+              <h3 class="text-2xl font-bold text-slate-500 py-3">Inventario 🧑‍💻</h3>
+              <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+      
+              <app-expansion-panel
+                [isValid]="verifyField('sku', wooProduct().data.sku)"
+                [label]="'Sku del producto'"
+                [propertyProduct]="wooProduct().data.sku | slice : 0 : 300"
+                [propertytoRequire]="'Indica un codigo para identificar tu producto'"
+              
+              >
+                <div
+                  class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+                >
+                  <label class="form__label" htmlFor="title">
+                    *Código de identificación del producto:
+                  </label>
+      
+                  <input
+                    class="form-product__input w-full"
+                    pInputText
+                    id="sku"
+                    formControlName="sku"
+                  />
+                </div>
+              </app-expansion-panel>
+      
+              <app-expansion-panel
+                [isValid]="verifyField('stock', wooProduct().data.sku)"
+                [label]="'Stock del producto'"
+                [propertyProduct]="wooProduct().data.stock_quantity"
+                [propertytoRequire]="'Indica el stock en tu almacen'"
+               
+              >
+                <div
+                  class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
+                >
+                  <label class="form__label" htmlFor="title">
+                    *Stock en inventario:
+                  </label>
+      
+                  <input
+                    class="form-product__input w-full"
+                    pInputText
+                    id="sku"
+                    formControlName="stock_quantity"
+                  />
+                </div>
+              </app-expansion-panel>
+            </div>
+    
+            <div class="section-product bg-white px-6 py-8 rounded-lg">
+              <h3 class="text-2xl font-bold text-slate-700 py-3">
+                Precio del producto 🪙
+              </h3>
+              <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+      
+            </div>
+    
+        
+          </div>
+        </form>
+    
+      
+      </div>
+
+      <div class="data__right my-4 w-full lg:w-2/5">
+        <div class="data__images bg-white p-4">
+          <div class="data__images-header border-b-2 pb-2">
+            <h3 class="text-lg font-medium">Fotos del producto</h3>
+            <p class="text-sm text-slate-600">Sube buenas fotos para que el producto se destaque.</p>
+          </div>
+
+          <div class="data__idications bg-slate-100 p-6 flex items-center gap-4 rounded-lg mt-3">
+            <div class="data__idications-left w-full lg:w-4/5">
+              <h4 class="text-lg font-medium mb-2">
+                La primera foto debe tener fondo blanco y buena calidad, será la portada
+              </h4>
+              <p class="text-sm">Para no perder exposición, no agregues border, logos, ni marcad de agua. No incluyas datos de contacto,
+                condiciones de venta o envíos.
+              </p> 
+            </div>
+            <div class="data__idications-right w-full lg:w-1/5 flex items-center justify-end">
+              <img src="assets/img/camara__icon.png" alt="camara" class="w-16 h-16">
+            </div>
+          </div>
+
+          <p-fileUpload 
+          name="myfiles[]" 
+          [multiple]="true" 
+          [auto]="true"
+          [showCancelButton]="false"
+          [showUploadButton]="false"
+          [accept]="'image/*'"
+          [fileLimit]="10"
+          (onSelect)="onSelect($event)"
+          (onClear)="onClear()"
+          >
+            <ng-template 
+            pTemplate="content" let-images let-uploadedImages="uploadedImages" let-removeUploadedFileCallback="removeUploadedFileCallback" >
+
+           @if(images.length > 0) {
+            <div class="upload-images__container">
+
+              @for (image of images; let i = $index; track i) {
+
+                @if(images.length <= 9) {
+                  <div class="flex items-center justify-center flex-col border-2 border-dashed p-6 cursor-pointer" () >
+                    <i class="pi pi-camera text-4xl"></i>
+                    <p class="text-sm text-slate-500 mt-4">Agrega o arrastra la imagenes para el producto</p>
+                  </div >
+                }
+
+                <div class="upload-images__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px] flex items-center justify-center flex-col relative">
+                 
+                  <span class=""></span>
+                 
+                  <img role="presentation" 
+                    [src]="image.objectURL" [alt]="image.name"
+                    class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
+
+                    <span class="white-space-nowrap mt-2 text-sm">{{ totalSize }}B / 1Mb</span>
+
+                </div>
+              }
+
+            </div>
+           } @else {
+              <div class="flex items-center justify-center flex-col border-2 border-dashed p-6 cursor-pointer" () >
+                <i class="pi pi-camera text-4xl"></i>
+                <p class="text-sm text-slate-500 mt-4">Agrega o arrastra la imagenes para el producto</p>
+              </div >
+        
+           }
+           
+
+    
+            </ng-template>
+
+            <ng-template pTemplate="file"> </ng-template>
+            <!--  -->
+            
+          </p-fileUpload>
+        </div>
+      </div>
+    </div>
+    </div>
+  } @case('error') {
+
+  }
+}
+
+

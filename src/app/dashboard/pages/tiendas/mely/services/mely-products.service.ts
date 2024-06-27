@@ -20,7 +20,7 @@ export class MelyProductsService {
     orders: string,
     limit: number,
     offset: number
-  ): Observable<{ products: string[]; totalproducts: number }> {
+  ): Observable<{ ids: string[]; totalIds: number }> {
     let params = new HttpParams()
       .append('orders', orders)
       .append('limit', limit)
@@ -34,8 +34,8 @@ export class MelyProductsService {
       .pipe(
         map((resp) => {
           return {
-            products: resp.results,
-            totalproducts: resp.paging.total,
+            ids: resp.results,
+            totalIds: resp.paging.total,
           };
         })
       );
@@ -54,6 +54,30 @@ export class MelyProductsService {
       );
   }
 
+  //*OBTIENE LOS PRODUCTOS BUSCADOS
+  getProductsBySearch(value: string, limit: number, offset: number): Observable<{ ids: string[], totalIds: number}> {
+   
+    const searchValue = value.replace(/ /g, '%20');
+
+    let params = new HttpParams()
+    .append('limit', limit)
+    .append('offset', offset);
+
+
+  return this.http.get<MelyProductByUserID>(
+      `/users/87159847/items/search?q=${searchValue}`,
+      { params }
+    )
+    .pipe(
+      map((resp) => {
+        return {
+          ids: resp.results,
+          totalIds: resp.paging.total,
+        };
+      })
+    );
+  }
+
   //* OBTIENE VARIANTES DE UN PRODUCTO
   getProductByVariant(id: string): Observable<VariantProduct[]> {
     return this.http.get<ProductsByIdsResponse[]>(`/items?ids=${id}`).pipe(
@@ -65,7 +89,7 @@ export class MelyProductsService {
             id: variant.id.toString(),
             title: variant.attribute_combinations[0].value_name,
             sku: 'Sin especificar',
-            units: variant.available_quantity,
+            stock: variant.available_quantity,
             regular_price: variant.price,
             sale_price: variant.price,
             imgProduct: {
@@ -74,6 +98,7 @@ export class MelyProductsService {
               alt: variant.attribute_combinations[0].value_name,
             },
             status: variant.available_quantity > 0 ? 'active' : 'inactive',
+            
           };
         });
       })
@@ -95,12 +120,13 @@ export class MelyProductsService {
       store: 'mely',
       regular_price: product.original_price || product.price,
       sale_price: product.price,
+      total_sales: product.sold_quantity,
       isFulfillment:
         product.shipping.logistic_type === 'fulfillment' ? true : false,
-      units: product.available_quantity,
+      stock: product.available_quantity,
       status: product.status === 'active' ? 'active' : 'inactive',
 
-      imageProduct: {
+      img: {
         url: product.thumbnail,
         alt: product.thumbnail_id,
       },
@@ -123,7 +149,7 @@ export class MelyProductsService {
       id: variant.id.toString(),
       title: variant.attribute_combinations[0].value_name,
       sku: skuProduct,
-      units: variant.available_quantity,
+      stock: variant.available_quantity,
       regular_price: variant.price,
       sale_price: variant.price,
       imgProduct: {

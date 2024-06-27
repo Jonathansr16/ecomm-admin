@@ -1,0 +1,95 @@
+
+<div class="dashboard-orders mt-[-1.5em]">
+
+    <div class="dashboard-order__wrapper shadow-slate-200 mx-auto">
+
+        <div class="dashboard-order__content flex flex-col lg:flex-row flex-nowrap bg-white shadow shadow-indigo-500/20">
+
+            @for (typeOrder of typeOrderData(); let i = $index; track i) {
+                <div class="dashboard-order__card cursor-pointer w-full px-6 py-6 border-r-2 flex flex-row justify-between">
+    
+                    <div class="dashboard-order__box flex flex-row">
+                        <div class="dashboard-order__image">
+                            <img [src]="typeOrder.image.src" [alt]="typeOrder.image.alt" class="dashboard-order__imgs w-10 h-10 object-cover object-center mr-4">
+                        </div>
+        
+                        <div class="dashboard-order__text">
+                            <h2 class="dashboard-order__label text-gray-500 title-font font-medium text-sm line-clamp-3">
+                                {{ typeOrder.label }}
+                              </h2>
+                              <p class="dashboard-order__value font-bold text-gray-700 text-2xl">
+                                {{ typeOrder.value }}
+                              </p>
+                        </div>
+                    </div>
+
+                    @if (typeOrder.otherOrders) {
+                        <!-- <i style="font-size: 0.875rem;" class="dashboard-order__i pi pi-question bg-slate-700 text-white rounded-full w-5 h-5 p-1" pTooltip="Ordenes pendientes de pago" tooltipEvent="hover"></i> -->
+                        <div class="dashboard__toggle lg:hidden flex ">
+                          <p-button  [ngStyle]="{ transform: isOpen[i] ? 'rotate(180deg)' : '' }" (onClick)="isOpen[i] = !isOpen[i]" icon="pi pi-chevron-up" [rounded]="true" [text]="true" severity="danger " />
+                  
+                        </div>
+                      }
+                </div>
+
+                <div
+                class="dashboard-other flex lg:hidden bg-slate-100 w-full flex-col px-3 py-3"
+                [@isActivo]="isOpen[i]"
+              >
+                @for (other of typeOrder.otherOrders; track $index) {
+          
+                <div
+                  class="dashboard-other__item shadow shadow-indigo-500/20 bg-white rounded-md w-full px-4 py-4 mb-4"
+                >
+                  <p class="dashboard-other__label text-sm">{{ other.label }}</p>
+                  <p class="dashboard-other__value text-sm text-slate-500">{{ other.value }} ventas</p>
+                </div>
+          
+                }
+              </div>
+    
+            }
+
+
+        </div>
+
+        <div
+        [class.isOpened]="isActive"
+        class="dashboard-other hidden lg:grid grid-cols-3 bg-slate-200"
+        [@isActivo]="isActive"
+      >
+        @for ( card of typeOrderData(); track $index) {
+        <div class="dashboard-other__col flex flex-col flex-nowrap">
+          @for (type of card.otherOrders; track $index) {
+          <div
+            class="dashboard-other__card px-6 py-6 mt-4 mr-4 shadow shadow-indigo-500/20 bg-white rounded-md"
+          >
+            <p class="dashboard-other__label text-sm">{{ type.label }}</p>
+            <p class="dashboard-other__value text-sm text-slate-500">{{ type.value }} ventas</p>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+    </div>
+
+    <div
+    class="dashboard-order__toggle items-center justify-center mt-[-1em] w-full hidden lg:flex"
+  >
+    <button
+      pButton
+      pRipple
+      [style]="{ height: '32px', 'border-radius': '5px' }"
+      (click)="isActive = !isActive"
+    >
+      <i
+        class="orders-actions__i pi pi-angle-down"
+        [ngStyle]="{ transform: isActive ? 'rotate(180deg)' : '' }"
+      >
+      </i>
+    </button>
+  </div>
+
+
+</div>

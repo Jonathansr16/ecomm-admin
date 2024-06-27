@@ -3,7 +3,7 @@ export interface MelyAskResult {
     date_created:         Date;
     item_id:              string;
     seller_id:            number;
-    question_status:      QuestionStatus;
+    status:               'ANSWERED' | 'UNANSWERED' | 'CLOSED_UNANSWERED' | 'UNDER_REVIEW';
     question:             string;
     tags:                 any[];
     id:                   number;
@@ -11,7 +11,7 @@ export interface MelyAskResult {
     hold:                 boolean;
     answer?:               MelyAnswer;
     from:                 From;
-    question_item: MelyAskProduct;
+    item:                 MelyAskProduct;
 }
 
 export interface MelyAskProduct {
@@ -19,7 +19,7 @@ export interface MelyAskProduct {
     title: string;
     sku: string;
     price: number;
-    product_status: 'active' | 'inactive';
+    status: 'active' | 'inactive';
     img: MelyAskImg
     isFulfillment: boolean;
 }
@@ -66,7 +66,7 @@ export interface MelyQuestion {
     date_created:         Date;
     item_id:              string;
     seller_id:            number;
-    status:               QuestionStatus;
+    status:              'ANSWERED' | 'UNANSWERED' | 'CLOSED_UNANSWERED' | 'UNDER_REVIEW';
     text:                 string;
     tags:                 any[];
     id:                   number;
@@ -78,18 +78,12 @@ export interface MelyQuestion {
 
 export interface MelyAnswer {
     text:         string;
-    status:       AnswerStatus;
+    status:       'ACTIVE' | 'DISABLED' | 'BANNED';
     date_created: Date;
 }
 
-export enum AnswerStatus {
-    Active = "ACTIVE",
-}
 
 export interface From {
     id: number;
 }
 
-export interface QuestionStatus {
-    answered: "ANSWERED" | 'UNANSWERED',
-}

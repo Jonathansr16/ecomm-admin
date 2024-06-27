@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { WritableSignal, inject, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { UpdateStatusProduct } from '@woocommerce/interface/update-product-status.interface';
 import { WooProductVariation } from '@woocommerce/interface/woo-product-variation.interface';
 import {
@@ -13,6 +13,9 @@ import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
 import { environment } from 'src/environments/environment.development';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class WooProductService {
   totalItems: number = 0;
   private productsSignal: WritableSignal<ProductInventory[]> = signal([]);
@@ -24,7 +27,6 @@ export class WooProductService {
     products: []
   })
 
-  
 
   // private cachedDataPage: { [key: string]: any[] } = {};
 
@@ -78,58 +80,48 @@ export class WooProductService {
     itemsPerPage: number,
     typeSearch: 'todo' | 'id' | 'title' | 'sku'
   ): Observable<{ products: ProductInventory[]; totalProducts: number }> {
-    const query = `?page=${page}&per_page=${itemsPerPage}`;
-    return this.http
-      .get<WooProduct[]>(`${this.url}/products${query}`, {
-        observe: 'response',
-      })
-      .pipe(
-        map((response: HttpResponse<WooProduct[]>) => {
-          const products = response.body ? response.body : []; // Datos de los productos
-          const filteredProducts = products.filter((product) => {
-            switch (typeSearch) {
-              case 'todo':
-                return (
-                  product.id
-                    .toString()
-                    .includes(searchedValue.toLowerCase().trim()) ||
-                  product.name
-                    .toLowerCase()
-                    .includes(searchedValue.toLowerCase().trim()) ||
-                  product.sku
-                    .toLowerCase()
-                    .includes(searchedValue.toLowerCase().trim())
-                );
-              case 'id':
-                return product.id
-                  .toString()
-                  .includes(searchedValue.toLowerCase().trim());
-              case 'title':
-                return product.name
-                  .toLowerCase()
-                  .includes(searchedValue.toLowerCase().trim());
-              case 'sku':
-                return product.sku
-                  .toLowerCase()
-                  .includes(searchedValue.toLowerCase().trim());
-              default:
-                return true; // Por defecto, retornar todos los productos
-            }
-          });
-          return {
-            products: filteredProducts.map((product) =>
-              this.transformDataProduct(product)
-            ),
-            totalProducts: filteredProducts.length,
-          };
-        })
-      );
-  }
+    let params = new HttpParams()
+    .append('page', page.toString())
+    .append('per_page', itemsPerPage.toString());
 
+    const searchLower = searchedValue.toLowerCase().trim(); // Convertir la búsqueda una vez a minúsculas
+    
+    return this.http.get<WooProduct[]>(`${this.url}/products?search=${searchLower}`, { observe: 'response', params }).pipe(
+      map((response: HttpResponse<WooProduct[]>) => {
+        const products = response.body || []; // Usar operador de cortocircuito para evitar productos undefined
+        const filteredProducts = products.filter(product => {
+          switch (typeSearch) {
+            case 'todo':
+              return (
+                product.id.toString().includes(searchLower) ||
+                product.name.toLowerCase().includes(searchLower) ||
+                product.sku.toLowerCase().includes(searchLower)
+              );
+            case 'id':
+              return product.id.toString().includes(searchLower);
+            case 'title':
+              return product.name.toLowerCase().includes(searchLower);
+            case 'sku':
+              return product.sku.toLowerCase().includes(searchLower);
+            default:
+              return true; // Por defecto, retornar todos los productos
+          }
+        });
+        
+        const transformedProducts = filteredProducts.map(product => this.transformDataProduct(product));
+        
+        return {
+          products: transformedProducts,
+          totalProducts: filteredProducts.length
+        };
+      })
+    );
+  }
+  
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
   getProduct(id: number): Observable<WooProductResult> {
     return this.http.get<WooProduct>(`${this.url}/products/${id}`).pipe(
-      map((product) => this.transformDataProduct(product)),
+      map((product) => this.transformProduct(product)),
 
       catchError(this.hanlerError<any>('getProduct', {}))
     );
@@ -250,7 +242,6 @@ export class WooProductService {
 
   //* TRANSFORMA LA DATA DE CADA PRODUCTO
   transformDataProduct(producto: WooProduct): ProductInventory {
-    image: producto.images[0];
 
     return {
       id: producto.id,
@@ -261,9 +252,10 @@ export class WooProductService {
       store: 'woocommerce',
       regular_price: parseFloat(producto.price),
       sale_price: parseFloat(producto.regular_price),
-      units: producto.stock_quantity,
+      stock: producto.stock_quantity,
+      total_sales: producto.total_sales,
       category: producto.categories,
-      imageProduct: producto.images[0]
+      img: producto.images[0]
         ? {
           id: producto.images[0].id.toString(),
           url: producto.images[0].src,
@@ -282,15 +274,36 @@ export class WooProductService {
     };
   }
 
+
+  transformProduct(product: WooProduct): WooProductResult {
+    return {
+     id: product.id,
+     name: product.name,
+     description: product.description,
+     short_description: product.short_description,
+     sku: product.sku,
+     regular_price: product.regular_price,
+     sale_price: product.sale_price,
+     categories: product.categories,
+     images: product.images,
+     stock_quantity: product.stock_quantity,
+     total_sales: product.total_sales,
+     status: product.status,
+     stock_status: product.stock_status
+     
+    }
+  }
+
   //* TRANSFORMA LA DATA DE LAS VARIACIONES DE UN PRODUCTO
   transformProductVariation(product: WooProductVariation): VariantProduct {
     return {
       id: product.id,
       title: product.name,
       sku: product.sku,
-      units: product.stock_quantity || 0,
+      stock: product.stock_quantity || 0,
       regular_price: parseFloat(product.regular_price),
       sale_price: parseFloat(product.sale_price),
+   
       imgProduct: {
         id: product.image.id.toString(),
         url: product.image.src,

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, input, output } from '@angular/core';
+import { Component, Input, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { MenuItem } from 'primeng/api';
@@ -8,9 +8,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
-import { StatusData } from 'src/app/core/interface/status-data.interface';
 import { CardDropdownProductComponent } from '../card-dropdown-product/card-dropdown-product.component';
-import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
 import { StateVariation } from 'src/app/core/interface/state-variations.interface';
 
 @Component({
@@ -33,7 +31,34 @@ export class CardProductComponent {
   product = input.required<ProductInventory>();
   getVariationData = input<StateVariation>();
 
-  menuProduct = input.required<MenuItem[]>();
+  pauseProduct= output<ProductInventory>();
+  editProduct = output<ProductInventory>();
+  deleteProduct = output<ProductInventory>();
+
+
+
+  menuProduct = signal<MenuItem[]>([
+    {
+      label: 'Opciones',
+      items: [
+        {
+          label: 'Pausar',
+          command: () => this.pauseProduct.emit(this.product().id)
+        
+        },
+
+        {
+          label: 'Editar',
+          command: () => this.editProduct.emit(this.product().id)
+        },
+
+        {
+          label: 'Eliminar',
+          command: () => this.deleteProduct.emit(this.product().id)
+        }
+      ]
+    }
+  ])
   isSelected = input<boolean>();
   onChangeValue = output<any>();
   emitID = output<any>();
@@ -54,5 +79,7 @@ export class CardProductComponent {
       this.prevent[productId] = true;
    }
   }
+
+
  
 }

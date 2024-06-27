@@ -1,3 +1,28 @@
 :host {
   display: block;
 }
+
+.massive-editor__table-header {
+  overflow: hidden;
+}
+
+.massive-editor__table-body {
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.massive-editor__table-body::-webkit-scrollbar:horizontal {
+height: 8px;
+background-color: #fff;
+}
+
+.massive-editor__table-body::-webkit-scrollbar-thumb:horizontal {
+background-color: rgb(194, 195, 197);
+}
+
+.hene{
+  background-color: red !important;
+}
+::ng-deep .p-dialog-mask.p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.1) !important; /* Cambia el color y la opacidad a tu gusto */
+}

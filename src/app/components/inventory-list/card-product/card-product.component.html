@@ -37,10 +37,10 @@
 
       <div class="product-card__content grid grid-cols-1 lg:grid-cols-2 w-full ml-4">
         <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
-          @if (product().imageProduct) {
+          @if (product().img) {
           <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px]">
             <img [ngStyle]="{ opacity: product().status === 'inactive' && '.7' }"
-              [src]="product().imageProduct?.url" [alt]="product().imageProduct?.alt || ''"
+              [src]="product().img?.url" [alt]="product().img?.alt || ''"
               class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
             </div>
             }
@@ -78,19 +78,19 @@
               class="product-card__store product-card__store-woocommerce text-xs font-bold rounded-md inline py-1 px-2 bg-amber-100 text-amber-700">
               Amazon
             </div>
-            } @if(product().units) {
+            } @if(product().stock) {
             <div class="product-card__quantity text-xs font-semibold">
-              {{ product().units }}
-              {{ product().units === 0 ? "unidad" : "unidades" }}
+              {{ product().stock }}
+              {{ product().stock === 0 ? "unidad" : "unidades" }}
             </div>
-            } @else if (product().units || product().status ===
+            } @else if (product().stock || product().status ===
             'active' || product().stock_status === 'instock') {
             <span class="text-xs font-semibold text-green-600">
               Hay Existencia
             </span>
-            } @else if(!product().units && product().status === 'inactive' && product().stock_status === 'outofstock') {
+            } @else if(!product().stock && product().status === 'inactive' && product().stock_status === 'outofstock') {
 
-            <span class="text-xs font-semibold"> {{product().units || 'Sin stock'}}</span>
+            <span class="text-xs font-semibold"> {{product().stock || 'Sin stock'}}</span>
             } @else {
             <span class="text-xs font-semibold"> 0 Unidades</span>
 

@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.metric-card {
+  &__h2::after {
+    content: " ";
+    position: absolute;
+    background-color: #db3b2b;
+    left: -12px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &__item:hover {
+    &::before {
+      content: "";
+      position: absolute;
+      background-color: #db3b2b;
+      left: -12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      height: 50%;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+
+  &__item:hover &__label,
+  &__item:hover &__value {
+    color: rgb(246, 59, 59);
+    font-weight: 600;
+  }
+}

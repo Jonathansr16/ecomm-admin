@@ -4,13 +4,13 @@ export const claroRoutes: Routes = [
   {
     path: 'inventario',
     loadComponent: () =>
-      import('@claroshop/pages/inventario/inventario.component'),
+      import('@claroshop/pages/claro-inventory/claro-inventory.component'),
   },
   {
     path: 'ordenes',
     loadComponent: () =>
       import(
-        '@claroshop/pages/orders/orders.component'
+        '@claroshop/pages/claro-orders/claro-orders.component'
       ),
   },
 
@@ -18,7 +18,7 @@ export const claroRoutes: Routes = [
     path: 'ordenes/order-details/:id',
     loadComponent: () =>
       import(
-        '@claroshop/pages/orders/details-order/details-order.component'
+        '@claroshop/pages/claro-orders/claro-details-order/claro-details-order.component'
       ),
   },
 

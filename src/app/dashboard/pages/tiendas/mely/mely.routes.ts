@@ -4,21 +4,21 @@ export const MelyRoutes: Routes = [
   
     {  
         path: 'inventario', 
-        loadComponent: () => import('@mely/pages/inventory/inventory.component')
+        loadComponent: () => import('@mely/pages/mely-inventory/mely-inventory.component')
     },
 
     {
         path: 'ordenes',
-        loadComponent: () => import('@mely/pages/orders/orders.component')
+        loadComponent: () => import('@mely/pages/mely-orders/mely-orders.component')
     },
 
     {
         path: 'ordenes/order-details/:id',
-        loadComponent: () => import('@mely/pages/orders/details/details.component')
+        loadComponent: () => import('@mely/pages/mely-orders/mely-details-order/mely-details-order.component')
     },
 
     {
         path: 'preguntas',
-        loadComponent: () => import('@mely/pages/asks/asks.component')
+        loadComponent: () => import('@mely/pages/mely-mely-asks/mely-asks.component')
     }
 ];

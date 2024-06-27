@@ -105,8 +105,8 @@
       </div>
     </div>
 
-    @switch (stateOrders().status ) { @case('success') { @for (order of
-    stateOrders().orders; track order.id; let i = $index) {
+    @switch (stateOrders().status ) { 
+      @case('success') { @for (order of stateOrders().orders; track order.id; let i = $index) {
 
     <app-card-order
       [order]="order"
@@ -129,7 +129,8 @@
       >
       </p-paginator>
     </div>
-    } @case('loading') {
+    } 
+    @case('loading') {
     <div
       class="loader fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10"
     >
@@ -161,7 +162,8 @@
       </div>
       }
     </div>
-    } @case('error') {
+    } 
+    @case('error') {
     <div
       [style]="{ 'background-color': 'var(--surface-card)' }"
       class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2"
@@ -187,9 +189,9 @@
       class="order-card__empty container p-3 mt-2 mb-12 flex items-center justify-center flex-col gap-2 bg-gray-200"
     >
       <img
-        src="assets/img/empty.png"
+        src="/assets/img/svg/NoResults.svg"
         alt="empty items"
-        class="order-card__empty-img max-w-44 max-h-44 w-full h-full block mix-blend-multiply"
+        class="order-card__empty-img w-[250px] h-[250px] mix-blend-multiply"
       />
 
       <h2

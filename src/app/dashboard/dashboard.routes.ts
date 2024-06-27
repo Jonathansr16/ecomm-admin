@@ -5,6 +5,8 @@ import { ClaroOrdersService } from '@claroshop/services/claro-orders.service';
 import { ClaroProductsService } from '@claroshop/services/claro-products.service';
 import { injectTokenInterceptor } from '@mely/interceptors/injectToken.interceptor';
 import { MelyService } from '@mely/mely.service';
+import { MelyOrdersService } from '@mely/services/mely-orders.service';
+import { MelyProductsService } from '@mely/services/mely-products.service';
 import { KeyInterceptor } from '@woocommerce/interceptors/key.interceptor';
 import { WooOrdersService } from '@woocommerce/services/woo-orders.service';
 import { WooProductService } from '@woocommerce/services/woo-product-service.service';
@@ -46,6 +48,8 @@ export const dashboardRoutes: Routes = [
         loadChildren: () => import('@mely/mely.routes').then( (m) => m.MelyRoutes),
         providers: [
           MelyService,
+          MelyProductsService,
+          MelyOrdersService,
           provideHttpClient(
             withInterceptors([injectTokenInterceptor])
           )

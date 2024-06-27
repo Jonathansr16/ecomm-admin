@@ -1,4 +1,4 @@
-import { WooProductCategory, WooProductImage, WooProductResult } from "../interface/woo-producto.interface";
+import { WooImageResult, WooProductCategory, WooProductResult } from "../interface/woo-producto.interface";
 
 export class WooProducto {
 
@@ -12,14 +12,15 @@ export class WooProducto {
   name              = "";
   description       = "";
   short_description = "";
-  regular_price     = 0;
-  price             = 0;
+  price             = '';
+  regular_price     = '';
+  sale_price        = '';
   sku               = "";
-  status?           = "";
   categories:       WooProductCategory[] = [];
   stock_quantity    = 1;
+  status?           = "";
   stock_status?     = "";
-  images?:          WooProductImage[] = [];
+  images:          WooImageResult[] = [];
 
   constructor() {
     

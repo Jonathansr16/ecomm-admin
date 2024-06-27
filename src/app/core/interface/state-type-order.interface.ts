@@ -1,13 +1,22 @@
-export interface StateTypeOrder {
-    pendingOrders:   StateStatusOrder;
-    shippedOrders?:   StateStatusOrder;
-    completedOrders: StateStatusOrder;
-    unsoldOrders?:    StateStatusOrder;
-    returnOrders?:    StateStatusOrder;
-  }
-  
-  interface StateStatusOrder {
+export interface StateTypeOrder{
+    label: string;
+    value: number;
     status: 'loading' | 'success' | 'empty' | 'error';
-    quantity: number;
-  }
-  
+    typeOrder: 'pendiente' | 'proceso_entrega' | 'completado' | 'cancelado' | 'devolucion';
+    command?(event?: Event): void;
+    image: ImageTypeOrder;
+    otherOrders?: OthersOrders[];
+   }
+
+   export interface ImageTypeOrder {
+    id: number,
+    src: string;
+    alt: string;
+   }
+
+   export interface OthersOrders{
+    label: string;
+    value: number;
+    status: 'loading' | 'success' | 'empty' | 'error';
+    command?(event?: Event): void;
+   }

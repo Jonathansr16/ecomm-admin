@@ -14,9 +14,10 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
-import { Orders } from 'src/app/core/interface/orders.interface';
-import { StateOrders } from 'src/app/core/interface/state-orders.interface';
+
 import { ErrorInfoData } from 'src/app/core/interface/status-data-info.interface';
+import { StateOrders } from 'src/app/core/interface/state-order.interface';
+import { Orders } from 'src/app/core/interface/orders.interface';
 
 @Component({
   selector: 'app-order-list',

@@ -47,7 +47,7 @@ export class ClaroProductsService {
           store: 'claroshop',
           regular_price: producto.preciopublicobase,
           sale_price: producto.preciopublicooferta,
-          units: producto.cantidad,
+          stock: producto.cantidad,
           status: producto.estatus === 'activo' ? 'active' : 'inactive',
           isDropdownInformation: true,
           channel: 'claroshop',

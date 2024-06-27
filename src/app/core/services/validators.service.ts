@@ -15,16 +15,17 @@ export class ValidatorsService {
   constructor() { }
 
  
-  notWhitesSpaceValid(control: FormControl) : ErrorValidate | null  {
-
-
-    if( (control.value || '').trim().length  ) {
-      return null
+  notWhitesSpaceValid(control: FormControl): ErrorValidate | null {
+    const value = control.value;
+    if (typeof value === 'string') {
+      if ((value || '').trim().length) {
+        return null;
+      }
+      return { whitespace: true };
     }
-
-    return { whitespace: true };
+    // If the value is not a string, return null or handle it accordingly
+    return null;
   }
-
   matchValidator(controlName1: string, controlName2: string) {
     return (formGroup: FormGroup) => {
       const control1 = formGroup.get(controlName1);
