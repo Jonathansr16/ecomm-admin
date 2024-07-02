@@ -1,4 +1,5 @@
-import { WooImageResult, WooProductCategory, WooProductResult } from "../interface/woo-producto.interface";
+import { FileItem } from "src/app/core/models/file-item.models";
+import { WooProductCategory, WooProductResult } from "../interface/woo-producto.interface";
 
 export class WooProducto {
 
@@ -12,7 +13,6 @@ export class WooProducto {
   name              = "";
   description       = "";
   short_description = "";
-  price             = '';
   regular_price     = '';
   sale_price        = '';
   sku               = "";
@@ -20,7 +20,7 @@ export class WooProducto {
   stock_quantity    = 1;
   status?           = "";
   stock_status?     = "";
-  images:          WooImageResult[] = [];
+  images:          FileItem[] = [];
 
   constructor() {
     

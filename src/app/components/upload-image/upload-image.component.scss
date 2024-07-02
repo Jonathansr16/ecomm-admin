@@ -1,0 +1,40 @@
+/* image-uploader.component.css */
+::ng-deep .p-fileupload-buttonbar {
+display: none;
+}
+
+::ng-deep .choose__order .p-orderlist-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+}
+::ng-deep .choose__order .p-orderlist-controls {
+  display: none;
+}
+
+::ng-deep .p-fileupload-files {
+  display: none;
+  
+}
+
+.isDropZone {
+  border-color: var(--blue-500);
+}
+
+.choose__items-wrapper::-webkit-scrollbar:horizontal  {
+height: 8px;
+background-color: #fff;
+}
+
+.choose__items-wrapper::-webkit-scrollbar-thumb:horizontal {
+  background-color: rgb(194, 195, 197);
+  }
+  
+
+.choose__item:hover .choose__btn  {
+  visibility: visible;
+  opacity: 1;
+  cursor: pointer;
+}
+

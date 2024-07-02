@@ -1,5 +1,4 @@
-import { Component, Input, inject, OnInit, signal, computed } from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
+import { Component, Input, inject, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
@@ -17,13 +16,18 @@ import { ExpansionPanelComponent } from '@components/expansion-panel/expansion-p
 import { WooProductService } from '@woocommerce/services/woo-product-service.service';
 import { FileUploadModule } from 'primeng/fileupload';
 import { BadgeModule } from 'primeng/badge';
+import { UploadImageComponent } from '@components/upload-image/upload-image.component';
+import { FileItem } from 'src/app/core/models/file-item.models';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-woo-edit-product',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     BreadcrumbComponent,
     ExpansionPanelComponent,
     ReactiveFormsModule,
@@ -34,7 +38,8 @@ import { BadgeModule } from 'primeng/badge';
     SkeletonModule,
     InputNumberModule,
     FileUploadModule,
-    BadgeModule
+    BadgeModule,
+    UploadImageComponent
   ],
   templateUrl: './woo-edit-product.component.html',
   styleUrls: ['./woo-edit-product.component.scss'],
@@ -52,15 +57,8 @@ export default class WooEditProductComponent {
 
 
   wooProduct = computed( () => this.#stateWooProduct());
-  images: any[] = [];
 
-  //*
-
-  totalSize : number = 0;
-
-  totalSizePercent : number = 0;
-
-  //*
+  images: FileItem[] = [];
  num = 0;
 //  wcProduct: WooProducto = new WooProducto();
 
@@ -137,7 +135,6 @@ export default class WooEditProductComponent {
   validatorService = inject(ValidatorsService);
   formBuilder = inject(FormBuilder);
   messageService = inject(MessageService);
-  config = inject(PrimeNGConfig);
   @Input('id') productId!: number;
 
 
@@ -147,9 +144,7 @@ export default class WooEditProductComponent {
 
   ngOnInit(): void {
 
-    this.wooProductService.getProduct(this.productId).subscribe(resp => {
-
-    console.log(resp)
+    this.wooProductService.getProducto(this.productId).subscribe(resp => {
 
       this.#stateWooProduct.set({
         status: 'success',
@@ -172,9 +167,11 @@ export default class WooEditProductComponent {
   
     
       this.formProduct.patchValue({ ...resp });
+      console.log(this.wooProduct())
+
     });
 
-    this.wooProduct();
+    // this.wooProduct();
   }
 
   //* EVALUA SI UN CAMPO ESPECIFICOS FUE EDITADO PARA GUARDAR
@@ -234,68 +231,19 @@ export default class WooEditProductComponent {
     }
   }
 
-  onSelect(event: any) {
-    this.images = event.currentFiles;
-  }
-
-  onClear() {
-    this.images = [];
-  }
-
-  toggleAccordeon(index: number) {
-    if (this.activeAccordeon === index) {
-      this.activeAccordeon = -1; // Cerrar el acordeón si se hace clic nuevamente en el mismo panel
-    } else {
-      this.activeAccordeon = index; // Abrir el panel clickeado
-    }
-  }
-
-  formatSize(bytes: any) {
-    const k = 1024;
-    const dm = 3;
-    const sizes : string[] = [];
-    if (bytes === 0) {
-        return `0 ${sizes[0]}`;
-    }
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
-
-    return `${formattedSize} ${sizes[i]}`;
-}
-
-  //* images
-  choose(event:any, callback: any) {
-    callback();
-}
-
-
-
-
-createObjectURL(file: any): string {
-  if (window.URL) {
-    return window.URL.createObjectURL(file);
-  }
-  return '';
-}
-
-uploadEvent(callback: any) {
-  callback();
-}
-
-
-
 onTemplatedUpload() {
   this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
 }
 
-onSelectedFiles(event: any) {
-  this.images = event.currentFiles;
-  this.images.forEach((image) => {
-      this.totalSize += parseInt(this.formatSize(image.size));
-  });
-  this.totalSizePercent = this.totalSize / 10;
+
+
+// Función para convertir una URL de imagen en un File
+async urlToFile(url: string, filename: string, mimeType: string): Promise<File> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new File([blob], filename, { type: mimeType });
 }
+
 
 }
 

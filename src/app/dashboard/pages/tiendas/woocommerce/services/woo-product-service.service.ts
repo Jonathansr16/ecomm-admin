@@ -8,9 +8,10 @@ import {
   WooProductResult,
 } from '@woocommerce/interface/woo-producto.interface';
 import { WooProducto } from '@woocommerce/models/wc-new-product.model';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { ProductInventory } from 'src/app/core/interface/product.interface';
 import { VariantProduct } from 'src/app/core/interface/variant-product.interface';
+import { FileItem } from 'src/app/core/models/file-item.models';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -119,7 +120,7 @@ export class WooProductService {
   }
   
   //* OBTIENE UN PRODUCTO EN ESPECIFICO
-  getProduct(id: number): Observable<WooProductResult> {
+  getProduct(id: number): Observable<WooProducto> {
     return this.http.get<WooProduct>(`${this.url}/products/${id}`).pipe(
       map((product) => this.transformProduct(product)),
 
@@ -229,6 +230,63 @@ export class WooProductService {
     };
     return this.http.post<WooProduct[]>(`${this.url}/products/batch`, data);
   }
+
+  getProducto(id: number): Observable<WooProducto> {
+
+    return this.http.get<WooProduct>(`${this.url}/products/${id}`).pipe(
+    
+      map((producto) => {
+        const images = producto.images.map(img => {
+          const fileItem = new FileItem(new File([], img.name, { type: 'image/*' }));
+          fileItem.objectURL = img.src; // Set objectURL to src
+          return fileItem;
+        });
+        
+              return {
+                id: producto.id,
+                name: producto.name,
+                description: producto.description,
+                short_description: producto.short_description,
+                regular_price: producto.price,
+                sale_price: producto.regular_price,
+                sku: producto.sku,
+                categories: producto.categories,
+                stock_quantity: producto.stock_quantity,
+                status: producto.status,
+                stock_status: producto.stock_status,
+                images: images
+              };
+            }),
+        
+    )
+   
+  }
+  // editProduct(products: WooProducto): Observable<WooProducto> {
+  //   const data = {
+  //     update: products,
+  //   };
+  
+  //   return this.http.post<WooProduct>(`${this.url}/products/batch`, data).pipe(
+  //     map((producto) => {
+  //       const images = producto.images.map(img => new FileItem(new File([], img.name, { type: 'image/*' })));
+  
+  //       return {
+  //         id: producto.id,
+  //         name: producto.name,
+  //         description: producto.description,
+  //         short_description: producto.short_description,
+  //         regular_price: producto.price,
+  //         sale_price: producto.regular_price,
+  //         sku: producto.sku,
+  //         categories: producto.categories,
+  //         stock_quantity: producto.stock_quantity,
+  //         status: producto.status,
+  //         stock_status: producto.stock_status,
+  //         images: images
+  //       };
+  //     })
+  //   );
+  // }
 
   //* ELIMINA POR LOTE DE PRODUCTOS
   deleteProductsByBranch(products: number[]): Observable<WooProduct[]> {

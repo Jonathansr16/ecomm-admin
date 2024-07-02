@@ -14,6 +14,7 @@ import {
   output,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { inject } from '@angular/core';
 
 const DEFAULT_DURATION = 0.25;
 
@@ -43,23 +44,11 @@ export class ExpansionPanelComponent {
   label = input.required<string>();
   propertyProduct = input.required<string | number>();
   propertytoRequire = input.required<string>();
-  updateProduct = output<Object>();
+  updateProduct = output<string | number>();
+  cancelUpdate = output<string | number>();
   // activeAccordeon = input.required<number>();
-  isValid = input.required<boolean>()
+  isEnabled = input.required<boolean>()
 
   isOpened: boolean = false;
 
-  // togglePanel(index: number) {
-  //   if(this.activeAccordeon() === index) {
-  //     this.activeAccordeon() = -1;
-  //     this.isActive = 'opened'
-  //   } else {
-  //     this.isActive = 'closed'
-  //     this.activeAccordeon() = index;
-  //   }
-  // }
-
-  // updateProducts() {
-  //   this.updateProduct.emit();
-  // }
 }

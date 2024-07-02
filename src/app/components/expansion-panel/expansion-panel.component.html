@@ -27,13 +27,15 @@
       class="expansion-panel__footer mt-4 flex items-center justify-end gap-4"
     >
       <p-button
-        [disabled]="isValid()"
-        (onClick)="updateProduct.emit(propertyProduct)"
+        [disabled]="isEnabled()"
+        (onClick)="updateProduct.emit(propertyProduct())"
         [style]="{ 'font-size': '14px', padding: '6px 12px' }"
         label="Actualizar"
         severity="primary"
       ></p-button>
       <p-button
+      [disabled]="isEnabled()"
+      (onClick)="cancelUpdate.emit(propertyProduct())"
         [style]="{ 'font-size': '14px', padding: '6px 12px' }"
         label="Cancelar"
         severity="danger"

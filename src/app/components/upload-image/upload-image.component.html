@@ -1,0 +1,178 @@
+<div class="choose">
+
+  <div class="choose__title pl-4 mb-3 flex items-center justify-start gap-4">
+    <h2 class="text-2xl font-semibold text-slate-700">
+      Fotos del producto 
+    </h2>
+
+    <img src="assets/img/camara_icon.png" alt="fotos del producto" class="max-w-10 max-h-10 w-full h-full">
+  </div>
+
+  <div class="choose-info">
+    <div class="choose-info__col bg-slate-200 p-4 rounded-sm">
+      <h3 class="text-lg font-semibold">
+        La primera foto debe tener fondo blanco y buena calidad, será la portada
+      </h3>
+      <p class="text-sm">
+        Para no perder exposición, no agregues bordes, logos ni marcas de agua.
+        No incluyas datos de contacto, condiciones de venta o envíos.
+      </p>
+    </div>
+    <div class="choose-info__col"></div>
+  </div>
+
+  <div class="choose__container">
+    @if (archivos().length === 0) {
+    <div
+    (click)="fileInput.click()"
+      appUploadImage
+      [files]="archivos()"
+      (mouseOnBox)="isOnBox = $event"
+      [class.isDropZone]="isOnBox"
+      class="choose__empty choose-drop-zone border-2 border-dashed border-slate-300 flex items-center justify-center flex-col cursor-pointer py-4 mt-4"
+    >
+    <input type="file" #fileInput (change)="onSelectedFiles($event)" style="display: none;" /> <!-- Añadido input file -->
+
+      <i class="pi pi-camera text-6xl text-slate-500"></i>
+      <p class="text-sm text-slate-500 my-4">
+        Adjunta o arrastra las imagenes aqui.
+      </p>
+    </div>
+    } @if (archivos().length > 0) {
+    <div class="choose__items flex flex-row wrap gap-3 items-center mt-4 ">
+      @if (archivos().length > 0 && archivos.length <9) {
+      <div
+      (click)="fileInput2.click()"
+        appUploadImage
+        [files]="archivos()"
+        (mouseOnBox)="isOnBox = $event"
+        [class.isDropZone]="isOnBox"
+        class="choose-drop-zone p-2 max-w-[116px] max-h-[116px] w-full h-full border-2 border-dashed border-slate-300 flex items-center justify-center flex-col cursor-pointer "
+      >
+      <input type="file" #fileInput2 (change)="onSelectedFiles($event)" style="display: none;" /> <!-- Añadido input file -->
+
+        <i class="pi pi-camera text-3xl text-slate-800"></i>
+        <p class="text-xs text-slate-500 my-3 text-center">
+          Adjunta o arrastra las imagenes aqui.
+        </p>
+      </div>
+      
+      }
+
+    <div cdkDropList 
+         cdkDropListOrientation="horizontal" 
+         class="choose__items-wrapper flex flex-row items-center gap-6 overflow-hidden overflow-x-auto"
+         (cdkDropListDropped)="drop($event)">
+
+      @for (image of archivos(); let i = $index; track i) {
+
+      <div cdkDrag
+    
+        class="choose__item bg-white border-2 border-slate-200 p-2 flex flex-col gap-4 items-center justify-center max-w-[116px] max-h-[116px] w-full h-full cursor-grab relative"
+      >
+      <button
+      (click)="removeFile(i)"
+        pButton
+        pRipple
+        class="choose__btn rounded-full p-button-danger opacity-0 invisible cursor-default absolute z-[5] inline-flex items-center justify-center text-center w-[6px] h-[6px] text-xs top-1 left-2 p-[9px]">
+        <i class="text-xs pi pi-times" style="font-size: 10px"></i>
+      </button>
+
+        <div class="choose__image w-[90px] h-[90px] p-2">
+          <img
+            [src]="image.objectURL"
+            [alt]="image.name"
+            class="choose__img mix-blend-multiply w-full h-full object-contain object-center"
+          />
+        </div>
+        <!-- <span class="choose__cover text-xs">{{image.name}}</span> -->
+        <!-- <span class="choose__cover text-xs"
+          >{{ image.file.size / 1024 / 1024 | number : ".2-2" }} MB</span
+        > -->
+
+        @if (i === 0) {
+        <span
+          class="choose__cover text-xs bg-green-500 text-white p-1 px-3 rounded-xl absolute bottom-1 left-2/4 translate-x-[-50%]">
+          portada
+          </span>
+        }
+        <p-progressBar [value]="50"></p-progressBar>
+      </div>
+      }
+    </div>
+
+    </div>
+    }
+  </div>
+
+  
+
+  <!-- <p-fileUpload
+    name="images[]"
+    [multiple]="true"
+    [auto]="true"
+    [showUploadButton]="false"
+    [showCancelButton]="false"
+    accept="image/*"
+    (onSelect)="onSelectedFiles($event)"
+  >
+    <ng-template 
+    pTemplate="content" 
+    let-files 
+    let-uploadedFiles="uploadedFiles" 
+    let-removeUploadedFileCallback="removeUploadedFileCallback"
+    let-chooseCallback="chooseCallback" >
+      @if (files.length > 0) {
+  
+      <p-orderList styleClass="choose__order" [value]="files" [dragdrop]="true">
+        <ng-template let-image pTemplate="item" let-i>
+          
+                    <div class="choose__images flex flex-row gap-4">
+                      @if (files.length >0 && files.length <=9) {
+                        <div class="choose__empty border-2 border-dashed border-slate-300 flex items-center justify-center flex-col cursor-pointer py-4 max-w-28 w-full" (click)="choose($event, chooseCallback)">
+                          <i class="pi pi-camera text-3xl"></i>
+                          <p class="text-xs text-slate-500 my-4 text-center px-1">Adjunta o arrastra las imagenes aqui.</p>
+                     </div>
+
+       
+            }
+            <div class="choose__item relative border-2 border-slate-200 p-2 max-w-28 w-full">
+              <button
+              (click)="removeUploadedFileCallback(i)"
+                pButton
+                pRipple
+                class="choose__btn rounded-full p-button-danger p-1">
+  
+                <i class="text-xs pi pi-times"></i>
+              </button>
+  
+              <div
+                class="choose__image w-[90px] h-[90px] p-2 mb-2"
+              >
+                <img
+                  [src]="image.objectURL"
+                  [alt]="image.name"
+                  class="choose__img mix-blend-multiply w-full h-full object-contain object-center"
+                />
+              </div>
+              <span class="choose__cover text-xs bg-green-500 text-white p-1 px-3 rounded-xl">portada</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-orderList>
+  
+      }
+  
+      @if (files.length === 0) {
+     
+        <div class="choose__empty border-2 border-dashed flex items-center justify-center flex-col cursor-pointer py-4" (click)="choose($event, chooseCallback)">
+            <i class="pi pi-camera text-6xl"></i>
+            <p class="text-sm text-slate-500 my-4">Adjunta o arrastra las imagenes aqui.</p>
+        </div>
+    
+    }
+    </ng-template>
+  
+  
+  </p-fileUpload> -->
+</div>
