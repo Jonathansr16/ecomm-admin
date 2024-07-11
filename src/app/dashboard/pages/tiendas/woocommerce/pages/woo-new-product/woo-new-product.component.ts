@@ -6,12 +6,12 @@ import { WooProducto } from '@woocommerce/models/wc-new-product.model';
 import {  MessageService } from 'primeng/api';
 
 import { ValidatorsService } from 'src/app/core/services/validators.service';
-import { WooProductCategory } from '@woocommerce/interface/woo-producto.interface';
 import { ToastModule } from 'primeng/toast';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TooltipModule } from 'primeng/tooltip';
 import { CommonModule } from '@angular/common';
 import { WooProductService } from '@woocommerce/services/woo-product-service.service';
+import { WooCategoryResult } from '@woocommerce/interface/woo-category-product.interface';
 
 @Component({
   selector: 'app-woo-new-product',
@@ -35,7 +35,7 @@ export default class WooNewProductComponent  {
   images: any[] = [];
   imagesBack: FormData = new FormData();
   // activeAccordeon: number = 0;
-  arrayCategories: WooProductCategory[] = [];
+  arrayCategories: WooCategoryResult[] = [];
   completed: number = 0;
   numFieldValid: number = 0;
 
@@ -48,9 +48,14 @@ export default class WooNewProductComponent  {
       regular_price: ['', [Validators.required, Validators.minLength(1),]],
       sale_price: ['', [Validators.required, Validators.minLength(1),]],
       sku: ['', [Validators.required, Validators.minLength(3), this.validatorService.notWhitesSpaceValid]],
-      stock_quantity: ['', [Validators.required]],
-      // categories: ['', Validators.required]
       categories: this.formBuilder.array([]),
+      stock_quantity: ['', [Validators.required]],
+      status: [''],
+      stock_status: [''],
+      images: [],
+      variations: [''],
+      total_sales: []
+      // categories: ['', Validators.required]
       // images: this.formBuilder.array([])
     },
       {
@@ -70,7 +75,7 @@ private readonly renderer2 = inject(Renderer2);
   }
 
   getCategories() {
-    this.wooProductService.getCategorias().subscribe( {
+    this.wooProductService.getCategories().subscribe( {
       next: (resp) => {
         this.arrayCategories = resp;
       },
@@ -148,12 +153,14 @@ private readonly renderer2 = inject(Renderer2);
       description: formValues.description,
       short_description: formValues.short_description,
       regular_price: formValues.regular_price.toString(),
-      price: formValues.sale_price.toString(),
       sale_price: '0',
       sku: formValues.sku,
-      stock_quantity:  parseInt(formValues.stock_quantity),
       categories: formValues.categories,
-     images: []
+      stock_quantity:  parseInt(formValues.stock_quantity),
+      status: formValues.status,
+      stock_status: formValues.stock_status,
+      images: [],
+     variations: []
     }
     this.showLoader = true;
 

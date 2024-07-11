@@ -2,18 +2,12 @@
 
 
 .expansion-panel {
-    max-width: 852px;
-    margin-left: auto;
-    margin-right: auto;
-     padding: 32px ;
-    margin-bottom: 1em;
-    border-radius: 6px;
-
+ 
     &-header {
     
-        cursor: pointer;
-        @include flexible(flex, row, nowrap, space-between, center);
-        gap: 1em;
+        // cursor: pointer;
+        // @include flexible(flex, row, nowrap, space-between, center);
+        // gap: 1em;
         overflow: hidden;
 
 
@@ -22,9 +16,9 @@
         }
         
        
-        &__icon {
-            @include flexible(flex, column, nowrap, center, center);
-        }
+        // &__icon {
+        //     @include flexible(flex, column, nowrap, center, center);
+        // }
 
 
         &__i {
@@ -40,9 +34,7 @@
     }
 
 
-    &__section {
-         padding: 10px;
-    }
+    
 }
 
 .expansion-panel-header.expanded {

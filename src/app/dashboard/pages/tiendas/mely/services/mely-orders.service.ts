@@ -6,9 +6,9 @@ import {
   ProductsByIdsResponse,
 } from '@mely/interfaces/mely-products-by-ids.interface';
 import { MelyShipping } from '@mely/interfaces/mely-shipment.interface';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { Shipping } from 'src/app/core/interface/order-details.interface';
-import { Orders, ProductOrder } from 'src/app/core/interface/orders.interface';
+import { Orders, ProductOrder, ProductVariant } from 'src/app/core/interface/orders.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +50,8 @@ export class MelyOrdersService {
       .pipe(
         map((resp) => {
           return resp.map((item) => this.transformProductOrder(item.body));
-        })
+        }),
+       
       );
   }
 
@@ -93,12 +94,34 @@ export class MelyOrdersService {
 
   transformProductOrder(product: BodyProductResponse): ProductOrder {
     let skuProduct = 'Sin definir';
+    let variante: ProductVariant[] = [];
+    
 
     product.attributes.forEach((item) => {
       if (item.id === 'SELLER_SKU') {
         skuProduct = item.values[0].name!;
       }
     });
+
+  
+    if(product.variations) {
+      product.variations.forEach( (variant, index) => {
+        variante[index] = {
+          id: variant.id,
+          attribute: variant.attribute_combinations[0].name,
+          value: variant.attribute_combinations[0].value_name,
+          image: {
+            src: `http://http2.mlstatic.com/D_${variant.picture_ids[0]}-I.jpg`,
+            alt:variant.attribute_combinations[0].value_name
+          }
+        }
+
+      });
+
+
+    } else {
+      variante = [];
+    }
 
     return {
       id: product.id,
@@ -111,6 +134,9 @@ export class MelyOrdersService {
         src: product.thumbnail,
         alt: product.title,
       },
+
+      variations: variante
+      
     };
   }
 
@@ -134,25 +160,30 @@ export class MelyOrdersService {
       isFulfiment: false,
     };
 
-    let isFul = false;
+   let isFulfilled = false;
+   let variante: ProductVariant | undefined;
 
-    this.productByOrder.forEach((item, index) => {
-      if (order.order_items[0].item.id === item.id) {
+    this.productByOrder.forEach((producto, index) => {
+     
+      if (order.order_items[0].item.id === producto.id) {
         product = {
-          id: item.id,
-          product: item.product,
-          sku: item.sku,
-          total_product: item.total_product,
+          id: producto.id,
+          product: producto.product,
+          sku: producto.sku,
+          total_product: producto.total_product,
           image: {
-            src: item.image!.src,
-            alt: item.image?.alt,
+            src: producto.image!.src,
+            alt: producto.image?.alt,
           },
-          isFulfiment: item.isFulfiment,
+          isFulfiment: producto.isFulfiment,
         };
 
-        isFul = item.isFulfiment!;
-      }
+        isFulfilled = producto.isFulfiment ? true : false;
+      }  
     });
+
+    
+
 
     if (
       item.status === 'approved' &&
@@ -194,10 +225,12 @@ export class MelyOrdersService {
       status: statuOrder,
       date_created: item.date_created,
       authorization_date: item.date_last_modified,
-      isFulfillment: isFul,
+      isFulfillment: isFulfilled,
       total_order: order.total_amount,
       channel: 'mely',
       products: [product],
+      variation: variante,
+    
     };
   }
 

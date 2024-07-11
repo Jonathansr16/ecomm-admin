@@ -6,7 +6,7 @@ import {
   ClaroshopProductsOption,
 } from '@claroshop/interfaces/claroshop-products-options.interface';
 import { Observable, catchError, map, of } from 'rxjs';
-import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { Inventory } from 'src/app/core/interface/product.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class ClaroProductsService {
   //* OBTIENE LA LISTA DE PRODUCTOS
   getProducts(
     page: number
-  ): Observable<{ products: ProductInventory[]; totalItems: number }> {
+  ): Observable<{ products: Inventory[]; totalItems: number }> {
     let params = new HttpParams().append('page', page.toString());
 
     return this.http.get<ClaroshopProductsOption>('producto', { params }).pipe(
@@ -34,7 +34,7 @@ export class ClaroProductsService {
   }
 
   //* OBTIENE UN PRODUCTO ESPECIFICO
-  getProduct(idProduct: number): Observable<ProductInventory> {
+  getProduct(idProduct: number): Observable<Inventory> {
     return this.http.get<ClaroshopProductSearch>(`producto/${idProduct}`).pipe(
       map((resp) => {
         const producto = resp.producto;
@@ -64,7 +64,7 @@ export class ClaroProductsService {
     searchedValue: string,
     typeSearch: 'todo' | 'id' | 'title' | 'sku',
     page: number
-  ): Observable<ProductInventory[]> {
+  ): Observable<Inventory[]> {
     let params = new HttpParams().append('page', page.toString());
 
     return this.http
@@ -113,7 +113,7 @@ export class ClaroProductsService {
       );
   }
 
-  transformProduct(product: ClaroshopProduct): ProductInventory {
+  transformProduct(product: ClaroshopProduct): Inventory {
     return {
       id: product.transactionid,
       title: product.nombre,
@@ -123,12 +123,11 @@ export class ClaroProductsService {
       sale_price: 0, // You need to set this value accordingly
       status: product.estatus === 'activo' ? 'active' : 'inactive',
       isDropdownInformation: true,
-      channel: 'claroshop',
     };
   }
 
   //* TRANSFORM DATA
-  transformDataProducts(products: ClaroshopProductsOption): ProductInventory[] {
+  transformDataProducts(products: ClaroshopProductsOption): Inventory[] {
     return products.productos.map((product) => ({
       id: product.transactionid,
       title: product.nombre,

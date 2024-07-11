@@ -1,5 +1,27 @@
+import { FileItem } from "src/app/core/models/file-item.models";
+
+export interface WooProductVar {
+    id: number,
+    sku: string;
+    description: string;
+    regular_price: string;
+    sale_price: string;
+    status:  'draft' | 'pending' | 'private' | 'publish';
+    stock_status:  'instock' | 'outofstock' | 'onbackorder';
+    images: FileItem[];
+    stock_quantity: number,
+    attributes: WooProductAttr[]
+}
+
+export interface WooProductAttr {
+    id: number;
+    attribute: string;
+    value: string;
+}
+
 export interface WooProductVariation {
     id:                    number;
+    type:                  Type;
     date_created:          Date;
     date_created_gmt:      Date;
     date_modified:         Date;
@@ -15,7 +37,7 @@ export interface WooProductVariation {
     date_on_sale_to:       null;
     date_on_sale_to_gmt:   null;
     on_sale:               boolean;
-    status:                Status;
+    status:                'draft' | 'pending' | 'private' | 'publish';
     purchasable:           boolean;
     virtual:               boolean;
     downloadable:          boolean;
@@ -26,7 +48,7 @@ export interface WooProductVariation {
     tax_class:             string;
     manage_stock:          boolean;
     stock_quantity:        number | null;
-    stock_status:          StockStatus;
+    stock_status:          'instock' | 'outofstock' | 'onbackorder';
     backorders:            Backorders;
     backorders_allowed:    boolean;
     backordered:           boolean;
@@ -109,15 +131,15 @@ export enum GallerySource {
     Default = "default",
 }
 
-export enum Status {
-    Publish = "publish",
-}
-
-export enum StockStatus {
-    Instock = "instock",
-    Outofstock = "outofstock",
+export interface Status {
+    
 }
 
 export enum TaxStatus {
-    Taxable = "taxable",
+    None = "none",
 }
+
+export enum Type {
+    Variation = "variation",
+}
+

@@ -11,6 +11,7 @@ export interface Orders {
     tracking_guide?: string;
     products: ProductOrder[];
     channel?:  string;
+    variation?: ProductVariant;
 }
 
 export interface ProductOrder {
@@ -21,9 +22,17 @@ export interface ProductOrder {
     quantity?: number;
     image?: ProductOrderImages;
     isFulfiment?: boolean;
+    variations?: ProductVariant[];
 }
 
 export interface ProductOrderImages {
     src: string;
     alt?: string;
+}
+
+export interface ProductVariant {
+    id: number;
+    attribute: string;
+    value: string
+    image?: ProductOrderImages
 }

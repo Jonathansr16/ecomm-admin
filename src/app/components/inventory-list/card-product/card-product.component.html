@@ -37,10 +37,10 @@
 
       <div class="product-card__content grid grid-cols-1 lg:grid-cols-2 w-full ml-4">
         <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
-          @if (product().img) {
+          @if (product().images) {
           <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[180px] h-[180px] lg:w-[120px] lg:h-[120px]">
             <img [ngStyle]="{ opacity: product().status === 'inactive' && '.7' }"
-              [src]="product().img?.url" [alt]="product().img?.alt || ''"
+              [src]="product().images![0].objectURL || ''"
               class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
             </div>
             }
@@ -112,13 +112,13 @@
           </div>
           <div class="product-card__extra-col flex flex-col items-center justify-center flex-wrap gap-y-2 lg:gap-y-1.5">
             <span class="text-sm font-semibold">Canal</span>
-            @if (product().channel === 'mely') {
+            @if (product().store === 'mely') {
             <img class="card-order__channel-img w-14 h-14 rounded-[50%] p-1" src="assets/img/mely_logo.webp"
               alt="mercado libre" />
-            } @else if (product().channel === 'amazon') {
+            } @else if (product().store === 'amazon') {
             <img class="card-order__channel w-14 h-14 rounded-[50%] border-[1px] p-1 border-slate-200"
               src="assets/img/amazon_logo.webp" alt="Amazon" />
-            } @else if (product().channel === 'claroshop') {
+            } @else if (product().store === 'claroshop') {
             <img class="card-order__channel w-14 h-14 rounded-[50%] border-[1px] p-1 border-slate-200"
               src="assets/img/claroshop_logo-2.png" alt="Claroshop" />
             } @else {
@@ -173,7 +173,7 @@
 
       <span class="separator mt-4 mx-8 border-t-[1px] block border-slate-200"></span>   
       
-      <app-card-dropdown-product [variationData]="getVariationData() ?? {status: 'empty', variations: [] }">
+      <app-card-dropdown-product [variationData]="variationData() ?? {status: 'empty', data: [] }">
 
       </app-card-dropdown-product>
       

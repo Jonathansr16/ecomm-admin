@@ -89,12 +89,12 @@ export default class ClaroInventoryComponent {
 
   #stateClaroProducts = signal<StateProducts>({
     status: 'loading',
-    products: [],
+    data: [],
   });
 
   #stateClaroProductVar = signal<StateVariation>({
     status: 'loading',
-    variations: [],
+    data: [],
   });
 
   #stateClaroPagination = signal<PaginationParams>({
@@ -129,7 +129,7 @@ export default class ClaroInventoryComponent {
         next: (resp) => {
           this.#stateClaroProducts.set({
             status: resp.products ? 'success' : 'error',
-            products: resp.products ? resp.products : []
+            data: resp.products ? resp.products : []
           });
         
           this.#stateClaroPagination().totalRecords = resp ? resp.totalItems : 0;
@@ -151,7 +151,7 @@ export default class ClaroInventoryComponent {
 
           this.#stateClaroProducts.set({
             status: 'error',
-            products: [],
+            data: [],
           });
 
           this.#stateClaroPagination().totalRecords = 0;
@@ -214,7 +214,7 @@ export default class ClaroInventoryComponent {
           next: (data) => {
             this.#stateClaroProducts.set({
               status: data.length > 0 ? 'success' : 'empty',
-              products: data,
+              data: data,
             });
 
             this.#stateClaroPagination().totalRecords = data ? data.length : 0;
@@ -222,7 +222,7 @@ export default class ClaroInventoryComponent {
           error: (err: string) => {
             this.#stateClaroProducts.set({
               status: 'error',
-              products: [],
+              data: [],
             });
 
             this.#stateClaroPagination().totalRecords = 0;

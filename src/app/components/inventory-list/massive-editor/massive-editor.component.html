@@ -82,9 +82,9 @@
                   }">
                 <div
                   class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[100px] h-[100px] lg:w-[80px] lg:h-[80px]">
-                  <img [ngStyle]="{
+                  <img *ngIf="data()[rowIndex].images" [ngStyle]="{
                         opacity: data()[rowIndex].status === 'inactive' && '.7'
-                      }" [src]="data()[rowIndex].img?.url" [alt]="data()[rowIndex].img?.alt || ''"
+                      }" [src]="data()[rowIndex].images![0].objectURL" [alt]="data()[rowIndex].images![0].file.name"
                     class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
                 </div>
               </div>
@@ -145,7 +145,7 @@
                   }">
 
                 <div class="massive-editor__input">
-                  @if(data()[0].channel === 'woocommerce' || 'woocommerce'){
+                  @if(data()[0].store === 'woocommerce' || 'woocommerce'){
                   <div class="massive-editor__input-label text-xs"
                     [innerHTML]="getDescriptionValue(rowIndex) | slice:0:200 | pipeSafeHtml">
                   </div>
@@ -302,13 +302,13 @@
               <div
                 class="massive-editor__col min-w-56 w-full text-left border-l-[1px] border-b-[1px] border-slate-500/30 flex items-center p-4 text-sm cursor-not-allowed bg-white">
                 <img src="/assets/img/Amazon_logo.png" alt="Amazon" class="w-10 h-10 rounded-[50%]"
-                  *ngIf="data()[rowIndex].channel === 'amazon'" />
+                  *ngIf="data()[rowIndex].store === 'amazon'" />
                 <img src="/assets/img/claroshop_logo-2.png" alt="claroshop" class="w-10 h-10 rounded-[50%]"
-                  *ngIf="data()[rowIndex].channel === 'claroshop'" />
+                  *ngIf="data()[rowIndex].store === 'claroshop'" />
                 <img src="/assets/img/Mely_logo.svg" alt="Mercado libre" class="w-10 h-10 rounded-[50%]"
-                  *ngIf="data()[rowIndex].channel === 'mely'" />
+                  *ngIf="data()[rowIndex].store === 'mely'" />
                 <img src="/assets/img/woocommerce__logo.png" alt="Woocommerce" class="w-10 h-10 rounded-[50%] mx-auto"
-                  *ngIf="data()[rowIndex].channel === 'woocommerce'" />
+                  *ngIf="data()[rowIndex].store === 'woocommerce'" />
               </div>
               }
             </div>

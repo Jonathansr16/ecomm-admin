@@ -43,12 +43,16 @@ const DEFAULT_DURATION = 0.25;
 export class ExpansionPanelComponent {
   label = input.required<string>();
   propertyProduct = input.required<string | number>();
-  propertytoRequire = input.required<string>();
   updateProduct = output<string | number>();
   cancelUpdate = output<string | number>();
-  // activeAccordeon = input.required<number>();
+  isOpened = output<boolean>();
   isEnabled = input.required<boolean>()
 
-  isOpened: boolean = false;
+  toggleAccordeon = false;
+
+  handlerAccordeon() {
+    this.toggleAccordeon = !this.toggleAccordeon;
+    this.isOpened.emit(this.toggleAccordeon);
+  }
 
 }

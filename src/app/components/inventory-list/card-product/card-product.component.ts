@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { Inventory } from 'src/app/core/interface/product.interface';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -28,12 +28,12 @@ import { StateVariation } from 'src/app/core/interface/state-variations.interfac
   styleUrl: './card-product.component.scss',
 })
 export class CardProductComponent {
-  product = input.required<ProductInventory>();
-  getVariationData = input<StateVariation>();
+  product = input.required<Inventory>();
+  variationData = input<StateVariation>();
 
-  pauseProduct= output<ProductInventory>();
-  editProduct = output<ProductInventory>();
-  deleteProduct = output<ProductInventory>();
+  pauseProduct= output< Inventory >();
+  editProduct = output< Inventory >();
+  deleteProduct = output< Inventory >();
 
 
 

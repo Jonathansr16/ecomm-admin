@@ -1,6 +1,6 @@
-import { ProductInventory } from "./product.interface";
+import { Inventory } from "./product.interface";
 
 export interface StateProducts {
     status: 'loading' | 'success' | 'empty' | 'error';
-    products: ProductInventory[]
+    data: Inventory[]
 }

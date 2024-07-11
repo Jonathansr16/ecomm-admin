@@ -1,377 +1,504 @@
 <div class="top-header">
   <div class="top-header__content container-bg">
-    <app-breadcrumb
-      [breadcrumbHomeItem]="breadcrumHome"
-      [breadcrumbItems]="breadcrumbItems"
-    ></app-breadcrumb>
+    <app-breadcrumb [breadcrumbHomeItem]="breadcrumHome()" [breadcrumbItems]="breadcrumbItems()">
+    </app-breadcrumb>
 
     <div class="wc-product__back flex items-stretch gap-4 mt-6">
-      <p-button
-        icon="pi pi-arrow-left"
-        [rounded]="false"
-        routerLink="/dashboard/woocommerce/inventario"
-        [queryParams]="{page: 1, per_page: 10 }"
-        
-        [raised]="true"
-        severity="success">
+      <p-button icon="pi pi-arrow-left" [rounded]="false" routerLink="/dashboard/woocommerce/inventario"
+        [queryParams]="{ page: 1, per_page: 10 }" [raised]="true" severity="success">
       </p-button>
-      <a></a>
+
       <div class="wc-product__back-text">
         <p class="text-white text-xs">Regresar a Inventario</p>
         <h5 class="text-white font-semibold text-xl">Editar Producto</h5>
       </div>
     </div>
   </div>
-
-  
 </div>
 
-@switch (wooProduct().status) {
-
-  @case ('loading') {
-    <div class="skeleton">
-      <div class="skeleton__section skeleton__section--title">
-        <div style="flex: 1" class="skeleton__details">
-          <p-skeleton width="100%" height="2rem" styleClass="mb-3"></p-skeleton>
-          <p-skeleton width="35%" height="2rem" styleClass="mb-3"></p-skeleton>
-          <p-skeleton width="15%" height="2rem"></p-skeleton>
-        </div>
-        <div class="skeleton__img">
-          <p-skeleton shape="circle" size="6rem" styleClass="mr-2"></p-skeleton>
-        </div>
+@switch (wooProduct().status) { @case ('loading') {
+<div class="skeleton container-bg flex justify-between gap-4">
+  <div class="skeleton__left w-full lg:w-3/5">
+    <div class="skeleton-head bg-white px-6 py-8 mb-10 flex flex-row justify-between items-center gap-4 rounded-lg">
+      <div style="flex: 1" class="skeleton__detail">
+        <p-skeleton width="35%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="80%" height="2rem" styleClass="mb-3"></p-skeleton>
+        <p-skeleton width="15%" height="2rem"></p-skeleton>
       </div>
-      <div class="skeleton__card">
-        <div class="skeleton__titular">
-          <div style="flex: 1" class="skeleton__title">
-            <p-skeleton
-              width="30%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-            <p-skeleton
-              width="80%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-          </div>
-          <div class="skeleton__icon">
-            <p-skeleton
-              shape="circle"
-              size="3rem"
-              styleClass="mr-2">
-            </p-skeleton>
-          </div>
-        </div>
+      <div class="skeleton__img">
+        <p-skeleton shape="circle" size="6rem" styleClass="mr-2"></p-skeleton>
       </div>
-      <div class="skeleton__card">
-        <div class="skeleton__titular">
-          <div style="flex: 1" class="skeleton__title">
-            <p-skeleton
-              width="30%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-            <p-skeleton
-              width="80%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-          </div>
-          <div class="skeleton__icon">
-            <p-skeleton
-              shape="circle"
-              size="3rem"
-              styleClass="mr-2">
-            </p-skeleton>
-          </div>
+    </div>
+    <div class="skeleton__card">
+      <div class="skeleton__titular">
+        <div style="flex: 1" class="skeleton__title">
+          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
         </div>
-      </div>
-      <div class="skeleton__card">
-        <div class="skeleton__titular">
-          <div style="flex: 1" class="skeleton__title">
-            <p-skeleton
-              width="30%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-            <p-skeleton
-              width="80%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-          </div>
-          <div class="skeleton__icon">
-            <p-skeleton
-              shape="circle"
-              size="3rem"
-              styleClass="mr-2">
-            </p-skeleton>
-          </div>
-        </div>
-      </div>
-      <div class="skeleton__card">
-        <div class="skeleton__titular">
-          <div style="flex: 1" class="skeleton__title">
-            <p-skeleton
-              width="30%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-            <p-skeleton
-              width="80%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-          </div>
-          <div class="skeleton__icon">
-            <p-skeleton
-              shape="circle"
-              size="3rem"
-              styleClass="mr-2">
-            </p-skeleton>
-          </div>
-        </div>
-      </div>
-      <div class="skeleton__card">
-        <div class="skeleton__titular">
-          <div style="flex: 1" class="skeleton__title">
-            <p-skeleton
-              width="30%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-            <p-skeleton
-              width="80%"
-              height="2rem"
-              styleClass="mb-2">
-            </p-skeleton>
-          </div>
-          <div class="skeleton__icon">
-            <p-skeleton
-              shape="circle"
-              size="3rem"
-              styleClass="mr-2">
-            </p-skeleton>
-          </div>
+        <div class="skeleton__icon">
+          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
         </div>
       </div>
     </div>
-  } @case('success') {
-    <div class="container-bg flex justify-between gap-4 w-full">
-      <p-toast 
-      position="top-center" 
-      key="tc">
-    </p-toast>
-  
+    <div class="skeleton__card">
+      <div class="skeleton__titular">
+        <div style="flex: 1" class="skeleton__title">
+          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="skeleton__icon">
+          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+    <div class="skeleton__card">
+      <div class="skeleton__titular">
+        <div style="flex: 1" class="skeleton__title">
+          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="skeleton__icon">
+          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+    <div class="skeleton__card">
+      <div class="skeleton__titular">
+        <div style="flex: 1" class="skeleton__title">
+          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="skeleton__icon">
+          <p-skeleton shape="circle" size="3rem" styleClass="mr-2">
+          </p-skeleton>
+        </div>
+      </div>
+    </div>
+    <div class="skeleton__card">
+      <div class="skeleton__titular">
+        <div style="flex: 1" class="skeleton__title">
+          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
+        </div>
+        <div class="skeleton__icon">
+          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <div class="data__left w-full lg:w-3/5">
-        <form action="#" class="wcform mx-auto" [formGroup]="formProduct">
-          
-       
-          <div class="wcform__container">
-        
-            <div class="section-head bg-white px-6 py-8 mb-10 rounded-lg  flex flex-row flex-wrap lg:flex-nowrap justify-between items-center gap-1">
-      
-              <div class="section-head__col">
-                  <span
-                    class="section-head__store font-semibold text-sm bg-indigo-100 text-indigo-700 inline-block rounded-md px-8 py-1">
-                    Woocommerce
-                  </span>
-                  <div class="section-head__label">
-                    <a class="wcform__a text-slate-700 font-semibold text-2xl" href="#">
-                      {{ wooProduct().data.name }}
-                    </a>
-                  </div>
-                  <div class="section-head__num-product mb-2">
-                    <span class="wcform__span text-sm block" href="#">#1345805537</span>
-                  </div>
-                </div>
-  
-                <div class="section-head__col">
-                  <img
-                    [src]="wooProduct().data.images[0].objectURL"
-                    class="section-head__img w-32 h-32 mix-blend-multiply"
-                    [alt]="wooProduct().data.images[0].file.name"/>
-                </div>
-             
+  <div class="skeleton__right w-full lg:w-3/5"></div>
+</div>
+} @case('success') {
+<div class="container-bg flex justify-between gap-10 mt-[-3em]">
+  <p-toast position="top-center" key="tc"> </p-toast>
 
-            </div>
-    
-            <div class="section-product bg-white px-6 py-8 mb-10 rounded-lg">
-              <h3 class="section-product__title text-2xl font-bold text-slate-500 pl-8 py-3">
-                Datos basicos del producto 📓
+  <form class="woo-form" [formGroup]="formProduct">
+    <div class="woo-form__wrapper flex flex-col lg:flex-row items-start justify-between gap-8">
+      <div class="woo-form__left w-full lg:w-3/5">
+        <div
+          class="woo-form__section-head bg-white px-6 py-8 rounded-lg flex flex-row flex-wrap lg:flex-nowrap justify-between items-center gap-1">
+          <div class="woo-form__head-col flex flex-col items-start justify-start gap-2">
+            <span
+              class="section-head__store font-semibold text-sm bg-indigo-100 text-indigo-700 inline-block rounded-md px-8 py-1">
+              Woocommerce
+            </span>
+
+            <a class="wcform__a text-slate-700 font-semibold text-2xl" href="#">
+              {{ wooProduct().data.name }}
+            </a>
+
+            <span class="wcform__span text-sm block" href="#">
+              #1345805537
+            </span>
+          </div>
+          <div class="woo-form__head-col">
+            <img [src]="wooProduct().data.images[0].objectURL" class="section-head__img w-32 h-32 mix-blend-multiply"
+              [alt]="wooProduct().data.images[0].file.name" />
+          </div>
+        </div>
+
+        <div class="woo-form__section-product px-6 py-8 rounded-lg">
+          <h3 class="section-product__title text-2xl font-bold text-slate-500 pl-2 py-3">
+            Datos basicos del producto 📓
+          </h3>
+          <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+          <div class="section-product__content">
+            <app-expansion-panel [label]="'Titulo'" [isEnabled]="verifyField('name', wooProduct().data.name)"
+              [propertyProduct]="wooProduct().data.name" (isOpened)="toggleAccordeon($event, 0)"
+              (updateProduct)="updateField('name')" (cancelUpdate)="cancelUpdate('name', wooProduct().data.name)">
+              <div class="expansion-panel__header">
+                <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+                  Titulo del producto
+                </span>
+
+                <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                  {{
+                  isOpen()[0]
+                  ? "Incluye producto, marca, modelo y caraterísticas principales"
+                  : wooProduct().data.name
+                  }}
+                </h3>
+              </div>
+              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+                <input class="form__input w-full" pInputText id="title" placeholder="Ingrese un titulo para el producto"
+                  formControlName="name" #inputName [maxlength]="60"
+                  [style]="{ 'font-size': '14px', 'border-style': 'dashed' }" />
+
+                @if (invalidField('name')) {
+                <small class="p-error">El titulo es obligatorio</small>
+                }
+              </div>
+            </app-expansion-panel>
+
+            <app-expansion-panel [isEnabled]="
+                verifyField('description', wooProduct().data.description)
+              " [label]="'Descripción del producto'" [propertyProduct]="
+                wooProduct().data.description | slice : 0 : 300
+              " (isOpened)="toggleAccordeon($event, 1)" (updateProduct)="updateField('description')">
+              <div class="expansion-panel__header">
+                <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+                  Descripción larga del producto
+                </span>
+
+                <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                  {{
+                  isOpen()[1]
+                  ? " Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?"
+                  : (wooProduct().data.description | slice : 0 : 400)
+                  }}
+                </h3>
+              </div>
+
+              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+                <textarea class="wcform__textarea max-h-[400px] w-full overflow-y-scroll text-sm" id="description"
+                  placeholder="Descripción larga del producto" formControlName="description" rows="14" cols="30"
+                  [maxlength]="50000" pInputTextarea [autoResize]="true" [class.is-invalid]="verifyField">
+                </textarea>
+              </div>
+            </app-expansion-panel>
+
+            <app-expansion-panel [isEnabled]="
+                verifyField(
+                  'short_description',
+                  wooProduct().data.short_description
+                )
+              " [label]="'Descripción corta del producto'" (isOpened)="toggleAccordeon($event, 2)" [propertyProduct]="
+                wooProduct().data.short_description | slice : 0 : 300
+              ">
+              <div class="expansion-panel__header">
+                <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+                  Descripción corta del producto
+                </span>
+
+                <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                  {{
+                  isOpen()[2]
+                  ? "Describe en unas cuantas palabras a tu producto, aparecera en la parte superior del producto"
+                  : (wooProduct().data.short_description | slice : 0 : 400)
+                  }}
+                </h3>
+              </div>
+
+              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+                <textarea class="wcform__textarea max-h-[400px] w-full overflow-hidden overflow-y-scroll text-sm"
+                  id="description" placeholder="Descripción larga del producto" formControlName="description" rows="14"
+                  cols="30" [maxlength]="50000" pInputTextarea [autoResize]="true" [class.is-invalid]="verifyField">
+                </textarea>
+              </div>
+            </app-expansion-panel>
+          </div>
+        </div>
+
+        @if (wooProduct().data.variations && wooProduct().data.variations.length
+        > 0 ) { }
+        <div class="woo-form__section-variation px-6 py-8 rounded-lg">
+          <h3 class="section-product__title text-2xl font-bold text-slate-500 pl-2 py-3">
+            Variantes
+          </h3>
+          <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+          <app-expansion-panel [isEnabled]="true" [label]="'Variantes del producto'"
+            [propertyProduct]="'Segun lo establecido'" (isOpened)="[toggleAccordeon($event, 3), getAttributes()]">
+            <div class="expansion-panel__header">
+              <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+                Variantes del producto
+              </span>
+
+              <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                {{
+                isOpen()[3]
+                ? "Indica el stock, sube las fotos y proporciona datos especificos de cada variante del producto"
+                : "Actualmente ofreces " +
+                wooProduct().data.variations.length +
+                " variantes del producto"
+                }}
               </h3>
+            </div>
+
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+             @if(wooProduct().data.variations.length > 0) { 
+
+              @switch (wooVariations().status) {
+
+                @case ('success') {
+
+                  <div class="variations__container product-card__var px-6 py-7 ">
+
+                    @for ( variation of wooVariations().data; track $index) {
+                      <div class="variation__wrapper">
+  
+                        <div class="variation-cover flex items-center">
+                          <div class="variation__toggle">
+                            <p-button icon="pi pi-angle-down" [rounded]="true" [text]="true" severity="danger " />
+                          </div>
+  
+                          <div class="variation-cover__row grid grid-cols-1 lg:grid-cols-2 w-full ml-4 border-t-[1px] border-slate-200 py-4">
+  
+                            <div class="variation-cover__col flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
     
-              <div class="section-product__content">
-                <app-expansion-panel
-                  [label]="'Titulo'"
-                  [isEnabled]="verifyField('name', wooProduct().data.name)"
-                  [propertyProduct]="wooProduct().data.name"
-                  [propertytoRequire]="'Incluye producto, marca, modelo y caraterísticas principales'"
-                  (updateProduct)="updateField('name')"
-                  (cancelUpdate)="cancelUpdate('name', wooProduct().data.name)">
-                  <div
-                    class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
-                    <!-- <label
-                      class="form__label text-sm font-semibold text-slate-500"
-                      htmlFor="title">
-                      *Titulo del producto:
-                    </label> -->
-                    <input
-                      class="form__input w-full"
-                      pInputText
-                      id="title"
-                      placeholder="Ingrese un titulo para el producto"
-                      formControlName="name"
-                      #inputName
-                      [maxlength]="60"
-                      [style]="{ 'font-size': '14px', 'border-style': 'dashed' }"/>
-    
-                    @if (invalidField('name')) {
-                    <small class="p-error">El titulo es obligatorio</small>
+                              <div class="variation-cover__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[120px] h-[120px] lg:w-[80px] lg:h-[80px]">
+                                <img [src]="variation.images![0].objectURL" [alt]="variation.images![0].file.name" class="mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100">
+                              </div>
+
+                              <div class="variation-cover__info flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
+                                <div class="variation-cover__label-name text-xs"> {{ variation.attributes[0].attribute }} </div>
+                                <div class="variation-cover__label-stock text-xs"> {{ variation.attributes[0].value }} </div>
+                                <div class="variation-cover__label-sku text-xs">sku: {{ variation.sku }} </div>
+                              </div>
+                       
+                            </div>
+  
+                            <div class="variation-cover__col flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
+                              <div class="variation-cover__col flex flex-col flex-wrap gap-y-2 lg:gap-y-1 5"></div>
+                              <div class="variation-cover__col flex flex-col flex-wrap gap-y-2 lg:gap-y-1 5"></div>
+                              <div class="variation-cover__col flex flex-col flex-wrap gap-y-2 lg:gap-y-1 5"></div>
+                            </div>
+  
+                          </div>
+                        </div>
+  
+                        <div class="variation-card__actions">
+  
+                        </div>
+  
+                      </div>
                     }
                   </div>
-                </app-expansion-panel>
-    
-                <app-expansion-panel
-                  [isEnabled]="verifyField('description', wooProduct().data.description)"
-                  [label]="'Descripción del producto'"
-                  [propertyProduct]="wooProduct().data.description | slice : 0 : 300"
-                  [propertytoRequire]="'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'"
-                  (updateProduct)="updateField('description')">
-                  <div
-                  class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
-                    <label class="form__label text-sm font-semibold text-slate-500" htmlFor="title">
-                      *Descripción del producto:
-                    </label>
-    
-                    <textarea
-                      class="wcform__textarea"
-                      id="description"
-                      placeholder="Descripción larga del producto"
-                      formControlName="description"
-                      rows="14"
-                      cols="30"
-                      [maxlength]="50000"
-                      pInputTextarea
-                      [autoResize]="true"
-                      [class.is-invalid]="verifyField">
-                    </textarea>
-                  </div>
-                </app-expansion-panel>
-    
-                <app-expansion-panel
-                  [isEnabled]="
-                    verifyField('short_description', wooProduct().data.short_description)
-                  "
-                  [label]="'Descripción corta del producto'"
-                  [propertyProduct]="wooProduct().data.short_description | slice : 0 : 300"
-                  [propertytoRequire]="
-                    'Describe este producto. ¿Qué lo hace único?, ¿Cuáles son sus características mas importantes?'
-                  "
+
+                }
+
+                @case('empty') {
+                  
+                }
                 
-                >
-                  <div
-                    class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
-                  >
-                    <label class="form__label" htmlFor="title">
-                      *descripcion corta del producto:
-                    </label>
-    
-                    <textarea
-                      class="wcform__textarea"
-                      id="description"
-                      placeholder="Descripción larga del producto"
-                      formControlName="description"
-                      rows="14"
-                      cols="30"
-                      [maxlength]="50000"
-                      pInputTextarea
-                      [autoResize]="true"
-                      [class.is-invalid]="verifyField"
-                    >
-                    </textarea>
-                  </div>
-                </app-expansion-panel>
+                @case('error') {
+
+                }
+              }
+
+              } 
+             
+              <button pButton class="expansion-panel__btn--variante bg-blue-100 text-blue-600 px-6 py-2 border-0" (click)="getVariations()">
+                <i class="p-button-icon pi pi-plus mr-1 text-sm font-semibold"></i>
+                <span class="text-sm font-semibold">Agregar nueva variante</span>
+              </button>
+              
+            </div>
+          </app-expansion-panel>
+        </div>
+
+        <div class="woo-form__section-inventory px-6 py-8 rounded-lg">
+          <h3 class="text-2xl font-bold text-slate-500 py-3">Inventario 🧑‍💻</h3>
+          <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+          <app-expansion-panel [isEnabled]="verifyField('sku', wooProduct().data.sku)" [label]="'Sku del producto'"
+            (isOpened)="toggleAccordeon($event, 4)" [propertyProduct]="wooProduct().data.sku | slice : 0 : 300">
+            <div class="expansion-panel__header">
+              <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+                Sku del producto
+              </span>
+
+              <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                {{
+                isOpen()[4]
+                ? "Indica un codigo para identificar tu producto"
+                : wooProduct().data.sku
+                }}
+              </h3>
+            </div>
+
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <input class="form-product__input w-full text-sm" pInputText id="sku" formControlName="sku" />
+            </div>
+          </app-expansion-panel>
+
+          <app-expansion-panel [isEnabled]="verifyField('stock', wooProduct().data.sku)" [label]="'Stock del producto'"
+            (isOpened)="toggleAccordeon($event, 5)" [propertyProduct]="wooProduct().data.stock_quantity">
+            <div class="expansion-panel__header">
+              <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+                Stock del producto
+              </span>
+
+              <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                {{
+                isOpen()[5]
+                ? "Indica el stock para el producto"
+                : wooProduct().data.stock_quantity + " unidades en stock"
+                }}
+              </h3>
+            </div>
+
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <input class="form-product__input w-full text-sm" pInputText id="sku" formControlName="stock_quantity" />
+            </div>
+          </app-expansion-panel>
+        </div>
+
+        <div class="woo-form__section-price px-6 py-8 rounded-lg">
+          <h3 class="text-2xl font-bold text-slate-700 py-3">
+            Precio del producto 🪙
+          </h3>
+          <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
+
+          <app-expansion-panel [isEnabled]="
+              verifyField('regular_price', wooProduct().data.regular_price)
+            " [label]="'Precio'" (isOpened)="toggleAccordeon($event, 6)"
+            [propertyProduct]="wooProduct().data.regular_price">
+            <div class="expansion-panel__header">
+              <span class="expansion-panel-header__label text-base font-semibold text-slate-700 mb-2 block">
+                Precio del producto:
+              </span>
+
+              @if(isOpen()[6]) {
+              <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+                Indica el precio para tu producto
+              </h3>
+
+              } @else {
+              <div class="flex flex-row gap-4 items-center mb-4">
+                <span
+                  class="text-sm font-semibold bg-amber-100 text-amber-600 rounded-md px-3 py-1 block max-w-40 w-full text-center">Precio
+                  regular:</span>
+                <span class="text-sm font-semibold text-slate-700">{{
+                  wooProduct().data.regular_price | currency
+                  }}</span>
+              </div>
+
+              <div class="flex flex-row gap-4 items-center">
+                <span
+                  class="text-sm font-semibold bg-red-100 text-red-600 rounded-md px-3 py-1 block max-w-40 w-full text-center">Precio
+                  en oferta:</span>
+                <span class="text-sm font-semibold text-slate-700">{{
+                  wooProduct().data.sale_price | currency
+                  }}</span>
+              </div>
+              }
+            </div>
+
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <div class="expansion-panel__item flex flex-row items-center gap-4 justify-between w-full mb-4">
+                <span class="text-sm font-semibold text-slate-700 w-full">Precio regular:</span>
+                <input class="form-product__input w-full text-sm" [style]="{ 'border-style': 'dashed' }" pInputText
+                  id="regular_price" formControlName="regular_price" />
+              </div>
+
+              <div class="expansion-panel__item flex flex-row items-center gap-4 justify-between w-full">
+                <span class="text-sm font-semibold text-slate-700 w-full">Precio de oferta:</span>
+                <input class="form-product__input w-full text-sm" [style]="{ 'border-style': 'dashed' }" pInputText
+                  id="sale_price" formControlName="sale_price" />
               </div>
             </div>
-    
-            <div class="section-inventory bg-white px-6 py-8 mb-10 rounded-lg">
-    
-              <h3 class="text-2xl font-bold text-slate-500 py-3">Inventario 🧑‍💻</h3>
-              <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
-      
-              <app-expansion-panel
-                [isEnabled]="verifyField('sku', wooProduct().data.sku)"
-                [label]="'Sku del producto'"
-                [propertyProduct]="wooProduct().data.sku | slice : 0 : 300"
-                [propertytoRequire]="'Indica un codigo para identificar tu producto'"
-              
-              >
-                <div
-                  class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
-                >
-                  <label class="form__label" htmlFor="title">
-                    *Código de identificación del producto:
-                  </label>
-      
-                  <input
-                    class="form-product__input w-full"
-                    pInputText
-                    id="sku"
-                    formControlName="sku"
-                  />
-                </div>
-              </app-expansion-panel>
-      
-              <app-expansion-panel
-                [isEnabled]="verifyField('stock', wooProduct().data.sku)"
-                [label]="'Stock del producto'"
-                [propertyProduct]="wooProduct().data.stock_quantity"
-                [propertytoRequire]="'Indica el stock en tu almacen'"
-               
-              >
-                <div
-                  class="expansion-panel__content flex flex-col gap-3 items-start justify-start"
-                >
-                  <label class="form__label" htmlFor="title">
-                    *Stock en inventario:
-                  </label>
-      
-                  <input
-                    class="form-product__input w-full"
-                    pInputText
-                    id="sku"
-                    formControlName="stock_quantity"
-                  />
-                </div>
-              </app-expansion-panel>
-            </div>
-    
-            <div class="section-price bg-white px-6 py-8 mb-10 rounded-lg">
-              <h3 class="text-2xl font-bold text-slate-700 py-3">
-                Precio del producto 🪙
-              </h3>
-              <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
-      
-            </div>
-    
-        
+          </app-expansion-panel>
+        </div>
+      </div>
+
+      <div class="woo-data__right w-full lg:w-2/5">
+        <div class="data another bg-white p-8 rounded-lg mb-8">
+          <app-upload-image [archivos]="wooProduct().data.images">
+          </app-upload-image>
+        </div>
+
+        <div class="data-category bg-white p-8 rounded-lg">
+          <h3 class="text-xl font-semibold text-slate-700 mb-3">
+            Categoria del producto
+          </h3>
+
+          <div class="data-selected max-w-[350px] w-full">
+            <div class="data-selected__combobox"></div>
+
+            <div class="data-selected__toggle"></div>
           </div>
-        </form>
-    
-      
-      </div>
 
-      <div class="data__right my-4 w-full lg:w-2/5">
-  
-        <app-upload-image [archivos]="wooProduct().data.images"></app-upload-image>
+          <p-multiSelect [options]="wooCategory().data" placeholder="Seleccione una categoria"
+            formControlName="categories" optionLabel="name" (onChange)="setCategories($event.value)"
+            [styleClass]="'max-w-[350px] w-full'">
+            <ng-template let-value pTemplate="selectedItems">
+              @for (categoria of selectedCategory(); track $index) {
+              @if(selectedCategory().length === 1) {
+              <span class="text-sm">{{ categoria.name }}</span>
+              } } @if(selectedCategory().length > 1) {
+              <span class="text-sm">{{ selectedCategory().length }} categorias seleccionadas</span>
+
+              } @if (selectedCategory().length === 0 || selectedCategory() ===
+              null) {
+              <span class="text-sm">Seleccione una opción</span>
+              }
+            </ng-template>
+
+            <ng-template let-category pTemplate="item">
+              <span class="text-sm">{{ category.name }}</span>
+            </ng-template>
+
+            <ng-template #name pTemplate="footer">
+              <div class="p-4 border-slate-200 border-t-2 cursor-default">
+                <p-button [styleClass]="showPanelAddCategory() ? 'hidden' : 'block'" (onClick)="toggleShowAddCategory()"
+                  [style]="{
+                    'font-size': '14px',
+                    padding: '6px 18px',
+                    'font-weight': '400'
+                  }" label="Agregar nueva categoria" />
+
+                <div [ngClass]="showPanelAddCategory() ? 'block' : 'hidden'" class="data-category__wrapper my-6">
+                  <input type="text" class="w-full text-sm mb-6" pInputText placeholder="indique la categoria" />
+
+                  <div class="data-category__btns flex items-center justify-between gap-4 my-4">
+                    <p-button [style]="{
+                        'font-size': '14px',
+                        padding: '6px 18px',
+                        'font-weight': '400'
+                      }" label="Agregar" />
+                    <p-button (onClick)="toggleShowAddCategory()" [style]="{
+                        'font-size': '14px',
+                        padding: '6px 18px',
+                        'font-weight': '400'
+                      }" label="Cancelar" />
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+        </div>
+
+        <div class="form-values max-w-80 overflow-hidden">
+          <div class="form__section form__data-print">
+            datos del formulario:
+            <pre>
+            {{ formProduct.value | json }}
+          </pre>
+          </div>
+
+          <div class="form__section form__data-valid">
+            <pre>
+            Estado del formulario: {{  formProduct.valid }}
+            <br>
+              Status: {{  formProduct.status }}
+            </pre>
+          </div>
+        </div>
       </div>
-   
     </div>
-  } @case('error') {
-
-  }
-}
-
-
+  </form>
+</div>
+} @case('error') { } }

@@ -17,7 +17,7 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { Inventory } from 'src/app/core/interface/product.interface';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import {  DialogModule } from 'primeng/dialog';
@@ -52,7 +52,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
   styleUrl: './massive-editor.component.scss',
 })
 export class MassiveEditorComponent {
-  data = input.required<ProductInventory[]>();
+  data = input.required<Inventory[]>();
   // @ViewChildren(OverlayPanel) panels!: QueryList<OverlayPanel>;
 
   selectedCell = { row: -1, col: -1 };
@@ -172,10 +172,10 @@ export class MassiveEditorComponent {
     });
   }
 
-  addRow(obj: ProductInventory) {
+  addRow(obj: Inventory) {
     return this.formBuilder.group({
       img: [
-        obj.img ? obj.img.url : '',
+        obj.images ? obj.images[0].objectURL : '',
         [
           Validators.required,
           Validators.minLength(3),

@@ -54,12 +54,12 @@ export default class MelyInventoryComponent {
 
   #stateMelyProducts = signal<StateProducts>({
     status: 'loading',
-    products: [],
+    data: [],
   });
 
   #stateMelyProductVar = signal<StateVariation>({
     status: 'loading',
-    variations: [],
+    data: [],
   });
 
   #stateMelyPagProducts = signal<PaginationParams>({
@@ -146,7 +146,7 @@ export default class MelyInventoryComponent {
 
         this.#stateMelyProducts.set({
           status: 'error',
-          products: []
+          data: []
         });
           this.#stateMelyPagProducts().totalRecords = 0;
         },
@@ -159,8 +159,10 @@ export default class MelyInventoryComponent {
      
         this.#stateMelyProducts.set({
           status: resp.length > 0 ? 'success' : 'empty',
-          products: resp
-        })
+          data: resp
+        });
+
+        console.log(resp)
       },
       error: (err) => {
       
@@ -171,7 +173,7 @@ export default class MelyInventoryComponent {
 
         this.#stateMelyProducts.set({
           status: 'error',
-          products: []
+          data: []
         });
 
         this.#stateMelyPagProducts().totalRecords = 0;
@@ -197,7 +199,7 @@ export default class MelyInventoryComponent {
         error: (msgErr) => {
           this.#stateMelyProducts.set({
             status: 'error',
-            products: []
+            data: []
           });
           this.#stateMelyPagProducts().totalRecords = 0;
         }
@@ -211,23 +213,19 @@ export default class MelyInventoryComponent {
   }
 
   getVariant(product: PositionVariante) {
-    this.melyProductsService.getProductByVariant(product.idProduct).subscribe({
-      next: (resp) => {
-        
-        this.#stateMelyProductVar.set({
-          status: resp ? 'success' : 'empty',
-          variations: resp
-        })
-      },
 
-      error: (err) => {
+    const melyProduct = this.melyProducts().data[product.index];
+
+    if (melyProduct?.id === product.idProduct) {
+        const variations = melyProduct.variations || [];
         this.#stateMelyProductVar.set({
-          status: 'error',
-          variations: []
-        })
-       
-      },
-    });
+            status: variations.length > 0 ? 'success' : 'empty',
+            data: variations
+        });
+    }
+
+    
+
   }
 
   changedPage(event: any) {

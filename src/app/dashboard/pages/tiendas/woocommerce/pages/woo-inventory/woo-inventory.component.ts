@@ -1,4 +1,4 @@
-import { ProductInventory } from './../../../../../../core/interface/product.interface';
+import { Inventory } from './../../../../../../core/interface/product.interface';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -114,12 +114,12 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
  wooMenuProduct = signal<MenuItem[]>([]);
   #stateWooProducts = signal<StateProducts>({
     status: 'loading',
-    products: [],
+    data: [],
   });
 
   #stateWooVariations = signal<StateVariation>({
     status: 'loading',
-    variations: [],
+    data: [],
   });
 
   #stateWooPagProducts = signal<PaginationParams>({
@@ -198,7 +198,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
         
             this.#stateWooProducts.set({
               status: resp.totalProducts > 0 ? 'success' : 'empty',
-              products: resp.products,
+              data: resp.products,
             });
 
             this.#stateWooPagProducts().totalRecords = resp.totalProducts;
@@ -208,7 +208,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
 
             this.#stateWooProducts.set({
               status: 'error',
-              products: [],
+              data: [],
             });
             this.#stateWooPagProducts().totalRecords = 0;
             return EMPTY;
@@ -239,7 +239,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
             next: (data) => {
               this.#stateWooProducts.set({
                 status: data.totalProducts > 0 ? 'success' : 'empty',
-                products: data.products,
+                data: data.products,
               });
               this.#stateWooPagProducts().totalRecords = data.totalProducts;
               console.log(data)
@@ -247,7 +247,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
             error: (err: string) => {
               this.#stateWooProducts.set({
                 status: 'error',
-                products: [],
+                data: [],
               });
               this.errorMessage = err;
 
@@ -263,17 +263,18 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
 
   getVarianProduct(product: PositionVariante) {
     this.#stateWooVariations().status = 'loading';
-    this.wooService.getProductVariation(product.idProduct).subscribe({
+   const id = parseInt(product.idProduct);
+    this.wooService.getProductVariations(id).subscribe({
       next: (resp) => {
         this.#stateWooVariations.set({
           status: resp.length > 0 ? 'success' : 'empty',
-          variations: resp,
+          data: resp,
         });
       },
       error: (err) => {
         this.#stateWooVariations.set({
           status: 'error',
-          variations: [],
+          data: [],
         });
         console.log(err);
       },
@@ -319,14 +320,14 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  pauseProduct(product: ProductInventory) {
+  pauseProduct(product: Inventory) {
     this.router.navigate(['/dashboard/woocommerce/edit-product/',  product.id])
   }
 
 
 //*
   //* ACCIONES POR LOTE
-  pauseProductByBatch(products: ProductInventory[]) {
+  pauseProductByBatch(products: Inventory[]) {
     let items: UpdateStatusProduct[] = [];
 
     products.forEach((item, i) => {
@@ -363,7 +364,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
             console.error(err);
             this.#stateWooProducts.set({
               status: 'error',
-              products: [],
+              data: [],
             });
             this.messageService.add({
               severity: 'error',
@@ -377,7 +378,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  activateProductByBatch(products: ProductInventory[]) {
+  activateProductByBatch(products: Inventory[]) {
     let items: UpdateStatusProduct[] = [];
 
     products.forEach((item, i) => {
@@ -414,7 +415,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
             console.error(err);
             this.#stateWooProducts.set({
               status: 'error',
-              products: [],
+              data: [],
             });
             this.messageService.add({
               severity: 'error',
@@ -428,7 +429,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteByBatch(products: ProductInventory[]) {
+  deleteByBatch(products: Inventory[]) {
     let items: number[] = [];
 
     products.forEach((item, i) => {
@@ -461,7 +462,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
             console.error(err);
             this.#stateWooProducts.set({
               status: 'error',
-              products: [],
+              data: [],
             });
             this.messageService.add({
               severity: 'error',
@@ -475,7 +476,7 @@ export default class WooInventoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  gotoMassiveEditor(products: ProductInventory[]) {
+  gotoMassiveEditor(products: Inventory[]) {
     // this.wooService.setMassiveProducts(products);
     this.wooService.saveData(products);
     this.router.navigate(['/dashboard/woocommerce/editor-masivo']);

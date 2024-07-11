@@ -4,7 +4,7 @@
       <div [style]="{ 'background-color': 'var(--surface-card)' }"
         class="inventory__toolbar-row container p-3 flex items-center justify-between flex-wrap gap-2 mt-8">
         <div class="inventory__toolbar-col flex item-center gap-2">
-          <p-checkbox [disabled]="!stateDataProducts().products.length" [binary]="true" inputId="binary"
+          <p-checkbox [disabled]="!stateDataProducts().data.length" [binary]="true" inputId="binary"
             [(ngModel)]="isSelectAllProduct" (onChange)="toggleSelectAllProducts()">
           </p-checkbox>
 
@@ -88,12 +88,12 @@
     @switch (stateDataProducts().status) { 
       @case ('success') { 
         
-      @for (product of stateDataProducts().products; track i; let i = $index) {
+      @for (product of stateDataProducts().data; track i; let i = $index) {
 
     <app-card-product [product]="product" [isSelected]="isSelectedEveryProduct[i]"
       (onChangeValue)="toggleEveryProduct($event, i)"
       (emitID)="toggleAccordeon(i, product.id)"
-       [getVariationData]="stateVariations()"
+       [variationData]="stateVariations()"
        (pauseProduct)="pauseProduct.emit($event)"
        (editProduct)="editProduct.emit($event)"
        (deleteProduct)="deleteProduct.emit($event)"

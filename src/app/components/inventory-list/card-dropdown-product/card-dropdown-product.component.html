@@ -31,7 +31,7 @@
     </div>
   } @case('success') {
     <div class="product-card__var px-6 py-7 lg:ml-[13em]" >
-  @for (variante of variationData().variations; track $index) {
+  @for (variante of variationData().data; track $index) {
     <div class="product-card__var-row grid grid-cols-1 lg:grid-cols-2 w-full ml-4 border-t-[1px] border-slate-200 py-4"  [ngStyle]="{
       'background-color':
         variante.status === 'inactive'
@@ -41,20 +41,20 @@
     
      <div class="product-card__product flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
        <div class="product-card__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[120px] h-[120px] lg:w-[80px] lg:h-[80px]">
-         @if (variante.imgProduct) {
+         @if (variante.images) {
          <img [ngStyle]="{ opacity: variante!.status === 'inactive' && '.7' }"
-           [src]="variante.imgProduct!.url" [alt]="variante!.imgProduct.alt || ''"
+           [src]="variante.images[0].objectURL" [alt]="variante!.images[0].file.name || ''"
            class="product-card__img product-card__img-simple-img mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100" />
          }
        </div>
 
        <div class="product-card__col flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
          <div class="product-card__info-sku text-xs">
-          Variante: {{variante.title}}
+          {{variante.attributes[0].attribute}}
          </div>
 
          <div class="product-card__info-sku text-xs">
-           Sku: {{variante.sku}}
+           {{variante.attributes[0].value}}
           </div>
 
           <div class="product-card__info-sku text-xs">

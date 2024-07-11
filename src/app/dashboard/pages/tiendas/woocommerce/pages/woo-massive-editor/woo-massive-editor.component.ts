@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, SimpleChanges, inject } from '@angular/core';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { BreadcrumbItem } from 'src/app/core/interface/breadcrumb.interface';
-import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { Inventory } from 'src/app/core/interface/product.interface';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { MassiveEditorComponent } from '@components/inventory-list/massive-editor/massive-editor.component';
@@ -24,7 +24,7 @@ import { WooProductService } from '@woocommerce/services/woo-product-service.ser
 })
 export default class WooMassiveEditionComponent { 
 
-  products: ProductInventory[] = [];
+  products: Inventory[] = [];
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
   wooProductService = inject(WooProductService);

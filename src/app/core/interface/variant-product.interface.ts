@@ -1,17 +1,19 @@
+import { FileItem } from "../models/file-item.models";
+
 export interface VariantProduct {
     id: any;
-    title: string;
     sku: string;
     stock: number;
     regular_price: number;
     sale_price: number;
-    imgProduct?: ImageVar;
+    images: FileItem[] | undefined;
     status: 'active' | 'inactive';
+    attributes: AttributesVariants[]
     total_sales?: number;
 }
 
-interface ImageVar {
-    id?: any;
-    url: string;
-    alt?: string;
+export interface AttributesVariants {
+    id: any;
+    attribute: string;
+    value: string
 }

@@ -282,8 +282,17 @@
             <div
                 class="card-order__product card-order__product-simple flex flex-col lg:flex-row items-center gap-3 w-full lg:w-2/4">
 
-                @if(order().products[0].image) {
-                <div
+        
+
+                @if(order().variation && order().variation?.image){
+                    <div
+                    class="card-order__picture card-order__picture-simple-item mr-3 w-32 h-32 lg:w-16 lg:h-16 rounded relative">
+                    <img [src]="order().variation?.image?.src"
+                        class="card-order__img card-order__img-simple-item object-contain w-full h-full mix-blend-multiply"
+                        [alt]="order().variation?.image?.alt" />
+                </div>
+                } @else if(order().products[0].image) {
+                    <div
                     class="card-order__picture card-order__picture-simple-item mr-3 w-32 h-32 lg:w-16 lg:h-16 rounded relative">
                     <img [src]="order().products[0].image!.src"
                         class="card-order__img card-order__img-simple-item object-contain w-full h-full mix-blend-multiply"
@@ -297,7 +306,21 @@
                     <span class="card-order__name text-sm">
                         {{ order().products[0].product | slice : 0 : 60 }}
                     </span>
+
+                    @if(order().variation){
+                        <p class="text-sm font-semibold">{{order().variation?.attribute}} <span class="font-normal"> {{ order().variation?.value }}</span></p>
+                    }
+
                 </div>
+
+                <!-- @if(order().variation) {
+                    <div class="card-order__variation">
+                        <span class="text-sm font-semibold">Variante:</span>
+                        <span class="card-order__name text-sm">
+                            {{ order().variation?.attribute }}
+                        </span>
+                 </div>
+                } -->
 
             </div>
 

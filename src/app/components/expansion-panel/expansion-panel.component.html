@@ -1,45 +1,58 @@
-<div class="expansion-panel shadow shadow-blue-200/30 border border-slate-200">
+<div class="expansion-panel shadow shadow-blue-200/30 border border-slate-200 mb-8 rounded-lg bg-white">
   <div
     #titlePanel
-    class="expansion-panel-header pb-3"
+    class="expansion-panel-header pb-3 cursor-pointer"
+    [ngClass]="{'border-b-[1px] border-slate-200 mb-4': toggleAccordeon}"
+    (click)="handlerAccordeon()">
     
-    (click)="isOpened = !isOpened"
-  >
-    <div class="expansion-panel-header__title">
-      <span
-        class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block"
-        >{{ label() }}</span
-      >
-      <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
-        {{ isOpened ? propertytoRequire() : propertyProduct() }}
-      </h3>
+    <div class="expansion-panel-wrapper flex items-center justify-between flex-nowrap gap-4 px-8 pt-8 pb-2">
+
+      <!-- <div class="expansion-panel-header__title">
+        <span
+          class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
+          {{ label() }}
+        </span>
+        <h3 class="expansion-panel-header text-sm font-normal text-slate-700">
+          {{ isOpened ? propertytoRequire() : propertyProduct() }}
+        </h3>
+      </div> -->
+  
+      <ng-content select=".expansion-panel__header"></ng-content>
+      
+
+      <div class="expansion-panel-header__icon flex flex-col flex-nowrap items-center justify-end">
+        <i (click)="handlerAccordeon()" [class.animateArrow]="toggleAccordeon ? 'opened' : ''" class="expansion-panel-header__i material-icons text-slate-500">expand_more</i>
+      </div>
     </div>
 
-    <div class="expansion-panel-header__icon">
-      <i (click)="isOpened" [class.animateArrow]="isOpened ? 'opened' : ''" class="expansion-panel-header__i material-icons">expand_more</i>
-    </div>
   </div>
 
-  <div class="expansion-panel__body" [@isActivo]="isOpened">
-    <ng-content select=".expansion-panel__content"></ng-content>
+  <div class="expansion-panel__body" [@isActivo]="toggleAccordeon">
 
-    <div
-      class="expansion-panel__footer mt-4 flex items-center justify-end gap-4"
-    >
-      <p-button
-        [disabled]="isEnabled()"
-        (onClick)="updateProduct.emit(propertyProduct())"
-        [style]="{ 'font-size': '14px', padding: '6px 12px' }"
-        label="Actualizar"
-        severity="primary"
-      ></p-button>
-      <p-button
-      [disabled]="isEnabled()"
-      (onClick)="cancelUpdate.emit(propertyProduct())"
-        [style]="{ 'font-size': '14px', padding: '6px 12px' }"
-        label="Cancelar"
-        severity="danger"
-      ></p-button>
+    <div class="expansin-panel__wrapper p-8">
+      <ng-content select=".expansion-panel__content"></ng-content>
     </div>
+  
+      <div class="expansion-panel__wrapper mb-4">
+        <!-- <div
+          class="expansion-panel__footer flex items-center justify-end gap-4 px-8 pb-4 "
+        >
+          <p-button
+            [disabled]="isEnabled()"
+            (onClick)="updateProduct.emit(propertyProduct())"
+            [style]="{ 'font-size': '14px', padding: '6px 12px' }"
+            label="Actualizar"
+            severity="primary">
+          </p-button>
+          <p-button
+          [disabled]="isEnabled()"
+          (onClick)="cancelUpdate.emit(propertyProduct())"
+            [style]="{ 'font-size': '14px', padding: '6px 12px' }"
+            label="Cancelar"
+            severity="danger">
+          </p-button>
+        </div> -->
+      </div>
+
   </div>
 </div>

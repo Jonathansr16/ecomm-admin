@@ -270,9 +270,11 @@ export default class MelyOrdersComponent {
           this.#stateMelyOrders.set({
             status: resp.orders && resp.products ? 'success' : 'empty',
             orders: resp.orders.map((order) =>
-              this.melyOrdersService.transformOrder(order)
+              this.melyOrdersService.transformOrder(order),
             ),
           });
+
+           console.log(this.#stateMelyOrders().orders)
         },
 
         error: (msgErr) => {

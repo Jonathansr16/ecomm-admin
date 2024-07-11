@@ -1,4 +1,4 @@
-import { ProductInventory } from 'src/app/core/interface/product.interface';
+import { Inventory } from 'src/app/core/interface/product.interface';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -58,16 +58,16 @@ export class InventoryListComponent {
 
 
   //* --- ACCIONES INDIVIDUALES --- *//
-  pauseProduct  = output<ProductInventory>();
-  editProduct   = output<ProductInventory>();
-  deleteProduct = output<ProductInventory>();
+  pauseProduct  = output<Inventory>();
+  editProduct   = output<Inventory>();
+  deleteProduct = output<Inventory>();
 //* --- *//
 
   //* --- ACCIONES POR LOTE --- */
-  pauseProductsByBatch      = output<ProductInventory[]>();
-  reactivateProductsByBatch = output<ProductInventory[]>();
-  modifyProductsByBatch     = output<ProductInventory[]>();
-  deleteProductsByBatch     = output<ProductInventory[]>();
+  pauseProductsByBatch      = output<Inventory[]>();
+  reactivateProductsByBatch = output<Inventory[]>();
+  modifyProductsByBatch     = output<Inventory[]>();
+  deleteProductsByBatch     = output<Inventory[]>();
 //* ---- */
 
 
@@ -137,7 +137,7 @@ export class InventoryListComponent {
   //Selecciona y Deselecciona cada checkbox del arreglo
   isSelectedEveryProduct: boolean[] = [];
   //data seleccionada
-  selectedProduct: ProductInventory[] = [];
+  selectedProduct: Inventory[] = [];
   //selecciona y deselecciona todos los checkbox del arreglo
   isSelectAllProduct = false;
 
@@ -165,8 +165,8 @@ export class InventoryListComponent {
     if (this.isSelectAllProduct) {
       // Si se selecciona la opción masiva, seleccionar todos los productos
       // this.selectedProduct = this.products().slice();
-      this.selectedProduct = this.stateDataProducts().products.slice()
-      this.isSelectedEveryProduct = this.stateDataProducts().products.map(() => true);
+      this.selectedProduct = this.stateDataProducts().data.slice()
+      this.isSelectedEveryProduct = this.stateDataProducts().data.map(() => true);
 
       this.#isBtnActive().massiveModification = true;
       this.#isBtnActive().pause = this.selectedProduct.every(value => value.status !== 'inactive');
@@ -181,11 +181,11 @@ export class InventoryListComponent {
       eliminate: false,
       massiveModification: false,
     })
-      this.isSelectedEveryProduct = this.stateDataProducts().products.map(() => false);
+      this.isSelectedEveryProduct = this.stateDataProducts().data.map(() => false);
     }
   }
 
-  toggleEveryProduct(product: ProductInventory, i: number): void {
+  toggleEveryProduct(product: Inventory, i: number): void {
 
     const index = this.selectedProduct.findIndex(
       (selected) => selected.id === product.id
@@ -203,7 +203,7 @@ export class InventoryListComponent {
     }
 
     // Verificamos si todos los productos están seleccionados
-    const allSelected = this.stateDataProducts().products.every((prod) =>
+    const allSelected = this.stateDataProducts().data.every((prod) =>
       this.selectedProduct.some((selected) => selected.id === prod.id)
     );
 

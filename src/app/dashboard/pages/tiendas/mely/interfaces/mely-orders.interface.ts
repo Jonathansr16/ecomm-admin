@@ -94,7 +94,7 @@ export interface MelyItem {
     id:                   string;
     title:                string;
     category_id:          string;
-    variation_id:         null;
+    variation_id:         number;
     seller_custom_field:  null;
     global_price:         null;
     net_weight:           null;
