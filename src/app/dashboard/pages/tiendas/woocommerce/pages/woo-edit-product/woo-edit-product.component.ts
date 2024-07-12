@@ -35,6 +35,8 @@ import { RouterLink } from '@angular/router';
 import { StateWooCategory } from '@woocommerce/interface/woo-state-category';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { InputSwitchModule } from 'primeng/inputswitch';
+
 import {
   IdCategoryByProduct,
   WooCategoryResult,
@@ -44,6 +46,7 @@ import { combineLatestWith, tap } from 'rxjs';
 import { StateWooProduct } from '@woocommerce/interface/woo-state-products.interface';
 import { StateWooProductVariations } from '@woocommerce/interface/woo-state-product-variation.interface';
 import { StateWooProductAttibutes } from '@woocommerce/interface/woo-state-product-attributes.interface';
+import { ExpansionPanelSkeletonComponent } from '@components/expansion-panel/expansion-panel-skeleton/expansion-panel-skeleton.component';
 
 @Component({
   selector: 'app-woo-edit-product',
@@ -67,15 +70,18 @@ import { StateWooProductAttibutes } from '@woocommerce/interface/woo-state-produ
     CheckboxModule,
     MultiSelectModule,
     DropdownModule,
+    InputSwitchModule,
     UploadImageComponent,
+    ExpansionPanelSkeletonComponent
   ],
   templateUrl: './woo-edit-product.component.html',
   styleUrls: ['./woo-edit-product.component.scss'],
   providers: [MessageService],
 })
 export default class WooEditProductComponent {
-  // @ts-ignore
-  formProduct: FormGroup;
+
+  formProduct!: FormGroup;
+  formVariants!: FormGroup;
   // showPanelAddCategory = false;
   breadcrumHome = signal<BreadcrumbItem>({
     icon: 'list_alt',
@@ -125,14 +131,18 @@ export default class WooEditProductComponent {
   });
 
   selectedCategory = signal<WooCategoryResult[]>([]);
-  itHasVarians = signal<boolean>(false);
+  showAttr = signal<boolean>(false);
 
-  wooProduct =    computed( () => this.#stateWooProduct() );
-  wooCategory =   computed( () => this.#stateWooCategory() );
-  wooAttr =       computed( () => this.#stateWooAttr() );
-  wooVariations = computed( () => this.#stateWooVariations() );
+  wooProduct = computed(() => this.#stateWooProduct());
+  wooCategory = computed(() => this.#stateWooCategory());
+  wooAttr = computed(() => this.#stateWooAttr());
+  wooVariations = computed(() => this.#stateWooVariations());
 
-  isOpen = signal<boolean[]>( [] );
+  isOpen = signal<boolean[]>([]);
+  isOpenVariant = signal<boolean[]>([]);
+
+
+
   num = 0;
 
   createFormUpdateProduct(): void {
@@ -168,6 +178,18 @@ export default class WooEditProductComponent {
     );
   }
 
+  createFormVariant(): void {
+    this.formVariants = this.formBuilder.group({
+
+      name: ['', [Validators.required, this.validatorService.notWhitesSpaceValid]],
+      regular_price: ['', [Validators.required]],
+      sale_price: ['', []],
+      stock_quantity: ['', []],
+      image: [''],
+      description: ['', []],
+    })
+  }
+
   private readonly wooProductService = inject(WooProductService);
   private readonly validatorService = inject(ValidatorsService);
   private readonly formBuilder = inject(FormBuilder);
@@ -178,6 +200,7 @@ export default class WooEditProductComponent {
 
   constructor() {
     this.createFormUpdateProduct();
+    this.createFormVariant();
   }
 
   ngOnInit(): void {
@@ -200,39 +223,36 @@ export default class WooEditProductComponent {
       });
   }
 
-
-
   getVariations() {
 
-      this.wooProductService.getProductVariation(this.productId).subscribe({
-        next: (resp) => {
-          this.#stateWooVariations.set({
-            status: resp && resp.length > 0 ? 'success' : 'empty',
-            data: resp
-          });
+    this.wooProductService.getProductVariation(this.productId).subscribe({
+      next: (resp) => {
+        this.#stateWooVariations.set({
+          status: resp && resp.length > 0 ? 'success' : 'empty',
+          data: resp
+        });
 
-          console.log(resp)
-        },
-        error: (err) => {
-          this.#stateWooVariations.set({
-            status: 'error',
-            data: []
-          });
-        }
-      })
-    
-    }
+     
+      },
+      error: (err) => {
+        this.#stateWooVariations.set({
+          status: 'error',
+          data: []
+        });
+      }
+    });
 
+  }
 
   getAttributes() {
-    this.wooProductService.getAttributes().subscribe( {
+    this.wooProductService.getAttributes().subscribe({
       next: (resp) => {
         this.#stateWooAttr.set({
           status: resp && resp.length > 0 ? 'success' : 'empty',
           data: resp
         });
 
-        console.log(resp)
+        
       },
       error: (err) => {
         this.#stateWooAttr.set({
@@ -241,6 +261,40 @@ export default class WooEditProductComponent {
         });
       }
     })
+  }
+
+
+  handlerVariation(): void {
+
+    if(this.wooProduct().data.variations && this.wooProduct().data.variations.length > 0) {
+
+   
+     
+      if(this.wooVariations().data && this.wooVariations().data.length > 0) {
+        console.log('ya se tiene las variaciones')
+        return;
+      } else {
+        console.log('Obteniendo las variaciones...')
+
+        this.getVariations();
+      }
+
+    } else {
+      if(this.wooAttr().data && this.wooAttr().data.length > 0) {
+        console.log('ya se tiene los atributos')
+
+        return;
+      } else {
+        console.log('Obteniendo los atributos...')
+
+        this.getAttributes();
+      }
+    }
+
+  }
+
+  toggleShowAttr() {
+    this.showAttr.update( value => !value)
   }
 
   private setProductData(resp: WooProducto) {

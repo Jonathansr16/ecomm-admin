@@ -17,7 +17,7 @@
 </div>
 
 @switch (wooProduct().status) { @case ('loading') {
-<div class="skeleton container-bg flex justify-between gap-4">
+<div class="skeleton container-bg flex flex-col lg:flex-row justify-between gap-4 mt-[-2em]">
   <div class="skeleton__left w-full lg:w-3/5">
     <div class="skeleton-head bg-white px-6 py-8 mb-10 flex flex-row justify-between items-center gap-4 rounded-lg">
       <div style="flex: 1" class="skeleton__detail">
@@ -29,65 +29,26 @@
         <p-skeleton shape="circle" size="6rem" styleClass="mr-2"></p-skeleton>
       </div>
     </div>
-    <div class="skeleton__card">
-      <div class="skeleton__titular">
-        <div style="flex: 1" class="skeleton__title">
-          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-        </div>
-        <div class="skeleton__icon">
-          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-        </div>
-      </div>
-    </div>
-    <div class="skeleton__card">
-      <div class="skeleton__titular">
-        <div style="flex: 1" class="skeleton__title">
-          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-        </div>
-        <div class="skeleton__icon">
-          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-        </div>
-      </div>
-    </div>
-    <div class="skeleton__card">
-      <div class="skeleton__titular">
-        <div style="flex: 1" class="skeleton__title">
-          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-        </div>
-        <div class="skeleton__icon">
-          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-        </div>
-      </div>
-    </div>
-    <div class="skeleton__card">
-      <div class="skeleton__titular">
-        <div style="flex: 1" class="skeleton__title">
-          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-        </div>
-        <div class="skeleton__icon">
-          <p-skeleton shape="circle" size="3rem" styleClass="mr-2">
-          </p-skeleton>
-        </div>
-      </div>
-    </div>
-    <div class="skeleton__card">
-      <div class="skeleton__titular">
-        <div style="flex: 1" class="skeleton__title">
-          <p-skeleton width="30%" height="2rem" styleClass="mb-2"></p-skeleton>
-          <p-skeleton width="80%" height="2rem" styleClass="mb-2"></p-skeleton>
-        </div>
-        <div class="skeleton__icon">
-          <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-        </div>
-      </div>
-    </div>
+
+    <app-expansion-panel-skeleton></app-expansion-panel-skeleton>
   </div>
 
-  <div class="skeleton__right w-full lg:w-3/5"></div>
+  <div class="skeleton__right w-full lg:w-2/5">
+    <div class="skeleton-photo bg-white p-8">
+      <p-skeleton height="2rem" styleClass="mb-2" />
+
+      <p-skeleton height="8rem" styleClass="mb-2" />
+
+      <div class="skeleton-gallery flex flex-row gap-4">
+        <p-skeleton width="6rem" height="6rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton width="6rem" height="6rem" styleClass="mb-2" borderRadius="16px" />
+        <p-skeleton width="6rem" height="6rem" styleClass="mb-2" borderRadius="16px" />
+
+
+      </div>
+
+    </div>
+  </div>
 </div>
 } @case('success') {
 <div class="container-bg flex justify-between gap-10 mt-[-3em]">
@@ -141,7 +102,7 @@
                   }}
                 </h3>
               </div>
-              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start py-4 px-8">
                 <input class="form__input w-full" pInputText id="title" placeholder="Ingrese un titulo para el producto"
                   formControlName="name" #inputName [maxlength]="60"
                   [style]="{ 'font-size': '14px', 'border-style': 'dashed' }" />
@@ -171,7 +132,7 @@
                 </h3>
               </div>
 
-              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start px-8 py-4">
                 <textarea class="wcform__textarea max-h-[400px] w-full overflow-y-scroll text-sm" id="description"
                   placeholder="Descripción larga del producto" formControlName="description" rows="14" cols="30"
                   [maxlength]="50000" pInputTextarea [autoResize]="true" [class.is-invalid]="verifyField">
@@ -201,7 +162,7 @@
                 </h3>
               </div>
 
-              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+              <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start py-4 px-8">
                 <textarea class="wcform__textarea max-h-[400px] w-full overflow-hidden overflow-y-scroll text-sm"
                   id="description" placeholder="Descripción larga del producto" formControlName="description" rows="14"
                   cols="30" [maxlength]="50000" pInputTextarea [autoResize]="true" [class.is-invalid]="verifyField">
@@ -220,7 +181,7 @@
           <span class="divider block w-full h-[1px] bg-slate-300 mb-4"></span>
 
           <app-expansion-panel [isEnabled]="true" [label]="'Variantes del producto'"
-            [propertyProduct]="'Segun lo establecido'" (isOpened)="[toggleAccordeon($event, 3), getAttributes()]">
+            [propertyProduct]="'Segun lo establecido'" (isOpened)="[toggleAccordeon($event, 3), handlerVariation()]">
             <div class="expansion-panel__header">
               <span class="expansion-panel-header__label text-base font-semibold text-slate-500 mb-2 block">
                 Variantes del producto
@@ -238,50 +199,221 @@
             </div>
 
             <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
-             @if(wooProduct().data.variations.length > 0) { 
+            
+              @if(wooProduct().data.variations.length > 0) { 
 
               @switch (wooVariations().status) {
 
+                @case('loading') {
+
+                  @for (_ of [1,2]; track _) {
+
+                    <div class="skeleton-variation w-full flex items-center justify-between gap-4 mb-4 px-8 py-4">
+                   
+                      <div class="skeleton-info flex items-center">
+  
+                        <div class="skeleton-btn">
+                          <p-skeleton size="2rem" styleClass="mr-2"/>
+                        </div>
+  
+                        <div class="skeleton-product flex items-center ">
+  
+                          <div class="skeleton-product__col">
+                            <p-skeleton size="4rem" styleClass="mr-2" />
+                
+                          </div>
+                          <div class="skeleton-product__col">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                        </div>
+  
+                      </div>
+                      <div class="skeleton-extra flex items-center flex-col lg:flex-row justify-between gap-4">
+                       
+                        <div class="skeleton-extra__col flex flex-col items-center flex-wrap gap-y-2 lg:gap-y-1">
+                          
+                          <div class="skeleton-extra__col-1">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                          <div class="skeleton-extra__col-2">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                          <div class="skeleton-extra__col-3">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                        </div>
+  
+                        <div class="skeleton-extra__col flex flex-col items-center flex-wrap gap-y-2 lg:gap-y-1">
+                          <div class="skeleton-extra__col-1">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                          <div class="skeleton-extra__col-2">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                          <div class="skeleton-extra__col-3">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                        </div>
+  
+                        <div class="skeleton-extra__col flex-col items-center flex-wrap gap-y-2 lg:gap-y-1">
+                          <div class="skeleton-extra__col-1">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+  
+                          <div class="skeleton-extra__col-2">
+                            <p-skeleton width="6rem" styleClass="mb-2" />
+                          </div>
+                        </div>
+
+                        <div class="skeleton-extra__col">
+                          <p-skeleton size="2rem" styleClass="mb-2" />
+
+                        </div>
+
+                      </div>
+                    </div>
+                  }
+
+                }
+
                 @case ('success') {
 
-                  <div class="variations__container product-card__var px-6 py-7 ">
+                  <div class="variations__container product-card__var w-full">
 
-                    @for ( variation of wooVariations().data; track $index) {
+                    @for ( variation of wooVariations().data; let i = $index; track i; let isFirst = $first;) {
                       <div class="variation__wrapper">
   
-                        <div class="variation-cover flex items-center">
-                          <div class="variation__toggle">
-                            <p-button icon="pi pi-angle-down" [rounded]="true" [text]="true" severity="danger " />
+                        <div class="variation-cover flex items-center justify-between gap-4 border-b-[1px] border-slate-200 px-8 py-4">
+                          <div class="variaton-col flex flex-row items-center gap-4">
+
+                            <div class="variation__btn-toggle">
+                              <p-button (onClick)="isOpenVariant()[i] = !isOpenVariant()[i]" icon="pi pi-angle-down" [rounded]="true" [text]="true" />
+                            </div>
+
+                            @if (isOpenVariant()[i]) {
+                              <div class="variation__info flex flex-col items-start">
+                                <span class="text-sm font-medium">
+                                  #{{variation.id}}
+                                </span>
+                                <span class="text-sm">
+                                  {{variation.attributes[0].value}}
+                                </span>
+                              </div>
+                            }
+                           
                           </div>
   
-                          <div class="variation-cover__row grid grid-cols-1 lg:grid-cols-2 w-full ml-4 border-t-[1px] border-slate-200 py-4">
-  
-                            <div class="variation-cover__col flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
+                          @if (!isOpenVariant()[i]) {
+      
+                            <div class="variation-cover__row grid grid-cols-1 lg:grid-cols-2 items-center lg:items-start justify-start lg:justify-between gap-4 w-full ml-4 py-4 ">
     
-                              <div class="variation-cover__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[120px] h-[120px] lg:w-[80px] lg:h-[80px]">
+                              <div class="variation-cover__col flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
+      
+                                <div class="variation-cover__picture my-6 mx-auto lg:mx-0 lg:my-0 w-[120px] h-[120px] lg:w-[80px] lg:h-[80px]">
+                                  <img [src]="variation.images![0].objectURL" [alt]="variation.images![0].file.name" class="mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100">
+                                </div>
+  
+                                <div class="variation-cover__info flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
+                                  <div class="variation-cover__label-name text-xs"> {{ variation.attributes[0].attribute }} </div>
+                                  <div class="variation-cover__label-stock text-xs font-medium"> {{ variation.attributes[0].value }} </div>
+                                  @if(isFirst) {
+                                    
+                                    <div class="variation-cover__label-cover text-xs bg-blue-100 text-blue-600 px-4 py-1 text-center rounded-sm font-medium">Variante principal </div>
+                                  }
+                                </div>
+                         
+                              </div>
+    
+                              <div class="variation-cover__col flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
+                                <div class="variation-cover__col flex flex-col items-center  flex-wrap gap-y-2 lg:gap-y-1">
+                                  <div class="flex items-center gap-2 flex-row flex-nowrap" [style]="{'font-size': '0.875rem'}">
+                                    <span class="variation-cover__label text-sm font-semibold">
+                                      {{variation.stock_quantity}}
+                                    </span>
+  
+                                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" />
+                                   </div>
+  
+                                   <span class="variation-cover__label text-xs">
+                                    unidades
+                                   </span>
+                                </div>
+                                <div class="variation-cover__col flex flex-col items-center  flex-wrap gap-y-2 lg:gap-y-1">
+                             
+                                  <span class="variation-cover__text text-xs font-semibold">
+                                    {{variation.sku }}
+                                  </span>
+                                  <span class="variation-cover__label text-xs">
+                                    Sku
+                                  </span>
+                                </div>
+                                <div class="variation-cover__col flex flex-col  items-center flex-nowrap gap-y-2 lg:gap-y-1">
+                                  <span class="variation-cover__label text-xs">
+                                   {{variation.status === 'publish' && variation.stock_status === 'instock' ? 'Activo' : 'Inactivo'}}
+                                  </span>
+                                  <p-inputSwitch [name]="variation.attributes[0].value" />
+                                </div>
+                           
+                              </div>
+    
+                            </div>
+                          }
+
+                          <div class="variation-col variation__btn-delete">
+                            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" />
+                          </div>
+                        </div>
+                     
+                        @if (isOpenVariant()[i]) {
+
+                          <div class="variation-actions my-10 mb-4 px-8">
+                          
+                            <div class="variation-action__section mb-6">
+                              <h3 class="text-lg font-medium">Foto</h3>
+                              <div class="variation-cover__picture mx-auto lg:mx-0 lg:my-0 w-[120px] h-[120px]">
                                 <img [src]="variation.images![0].objectURL" [alt]="variation.images![0].file.name" class="mix-blend-multiply w-full h-full object-contain object-center border-2 border-slate-100">
                               </div>
+                            </div>
 
-                              <div class="variation-cover__info flex items-start flex-col justify-center gap-2 mb-6 lg:mb-0">
-                                <div class="variation-cover__label-name text-xs"> {{ variation.attributes[0].attribute }} </div>
-                                <div class="variation-cover__label-stock text-xs"> {{ variation.attributes[0].value }} </div>
-                                <div class="variation-cover__label-sku text-xs">sku: {{ variation.sku }} </div>
+                            <div class="variation-action__section mb-6">
+                              <label class="variation-actions__label text-sm block pl-2 pb-2 font-medium text-slate-700" for="titleVar">Sku:</label>
+                              <input  class="form__input max-w-[500px] w-full block" pInputText id="titleVar" placeholder="Ingrese el sku del producto" 
+                              [style]="{ 'font-size': '14px', 'border-style': 'dashed' }" />
+                            </div>
+
+                            <div class="variation-action__sections flex flex-row items-center justify-between flex-nowrap gap-x-8 w-full">
+                              <div class="variation-action__section mb-6 flex-auto">
+                                <label class="variation-actions__label text-sm block pl-2 pb-2 font-medium text-slate-700" for="titleVar">Precio regular:</label>
+                                <input  class="form__input  w-full block" pInputText id="titleVar" placeholder="Ingrese el precio regular del producto" 
+                                [style]="{ 'font-size': '14px', 'border-style': 'dashed' }" />
                               </div>
-                       
-                            </div>
   
-                            <div class="variation-cover__col flex items-start justify-evenly flex-col lg:flex-row gap-6 lg:gap-4">
-                              <div class="variation-cover__col flex flex-col flex-wrap gap-y-2 lg:gap-y-1 5"></div>
-                              <div class="variation-cover__col flex flex-col flex-wrap gap-y-2 lg:gap-y-1 5"></div>
-                              <div class="variation-cover__col flex flex-col flex-wrap gap-y-2 lg:gap-y-1 5"></div>
+                              <div class="variation-action__section mb-6 flex-auto">
+                                <label class="variation-actions__label block text-sm pl-2 pb-2 font-medium text-slate-700" for="titleVar">Precio de oferta:</label>
+                                <input  class="form__input  w-full block" pInputText id="titleVar" placeholder="Ingrese el precio de oferta del producto" 
+                                [style]="{ 'font-size': '14px', 'border-style': 'dashed' }" />
+                              </div>
                             </div>
-  
+
+                            <div class="variation-action__section mb-6 flex items-center justify-start gap-x-2">
+                              <p-checkbox></p-checkbox>
+                              <label class="variation-actions__label text-sm block pl-2 font-medium text-slate-700" for="titleVar">Mismo del producto principal:</label>
+                           
+                            </div>
+
+
+
                           </div>
-                        </div>
-  
-                        <div class="variation-card__actions">
-  
-                        </div>
+                           
+                        }
   
                       </div>
                     }
@@ -299,12 +431,24 @@
               }
 
               } 
+
+              @if( showAttr() ) {
+                <div class="variation-attr px-8 py-4">
+
+                  <div class="variation-attr__info bg-blue-200/20 border-blue-200 border-2 border-l-4 py-1 px-4 border-l-blue-500 flex items-start justify-start gap-2">
+                    <i class="pi pi-exclamation-circle text-blue-700"></i>
+                    <p class="text-sm text-blue-700">Añade información descriptiva que los clientes puedan utilizar para buscar este producto en tu tienda, como «Material» o «Marca».</p>
+                  </div>
+                </div>
+              }
              
-              <button pButton class="expansion-panel__btn--variante bg-blue-100 text-blue-600 px-6 py-2 border-0" (click)="getVariations()">
+            </div>
+
+            <div class="expansion-panel__footer px-8 py-4">
+              <button pButton class="expansion-panel__btn--variante bg-blue-100 text-blue-600 px-6 py-2 border-0" (click)="toggleShowAttr()">
                 <i class="p-button-icon pi pi-plus mr-1 text-sm font-semibold"></i>
                 <span class="text-sm font-semibold">Agregar nueva variante</span>
               </button>
-              
             </div>
           </app-expansion-panel>
         </div>
@@ -329,7 +473,7 @@
               </h3>
             </div>
 
-            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start py-4 px-8">
               <input class="form-product__input w-full text-sm" pInputText id="sku" formControlName="sku" />
             </div>
           </app-expansion-panel>
@@ -397,7 +541,7 @@
               }
             </div>
 
-            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start">
+            <div class="expansion-panel__content flex flex-col gap-3 items-start justify-start px-8 py-4">
               <div class="expansion-panel__item flex flex-row items-center gap-4 justify-between w-full mb-4">
                 <span class="text-sm font-semibold text-slate-700 w-full">Precio regular:</span>
                 <input class="form-product__input w-full text-sm" [style]="{ 'border-style': 'dashed' }" pInputText

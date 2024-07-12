@@ -29,29 +29,13 @@
 
   <div class="expansion-panel__body" [@isActivo]="toggleAccordeon">
 
-    <div class="expansin-panel__wrapper p-8">
+    <div class="expansin-panel__wrapper">
       <ng-content select=".expansion-panel__content"></ng-content>
     </div>
   
-      <div class="expansion-panel__wrapper mb-4">
-        <!-- <div
-          class="expansion-panel__footer flex items-center justify-end gap-4 px-8 pb-4 "
-        >
-          <p-button
-            [disabled]="isEnabled()"
-            (onClick)="updateProduct.emit(propertyProduct())"
-            [style]="{ 'font-size': '14px', padding: '6px 12px' }"
-            label="Actualizar"
-            severity="primary">
-          </p-button>
-          <p-button
-          [disabled]="isEnabled()"
-          (onClick)="cancelUpdate.emit(propertyProduct())"
-            [style]="{ 'font-size': '14px', padding: '6px 12px' }"
-            label="Cancelar"
-            severity="danger">
-          </p-button>
-        </div> -->
+      <div class="expansion-panel__wrapper my-4">
+        <ng-content select=".expansion-panel__footer"></ng-content>
+        
       </div>
 
   </div>
